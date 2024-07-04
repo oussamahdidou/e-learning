@@ -2,18 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.generique;
 
 namespace api.extensions
 {
     public static class FilesExtensions
     {
-        public static async Task<string> UploadCoursPdf(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        public static async Task<Result<string>> UploadCoursPdf(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
         {
 
             if (webHostEnvironment == null)
             {
 
-                return null;
+                return Result<string>.Failure("web host envirenement error");
             }
 
             try
@@ -30,21 +31,21 @@ namespace api.extensions
                     await formFile.CopyToAsync(fileStream);
                 }
 
-                return "/cours/" + uniqueFileName;
+                return Result<string>.Success("/cours/" + uniqueFileName);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"UploadImage Exception: {ex.Message}");
-                return null;
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
+
             }
         }
 
-        public static async Task<string> UploadVideo(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        public static async Task<Result<string>> UploadVideo(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
         {
             if (webHostEnvironment == null)
             {
 
-                return null;
+                return Result<string>.Failure("web host envirenement error");
             }
 
             try
@@ -60,23 +61,23 @@ namespace api.extensions
                 {
                     await formFile.CopyToAsync(fileStream);
                 }
+                return Result<string>.Success("/video/" + uniqueFileName);
 
-                return "/video/" + uniqueFileName;
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"UploadImage Exception: {ex.Message}");
-                return null;
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
             }
         }
 
-        public static async Task<string> UploadSynthese(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        public static async Task<Result<string>> UploadSynthese(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
         {
 
             if (webHostEnvironment == null)
             {
 
-                return null;
+                return Result<string>.Failure("web host envirenement error");
             }
 
             try
@@ -92,23 +93,25 @@ namespace api.extensions
                 {
                     await formFile.CopyToAsync(fileStream);
                 }
+                return Result<string>.Success("/synthese/" + uniqueFileName);
 
-                return "/synthese/" + uniqueFileName;
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"UploadImage Exception: {ex.Message}");
-                return null;
+
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
             }
         }
 
-        public static async Task<string> UploadSchema(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        public static async Task<Result<string>> UploadSchema(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
         {
 
             if (webHostEnvironment == null)
             {
 
-                return null;
+                return Result<string>.Failure("web host envirenement error");
+
             }
 
             try
@@ -125,22 +128,23 @@ namespace api.extensions
                     await formFile.CopyToAsync(fileStream);
                 }
 
-                return "/schema/" + uniqueFileName;
+                return Result<string>.Success("/schema/" + uniqueFileName);
+
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"UploadImage Exception: {ex.Message}");
-                return null;
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
             }
         }
 
-        public static async Task<string> UploadControle(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        public static async Task<Result<string>> UploadControle(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
         {
 
             if (webHostEnvironment == null)
             {
 
-                return null;
+                return Result<string>.Failure("web host envirenement error");
             }
 
             try
@@ -157,22 +161,23 @@ namespace api.extensions
                     await formFile.CopyToAsync(fileStream);
                 }
 
-                return "/controle/" + uniqueFileName;
+                return Result<string>.Success("/controle/" + uniqueFileName);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"UploadImage Exception: {ex.Message}");
-                return null;
+
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
+
             }
         }
 
-        public static async Task<string> UploadControleSolution(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        public static async Task<Result<string>> UploadControleSolution(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
         {
 
             if (webHostEnvironment == null)
             {
 
-                return null;
+                return Result<string>.Failure("web host envirenement error");
             }
 
             try
@@ -189,22 +194,22 @@ namespace api.extensions
                     await formFile.CopyToAsync(fileStream);
                 }
 
-                return "/controlesolution/" + uniqueFileName;
+                return Result<string>.Success("/controlesolution/" + uniqueFileName);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"UploadImage Exception: {ex.Message}");
-                return null;
+
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
             }
         }
 
-        public static async Task<string> UploadControleReponse(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        public static async Task<Result<string>> UploadControleReponse(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
         {
 
             if (webHostEnvironment == null)
             {
 
-                return null;
+                return Result<string>.Failure("web host envirenement error");
             }
 
             try
@@ -221,12 +226,12 @@ namespace api.extensions
                     await formFile.CopyToAsync(fileStream);
                 }
 
-                return "/controlereponse/" + uniqueFileName;
+                return Result<string>.Success("/controlereponse/" + uniqueFileName);
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"UploadImage Exception: {ex.Message}");
-                return null;
+
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
             }
         }
 
