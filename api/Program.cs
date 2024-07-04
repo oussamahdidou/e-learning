@@ -95,7 +95,14 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
-
+if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
+{
+    await SeedData.SeedUsersAndRolesAsync(app);
+}
+else
+{
+    Console.WriteLine("Invalid arguments or missing command.");
+}
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
