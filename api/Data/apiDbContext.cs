@@ -16,24 +16,45 @@ namespace api.Data
         {
 
         }
-        // public DbSet<Doctor> doctors { get; set; }
-        // public DbSet<LicenseDoctor> licenseDoctors { get; set; }
+        public DbSet<Admin> admins { get; set; }
+        public DbSet<Teacher> teachers { get; set; }
+        public DbSet<Student> students { get; set; }
+        public DbSet<Institution> institutions { get; set; }
+        public DbSet<NiveauScolaire> niveauScolaires { get; set; }
+        public DbSet<Module> modules { get; set; }
+        public DbSet<Chapitre> chapitres { get; set; }
+        public DbSet<Quiz> quizzes { get; set; }
+        public DbSet<Question> questions { get; set; }
+        public DbSet<Option> options { get; set; }
+        public DbSet<Controle> controles { get; set; }
+        public DbSet<QuizResult> quizResults { get; set; }
+        public DbSet<TestNiveau> testNiveaus { get; set; }
+        public DbSet<CheckChapter> checkChapters { get; set; }
+        public DbSet<ResultControle> resultControles { get; set; }
+        public DbSet<ModuleRequirement> moduleRequirements { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            // List<IdentityRole> Roles = new List<IdentityRole>()
-            // {
-            //     new IdentityRole()
-            //     {
-            //         Name="Admin",
-            //         NormalizedName="ADMIN"
-            //     },
-            //     new IdentityRole()
-            //     {
-            //         Name="User",
-            //         NormalizedName="User"
-            //     }
-            // };
+            List<IdentityRole> Roles = new List<IdentityRole>()
+            {
+                new IdentityRole()
+                {
+                    Name="Admin",
+                    NormalizedName="ADMIN"
+                },
+                new IdentityRole()
+                {
+                    Name="Teacher",
+                    NormalizedName="TEACHER"
+                },
+                new IdentityRole()
+                {
+                    Name="Student",
+                    NormalizedName="STUDENT"
+                }
+
+            };
             // List<Country> countries = new List<Country>()
             // {
             //     new Country(){
@@ -63,29 +84,61 @@ namespace api.Data
             //     },
             // };
 
-            // builder.Entity<Rating>(x => x.HasKey(p => new { p.AppUserId, p.EntrepriseId }));
-            // builder.Entity<Rating>()
-            // .HasOne(u => u.AppUser)
-            // .WithMany(u => u.Ratings)
-            // .HasForeignKey(p => p.AppUserId);
-            // builder.Entity<Rating>()
-            // .HasOne(u => u.Entreprise)
-            // .WithMany(u => u.Ratings)
-            // .HasForeignKey(p => p.EntrepriseId);
-            // builder.Entity<Comment>(x =>
-            // {
-            //     x.HasKey(p => p.Id); // Set Id as the primary key
-            //     x.Property(p => p.Id).ValueGeneratedOnAdd(); // Configure Id to be auto-generated
-            //     x.HasOne(u => u.AppUser)
-            //         .WithMany(u => u.Comments)
-            //         .HasForeignKey(p => p.AppUserId);
-            //     x.HasOne(u => u.Entreprise)
-            //         .WithMany(u => u.Comments)
-            //         .HasForeignKey(p => p.EntrepriseId);
-            // });
+            builder.Entity<ModuleRequirement>(x => x.HasKey(p => new { p.RequiredModuleId, p.TargetModuleId }));
 
+            builder.Entity<ModuleRequirement>()
+                .HasOne(u => u.RequiredModule)
+                .WithMany(u => u.ModulesRequiredIn)
+                .HasForeignKey(p => p.RequiredModuleId)
+                .OnDelete(DeleteBehavior.Restrict); // No cascading delete
 
-            // builder.Entity<IdentityRole>().HasData(Roles);
+            builder.Entity<ModuleRequirement>()
+                .HasOne(u => u.TargetModule)
+                .WithMany(u => u.ModuleRequirements)
+                .HasForeignKey(p => p.TargetModuleId)
+                .OnDelete(DeleteBehavior.Restrict); // No cascading delete
+
+            //**********************************************************************************************
+            builder.Entity<QuizResult>(x => x.HasKey(p => new { p.StudentId, p.QuizId }));
+            builder.Entity<QuizResult>()
+            .HasOne(u => u.Student)
+            .WithMany(u => u.QuizResults)
+            .HasForeignKey(p => p.StudentId);
+            builder.Entity<QuizResult>()
+            .HasOne(u => u.Quiz)
+            .WithMany(u => u.QuizResults)
+            .HasForeignKey(p => p.QuizId);
+            //**********************************************************************************************
+            builder.Entity<ResultControle>(x => x.HasKey(p => new { p.StudentId, p.ControleId }));
+            builder.Entity<ResultControle>()
+            .HasOne(u => u.Student)
+            .WithMany(u => u.ResultControles)
+            .HasForeignKey(p => p.StudentId);
+            builder.Entity<ResultControle>()
+            .HasOne(u => u.Controle)
+            .WithMany(u => u.ResultControles)
+            .HasForeignKey(p => p.ControleId);
+            //**********************************************************************************************
+            builder.Entity<CheckChapter>(x => x.HasKey(p => new { p.StudentId, p.ChapitreId }));
+            builder.Entity<CheckChapter>()
+            .HasOne(u => u.Student)
+            .WithMany(u => u.CheckChapters)
+            .HasForeignKey(p => p.StudentId);
+            builder.Entity<CheckChapter>()
+            .HasOne(u => u.Chapitre)
+            .WithMany(u => u.CheckChapters)
+            .HasForeignKey(p => p.ChapitreId);
+            //************************************************************************************************
+            builder.Entity<TestNiveau>(x => x.HasKey(p => new { p.StudentId, p.ModuleId }));
+            builder.Entity<TestNiveau>()
+            .HasOne(u => u.Student)
+            .WithMany(u => u.TestNiveaus)
+            .HasForeignKey(p => p.StudentId);
+            builder.Entity<TestNiveau>()
+            .HasOne(u => u.Module)
+            .WithMany(u => u.TestNiveaus)
+            .HasForeignKey(p => p.ModuleId);
+            builder.Entity<IdentityRole>().HasData(Roles);
             // builder.Entity<Country>().HasData(countries);
             // builder.Entity<Ville>().HasData(villes);
         }
