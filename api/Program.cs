@@ -1,6 +1,8 @@
 
 using api.Data;
+using api.interfaces;
 using api.Model;
+using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -93,7 +95,7 @@ builder.Services.AddCors(options =>
                     );
 });
 
-
+builder.Services.AddScoped<ITokenService, TokenService>();
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {
