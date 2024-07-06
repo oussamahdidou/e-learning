@@ -2,6 +2,7 @@
 using api.Data;
 using api.interfaces;
 using api.Model;
+using api.Repositories;
 using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -96,6 +97,7 @@ builder.Services.AddCors(options =>
 });
 //declare your services and repositories here
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IQuizRepository,QuizRepository>();
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
