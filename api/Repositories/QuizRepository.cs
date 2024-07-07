@@ -6,6 +6,7 @@ using api.Data;
 using api.Dtos.Quiz;
 using api.generique;
 using api.interfaces;
+using api.Mappers;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ namespace api.Repositories
         {
             _context = context;
         }
-        public async Task<Result<Quiz>> CreateQuiz(CreateQuizDto quizDto)
+        public async Task<Result<QuizDto>> CreateQuiz(CreateQuizDto quizDto)
         {
            try{
              var quiz = new Quiz{
@@ -50,24 +51,24 @@ namespace api.Repositories
             }
             
             await _context.SaveChangesAsync();
-            return Result<Quiz>.Success(quiz);
+            return Result<QuizDto>.Success(quiz.ToQuizDto());
            }catch(Exception ex){
              Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
-            return Result<Quiz>.Failure($"Failed to create quiz: {ex.Message}");
+            return Result<QuizDto>.Failure($"Failed to create quiz: {ex.Message}");
            }
             
         }
-        public async Task<Result<Quiz>> UpdateQuiz(int quizId, UpdateQuizDto updateQuizDto)
+        public async Task<Result<QuizDto>> UpdateQuiz(int quizId, UpdateQuizDto updateQuizDto)
         {
             try
             {
                 var quiz = await _context.quizzes
                     .Include(q => q.Questions)
-                        .ThenInclude(q => q.Options)
+                    .ThenInclude(q => q.Options)
                     .FirstOrDefaultAsync(q => q.Id == quizId);
 
                 if (quiz == null)
-                    return Result<Quiz>.Failure($"Quiz with id {quizId} not found.");
+                    return Result<QuizDto>.Failure($"Quiz with id {quizId} not found.");
 
                 quiz.Nom = updateQuizDto.Nom;
 
@@ -144,16 +145,16 @@ namespace api.Repositories
 
                 await _context.SaveChangesAsync();
 
-                return Result<Quiz>.Success(quiz);
+                return Result<QuizDto>.Success(quiz.ToQuizDto());
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
-                return Result<Quiz>.Failure($"Failed to update quiz: {ex.Message}");
+                return Result<QuizDto>.Failure($"Failed to update quiz: {ex.Message}");
             }
         }
 
-        public async Task<Result<Quiz>> GetQuizById(int id)
+        public async Task<Result<QuizDto>> GetQuizById(int id)
         {
             try{
                 var quiz = await _context.quizzes
@@ -163,15 +164,39 @@ namespace api.Repositories
 
                 if(quiz == null)
                 {
-                    return Result<Quiz>.Failure($"Quiz with id {id} not found.");
+                    return Result<QuizDto>.Failure($"Quiz with id {id} not found.");
                 }
 
-                return Result<Quiz>.Success(quiz);
+                return Result<QuizDto>.Success(quiz.ToQuizDto());
             }
             catch(Exception ex){
-                return Result<Quiz>.Failure($"Failed to get order: {ex.Message}");
+                return Result<QuizDto>.Failure($"Failed to get order: {ex.Message}");
             }
         }
+
+        public async Task<Result<QuizDto>> DeleteQuiz(int id)
+        {
+            try{
+            var quiz = await _context.quizzes
+            .Include(qr => qr.QuizResults)
+            .Include(q => q.Questions)
+            .ThenInclude(o => o.Options)
+            .FirstOrDefaultAsync(x => x.Id == id);
+            if(quiz == null)
+            {
+                return Result<QuizDto>.Failure($"quiz with id {id} not found. ");
+            }
+
+            _context.Remove(quiz);
+            await _context.SaveChangesAsync();
+
+            return Result<QuizDto>.Success(quiz.ToQuizDto());
+            }catch(Exception ex)
+            {
+                return Result<QuizDto>.Failure($"An error occured while deleting a quiz: {ex.Message}");
+            }
+        }
+    
     }
 
 

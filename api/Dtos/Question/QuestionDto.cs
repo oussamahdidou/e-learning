@@ -6,10 +6,11 @@ using api.Dtos.Option;
 
 namespace api.Dtos.Question
 {
-    public class UpdateQuestionDto
+    public class QuestionDto
     {
-        public int? Id { get; set; }
+        public int Id { get; set; }
         public string Nom { get; set; } = "";
-        public List<UpdateOptionDto> Options { get; set; } = new List<UpdateOptionDto>();
+
+        public List<OptionDto> Options { get; set; } = new List<OptionDto>();
     }
 }

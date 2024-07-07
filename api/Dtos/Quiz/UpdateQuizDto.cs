@@ -8,9 +8,9 @@ namespace api.Dtos.Quiz
 {
     public class UpdateQuizDto
     {
-        public string Nom { get; set; }
+        public string Nom { get; set; } = "";
 
-        public List<UpdateQuestionDto> Questions { get; set; }
+        public List<UpdateQuestionDto> Questions { get; set; } = new List<UpdateQuestionDto>();
 
     }
 }

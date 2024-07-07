@@ -42,10 +42,21 @@ namespace api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("/{id}")]
         public async Task<IActionResult> GetQuizById(int id)
         {
             var result = await _quizRepo.GetQuizById(id);
+            if (!result.IsSuccess)
+            {
+                return NotFound(result.Error);
+            }
+            return Ok(result.Value);
+        }
+
+        [HttpDelete("/delete/{id}")]
+        public async Task<IActionResult> DeleteQuiz(int id)
+        {
+            var result = await _quizRepo.DeleteQuiz(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);

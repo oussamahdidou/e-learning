@@ -10,8 +10,9 @@ namespace api.interfaces
 {
     public interface IQuizRepository
     {
-        Task<Result<Quiz>> CreateQuiz(CreateQuizDto quizDto);
-        Task<Result<Quiz>> UpdateQuiz(int quizId, UpdateQuizDto updateQuizDto);
-        Task<Result<Quiz>> GetQuizById(int id);
+        Task<Result<QuizDto>> CreateQuiz(CreateQuizDto quizDto);
+        Task<Result<QuizDto>> UpdateQuiz(int quizId, UpdateQuizDto updateQuizDto);
+        Task<Result<QuizDto>> GetQuizById(int id);
+        Task<Result<QuizDto>> DeleteQuiz(int id);
     }
 }
