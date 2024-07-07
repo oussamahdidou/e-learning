@@ -19,7 +19,7 @@ namespace api.Controllers
             _quizRepo = quizRepository;
         }
 
-        [HttpPost("/Create")]
+        [HttpPost("Create")]
         public async Task<IActionResult> CreateQuiz([FromBody] CreateQuizDto createQuizDto)
         {
             var result = await _quizRepo.CreateQuiz(createQuizDto);
@@ -30,7 +30,7 @@ namespace api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpPut("/Update/{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<IActionResult> UpdateQuiz([FromRoute] int id, [FromBody] UpdateQuizDto updateQuizDto)
         {
             var result = await _quizRepo.UpdateQuiz(id,updateQuizDto);
@@ -42,7 +42,7 @@ namespace api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("GetById/{id}")]
         public async Task<IActionResult> GetQuizById(int id)
         {
             var result = await _quizRepo.GetQuizById(id);
@@ -53,7 +53,7 @@ namespace api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpDelete("/delete/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteQuiz(int id)
         {
             var result = await _quizRepo.DeleteQuiz(id);

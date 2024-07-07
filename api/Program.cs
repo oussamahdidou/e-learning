@@ -98,6 +98,7 @@ builder.Services.AddCors(options =>
 //declare your services and repositories here
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IQuizRepository,QuizRepository>();
+builder.Services.AddScoped<IQuizResultRepository,QuizResultRepository>();
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
