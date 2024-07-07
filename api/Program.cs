@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+using Microsoft.Extensions.DependencyInjection;
+using api.Repository;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -81,8 +84,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:Audience"],//issuer url same as jwt token creation url
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(
-                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigninKey"]))
+        //IssuerSigningKey = new SymmetricSecurityKey(
+                //System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigninKey"]))
 
     };
 });
@@ -96,6 +99,18 @@ builder.Services.AddCors(options =>
 });
 //declare your services and repositories here
 builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
+builder.Services.AddScoped<ModulService>();
+builder.Services.AddScoped<IInstitutionRepository, InstitutionRepository>();
+builder.Services.AddScoped<InstitutionService>();
+
+builder.Services.AddScoped<INiveauScolaireRepository, NiveauScolaireRepository>();
+builder.Services.AddScoped<NiveauScolaireService>();
+
+builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
+builder.Services.AddScoped<ChapitreService>();
+
+
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")

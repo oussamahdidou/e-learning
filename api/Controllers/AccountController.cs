@@ -37,8 +37,10 @@ namespace api.Controllers
 
             return Ok(new NewUserDto()
             {
-                Username = user.UserName,
-                Email = user.Email,
+                //Username = user.UserName,
+                //Email = user.Email,
+                Username = user.UserName ?? string.Empty,
+                Email = user.Email ?? string.Empty,
                 Token = await tokenService.CreateToken(user)
             });
         }
