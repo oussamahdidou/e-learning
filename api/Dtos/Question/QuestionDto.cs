@@ -9,7 +9,7 @@ namespace api.Dtos.Question
     public class QuestionDto
     {
         public int Id { get; set; }
-        public string Nom { get; set; } = "";
+        public string Nom { get; set; } 
 
         public List<OptionDto> Options { get; set; } = new List<OptionDto>();
     }

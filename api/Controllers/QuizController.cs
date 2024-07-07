@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Quiz;
 using api.interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -20,6 +21,7 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
+        [Authorize(Roles="Admin,Teacher")]
         public async Task<IActionResult> CreateQuiz([FromBody] CreateQuizDto createQuizDto)
         {
             var result = await _quizRepo.CreateQuiz(createQuizDto);
@@ -31,6 +33,7 @@ namespace api.Controllers
         }
 
         [HttpPut("Update/{id}")]
+        [Authorize(Roles="Admin,Teacher")]
         public async Task<IActionResult> UpdateQuiz([FromRoute] int id, [FromBody] UpdateQuizDto updateQuizDto)
         {
             var result = await _quizRepo.UpdateQuiz(id,updateQuizDto);
@@ -43,6 +46,7 @@ namespace api.Controllers
         }
 
         [HttpGet("GetById/{id}")]
+        [Authorize(Roles="Admin,Teacher")]
         public async Task<IActionResult> GetQuizById(int id)
         {
             var result = await _quizRepo.GetQuizById(id);
@@ -54,6 +58,7 @@ namespace api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles="Admin")]
         public async Task<IActionResult> DeleteQuiz(int id)
         {
             var result = await _quizRepo.DeleteQuiz(id);

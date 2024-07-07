@@ -11,5 +11,6 @@ namespace api.interfaces
     public interface IQuizResultRepository
     {
         Task<Result<QuizResultDto>> CreateQuizResult(string studentId, CreateQuizResultDto createQuizResultDto);
+        Task<Result<bool>> DeleteQuizResult(string studentId, int quizId);
     }
 }

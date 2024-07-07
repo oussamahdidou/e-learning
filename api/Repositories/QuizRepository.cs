@@ -166,7 +166,12 @@ namespace api.Repositories
                 {
                     return Result<QuizDto>.Failure($"Quiz with id {id} not found.");
                 }
-
+                
+                var random = new Random();
+                var randomQuestions = quiz.Questions.OrderBy(q => random.Next()).Take(10).ToList();
+                
+                // Update the quiz object with the selected questions
+                quiz.Questions = randomQuestions;
                 return Result<QuizDto>.Success(quiz.ToQuizDto());
             }
             catch(Exception ex){

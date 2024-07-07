@@ -44,5 +44,20 @@ namespace api.Controllers
             
             return BadRequest("Internel Error");
         }
+    
+        [HttpDelete("DeleteQuizResult/{quizId}/{studentId}")]
+        [Authorize(Roles="Admin,Teacher")]
+        public async Task<IActionResult> DeleteQuizResult(string studentId, int quizId)
+        {
+            var result = await _quizResultRepo.DeleteQuizResult(studentId, quizId);
+
+            if (!result.IsSuccess)
+            {
+                return NotFound(result.Error);
+            }
+
+            return Ok(result.Value);
+        }
+
     }
 }
