@@ -109,26 +109,6 @@ namespace api.Controllers
 
             return Ok(result.Value);
         }
-        [HttpGet("download/{fileName}")]
-        [Authorize]
-        public async Task<IActionResult> GetFile(string fileName)
-        {
-            if (string.IsNullOrEmpty(fileName))
-                return BadRequest("Filename is not provided.");
-
-            var filePath = Path.Combine(_environment.WebRootPath, "controlereponse", fileName);
-
-            if (!System.IO.File.Exists(filePath))
-                return NotFound("File not found.");
-
-            var memory = new MemoryStream();
-            using (var stream = new FileStream(filePath, FileMode.Open))
-            {
-                await stream.CopyToAsync(memory);
-            }
-            memory.Position = 0;
-            var contentType = "APPLICATION/octet-stream";
-            return File(memory, contentType, Path.GetFileName(filePath));
-        }
+        
     }
 }

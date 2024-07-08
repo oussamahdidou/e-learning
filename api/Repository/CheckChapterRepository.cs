@@ -40,6 +40,7 @@ namespace api.Repository
 
         public async Task<Result<CheckChapter>> CreateCheckChapter(AppUser user , int chapterId)
         {
+            if(await _context.checkChapters.AnyAsync(x => x.ChapitreId == chapterId && x.StudentId == user.Id)) return Result<CheckChapter>.Success(new CheckChapter());
             var chapter = await _context.chapitres.FindAsync(chapterId);
             if(chapter == null) return Result<CheckChapter>.Failure("chapter not found");
             var student = await _context.students.FindAsync(user.Id);
@@ -48,8 +49,6 @@ namespace api.Repository
             {
                 StudentId = student.Id,
                 ChapitreId = chapterId,
-                Chapitre = chapter,
-                Student = student,
             };
             try{
                 await _context.checkChapters.AddAsync(checkChapter);
