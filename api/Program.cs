@@ -3,7 +3,6 @@ using api.Data;
 using api.interfaces;
 using api.Model;
 using api.Repository;
-
 using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -103,6 +102,8 @@ builder.Services.AddScoped<IModuleRequirementsRepository, ModuleRequirementsRepo
 
 builder.Services.AddScoped<IQuizRepository,QuizRepository>();
 builder.Services.AddScoped<IQuizResultRepository,QuizResultRepository>();
+builder.Services.AddScoped<ICheckChapterRepository, CheckChapterRepository>();
+builder.Services.AddScoped<IResultControleRepository, ResultControleRepository>();
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
