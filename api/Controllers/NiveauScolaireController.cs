@@ -1,24 +1,27 @@
-using api.Dtos.NiveauScolaires;
-using api.Service;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using api.Dtos.NiveauScolaires;
+using api.generique;
+using api.interfaces;
 
 namespace api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class NiveauScolaireController : ControllerBase
     {
-        private readonly NiveauScolaireService _niveauScolaireService;
+        private readonly INiveauScolaireRepository _niveauScolaireRepository;
 
-        public NiveauScolaireController(NiveauScolaireService niveauScolaireService)
+        public NiveauScolaireController(INiveauScolaireRepository niveauScolaireRepository)
         {
-            _niveauScolaireService = niveauScolaireService;
+            _niveauScolaireRepository = niveauScolaireRepository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<NiveauScolaireDto>>> GetAll()
+        [HttpGet("GetAll")]
+        public async Task<IActionResult> GetAll()
         {
-            var result = await _niveauScolaireService.GetAllDtosAsync();
+            var result = await _niveauScolaireRepository.GetAllAsync();
             if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
@@ -26,54 +29,69 @@ namespace api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<NiveauScolaireDto>> GetById(int id)
+        [HttpGet("GetById/{id}")]
+        public async Task<IActionResult> GetById(int id)
         {
-            var result = await _niveauScolaireService.GetDtoByIdAsync(id);
+            var result = await _niveauScolaireRepository.GetByIdAsync(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);
             }
+            if (result.Value == null)
+            {
+                return NotFound("NiveauScolaire not found");
+            }
             return Ok(result.Value);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<NiveauScolaireDto>> Add(NiveauScolaireDto niveauScolaireDto)
+        [HttpPost("Create")]
+        public async Task<IActionResult> Add([FromBody] NiveauScolaireDto niveauScolaireDto)
         {
-            var result = await _niveauScolaireService.AddDtoAsync(niveauScolaireDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _niveauScolaireRepository.AddAsync(niveauScolaireDto);
             if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
-            return CreatedAtAction(nameof(GetById), new { id = result.Value!.Id }, result.Value);
+            return Ok(result.Value);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, NiveauScolaireDto niveauScolaireDto)
+        [HttpPut("Update/{id}")]
+        public async Task<IActionResult> Update([FromRoute] int id, [FromBody] NiveauScolaireDto niveauScolaireDto)
         {
             if (id != niveauScolaireDto.Id)
             {
-                return BadRequest("ID mismatch.");
+                return BadRequest("ID incorrect !");
             }
 
-            var result = await _niveauScolaireService.UpdateDtoAsync(niveauScolaireDto);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _niveauScolaireRepository.UpdateAsync(niveauScolaireDto);
             if (!result.IsSuccess)
             {
-                return NotFound(result.Error);
+                return BadRequest(result.Error);
             }
+           
 
-            return NoContent();
+            return Ok("NiveauScolaire updated successfully");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var result = await _niveauScolaireService.DeleteAsync(id);
+            var result = await _niveauScolaireRepository.DeleteAsync(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);
             }
-            return NoContent();
+            return Ok("NiveauScolaire deleted successfully");
         }
     }
 }

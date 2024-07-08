@@ -1,10 +1,13 @@
-using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using api.Data;
-using api.interfaces;
+using api.Dto;
 using api.Model;
+using api.Mappers;
+using api.interfaces;
 using Microsoft.EntityFrameworkCore;
+using api.Data;
+using api.generique;
 
 namespace api.Repository
 {
@@ -17,42 +20,66 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<Module>> GetAllAsync()
+        public async Task<Result<IEnumerable<ModuleDto>>> GetAllAsync()
         {
-            return await _context.modules.ToListAsync();
+            var modules = await _context.modules.Include(m => m.Chapitres).ToListAsync();
+            return Result<IEnumerable<ModuleDto>>.Success(modules.Select(ModuleMapper.MapToDto));
         }
 
-        public async Task<Module> GetByIdAsync(int id)
+        public async Task<Result<ModuleDto>> GetByIdAsync(int id)
+        {
+            var module = await _context.modules
+                .Include(m => m.Chapitres)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            
+            if (module == null)
+            {
+                return Result<ModuleDto>.Failure("Module not found");
+            }
+            
+            return Result<ModuleDto>.Success(ModuleMapper.MapToDto(module));
+        }
+
+        public async Task<Result<ModuleDto>> AddAsync(ModuleDto moduleDto)
+        {
+            var module = ModuleMapper.MapToEntity(moduleDto);
+            _context.modules.Add(module);
+            await _context.SaveChangesAsync();
+            return Result<ModuleDto>.Success(ModuleMapper.MapToDto(module));
+        }
+
+        public async Task<Result> UpdateAsync(ModuleDto moduleDto)
+        {
+            var existingModule = await _context.modules.FindAsync(moduleDto.Id);
+            if (existingModule == null)
+            {
+                return Result.Failure("Module not found");
+            }
+            
+            existingModule.Nom = moduleDto.Nom;
+            existingModule.NiveauScolaireId = moduleDto.NiveauScolaireId;
+            existingModule.Chapitres = moduleDto.ChapitreIds
+                .Select(id => new Chapitre { Id = id })
+                .ToList();
+
+            _context.modules.Update(existingModule);
+            await _context.SaveChangesAsync();
+
+            return Result.Success();
+        }
+
+        public async Task<Result> DeleteAsync(int id)
         {
             var module = await _context.modules.FindAsync(id);
             if (module == null)
             {
-                throw new KeyNotFoundException($"Module with ID {id} not found.");
+                return Result.Failure("Module not found");
             }
-            return module;
-        }
 
-        public async Task<Module> AddAsync(Module module)
-        {
-            await _context.modules.AddAsync(module);
+            _context.modules.Remove(module);
             await _context.SaveChangesAsync();
-            return module;
-        }
 
-        public async Task UpdateAsync(Module module)
-        {
-            _context.Entry(module).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var module = await _context.modules.FindAsync(id);
-            if (module != null)
-            {
-                _context.modules.Remove(module);
-                await _context.SaveChangesAsync();
-            }
+            return Result.Success();
         }
     }
 }

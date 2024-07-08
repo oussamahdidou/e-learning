@@ -1,11 +1,9 @@
 using System;
-using System.Collections.Generic;
 
 namespace api.Dtos.Chapitre
 {
-    public class ChapitreDto
+    public class CreateChapitreDto
     {
-        public int Id { get; set; }
         public int ChapitreNum { get; set; }
         public string Nom { get; set; } = "";
         public string Statue { get; set; } = "";

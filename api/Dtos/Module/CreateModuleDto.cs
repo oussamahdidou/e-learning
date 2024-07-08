@@ -4,17 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace api.Dto
 {
-    public class ModuleDto
+    public class CreateModuleDto
     {
-        public int Id { get; set; }
-        
         [Required]
         [StringLength(100, MinimumLength = 3)]
         public string Nom { get; set; } = "";
         
+        [Required]
         public int NiveauScolaireId { get; set; }
-        
-        public string? NiveauScolaireName { get; set; }
         
         public List<int> ChapitreIds { get; set; } = new List<int>();
     }

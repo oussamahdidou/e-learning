@@ -1,34 +1,41 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Dtos.Institution;
-using api.Service;
+using api.interfaces;
+using Microsoft.AspNetCore.Authorization;
 using api.generique;
+using System.Collections.Generic;
 
 namespace api.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/[controller]")]
     public class InstitutionController : ControllerBase
     {
-        private readonly InstitutionService _institutionService;
+        private readonly IInstitutionRepository _institutionRepository;
 
-        public InstitutionController(InstitutionService institutionService)
+        public InstitutionController(IInstitutionRepository institutionRepository)
         {
-            _institutionService = institutionService;
+            _institutionRepository = institutionRepository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<InstitutionDto>>> GetAll()
+        [HttpGet("GetAll")]
+       
+        public async Task<IActionResult> GetAllInstitutions()
         {
-            var result = await _institutionService.GetAllDtosAsync();
-            return Ok(result);
+            var result = await _institutionRepository.GetAllAsync();
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<InstitutionDto>> GetById(int id)
+        [HttpGet("GetById/{id}")]
+      
+        public async Task<IActionResult> GetInstitutionById(int id)
         {
-            var result = await _institutionService.GetDtoByIdAsync(id);
+            var result = await _institutionRepository.GetByIdAsync(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);
@@ -40,48 +47,44 @@ namespace api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<InstitutionDto>> Create(InstitutionDto institutionDto)
+        [HttpPost("Create")]
+       
+        public async Task<IActionResult> CreateInstitution([FromBody] InstitutionDto institutionDto)
         {
-            var result = await _institutionService.AddDtoAsync(institutionDto);
+            var result = await _institutionRepository.AddAsync(institutionDto);
             if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
-            if (result.Value == null)
-            {
-                return BadRequest("Error creating institution");
-            }
-            return CreatedAtAction(nameof(GetById), new { id = result.Value.Id }, result.Value);
+            return Ok(result.Value);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Update(int id, InstitutionDto institutionDto)
+        [HttpPut("Update/{id}")]
+       
+        public async Task<IActionResult> UpdateInstitution([FromRoute] int id, [FromBody] InstitutionDto institutionDto)
         {
             if (id != institutionDto.Id)
             {
                 return BadRequest("ID mismatch.");
             }
 
-            var result = await _institutionService.UpdateDtoAsync(institutionDto);
+            var result = await _institutionRepository.UpdateAsync(institutionDto);
             if (!result.IsSuccess)
             {
-                return NotFound(result.Error);
+                return BadRequest(result.Error);
             }
-
-            return NoContent();
+            return Ok("Institution updated successfully");
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete("Delete/{id}")]
+                public async Task<IActionResult> DeleteInstitution(int id)
         {
-            var result = await _institutionService.DeleteAsync(id);
+            var result = await _institutionRepository.DeleteAsync(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);
             }
-
-            return NoContent();
+            return Ok("Institution deleted successfully");
         }
     }
 }

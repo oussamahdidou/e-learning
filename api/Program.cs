@@ -100,15 +100,13 @@ builder.Services.AddCors(options =>
 //declare your services and repositories here
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
-builder.Services.AddScoped<ModulService>();
 builder.Services.AddScoped<IInstitutionRepository, InstitutionRepository>();
-builder.Services.AddScoped<InstitutionService>();
+
 
 builder.Services.AddScoped<INiveauScolaireRepository, NiveauScolaireRepository>();
-builder.Services.AddScoped<NiveauScolaireService>();
 
 builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
-builder.Services.AddScoped<ChapitreService>();
+
 
 
 

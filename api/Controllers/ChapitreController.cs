@@ -1,8 +1,12 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using api.Service;
 using api.Dtos.Chapitre;
 using api.generique;
+using api.interfaces;
+using api.Mappers;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
@@ -10,90 +14,117 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class ChapitreController : ControllerBase
     {
-        private readonly ChapitreService _chapitreService;
+        private readonly IChapitreRepository _chapitreRepository;
 
-        public ChapitreController(ChapitreService chapitreService)
+        public ChapitreController(IChapitreRepository chapitreRepository)
         {
-            _chapitreService = chapitreService;
+            _chapitreRepository = chapitreRepository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ChapitreDto>>> GetAllChapitres()
+        [HttpGet("GetAll")]
+        
+        public async Task<IActionResult> GetAllChapitres()
         {
-            var result = await _chapitreService.GetAllDtosAsync();
+            var result = await _chapitreRepository.GetAllAsync();
             if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
 
-            if (result.Value == null)
-            {
-                return NotFound("No chapters found.");
-            }
-
-            return Ok(result.Value);
+            var chapitreDtos = result.Value?.Select(ChapitreMapper.MapToDto) ?? Enumerable.Empty<ChapitreDto>();
+            return Ok(chapitreDtos);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ChapitreDto>> GetChapitreById(int id)
+        [HttpGet("GetById/{id}")]
+        
+        public async Task<IActionResult> GetChapitreById(int id)
         {
-            var result = await _chapitreService.GetDtoByIdAsync(id);
+            var result = await _chapitreRepository.GetByIdAsync(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);
             }
 
-            if (result.Value == null)
-            {
-                return NotFound("Chapter not found.");
-            }
-
-            return Ok(result.Value);
+            var chapitreDto = result.Value != null ? ChapitreMapper.MapToDto(result.Value) : null;
+            return chapitreDto != null ? Ok(chapitreDto) : NotFound("Chapitre not found");
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ChapitreDto>> AddChapitre(ChapitreDto chapitreDto)
+        [HttpPost("Create")]
+       
+        public async Task<IActionResult> AddChapitre([FromBody] ChapitreDto chapitreDto)
         {
-            var result = await _chapitreService.AddDtoAsync(chapitreDto);
+            var chapitre = ChapitreMapper.MapToEntity(chapitreDto);
+            var result = await _chapitreRepository.AddAsync(chapitre);
             if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
 
-            if (result.Value == null)
-            {
-                return BadRequest("Failed to add chapter.");
-            }
-
-            return CreatedAtAction(nameof(GetChapitreById), new { id = result.Value.Id }, result.Value);
+            var addedChapitreDto = result.Value != null ? ChapitreMapper.MapToDto(result.Value) : null;
+            return addedChapitreDto != null 
+                ? CreatedAtAction(nameof(GetChapitreById), new { id = addedChapitreDto.Id }, addedChapitreDto)
+                : BadRequest("Failed to create chapitre");
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateChapitre(int id, ChapitreDto chapitreDto)
+        [HttpPut("Update/{id}")]
+        
+        public async Task<IActionResult> UpdateChapitre([FromRoute] int id, [FromBody] ChapitreDto chapitreDto)
         {
             if (id != chapitreDto.Id)
             {
-                return BadRequest();
+                return BadRequest("Mismatched chapter ID.");
             }
 
-            var result = await _chapitreService.UpdateDtoAsync(chapitreDto);
-            if (!result.IsSuccess)
+            var getResult = await _chapitreRepository.GetByIdAsync(id);
+            if (!getResult.IsSuccess)
             {
-                return NotFound(result.Error);
+                return NotFound(getResult.Error);
             }
 
-            return NoContent();
+            var existingChapitre = getResult.Value;
+            if (existingChapitre == null)
+            {
+                return NotFound("Chapitre not found");
+            }
+
+            existingChapitre.ChapitreNum = chapitreDto.ChapitreNum;
+            existingChapitre.Nom = chapitreDto.Nom;
+            existingChapitre.Statue = chapitreDto.Statue;
+            existingChapitre.CoursPdfPath = chapitreDto.CoursPdfPath;
+            existingChapitre.VideoPath = chapitreDto.VideoPath;
+            existingChapitre.Synthese = chapitreDto.Synthese;
+            existingChapitre.Schema = chapitreDto.Schema;
+            existingChapitre.Premium = chapitreDto.Premium;
+            existingChapitre.QuizId = chapitreDto.QuizId;
+            existingChapitre.ModuleId = chapitreDto.ModuleId;
+            existingChapitre.ControleId = chapitreDto.ControleId;
+
+            var updateResult = await _chapitreRepository.UpdateAsync(existingChapitre);
+            if (!updateResult.IsSuccess)
+            {
+                return BadRequest(updateResult.Error);
+            }
+
+            return Ok("Chapitre updated successfully");
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("Delete/{id}")]
+     
         public async Task<IActionResult> DeleteChapitre(int id)
         {
-            var result = await _chapitreService.DeleteAsync(id);
+            var result = await _chapitreRepository.GetByIdAsync(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);
             }
-            return NoContent();
+
+            var deleteResult = await _chapitreRepository.DeleteAsync(id);
+            if (!deleteResult.IsSuccess)
+            {
+                return BadRequest(deleteResult.Error);
+            }
+
+            return Ok("Chapitre deleted successfully");
         }
     }
 }

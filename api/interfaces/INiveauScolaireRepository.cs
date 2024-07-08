@@ -1,17 +1,16 @@
-using System;
+using api.Dtos.NiveauScolaires;
+using api.generique;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using api.Model;
 
 namespace api.interfaces
 {
     public interface INiveauScolaireRepository
     {
-      Task<IEnumerable<NiveauScolaire>> GetAllAsync();
-        Task<NiveauScolaire?> GetByIdAsync(int id);
-        Task<NiveauScolaire> AddAsync(NiveauScolaire niveauScolaire);
-        Task UpdateAsync(NiveauScolaire niveauScolaire);
-        Task DeleteAsync(int id);  
+        Task<Result<List<NiveauScolaireDto>>> GetAllAsync();
+        Task<Result<NiveauScolaireDto>> GetByIdAsync(int id);
+        Task<Result<NiveauScolaireDto>> AddAsync(NiveauScolaireDto niveauScolaireDto);
+        Task<Result> UpdateAsync(NiveauScolaireDto niveauScolaireDto);
+        Task<Result> DeleteAsync(int id);
     }
 }

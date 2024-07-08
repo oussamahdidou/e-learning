@@ -1,5 +1,6 @@
 using api.Dto;
 using api.Model;
+using System.Linq;
 
 namespace api.Mappers
 {

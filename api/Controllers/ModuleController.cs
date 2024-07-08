@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using api.Dto;
-using api.Service;
-using Microsoft.AspNetCore.Mvc;
+using api.generique;
+using api.interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
@@ -10,17 +12,18 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class ModuleController : ControllerBase
     {
-        private readonly ModulService _modulService;
+        private readonly IModuleRepository _moduleRepository;
 
-        public ModuleController(ModulService modulService)
+        public ModuleController(IModuleRepository moduleRepository)
         {
-            _modulService = modulService;
+            _moduleRepository = moduleRepository;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<ModuleDto>>> GetAllModules()
+        [HttpGet("GetAll")]
+      
+        public async Task<IActionResult> GetAllModules()
         {
-            var result = await _modulService.GetAllDtosAsync();
+            var result = await _moduleRepository.GetAllAsync();
             if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
@@ -28,68 +31,81 @@ namespace api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<ModuleDto>> GetModule(int id)
+        [HttpGet("GetById/{id}")]
+       
+        public async Task<IActionResult> GetModule(int id)
         {
-            var result = await _modulService.GetDtoByIdAsync(id);
-            if (!result.IsSuccess )
+            var result = await _moduleRepository.GetByIdAsync(id);
+            if (!result.IsSuccess)
             {
-                return NotFound(result.Error );
+                return NotFound(result.Error);
             }
-            if(result.Value == null){
+            if (result.Value == null)
+            {
                 return NotFound("Module not found");
             }
             return Ok(result.Value);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<ModuleDto>> CreateModule(ModuleDto moduleDto)
+        [HttpPost("Create")]
+        
+        public async Task<IActionResult> CreateModule([FromBody] ModuleDto moduleDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await _modulService.AddDtoAsync(moduleDto);
-            if (!result.IsSuccess || result.Value == null)
+            var result = await _moduleRepository.AddAsync(moduleDto);
+            if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
-
-            return CreatedAtAction(nameof(GetModule), new { id = result.Value.Id }, result.Value);
+            return CreatedAtAction(nameof(GetModule), new { id = result.Value?.Id }, result.Value);
         }
 
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateModule(int id, ModuleDto moduleDto)
+        [HttpPut("Update/{id}")]
+       
+        public async Task<IActionResult> UpdateModule([FromRoute] int id, [FromBody] ModuleDto moduleDto)
         {
             if (id != moduleDto.Id)
             {
                 return BadRequest("L'ID du module ne correspond pas à l'ID de l'URL.");
             }
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await _modulService.UpdateDtoAsync(moduleDto);
-            if (!result.IsSuccess)
+            var existingModuleResult = await _moduleRepository.GetByIdAsync(id);
+            if (!existingModuleResult.IsSuccess)
             {
-                return NotFound(result.Error);
+                return NotFound(existingModuleResult.Error);
             }
 
-            return NoContent();
+            var updateResult = await _moduleRepository.UpdateAsync(moduleDto);
+            if (!updateResult.IsSuccess)
+            {
+                return BadRequest(updateResult.Error);
+            }
+            return Ok("Module updated successfully");
         }
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteModule(int id)
+        [HttpDelete("Delete/{id}")]
+               public async Task<IActionResult> DeleteModule(int id)
         {
-            var result = await _modulService.DeleteAsync(id);
-            if (!result.IsSuccess)
+            var existingModuleResult = await _moduleRepository.GetByIdAsync(id);
+            if (!existingModuleResult.IsSuccess)
             {
-                return NotFound(result.Error);
+                return NotFound(existingModuleResult.Error);
             }
-            return NoContent();
+
+            var deleteResult = await _moduleRepository.DeleteAsync(id);
+            if (!deleteResult.IsSuccess)
+            {
+                return BadRequest(deleteResult.Error);
+            }
+            return Ok("Module deleted successfully");
         }
     }
 }
