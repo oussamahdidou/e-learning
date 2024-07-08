@@ -98,6 +98,8 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ICheckChapterRepository, CheckChapterRepository>();
+builder.Services.AddScoped<IResultControleRepository, ResultControleRepository>();
+
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {

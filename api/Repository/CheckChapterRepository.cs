@@ -67,9 +67,6 @@ namespace api.Repository
             
             if (checkChapter == null) return Result<bool>.Failure("CheckChapter not found");
 
-            var student = await _context.students.FindAsync(user.Id);
-            if(student == null) return Result<bool>.Failure("Student not found");
-
             try
             {
                 _context.checkChapters.Remove(checkChapter);
