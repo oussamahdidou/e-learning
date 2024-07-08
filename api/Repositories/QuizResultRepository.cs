@@ -60,6 +60,7 @@ namespace api.Repositories
                 return Result<QuizResultDto>.Failure($"An error occurred while adding quiz results: {ex.Message}");
             }
         }
+        
         public async Task<Result<bool>> DeleteQuizResult(string studentId, int quizId)
         {
             try
