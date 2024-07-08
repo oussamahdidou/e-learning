@@ -10,7 +10,7 @@ using api.Mappers;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Repositories
+namespace api.Repository
 {
 
     public class QuizRepository : IQuizRepository
