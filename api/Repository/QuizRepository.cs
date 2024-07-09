@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Option;
+using api.Dtos.Question;
 using api.Dtos.Quiz;
 using api.generique;
 using api.interfaces;
@@ -24,45 +26,51 @@ namespace api.Repository
         }
         public async Task<Result<QuizDto>> CreateQuiz(CreateQuizDto quizDto)
         {
-           try{
-             var quiz = new Quiz{
-                Nom = quizDto.Nom,
-                Statue = quizDto.Statue,
-                Questions = new List<Question>()
-            };
-            _context.quizzes.Add(quiz);
-            foreach(var questionDto in quizDto.Questions)
+            try
             {
-                var question = new Question{
-                    Nom = questionDto.Nom,
-                    Quiz = quiz,
-                    Options = new List<Option>()
-                };
-                _context.questions.Add(question);
-                foreach(var optionDto in questionDto.Options)
+                Quiz quiz = new Quiz
                 {
-                    var option = new Option{
-                        Nom = optionDto.Nom,
-                        Question = question,
-                        Truth = optionDto.Truth,
+                    Nom = quizDto.Nom,
+                    Statue = quizDto.Statue,
+                    Questions = new List<Question>()
+                };
+                _context.quizzes.Add(quiz);
+                foreach (CreateQuestionDto questionDto in quizDto.Questions)
+                {
+                    Question question = new Question
+                    {
+                        Nom = questionDto.Nom,
+                        Quiz = quiz,
+                        Options = new List<Option>()
                     };
-                    _context.options.Add(option);
+                    _context.questions.Add(question);
+                    foreach (CreateOptionDto optionDto in questionDto.Options)
+                    {
+                        Option option = new Option
+                        {
+                            Nom = optionDto.Nom,
+                            Question = question,
+                            Truth = optionDto.Truth,
+                        };
+                        _context.options.Add(option);
+                    }
                 }
+
+                await _context.SaveChangesAsync();
+                return Result<QuizDto>.Success(quiz.ToQuizDto());
             }
-            
-            await _context.SaveChangesAsync();
-            return Result<QuizDto>.Success(quiz.ToQuizDto());
-           }catch(Exception ex){
-             Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
-            return Result<QuizDto>.Failure($"Failed to create quiz: {ex.Message}");
-           }
-            
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Inner Exception: {ex.InnerException?.Message}");
+                return Result<QuizDto>.Failure($"Failed to create quiz: {ex.Message}");
+            }
+
         }
         public async Task<Result<QuizDto>> UpdateQuiz(int quizId, UpdateQuizDto updateQuizDto)
         {
             try
             {
-                var quiz = await _context.quizzes
+                Quiz? quiz = await _context.quizzes
                     .Include(q => q.Questions)
                     .ThenInclude(q => q.Options)
                     .FirstOrDefaultAsync(q => q.Id == quizId);
@@ -73,9 +81,9 @@ namespace api.Repository
                 quiz.Nom = updateQuizDto.Nom;
 
                 //questions
-                foreach (var question in quiz.Questions.ToList())
+                foreach (Question question in quiz.Questions.ToList())
                 {
-                    var questionDto = updateQuizDto.Questions.FirstOrDefault(q => q.Id == question.Id);
+                    UpdateQuestionDto? questionDto = updateQuizDto.Questions.FirstOrDefault(q => q.Id == question.Id);
 
                     if (questionDto == null)
                     {
@@ -88,9 +96,9 @@ namespace api.Repository
                         question.Nom = questionDto.Nom;
 
                         // handling options for the question
-                        foreach (var option in question.Options.ToList())
+                        foreach (Option option in question.Options.ToList())
                         {
-                            var optionDto = questionDto.Options.FirstOrDefault(o => o.Id == option.Id);
+                            UpdateOptionDto? optionDto = questionDto.Options.FirstOrDefault(o => o.Id == option.Id);
 
                             if (optionDto == null)
                             {
@@ -106,16 +114,16 @@ namespace api.Repository
                         }
 
                         // Add new options
-                        foreach (var optionDto in questionDto.Options)
+                        foreach (UpdateOptionDto optionDto in questionDto.Options)
                         {
                             if (!question.Options.Any(o => o.Id == optionDto.Id))
                             {
                                 // add option exists in DTO but not in the database
-                                var newOption = new Option
+                                Option newOption = new Option
                                 {
                                     Nom = optionDto.Nom,
                                     Truth = optionDto.Truth,
-                                    QuestionId = question.Id 
+                                    QuestionId = question.Id
                                 };
                                 _context.options.Add(newOption);
                             }
@@ -124,12 +132,12 @@ namespace api.Repository
                 }
 
                 // Add new questions
-                foreach (var questionDto in updateQuizDto.Questions)
+                foreach (UpdateQuestionDto questionDto in updateQuizDto.Questions)
                 {
                     if (!quiz.Questions.Any(q => q.Id == questionDto.Id))
                     {
                         // add question exists in DTO but not in database
-                        var newQuestion = new Question
+                        Question newQuestion = new Question
                         {
                             Nom = questionDto.Nom,
                             QuizId = quiz.Id,
@@ -156,52 +164,56 @@ namespace api.Repository
 
         public async Task<Result<QuizDto>> GetQuizById(int id)
         {
-            try{
-                var quiz = await _context.quizzes
+            try
+            {
+                Quiz? quiz = await _context.quizzes
                     .Include(q => q.Questions)
                     .ThenInclude(q => q.Options)
                     .FirstOrDefaultAsync(q => q.Id == id);
 
-                if(quiz == null)
+                if (quiz == null)
                 {
                     return Result<QuizDto>.Failure($"Quiz with id {id} not found.");
                 }
-                
+
                 var random = new Random();
                 var randomQuestions = quiz.Questions.OrderBy(q => random.Next()).Take(10).ToList();
-                
+
                 // Update the quiz object with the selected questions
                 quiz.Questions = randomQuestions;
                 return Result<QuizDto>.Success(quiz.ToQuizDto());
             }
-            catch(Exception ex){
+            catch (Exception ex)
+            {
                 return Result<QuizDto>.Failure($"Failed to get order: {ex.Message}");
             }
         }
 
         public async Task<Result<QuizDto>> DeleteQuiz(int id)
         {
-            try{
-            var quiz = await _context.quizzes
-            .Include(qr => qr.QuizResults)
-            .Include(q => q.Questions)
-            .ThenInclude(o => o.Options)
-            .FirstOrDefaultAsync(x => x.Id == id);
-            if(quiz == null)
+            try
             {
-                return Result<QuizDto>.Failure($"quiz with id {id} not found. ");
+                Quiz? quiz = await _context.quizzes
+                .Include(qr => qr.QuizResults)
+                .Include(q => q.Questions)
+                .ThenInclude(o => o.Options)
+                .FirstOrDefaultAsync(x => x.Id == id);
+                if (quiz == null)
+                {
+                    return Result<QuizDto>.Failure($"quiz with id {id} not found. ");
+                }
+
+                _context.Remove(quiz);
+                await _context.SaveChangesAsync();
+
+                return Result<QuizDto>.Success(quiz.ToQuizDto());
             }
-
-            _context.Remove(quiz);
-            await _context.SaveChangesAsync();
-
-            return Result<QuizDto>.Success(quiz.ToQuizDto());
-            }catch(Exception ex)
+            catch (Exception ex)
             {
                 return Result<QuizDto>.Failure($"An error occured while deleting a quiz: {ex.Message}");
             }
         }
-    
+
     }
 
 
