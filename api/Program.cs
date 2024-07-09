@@ -105,7 +105,10 @@ builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 builder.Services.AddScoped<IQuizResultRepository, QuizResultRepository>();
 builder.Services.AddScoped<ICheckChapterRepository, CheckChapterRepository>();
 builder.Services.AddScoped<IResultControleRepository, ResultControleRepository>();
-
+builder.Services.AddScoped<IinstitutionRepository, InstitutionRepository>();
+builder.Services.AddScoped<INiveauScolaireRepository, NiveauScolaireRepository>();
+builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
+builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {
