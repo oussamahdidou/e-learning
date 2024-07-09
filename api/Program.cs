@@ -86,7 +86,7 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = builder.Configuration["JWT:Audience"],//issuer url same as jwt token creation url
         ValidateIssuerSigningKey = true,
         //IssuerSigningKey = new SymmetricSecurityKey(
-                //System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigninKey"]))
+        //System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigninKey"]))
 
     };
 });
@@ -99,24 +99,10 @@ builder.Services.AddCors(options =>
                     );
 });
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
-builder.Services.AddScoped<ModulService>();
-builder.Services.AddScoped<IInstitutionRepository, InstitutionRepository>();
-builder.Services.AddScoped<InstitutionService>();
-
-builder.Services.AddScoped<INiveauScolaireRepository, NiveauScolaireRepository>();
-builder.Services.AddScoped<NiveauScolaireService>();
-
-builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
-builder.Services.AddScoped<ChapitreService>();
-
-
-
 builder.Services.AddScoped<ITestNiveauRepository, TestNiveauRepository>();
 builder.Services.AddScoped<IModuleRequirementsRepository, ModuleRequirementsRepository>();
-
-builder.Services.AddScoped<IQuizRepository,QuizRepository>();
-builder.Services.AddScoped<IQuizResultRepository,QuizResultRepository>();
+builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+builder.Services.AddScoped<IQuizResultRepository, QuizResultRepository>();
 builder.Services.AddScoped<ICheckChapterRepository, CheckChapterRepository>();
 builder.Services.AddScoped<IResultControleRepository, ResultControleRepository>();
 

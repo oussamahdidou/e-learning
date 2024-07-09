@@ -8,7 +8,7 @@ namespace api.Dtos.RequiredModules
 {
     public class RequiredModulesDto
     {
-        public Module Module { get; set; }
+        public Model.Module Module { get; set; }
         public double Seuill { get; set; }
 
     }

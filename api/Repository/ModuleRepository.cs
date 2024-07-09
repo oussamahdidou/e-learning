@@ -1,7 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Module;
+using api.generique;
 using api.interfaces;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
@@ -10,48 +13,68 @@ namespace api.Repository
 {
     public class ModuleRepository : IModuleRepository
     {
-        private readonly apiDbContext _context;
-
-        public ModuleRepository(apiDbContext context)
+        private readonly apiDbContext apiDbContext;
+        public ModuleRepository(apiDbContext apiDbContext)
         {
-            _context = context;
+            this.apiDbContext = apiDbContext;
         }
-
-        public async Task<IEnumerable<Module>> GetAllAsync()
+        public async Task<Result<Module>> CreateModule(CreateModuleDto createModuleDto)
         {
-            return await _context.modules.ToListAsync();
-        }
-
-        public async Task<Module> GetByIdAsync(int id)
-        {
-            var module = await _context.modules.FindAsync(id);
-            if (module == null)
+            try
             {
-                throw new KeyNotFoundException($"Module with ID {id} not found.");
+                Module module = new Module()
+                {
+                    Nom = createModuleDto.Nom,
+                    NiveauScolaireId = createModuleDto.NiveauScolaireId,
+                };
+                await apiDbContext.modules.AddAsync(module);
+                await apiDbContext.SaveChangesAsync();
+                return Result<Module>.Success(module);
+
             }
-            return module;
-        }
-
-        public async Task<Module> AddAsync(Module module)
-        {
-            await _context.modules.AddAsync(module);
-            await _context.SaveChangesAsync();
-            return module;
-        }
-
-        public async Task UpdateAsync(Module module)
-        {
-            _context.Entry(module).State = EntityState.Modified;
-            await _context.SaveChangesAsync();
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var module = await _context.modules.FindAsync(id);
-            if (module != null)
+            catch (Exception ex)
             {
-                _context.modules.Remove(module);
-                await _context.SaveChangesAsync();
+
+                return Result<Module>.Failure($"{ex.Message}");
+
+            }
+        }
+        public async Task<Result<Module>> GetModuleById(int id)
+        {
+            try
+            {
+                Module? module = await apiDbContext.modules.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Id == id);
+                if (module == null)
+                {
+                    return Result<Module>.Failure("module notfound");
+
+                }
+                return Result<Module>.Success(module);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Module>.Failure(ex.Message);
+            }
+        }
+        public async Task<Result<Module>> UpdateModule(UpdateModuleDto updateModuleDto)
+        {
+            try
+            {
+                Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == updateModuleDto.ModuleId);
+                if (module == null)
+                {
+                    return Result<Module>.Failure("Module notfound");
+
+                }
+                module.Nom = updateModuleDto.Nom;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Module>.Success(module);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Module>.Failure($"{ex.Message}");
             }
         }
     }
