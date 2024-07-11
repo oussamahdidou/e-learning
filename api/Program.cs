@@ -66,6 +66,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 })
 .AddDefaultTokenProviders()
 .AddEntityFrameworkStores<apiDbContext>();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
+    opt.TokenLifespan = TimeSpan.FromHours(2));
+    
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =

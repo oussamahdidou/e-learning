@@ -77,7 +77,7 @@ namespace api.Controllers
                             {"email",user.Email}
                         };
 
-                        var callback = QueryHelpers.AddQueryString(registerDto.confirmationUri!,param);
+                        var callback = QueryHelpers.AddQueryString("http://localhost:5062/api/Account/emailconfirmation",param);
 
                         await mailer.SendEmailAsync(user.Email,"Email Confirmation Token",callback);
 
@@ -116,5 +116,45 @@ namespace api.Controllers
 
             return Ok("Email verified");
         }
+        [HttpPost("forgotpassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest();
+            var user = await userManager.FindByEmailAsync(forgotPasswordDto.Email!);
+            if(user is null)
+                return BadRequest("Invalid Request");
+
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var param = new Dictionary<string, string?>
+            {
+                {"token",token},
+                {"email",forgotPasswordDto.Email} 
+            };
+            var callback = QueryHelpers.AddQueryString("http://localhost:5062/api/Account/resetpassword",param);
+            string message = "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Confirm Your Email Address</title><style>body {font-family: sans-serif;margin: 0;padding: 0;}.container {padding: 20px;max-width: 600px;margin: 0 auto;border: 1px solid #ddd;border-radius: 5px;}header {text-align: center;margin-bottom: 20px;}h1 {font-size: 24px;}p {line-height: 1.5;}a.confirm-button {display: block;padding: 10px 20px;background-color: #4CAF50;color: white;text-decoration: none;border: none;border-radius: 5px;text-align: center;}.confirm-button:hover {background-color: #3e8e41;}</style></head><body><div class='container'><header><h1>E-Learning</h1></header><p>Hi "+ user.UserName+" ,</p><p>You sent a password reset request in E-Learning plateform. To complete your password reset, please click the button below:</p><center><a href="+callback+" class='confirm-button'>Reset Password</a></center><p>If you can't click the button, please copy and paste the following link into your web browser:</p><p>"+callback+"</p><p>**Please note:** This link will expire in 2 hours.</p><p>Thanks,</p><p>The E-Learning Team</p></div></body></html>";
+            await mailer.SendEmailAsync(user.Email,"Reset Password Token",message);
+            return Ok("Reset Password Token Sent To Your EMail");
+        }
+        [HttpPost("resetpassword")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto resetPasswordDto)
+        {
+            if(!ModelState.IsValid)
+                return BadRequest();
+            var user = await userManager.FindByEmailAsync(resetPasswordDto.Email!);
+            if(user is null)
+                return BadRequest("Invalid Request");
+
+            var result = await userManager.ResetPasswordAsync(user,resetPasswordDto.Token!,resetPasswordDto.Password!);
+            if(!result.Succeeded)
+            {
+                var errors = result.Errors.Select(e => e.Description);
+
+                return BadRequest(new {Errors = errors});
+            }
+            return Ok("Password Reset Success");
+        }
+
+        
     }
 }
