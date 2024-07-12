@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace api.Model
-{ 
+{
     public class QuizResult
     {
         public string? StudentId { get; set; }
