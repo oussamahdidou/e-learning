@@ -77,7 +77,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
     opt.TokenLifespan = TimeSpan.FromHours(2));
-    
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -119,11 +119,8 @@ builder.Services.AddScoped<IinstitutionRepository, InstitutionRepository>();
 builder.Services.AddScoped<INiveauScolaireRepository, NiveauScolaireRepository>();
 builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
-//declare your services and repositories here
-
-builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
-builder.Services.AddSingleton<IMailer,Mailer>();
+builder.Services.AddSingleton<IMailer, Mailer>();
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")

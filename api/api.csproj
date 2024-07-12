@@ -23,10 +23,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.6" />
-<<<<<<< HEAD
-=======
     <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
->>>>>>> oussama
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
