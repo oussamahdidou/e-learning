@@ -76,13 +76,15 @@ export class AuthService {
   registeruser(
     username: string,
     EmailAddress: string,
-    password: string
+    password: string,
+    confirmpassword: string
   ): Observable<any> {
     return this.http
       .post(`${environment.apiUrl}api/Account/Register/User`, {
         username,
         EmailAddress,
         password,
+        confirmpassword,
       })
       .pipe(
         tap<any>(
