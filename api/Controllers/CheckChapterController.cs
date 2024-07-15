@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using Microsoft.AspNetCore.Authorization;
 using api.interfaces;
+using api.interfaces;
+using api.generique;
 
 namespace api.Controllers
 {
@@ -29,19 +31,19 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> GetStudentCheckedChapter()
         {
-            var username = User.GetUsername();
-            var user = await _manager.FindByNameAsync(username);
-            var checkedChapter = await _check.GetStudentAllcheckChapters(user);
-            if (!checkedChapter.IsSuccess) return BadRequest(checkedChapter.Value);
-            return Ok(checkedChapter.Value);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+            Result<List<CheckChapter>> result = await _check.GetStudentAllcheckChapters(user);
+            if (!result.IsSuccess) return BadRequest(result.Error);
+            return Ok(result.Value);
         }
         [HttpGet("{id:int}")]
         [Authorize]
         public async Task<IActionResult> CreateCheckChapter([FromRoute] int id)
         {
-            var username = User.GetUsername();
-            var user = await _manager.FindByNameAsync(username);
-            var result = await _check.CreateCheckChapter(user, id);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+            Result<CheckChapter> result = await _check.CreateCheckChapter(user, id);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }
@@ -49,9 +51,9 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteCheckChapter(int chapterId)
         {
-            var username = User.GetUsername();
-            var user = await _manager.FindByNameAsync(username);
-            var result = await _check.DeleteCheckChapter(user, chapterId);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+            Result<bool> result = await _check.DeleteCheckChapter(user, chapterId);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }

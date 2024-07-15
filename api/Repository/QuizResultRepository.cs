@@ -9,11 +9,11 @@ using api.interfaces;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace api.Repositories
+namespace api.Repository
 {
     public class QuizResultRepository : IQuizResultRepository
     {
-        private readonly apiDbContext _context ;
+        private readonly apiDbContext _context;
 
         public QuizResultRepository(apiDbContext context)
         {
@@ -24,7 +24,7 @@ namespace api.Repositories
         {
             try
             {
-                var existingQuizResult = await _context.quizResults
+                QuizResult? existingQuizResult = await _context.quizResults
                     .FirstOrDefaultAsync(qr => qr.StudentId == studentId && qr.QuizId == createQuizResultDto.QuizId);
 
                 if (existingQuizResult != null)
@@ -36,7 +36,7 @@ namespace api.Repositories
                 else
                 {
                     // Create new quiz result
-                    var quizResult = new QuizResult
+                    QuizResult quizResult = new QuizResult
                     {
                         StudentId = studentId,
                         QuizId = createQuizResultDto.QuizId,
@@ -60,12 +60,12 @@ namespace api.Repositories
                 return Result<QuizResultDto>.Failure($"An error occurred while adding quiz results: {ex.Message}");
             }
         }
-        
+
         public async Task<Result<bool>> DeleteQuizResult(string studentId, int quizId)
         {
             try
             {
-                var quizResult = await _context.quizResults
+                QuizResult? quizResult = await _context.quizResults
                     .FirstOrDefaultAsync(qr => qr.StudentId == studentId && qr.QuizId == quizId);
 
                 if (quizResult == null)

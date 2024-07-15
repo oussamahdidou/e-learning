@@ -17,32 +17,35 @@ namespace api.Repository
         {
             _context = context;
         }
-        public async Task<Result<ResultControle>> AddResult(AppUser user , int controleId , string filePath)
+        public async Task<Result<ResultControle>> AddResult(AppUser user, int controleId, string filePath)
         {
-            var controle = await _context.controles.FindAsync(controleId);
-            if(controle == null) return Result<ResultControle>.Failure("no chapter was found");
-            var student = await _context.students.FindAsync(user.Id);
-            if(student == null) return Result<ResultControle>.Failure("no Student was found");
-            var resultControle = new ResultControle
+            Controle? controle = await _context.controles.FindAsync(controleId);
+            if (controle == null) return Result<ResultControle>.Failure("no chapter was found");
+            Student? student = await _context.students.FindAsync(user.Id);
+            if (student == null) return Result<ResultControle>.Failure("no Student was found");
+            ResultControle resultControle = new ResultControle
             {
                 StudentId = student.Id,
-                ControleId= controleId,
+                ControleId = controleId,
                 Student = student,
                 Controle = controle,
-                Reponse =  filePath
+                Reponse = filePath
             };
-            try{
+            try
+            {
                 _context.resultControles.Add(resultControle);
                 await _context.SaveChangesAsync();
                 return Result<ResultControle>.Success(resultControle);
-            }catch(Exception ex){
-                return Result<ResultControle>.Failure("Something went wrong");
+            }
+            catch (Exception ex)
+            {
+                return Result<ResultControle>.Failure(ex.Message);
             }
         }
 
         public async Task<Result<ResultControle>> GetResultControleById(AppUser user, int controleId)
         {
-            var result = await _context.resultControles
+            ResultControle? result = await _context.resultControles
                 .FirstOrDefaultAsync(rc => rc.ControleId == controleId && rc.StudentId == user.Id);
 
             if (result == null)
@@ -53,7 +56,7 @@ namespace api.Repository
 
         public async Task<Result<List<ResultControle>>> GetStudentAllResult(AppUser user)
         {
-            var results = await _context.resultControles
+            List<ResultControle> results = await _context.resultControles
                 .Where(rc => rc.StudentId == user.Id)
                 .ToListAsync();
 
@@ -65,7 +68,7 @@ namespace api.Repository
 
         public async Task<Result<ResultControle>> RemoveResult(AppUser user, int controleId)
         {
-            var result = await _context.resultControles
+            ResultControle? result = await _context.resultControles
                 .FirstOrDefaultAsync(rc => rc.ControleId == controleId && rc.StudentId == user.Id);
 
             if (result == null)
