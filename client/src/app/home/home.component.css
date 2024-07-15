@@ -1,0 +1,60 @@
+nav span {
+  color: #adadad;
+  font-family: Roboto;
+
+  cursor: pointer;
+}
+.login-button {
+  background-color: #adadad;
+  color: white;
+  border-radius: 10px;
+  box-shadow: 8px 20px 30px rgba(0, 0, 0, 0.25);
+}
+.top-title {
+  font-weight: 600;
+  font-family: Lato, sans-serif;
+}
+.top span {
+  font-family: Lato, sans-serif;
+  color: #adadad;
+}
+.section-title {
+  color: rgba(0, 0, 0, 0.8);
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 800;
+}
+.propos-description {
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
+}
+.propos-img {
+  width: 100%;
+}
+.propos-paragraph {
+  color: #aaaaaa;
+}
+.number {
+  font-size: 70px;
+  font-weight: 100;
+  color: #2a599e;
+}
+.faq-paragraph {
+  color: #aaaaaa;
+  text-align: justify;
+}
+.formations-paragraph {
+  color: #aaaaaa;
+  text-align: justify;
+}
+.formations-img {
+  width: 100%;
+}
+.tarifs-paragraph {
+  color: #aaaaaa;
+  text-align: justify;
+  font-size: 20px;
+  line-height: 1.5;
+  word-spacing: 5px;
+  letter-spacing: 2px;
+}
