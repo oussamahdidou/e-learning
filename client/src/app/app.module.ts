@@ -12,8 +12,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { InstitutionsModule } from './institutions/institutions.module';
+import { CourseModule } from './course/course.module';
+import { HomeComponent } from './home/home.component';
+import { AuthModule } from './auth/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -26,6 +31,10 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
     ReactiveFormsModule,
     HttpClientModule,
     NgxSkeletonLoaderModule,
+    InstitutionsModule,
+    CourseModule,
+    AuthModule,
+    DashboardModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
