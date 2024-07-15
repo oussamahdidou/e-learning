@@ -18,4 +18,4 @@ namespace api.Model
         public List<ResultControle> ResultControles { get; set; } = new List<ResultControle>();
 
     }
-}
+} 
