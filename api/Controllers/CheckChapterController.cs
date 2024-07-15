@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using Microsoft.AspNetCore.Authorization;
 using api.interfaces;
-using api.interfaces;
 
 namespace api.Controllers
 {
@@ -33,8 +32,8 @@ namespace api.Controllers
             var username = User.GetUsername();
             var user = await _manager.FindByNameAsync(username);
             var checkedChapter = await _check.GetStudentAllcheckChapters(user);
-            if (checkedChapter == null) return Ok("null");
-            return Ok(checkedChapter);
+            if (!checkedChapter.IsSuccess) return BadRequest(checkedChapter.Value);
+            return Ok(checkedChapter.Value);
         }
         [HttpGet("{id:int}")]
         [Authorize]
