@@ -203,7 +203,7 @@ namespace api.extensions
             }
         }
 
-        public static async Task<Result<string>> UploadControleReponse(this IFormFile formFile, IWebHostEnvironment webHostEnvironment , string username)
+        public static async Task<Result<string>> UploadControleReponse(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
         {
 
             if (webHostEnvironment == null)

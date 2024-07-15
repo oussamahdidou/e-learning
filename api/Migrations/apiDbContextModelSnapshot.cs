@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b1b9fa10-d14d-4901-99d6-3b1144822d1f",
+                            Id = "63021c91-7b00-47c4-a4a5-3605fde0f121",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5ee1fced-b5c4-4afd-a505-7f8b004d9e0e",
+                            Id = "f3cbeef9-33f4-43f0-8bca-5ff41777539a",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "23e538d9-4aa5-41ec-a9f3-cacdf11b533c",
+                            Id = "341aaa1f-a227-4035-a096-78c117ea33e0",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });

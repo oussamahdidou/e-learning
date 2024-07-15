@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Quiz;
+using api.generique;
 using api.interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,11 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles="Admin,Teacher")]
+        [Authorize(Roles = "Admin,Teacher")]
         public async Task<IActionResult> CreateQuiz([FromBody] CreateQuizDto createQuizDto)
         {
-            var result = await _quizRepo.CreateQuiz(createQuizDto);
-            if(!result.IsSuccess)
+            Result<QuizDto> result = await _quizRepo.CreateQuiz(createQuizDto);
+            if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
@@ -33,12 +34,12 @@ namespace api.Controllers
         }
 
         [HttpPut("Update/{id}")]
-        [Authorize(Roles="Admin,Teacher")]
+        [Authorize(Roles = "Admin,Teacher")]
         public async Task<IActionResult> UpdateQuiz([FromRoute] int id, [FromBody] UpdateQuizDto updateQuizDto)
         {
-            var result = await _quizRepo.UpdateQuiz(id,updateQuizDto);
+            Result<QuizDto> result = await _quizRepo.UpdateQuiz(id, updateQuizDto);
 
-            if(!result.IsSuccess)
+            if (!result.IsSuccess)
             {
                 return BadRequest(result.Error);
             }
@@ -46,10 +47,10 @@ namespace api.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        [Authorize(Roles="Admin,Teacher")]
+        [Authorize(Roles = "Admin,Teacher")]
         public async Task<IActionResult> GetQuizById(int id)
         {
-            var result = await _quizRepo.GetQuizById(id);
+            Result<QuizDto> result = await _quizRepo.GetQuizById(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);
@@ -58,10 +59,10 @@ namespace api.Controllers
         }
 
         [HttpDelete("delete/{id}")]
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DeleteQuiz(int id)
         {
-            var result = await _quizRepo.DeleteQuiz(id);
+            Result<QuizDto> result = await _quizRepo.DeleteQuiz(id);
             if (!result.IsSuccess)
             {
                 return NotFound(result.Error);
