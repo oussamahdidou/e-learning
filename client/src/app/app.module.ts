@@ -11,7 +11,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
-
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -25,6 +25,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     ReactiveFormsModule,
     HttpClientModule,
+    NgxSkeletonLoaderModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
