@@ -2,11 +2,12 @@
 <div class="container-fluid py-4">
   <div class="container px-3">
     <nav class="d-flex justify-content-end align-items-center">
-      <span class="mx-4">À Propos</span>
-      <span class="mx-4">Formations</span>
-      <span class="mx-4">Tarifs</span>
-      <span class="mx-4">FAQ</span>
-      <span class="mx-4 login-button text-white px-3 py-2">Sign in</span>
+      <p class="mx-4" [routerLink]="'/'" fragment="about">À Propos</p>
+      <p class="mx-4" [routerLink]="'/'" fragment="faq">FAQ</p>
+      <p class="mx-4" [routerLink]="'/'" fragment="formation">Formations</p>
+      <p class="mx-4" [routerLink]="'/'" fragment="tarif">Tarifs</p>
+
+      <p class="mx-4 login-button text-white px-3 py-2">Sign in</p>
     </nav>
   </div>
 </div>
@@ -32,7 +33,7 @@
   </div>
 </div>
 <!-- a  Propos -->
-<div class="propos-container container-fluid my-5 pt-5">
+<div class="propos-container container-fluid my-5 pt-5" id="about">
   <h3 class="text-center section-title my-5">À PROPOS</h3>
   <div class="container row align-items-center justify-content-center mx-auto">
     <div class="col-lg-3 px-5">
@@ -110,7 +111,7 @@
   </div>
 </div>
 <!-- FAQ -->
-<div class="FAQ-container container-fluid my-5 pt-5">
+<div class="FAQ-container container-fluid my-5 pt-5" id="faq">
   <h3 class="text-center section-title my-5 pt-5">Questions Fréquentes</h3>
   <div
     class="container my-5 row align-items-start justify-content-center mx-auto pt-5"
@@ -154,7 +155,7 @@
   </div>
 </div>
 <!-- Formations -->
-<div class="Formations-container container-fluid my-5 pt-5">
+<div class="Formations-container container-fluid my-5 pt-5" id="formation">
   <h3 class="text-center section-title my-5">Formations</h3>
   <div
     class="container my-5 row align-items-center justify-content-between mx-auto"
@@ -183,7 +184,7 @@
   </div>
 </div>
 <!-- Tarifs -->
-<div class="Formations-container container-fluid my-5 pt-5">
+<div class="Formations-container container-fluid my-5 pt-5" id="tarif">
   <h3 class="text-center section-title my-5">Tarifs</h3>
   <div
     class="container my-5 row align-items-center justify-content-center mx-auto"

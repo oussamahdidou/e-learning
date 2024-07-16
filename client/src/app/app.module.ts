@@ -17,6 +17,7 @@ import { CourseModule } from './course/course.module';
 import { HomeComponent } from './home/home.component';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { RouterModule } from '@angular/router';
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -35,6 +36,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     CourseModule,
     AuthModule,
     DashboardModule,
+    RouterModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
