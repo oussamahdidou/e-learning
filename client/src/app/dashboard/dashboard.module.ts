@@ -29,6 +29,10 @@ const routes: Routes = [
         path: 'moduletable/:id',
         component: ModulesTableComponent,
       },
+      {
+        path: 'teacherstable',
+        component: TeachersComponent,
+      },
     ],
   },
 ];
