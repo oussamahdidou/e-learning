@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-institutions-table',
   templateUrl: './institutions-table.component.html',
@@ -47,7 +47,27 @@ export class InstitutionsTableComponent implements OnInit {
     this.dataSource.data = this.institutions;
   }
 
-  edit(id: number): void {
-    // Implement edit functionality
+  edit(institution: any): void {
+    Swal.fire({
+      title: 'Edit Institution Name',
+      input: 'text',
+      inputLabel: 'Institution Name',
+      inputValue: institution.name,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      preConfirm: (newName) => {
+        if (!newName) {
+          Swal.showValidationMessage('Please enter a valid name');
+        }
+        return newName;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        institution.name = result.value;
+        this.dataSource.data = [...this.institutions]; // Refresh the table data
+        Swal.fire('Saved!', 'Institution name has been updated.', 'success');
+      }
+    });
   }
 }

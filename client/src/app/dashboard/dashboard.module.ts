@@ -13,6 +13,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { ApprobationTableComponent } from './approbation-table/approbation-table.component';
 const routes: Routes = [
   {
     path: '',
@@ -33,6 +34,10 @@ const routes: Routes = [
         path: 'teacherstable',
         component: TeachersComponent,
       },
+      {
+        path: 'approbtionstable',
+        component: ApprobationTableComponent,
+      },
     ],
   },
 ];
@@ -44,6 +49,7 @@ const routes: Routes = [
     NiveauScolairesTableComponent,
     ModulesTableComponent,
     SidenavComponent,
+    ApprobationTableComponent,
   ],
   imports: [
     CommonModule,
