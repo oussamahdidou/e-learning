@@ -5,7 +5,7 @@ import { InstitutionsTableComponent } from './institutions-table/institutions-ta
 import { NiveauScolairesTableComponent } from './niveau-scolaires-table/niveau-scolaires-table.component';
 import { ModulesTableComponent } from './modules-table/modules-table.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,6 +14,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { ApprobationTableComponent } from './approbation-table/approbation-table.component';
+import { CreatecontroleComponent } from './createcontrole/createcontrole.component';
+import { CreatechapitreComponent } from './createchapitre/createchapitre.component';
+import { CreatequizComponent } from './createquiz/createquiz.component';
+import { MatCardModule } from '@angular/material/card';
+import { UpdatequizComponent } from './updatequiz/updatequiz.component';
 const routes: Routes = [
   {
     path: '',
@@ -38,6 +43,22 @@ const routes: Routes = [
         path: 'approbtionstable',
         component: ApprobationTableComponent,
       },
+      {
+        path: 'createcontrole/:id',
+        component: CreatecontroleComponent,
+      },
+      {
+        path: 'createchapitre/:id',
+        component: CreatechapitreComponent,
+      },
+      {
+        path: 'createquiz/:id',
+        component: CreatequizComponent,
+      },
+      {
+        path: 'updatequiz/:id',
+        component: UpdatequizComponent,
+      },
     ],
   },
 ];
@@ -50,6 +71,10 @@ const routes: Routes = [
     ModulesTableComponent,
     SidenavComponent,
     ApprobationTableComponent,
+    CreatecontroleComponent,
+    CreatechapitreComponent,
+    CreatequizComponent,
+    UpdatequizComponent,
   ],
   imports: [
     CommonModule,
@@ -60,6 +85,9 @@ const routes: Routes = [
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatCardModule,
   ],
 })
 export class DashboardModule {}

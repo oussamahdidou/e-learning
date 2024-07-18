@@ -37,6 +37,7 @@ import { RouterModule } from '@angular/router';
     AuthModule,
     DashboardModule,
     RouterModule,
+    ReactiveFormsModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
