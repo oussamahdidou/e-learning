@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "63021c91-7b00-47c4-a4a5-3605fde0f121",
+                            Id = "e41a44fd-9d3e-4c6b-b7ae-a36445d23e96",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "f3cbeef9-33f4-43f0-8bca-5ff41777539a",
+                            Id = "26efb044-72d8-4353-884d-369fafcdc564",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "341aaa1f-a227-4035-a096-78c117ea33e0",
+                            Id = "9655e246-2afd-403a-9576-2c9a200eec49",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -260,7 +260,7 @@ namespace api.Migrations
                     b.Property<int>("ChapitreNum")
                         .HasColumnType("int");
 
-                    b.Property<int>("ControleId")
+                    b.Property<int?>("ControleId")
                         .HasColumnType("int");
 
                     b.Property<string>("CoursPdfPath")
@@ -277,7 +277,7 @@ namespace api.Migrations
                     b.Property<bool>("Premium")
                         .HasColumnType("bit");
 
-                    b.Property<int>("QuizId")
+                    b.Property<int?>("QuizId")
                         .HasColumnType("int");
 
                     b.Property<string>("Schema")
@@ -632,9 +632,7 @@ namespace api.Migrations
                 {
                     b.HasOne("api.Model.Controle", "Controle")
                         .WithMany("Chapitres")
-                        .HasForeignKey("ControleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ControleId");
 
                     b.HasOne("api.Model.Module", "Module")
                         .WithMany("Chapitres")
@@ -644,9 +642,7 @@ namespace api.Migrations
 
                     b.HasOne("api.Model.Quiz", "Quiz")
                         .WithMany()
-                        .HasForeignKey("QuizId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("QuizId");
 
                     b.Navigation("Controle");
 

@@ -5,6 +5,9 @@ aside {
   border: 0.15px rgba(0, 0, 0, 0.144);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   transition: 0.3s;
+  position: fixed;
+  left: 0;
+  top: 0;
 }
 
 .aside-nav {

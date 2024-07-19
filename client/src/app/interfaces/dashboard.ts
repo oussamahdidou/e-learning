@@ -1,14 +1,19 @@
 export interface Option {
-  name: string;
-  isCorrect: boolean;
+  id: number;
+  nom: string;
+  truth: boolean;
+  questionId: number;
 }
-
 export interface Question {
-  name: string;
+  id: number;
+  nom: string;
+  quizId: number;
   options: Option[];
 }
 
 export interface Quiz {
-  name: string;
+  id: number;
+  nom: string;
+  statue: string;
   questions: Question[];
 }

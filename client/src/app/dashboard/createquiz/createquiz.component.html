@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <h2>Create a Quiz</h2>
+  <h2>Create New Quiz</h2>
   <form (ngSubmit)="onSubmit()" #quizForm="ngForm">
     <div class="mb-3">
       <label for="quizName" class="form-label">Quiz Name</label>
@@ -8,7 +8,7 @@
         class="form-control"
         id="quizName"
         required
-        [(ngModel)]="quiz.name"
+        [(ngModel)]="quiz.nom"
         name="quizName"
       />
     </div>
@@ -23,7 +23,7 @@
           class="form-control"
           id="questionText{{ i }}"
           required
-          [(ngModel)]="question.name"
+          [(ngModel)]="question.nom"
           name="questionText{{ i }}"
         />
       </div>
@@ -36,14 +36,14 @@
           <input
             type="radio"
             [name]="'correctOption' + i"
+            [checked]="option.truth"
             (change)="setCorrectOption(i, j)"
-            [checked]="option.isCorrect"
           />
         </div>
         <input
           type="text"
           class="form-control"
-          [(ngModel)]="option.name"
+          [(ngModel)]="option.nom"
           name="option{{ i }}-{{ j }}"
           placeholder="Option {{ j + 1 }}"
         />

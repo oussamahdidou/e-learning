@@ -8,86 +8,108 @@ import { Quiz } from '../../interfaces/dashboard';
 })
 export class UpdatequizComponent {
   quiz: Quiz = {
-    name: 'General Knowledge Quiz',
+    id: 1,
+    nom: 'General Knowledge Quiz',
+    statue: 'pending',
     questions: [
       {
-        name: 'What is the capital of France?',
+        id: 1,
+        nom: 'What is the capital of France?',
+        quizId: 1,
         options: [
-          { name: 'Berlin', isCorrect: false },
-          { name: 'Madrid', isCorrect: false },
-          { name: 'Paris', isCorrect: true },
+          { id: 1, nom: 'Berlin', truth: false, questionId: 1 },
+          { id: 2, nom: 'Madrid', truth: false, questionId: 1 },
+          { id: 3, nom: 'Paris', truth: true, questionId: 1 },
         ],
       },
       {
-        name: 'Which planet is known as the Red Planet?',
+        id: 2,
+        nom: 'Which planet is known as the Red Planet?',
+        quizId: 1,
         options: [
-          { name: 'Earth', isCorrect: false },
-          { name: 'Mars', isCorrect: true },
-          { name: 'Jupiter', isCorrect: false },
+          { id: 4, nom: 'Earth', truth: false, questionId: 2 },
+          { id: 5, nom: 'Mars', truth: true, questionId: 2 },
+          { id: 6, nom: 'Jupiter', truth: false, questionId: 2 },
         ],
       },
       {
-        name: "Who wrote 'To Kill a Mockingbird'?",
+        id: 3,
+        nom: "Who wrote 'To Kill a Mockingbird'?",
+        quizId: 1,
         options: [
-          { name: 'Harper Lee', isCorrect: true },
-          { name: 'Mark Twain', isCorrect: false },
-          { name: 'Jane Austen', isCorrect: false },
+          { id: 7, nom: 'Harper Lee', truth: true, questionId: 3 },
+          { id: 8, nom: 'Mark Twain', truth: false, questionId: 3 },
+          { id: 9, nom: 'Jane Austen', truth: false, questionId: 3 },
         ],
       },
       {
-        name: 'What is the smallest prime number?',
+        id: 4,
+        nom: 'What is the smallest prime number?',
+        quizId: 1,
         options: [
-          { name: '1', isCorrect: false },
-          { name: '2', isCorrect: true },
-          { name: '3', isCorrect: false },
+          { id: 10, nom: '1', truth: false, questionId: 4 },
+          { id: 11, nom: '2', truth: true, questionId: 4 },
+          { id: 12, nom: '3', truth: false, questionId: 4 },
         ],
       },
       {
-        name: 'Who painted the Mona Lisa?',
+        id: 5,
+        nom: 'Who painted the Mona Lisa?',
+        quizId: 1,
         options: [
-          { name: 'Vincent van Gogh', isCorrect: false },
-          { name: 'Leonardo da Vinci', isCorrect: true },
-          { name: 'Pablo Picasso', isCorrect: false },
+          { id: 13, nom: 'Vincent van Gogh', truth: false, questionId: 5 },
+          { id: 14, nom: 'Leonardo da Vinci', truth: true, questionId: 5 },
+          { id: 15, nom: 'Pablo Picasso', truth: false, questionId: 5 },
         ],
       },
       {
-        name: 'What is the boiling point of water?',
+        id: 6,
+        nom: 'What is the boiling point of water?',
+        quizId: 1,
         options: [
-          { name: '90°C', isCorrect: false },
-          { name: '100°C', isCorrect: true },
-          { name: '110°C', isCorrect: false },
+          { id: 16, nom: '90°C', truth: false, questionId: 6 },
+          { id: 17, nom: '100°C', truth: true, questionId: 6 },
+          { id: 18, nom: '110°C', truth: false, questionId: 6 },
         ],
       },
       {
-        name: 'Which element has the chemical symbol O?',
+        id: 7,
+        nom: 'Which element has the chemical symbol O?',
+        quizId: 1,
         options: [
-          { name: 'Oxygen', isCorrect: true },
-          { name: 'Osmium', isCorrect: false },
-          { name: 'Gold', isCorrect: false },
+          { id: 19, nom: 'Oxygen', truth: true, questionId: 7 },
+          { id: 20, nom: 'Osmium', truth: false, questionId: 7 },
+          { id: 21, nom: 'Gold', truth: false, questionId: 7 },
         ],
       },
       {
-        name: 'Who is known as the father of computers?',
+        id: 8,
+        nom: 'Who is known as the father of computers?',
+        quizId: 1,
         options: [
-          { name: 'Charles Babbage', isCorrect: true },
-          { name: 'Alan Turing', isCorrect: false },
-          { name: 'John von Neumann', isCorrect: false },
+          { id: 22, nom: 'Charles Babbage', truth: true, questionId: 8 },
+          { id: 23, nom: 'Alan Turing', truth: false, questionId: 8 },
+          { id: 24, nom: 'John von Neumann', truth: false, questionId: 8 },
         ],
       },
       {
-        name: 'What is the hardest natural substance on Earth?',
+        id: 9,
+        nom: 'What is the hardest natural substance on Earth?',
+        quizId: 1,
         options: [
-          { name: 'Iron', isCorrect: false },
-          { name: 'Diamond', isCorrect: true },
-          { name: 'Gold', isCorrect: false },
+          { id: 25, nom: 'Iron', truth: false, questionId: 9 },
+          { id: 26, nom: 'Diamond', truth: true, questionId: 9 },
+          { id: 27, nom: 'Gold', truth: false, questionId: 9 },
         ],
       },
       {
-        name: 'Which country is the largest by area?',
+        id: 10,
+        nom: 'Which country is the largest by area?',
+        quizId: 1,
         options: [
-          { name: 'Canada', isCorrect: false },
-          { name: 'Russia', isCorrect: true },
-          { name: 'China', isCorrect: false },
+          { id: 28, nom: 'Canada', truth: false, questionId: 10 },
+          { id: 29, nom: 'Russia', truth: true, questionId: 10 },
+          { id: 30, nom: 'China', truth: false, questionId: 10 },
         ],
       },
     ],
@@ -95,21 +117,28 @@ export class UpdatequizComponent {
 
   addQuestion() {
     this.quiz.questions.push({
-      name: '',
-      options: [{ name: '', isCorrect: false }],
+      id: 0,
+      nom: '',
+      quizId: this.quiz.id,
+      options: [{ id: 0, nom: '', truth: false, questionId: 0 }],
     });
   }
 
-  deleteQuestion() {
+  deleteQuestion(i: number) {
     if (this.quiz.questions.length > 1) {
-      this.quiz.questions.pop();
+      if (i >= 0 && i < this.quiz.questions.length) {
+        this.quiz.questions.splice(i, 1);
+      }
     }
   }
 
   addOption(questionIndex: number) {
-    this.quiz.questions[questionIndex].options.push({
-      name: '',
-      isCorrect: false,
+    const question = this.quiz.questions[questionIndex];
+    question.options.push({
+      id: 0,
+      nom: '',
+      truth: false,
+      questionId: question.id,
     });
   }
 
@@ -121,7 +150,7 @@ export class UpdatequizComponent {
 
   setCorrectOption(questionIndex: number, optionIndex: number) {
     this.quiz.questions[questionIndex].options.forEach((option, index) => {
-      option.isCorrect = index === optionIndex;
+      option.truth = index === optionIndex;
     });
   }
 

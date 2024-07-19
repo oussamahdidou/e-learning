@@ -348,9 +348,9 @@ namespace api.Migrations
                     Synthese = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Schema = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Premium = table.Column<bool>(type: "bit", nullable: false),
-                    QuizId = table.Column<int>(type: "int", nullable: false),
+                    QuizId = table.Column<int>(type: "int", nullable: true),
                     ModuleId = table.Column<int>(type: "int", nullable: false),
-                    ControleId = table.Column<int>(type: "int", nullable: false)
+                    ControleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -359,8 +359,7 @@ namespace api.Migrations
                         name: "FK_chapitres_controles_ControleId",
                         column: x => x.ControleId,
                         principalTable: "controles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_chapitres_modules_ModuleId",
                         column: x => x.ModuleId,
@@ -371,8 +370,7 @@ namespace api.Migrations
                         name: "FK_chapitres_quizzes_QuizId",
                         column: x => x.QuizId,
                         principalTable: "quizzes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -454,9 +452,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "341aaa1f-a227-4035-a096-78c117ea33e0", null, "Student", "STUDENT" },
-                    { "63021c91-7b00-47c4-a4a5-3605fde0f121", null, "Admin", "ADMIN" },
-                    { "f3cbeef9-33f4-43f0-8bca-5ff41777539a", null, "Teacher", "TEACHER" }
+                    { "26efb044-72d8-4353-884d-369fafcdc564", null, "Teacher", "TEACHER" },
+                    { "9655e246-2afd-403a-9576-2c9a200eec49", null, "Student", "STUDENT" },
+                    { "e41a44fd-9d3e-4c6b-b7ae-a36445d23e96", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

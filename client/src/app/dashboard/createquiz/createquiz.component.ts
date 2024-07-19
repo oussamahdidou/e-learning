@@ -8,27 +8,35 @@ import { Quiz } from '../../interfaces/dashboard';
 })
 export class CreatequizComponent {
   quiz: Quiz = {
-    name: '',
-    questions: [{ name: '', options: [{ name: '', isCorrect: false }] }],
+    id: 0,
+    nom: '',
+    statue: 'Draft',
+    questions: [],
   };
 
   addQuestion() {
+    const newQuestionId = this.quiz.questions.length + 1;
     this.quiz.questions.push({
-      name: '',
-      options: [{ name: '', isCorrect: false }],
+      id: 0,
+      nom: '',
+      quizId: this.quiz.id,
+      options: [{ id: 0, nom: '', truth: false, questionId: 0 }],
     });
   }
 
   deleteQuestion() {
-    if (this.quiz.questions.length > 1) {
+    if (this.quiz.questions.length > 0) {
       this.quiz.questions.pop();
     }
   }
 
   addOption(questionIndex: number) {
-    this.quiz.questions[questionIndex].options.push({
-      name: '',
-      isCorrect: false,
+    const question = this.quiz.questions[questionIndex];
+    question.options.push({
+      id: 0,
+      nom: '',
+      truth: false,
+      questionId: question.id,
     });
   }
 
@@ -40,7 +48,7 @@ export class CreatequizComponent {
 
   setCorrectOption(questionIndex: number, optionIndex: number) {
     this.quiz.questions[questionIndex].options.forEach((option, index) => {
-      option.isCorrect = index === optionIndex;
+      option.truth = index === optionIndex;
     });
   }
 

@@ -19,6 +19,11 @@ import { CreatechapitreComponent } from './createchapitre/createchapitre.compone
 import { CreatequizComponent } from './createquiz/createquiz.component';
 import { MatCardModule } from '@angular/material/card';
 import { UpdatequizComponent } from './updatequiz/updatequiz.component';
+import { DashboardchapitrenavComponent } from './dashboardchapitrenav/dashboardchapitrenav.component';
+import { UpdatecoursComponent } from './updatecours/updatecours.component';
+import { UpdatevideoComponent } from './updatevideo/updatevideo.component';
+import { UpdatesyntheseComponent } from './updatesynthese/updatesynthese.component';
+import { UpdateschemaComponent } from './updateschema/updateschema.component';
 const routes: Routes = [
   {
     path: '',
@@ -56,8 +61,24 @@ const routes: Routes = [
         component: CreatequizComponent,
       },
       {
-        path: 'updatequiz/:id',
+        path: 'quiz/:id',
         component: UpdatequizComponent,
+      },
+      {
+        path: 'pdf/:id',
+        component: UpdatecoursComponent,
+      },
+      {
+        path: 'video/:id',
+        component: UpdatevideoComponent,
+      },
+      {
+        path: 'schema/:id',
+        component: UpdateschemaComponent,
+      },
+      {
+        path: 'synthese/:id',
+        component: UpdatesyntheseComponent,
       },
     ],
   },
@@ -75,6 +96,11 @@ const routes: Routes = [
     CreatechapitreComponent,
     CreatequizComponent,
     UpdatequizComponent,
+    DashboardchapitrenavComponent,
+    UpdatecoursComponent,
+    UpdatevideoComponent,
+    UpdatesyntheseComponent,
+    UpdateschemaComponent,
   ],
   imports: [
     CommonModule,

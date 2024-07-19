@@ -1,0 +1,21 @@
+aside {
+  width: 200px;
+  background-color: #f1f1f1;
+  height: 100%;
+  position: fixed;
+  right: 0;
+  top: 0;
+}
+.chapter-item {
+  color: #aaaaaa;
+  font-size: 25px;
+  cursor: pointer;
+}
+.chapter-item:hover {
+  background-color: #fff;
+  font-size: 25px;
+  color: rgb(8, 160, 59);
+}
+h4 {
+  color: #aaaaaa;
+}
