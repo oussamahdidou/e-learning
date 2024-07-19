@@ -1,0 +1,46 @@
+.navbar {
+  background-color: #1e2f40;
+  z-index: 10;
+  position: fixed;
+  z-index: 99;
+  width: 100%;
+}
+.container {
+  margin: 0 auto;
+}
+.navbar-brand,
+.module-name {
+  color: white;
+}
+.module-name {
+  font-weight: bold;
+  text-align: center;
+}
+#navbarSupportedContent {
+  width: 306px;
+  display: flex;
+  justify-content: space-between;
+}
+.green-square-btn {
+  background-color: #00b33c;
+  height: 50px;
+  aspect-ratio: 1;
+  border-radius: 0;
+}
+.navbar-nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between; /* Aligns items to left and right */
+}
+.profile-circle-btn {
+  background-color: #00bcd4;
+  border-color: #00bcd4;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 5px;
+  margin-right: 1rem;
+}

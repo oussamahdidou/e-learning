@@ -1,0 +1,46 @@
+.container {
+  position: fixed;
+  right: 0;
+  top: 0px;
+  width: 306px;
+  height: 100%;
+  overflow-y: auto;
+  background-color: #ffffff;
+  padding: 20px;
+  margin: 50px auto;
+  z-index: 5;
+}
+
+.checked {
+  background-color: #00bcd4;
+}
+
+.items {
+  border: 1px solid #e8e8e8;
+  height: 50px;
+  margin: 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.items button {
+  background: none;
+  border: none;
+}
+.items a {
+  text-decoration: none;
+  color: #666666;
+}
+
+.items a:hover {
+  color: #459c8c;
+}
+
+.chapitre {
+  background-color: #e8e8e8;
+}
+
+.onit {
+  background-color: #d7f1ed;
+}
