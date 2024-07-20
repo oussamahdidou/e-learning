@@ -1,6 +1,6 @@
 <div class="container d-flex flex-column p-0">
   <div class="title p-3 bg-white">
-    {{ module?.nom? }}
+    {{ module?.nom }}
     <div class="progress mt-3">
       <div
         class="progress-bar bg-success"
@@ -18,61 +18,44 @@
     </div>
   </div>
 
-  <div *ngFor="let chapitre of module?.chapitres?">
+  <div *ngFor="let chapitre of module?.chapitres">
     <div class="items chapitre">
       <a class="chap">{{ chapitre.nom }}</a>
     </div>
 
     <div class="items" [ngClass]="chapitre.Statue">
       <a [href]="chapitre.CoursPdfPath" class="chap">Course PDF</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Course PDF"
-      >
+      <button mat-icon-button color="primary" aria-label="Course PDF">
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </div>
 
-    <div class="items ">
+    <div class="items">
       <a [href]="chapitre.VideoPath" class="chap">Video</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Video"
-      >
+      <button mat-icon-button color="primary" aria-label="Video">
         <mat-icon>videocam</mat-icon>
       </button>
     </div>
 
     <div class="items">
       <a class="chap">{{ chapitre.Schema }}</a>
-      <button
-        mat-icon-button
-        color="primary"
-      >
+      <button mat-icon-button color="primary">
         <mat-icon>insert_drive_file</mat-icon>
       </button>
     </div>
 
     <div class="items">
       <a class="chap">{{ chapitre.Synthese }}</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Synthese"
-      >
+      <button mat-icon-button color="primary" aria-label="Synthese">
         <mat-icon>description</mat-icon>
       </button>
     </div>
 
     <div class="items onit">
-      <a [routerLink]="['/quiz', chapitre.quizId]" class="chap">Quiz {{ chapitre.quizId }}</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Quiz"
+      <a [routerLink]="['/quiz', chapitre.quizId]" class="chap"
+        >Quiz {{ chapitre.quizId }}</a
       >
+      <button mat-icon-button color="primary" aria-label="Quiz">
         <mat-icon>quiz</mat-icon>
       </button>
     </div>
@@ -80,11 +63,7 @@
     <div *ngFor="let controle of getControles(chapitre.ChapitreNum)">
       <div class="items">
         <a class="chap">Controle: {{ controle.nom }}</a>
-        <button
-          mat-icon-button
-          color="primary"
-          aria-label="Controle"
-        >
+        <button mat-icon-button color="primary" aria-label="Controle">
           <mat-icon>assessment</mat-icon>
         </button>
       </div>
