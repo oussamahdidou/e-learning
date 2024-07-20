@@ -24,6 +24,11 @@ import { UpdatecoursComponent } from './updatecours/updatecours.component';
 import { UpdatevideoComponent } from './updatevideo/updatevideo.component';
 import { UpdatesyntheseComponent } from './updatesynthese/updatesynthese.component';
 import { UpdateschemaComponent } from './updateschema/updateschema.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 const routes: Routes = [
   {
     path: '',
@@ -114,6 +119,11 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,
+    PdfViewerModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
   ],
 })
 export class DashboardModule {}

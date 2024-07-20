@@ -18,6 +18,11 @@ import { HomeComponent } from './home/home.component';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { RouterModule } from '@angular/router';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -38,6 +43,11 @@ import { RouterModule } from '@angular/router';
     DashboardModule,
     RouterModule,
     ReactiveFormsModule,
+    PdfViewerModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

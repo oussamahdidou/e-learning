@@ -1,1 +1,18 @@
-<p>updatecours works!</p>
+<div class="d-flex">
+  <app-sidenav></app-sidenav>
+  <div class="container mt-5 w-50 mx-auto">
+    <h4>Chapitre 1 cours</h4>
+    <div class="pdf-container">
+      <pdf-viewer
+        [src]="pdfSrc"
+        [render-text]="true"
+        [original-size]="false"
+        style="width: 100%; height: 700px"
+      >
+      </pdf-viewer>
+    </div>
+  </div>
+  <div class="position-relative">
+    <app-dashboardchapitrenav></app-dashboardchapitrenav>
+  </div>
+</div>
