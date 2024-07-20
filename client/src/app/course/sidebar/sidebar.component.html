@@ -1,12 +1,12 @@
 <div class="container d-flex flex-column p-0">
   <div class="title p-3 bg-white">
-    {{ course.name }}
+    {{ module.nom }}
     <div class="progress mt-3">
       <div
         class="progress-bar bg-success"
         role="progressbar"
         [style.width.%]="progress"
-        aria-valuenow="75"
+        aria-valuenow="progress"
         aria-valuemin="0"
         aria-valuemax="100"
       >
@@ -17,211 +17,77 @@
       <span class="text-success">{{ progress }}% Complete</span>
     </div>
   </div>
-  <div>
-    @for(chapter of course.chapters; track chapter.name ){
+
+  <div *ngFor="let chapitre of module.chapitres">
     <div class="items chapitre">
-      <a href="" class="chap">{{ chapter.name }}</a>
+      <a class="chap">{{ chapitre.nom }}</a>
     </div>
-    <div class="items checked">
-      <a href="" class="chap">{{ chapter.cour.name }}</a>
+
+    <div class="items" [ngClass]="chapitre.Statue">
+      <a [href]="chapitre.CoursPdfPath" class="chap">Course PDF</a>
       <button
         mat-icon-button
         color="primary"
-        aria-label="Example icon button with a home icon"
+        aria-label="Course PDF"
       >
-        <mat-icon>home</mat-icon>
+        <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </div>
-    <div class="items checked">
-      <a href="" class="chap">{{ chapter.video.name }}</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items checked">
-      <a href="" class="chap">{{ chapter.schema.name }}</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items checked">
-      <a href="" class="chap">{{ chapter.synthese.name }}</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items checked">
-      <a href="" class="chap">Quiz {{ chapter.id }}</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    }
-    <!-- <div class="items checked">
-      <a href="" class="chap">Lecture</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items checked">
-      <a href="" class="chap">Quiz 1</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items checked">
-      <a href="" class="chap">Synthese</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items chapitre">
-      <a href="" class="chap">Chapitre 2</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items onit">
-      <a href="" class="chap">Lecture</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
+
     <div class="items">
-      <a href="" class="chap">Quiz 2</a>
+      <a [href]="chapitre.VideoPath" class="chap">Video</a>
       <button
         mat-icon-button
         color="primary"
-        aria-label="Example icon button with a home icon"
+        aria-label="Video"
       >
-        <mat-icon>home</mat-icon>
+        <mat-icon>videocam</mat-icon>
       </button>
     </div>
+
     <div class="items">
-      <a href="" class="chap">Exam</a>
+      <a class="chap">{{ chapitre.Schema }}</a>
       <button
         mat-icon-button
         color="primary"
-        aria-label="Example icon button with a home icon"
       >
-        <mat-icon>home</mat-icon>
+        <mat-icon>insert_drive_file</mat-icon>
       </button>
     </div>
+
     <div class="items">
-      <a href="" class="chap">Exam</a>
+      <a class="chap">{{ chapitre.Synthese }}</a>
       <button
         mat-icon-button
         color="primary"
-        aria-label="Example icon button with a home icon"
+        aria-label="Synthese"
       >
-        <mat-icon>home</mat-icon>
+        <mat-icon>description</mat-icon>
       </button>
     </div>
+
     <div class="items">
-      <a href="" class="chap">Exam</a>
+      <a [routerLink]="['/quiz', chapitre.quizId]" class="chap">Quiz {{ chapitre.quizId }}</a>
       <button
         mat-icon-button
         color="primary"
-        aria-label="Example icon button with a home icon"
+        aria-label="Quiz"
       >
-        <mat-icon>home</mat-icon>
+        <mat-icon>quiz</mat-icon>
       </button>
     </div>
-    <div class="items chapitre">
-      <a href="" class="chap">Chapitre 2</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
+
+    <div *ngFor="let controle of getControles(chapitre.ChapitreNum)">
+      <div class="items">
+        <a class="chap">Controle: {{ controle.nom }}</a>
+        <button
+          mat-icon-button
+          color="primary"
+          aria-label="Controle"
+        >
+          <mat-icon>assessment</mat-icon>
+        </button>
+      </div>
     </div>
-    <div class="items">
-      <a href="" class="chap">Lecture</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items">
-      <a href="" class="chap">Quiz 2</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items">
-      <a href="" class="chap">Exam</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items">
-      <a href="" class="chap">Exam</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div>
-    <div class="items">
-      <a href="" class="chap">Exam</a>
-      <button
-        mat-icon-button
-        color="primary"
-        aria-label="Example icon button with a home icon"
-      >
-        <mat-icon>home</mat-icon>
-      </button>
-    </div> -->
   </div>
 </div>

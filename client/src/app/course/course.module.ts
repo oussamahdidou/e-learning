@@ -20,7 +20,7 @@ const routes: Routes = [
         component: LectureComponent,
       },
       {
-        path: 'quiz',
+        path: 'quiz/:id',
         component: QuizComponent,
       },
       {
