@@ -1,72 +1,82 @@
-<form [formGroup]="controleForm" (ngSubmit)="onSubmit()" class="container mt-4">
-  <div class="mb-3">
-    <label for="nomControle" class="form-label">Nom du contrôle</label>
-    <input
-      id="nomControle"
-      type="text"
-      class="form-control"
-      formControlName="nomControle"
-      required
-    />
-  </div>
-
-  <div class="mb-3">
-    <label for="enonce" class="form-label">Énoncé du contrôle</label>
-    <input
-      id="enonce"
-      type="file"
-      accept="application/pdf"
-      (change)="onFileChange($event, 'enonce')"
-      class="form-control"
-      required
-    />
-  </div>
-
-  <div class="mb-3">
-    <label for="solution" class="form-label">Solution du contrôle</label>
-    <input
-      id="solution"
-      type="file"
-      accept="application/pdf"
-      (change)="onFileChange($event, 'solution')"
-      class="form-control"
-      required
-    />
-  </div>
-
-  <div class="form-check mb-3">
-    <input
-      type="checkbox"
-      class="form-check-input"
-      id="examFinal"
-      formControlName="examFinal"
-      (change)="onExamFinalChange($event)"
-    />
-    <label class="form-check-label" for="examFinal">Exam Final</label>
-  </div>
-
-  <div formArrayName="chapitres" class="mb-3">
-    <div
-      *ngFor="let chapitre of chapitres.controls; let i = index"
-      class="form-check"
+<div class="container-fluid">
+  <app-sidenav></app-sidenav>
+  <div class="controle-container pt-5">
+    <h4>Ajouter un Controle</h4>
+    <form
+      [formGroup]="controleForm"
+      (ngSubmit)="onSubmit()"
+      class="container mt-4"
     >
-      <input
-        type="checkbox"
-        class="form-check-input"
-        [id]="'chapitre' + i"
-        [formControlName]="i"
-      />
-      <label class="form-check-label" [for]="'chapitre' + i">{{
-        chapitreList[i]
-      }}</label>
-    </div>
-  </div>
+      <div class="mb-3">
+        <label for="nomControle" class="form-label">Nom du contrôle</label>
+        <input
+          id="nomControle"
+          type="text"
+          class="form-control"
+          formControlName="nomControle"
+          required
+        />
+      </div>
 
-  <button
-    type="submit"
-    class="btn btn-primary"
-    [disabled]="!controleForm.valid"
-  >
-    Soumettre
-  </button>
-</form>
+      <div class="mb-3">
+        <label for="enonce" class="form-label">Énoncé du contrôle</label>
+        <input
+          id="enonce"
+          type="file"
+          accept="application/pdf"
+          (change)="onFileChange($event, 'enonce')"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="mb-3">
+        <label for="solution" class="form-label">Solution du contrôle</label>
+        <input
+          id="solution"
+          type="file"
+          accept="application/pdf"
+          (change)="onFileChange($event, 'solution')"
+          class="form-control"
+          required
+        />
+      </div>
+
+      <div class="form-check mb-3">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="examFinal"
+          formControlName="examFinal"
+          (change)="onExamFinalChange($event)"
+        />
+        <label class="form-check-label" for="examFinal">Exam Final</label>
+      </div>
+
+      <div formArrayName="chapitres" class="mb-3">
+        <div
+          *ngFor="let chapitre of chapitres.controls; let i = index"
+          class="form-check"
+        >
+          <input
+            type="checkbox"
+            class="form-check-input"
+            [id]="'chapitre' + i"
+            [formControlName]="i"
+          />
+          <label class="form-check-label" [for]="'chapitre' + i">{{
+            chapitreList[i]
+          }}</label>
+        </div>
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!controleForm.valid"
+      >
+        Soumettre
+      </button>
+    </form>
+  </div>
+</div>
