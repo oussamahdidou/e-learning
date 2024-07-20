@@ -11,16 +11,16 @@ interface Question {
   options: Option[];
 }
 
+
+
+interface Quiz {
+  questions: Question[];
+}
 interface Content {
   id: number;
   name: string;
   contentURL: string;
 }
-
-interface Quiz {
-  questions: Question[];
-}
-
 interface Chapter {
   id: number;
   name: string;

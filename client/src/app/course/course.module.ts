@@ -13,11 +13,8 @@ import { CourseComponent } from './course.component';
 const routes: Routes = [
   {
     path: '',
+    component: CourseComponent,
     children: [
-      {
-        path: 'navbar',
-        component: CourseComponent,
-      },
       {
         path: 'lecture',
         component: LectureComponent,
@@ -25,6 +22,10 @@ const routes: Routes = [
       {
         path: 'quiz',
         component: QuizComponent,
+      },
+      {
+        path: 'lecture',
+        component: LectureComponent,
       },
     ],
   },
@@ -44,6 +45,7 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MatIconModule,
     PdfViewerModule,
+
   ],
 })
 export class CourseModule {}

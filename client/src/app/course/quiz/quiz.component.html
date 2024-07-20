@@ -1,26 +1,32 @@
 <div class="m-5 quiz">
-  <h2 class="p-4">Quiz 1</h2>
+  <h2 class="p-4">{{ quiz.nom }}</h2>
   <div class="d-flex align-items-center flex-column">
     <div class="question border">
-      <div class="qst-nmb">Question 1</div>
-      <div><h5>Quelle est la capitale de la France?</h5></div>
-      <div class="qst-type">Choisis la bonne réponse</div>
+      <div class="qst-nmb">Question {{ currentQuestionIndex + 1 }}</div>
+      <div><h5>{{ currentQuestion.nom }}</h5></div>
+      <div class="qst-type">Choose the correct answer</div>
     </div>
-    <label class="reponse d-flex border">
-      <input class="check" type="radio" name="question1" id="nice" />
-      <span>Nice</span>
-    </label>
-    <label class="reponse d-flex border">
-      <input class="check" type="radio" name="question1" id="paris" />
-      <span>Paris</span>
-    </label>
-    <label class="reponse d-flex border">
-      <input class="check" type="radio" name="question1" id="lile" />
-      <span>Lile</span>
-    </label>
+    <ng-container *ngFor="let option of currentQuestion.options">
+      <label class="reponse d-flex border">
+        <input
+          class="check"
+          type="radio"
+          [name]="'question' + currentQuestion.id"
+          [value]="option.id"
+          [checked]="selectedAnswers[currentQuestion.id] === option.id"
+          (change)="selectAnswer(option.id)"
+        />
+        <span>{{ option.nom }}</span>
+      </label>
+    </ng-container>
     <div class="btns">
-      <button class="btn mx-5 rounded-pill">Précédent</button>
-      <button class="btn mx-5 rounded-pill">Suivant</button>
+      <button class="btn mx-5 rounded-pill" (click)="previousQuestion()" [disabled]="currentQuestionIndex === 0">Previous</button>
+      <button
+        class="btn mx-5 rounded-pill"
+        (click)="currentQuestionIndex === quiz.questions.length - 1 ? finishQuiz() : nextQuestion()"
+      >
+        {{ currentQuestionIndex === quiz.questions.length - 1 ? 'Finish' : 'Next' }}
+      </button>
     </div>
   </div>
 </div>
