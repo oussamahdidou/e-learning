@@ -45,19 +45,20 @@ export class QuizComponent {
 
   currentQuestionIndex = 0;
   selectedAnswers: { [questionId: number]: number } = {};
+  errorMessage: string | null = null;
 
   get currentQuestion() {
     return this.quiz.questions[this.currentQuestionIndex];
+  }
+
+  selectAnswer(optionId: number) {
+    this.selectedAnswers[this.currentQuestion.id] = optionId;
   }
 
   nextQuestion() {
     if (this.currentQuestionIndex < this.quiz.questions.length - 1) {
       this.currentQuestionIndex++;
     }
-  }
-
-  selectAnswer(optionId: number) {
-    this.selectedAnswers[this.currentQuestion.id] = optionId;
   }
 
   previousQuestion() {
@@ -67,6 +68,18 @@ export class QuizComponent {
   }
 
   finishQuiz() {
-    console.log('User answers:', this.selectedAnswers);
+    // Check if all questions have been answered
+    const unansweredQuestions = this.quiz.questions.filter(
+      (q) => !this.selectedAnswers[q.id]
+    );
+
+    if (unansweredQuestions.length > 0) {
+      this.errorMessage = 'Please answer all questions before finishing the quiz.';
+    } else {
+      this.errorMessage = null;
+      // Handle quiz submission logic here, e.g., send answers to a server
+      console.log('User answers:', this.selectedAnswers);
+    }
   }
+
 }

@@ -1,6 +1,6 @@
 <div class="container d-flex flex-column p-0">
   <div class="title p-3 bg-white">
-    {{ module.nom }}
+    {{ module?.nom? }}
     <div class="progress mt-3">
       <div
         class="progress-bar bg-success"
@@ -18,7 +18,7 @@
     </div>
   </div>
 
-  <div *ngFor="let chapitre of module.chapitres">
+  <div *ngFor="let chapitre of module?.chapitres?">
     <div class="items chapitre">
       <a class="chap">{{ chapitre.nom }}</a>
     </div>
@@ -34,7 +34,7 @@
       </button>
     </div>
 
-    <div class="items">
+    <div class="items ">
       <a [href]="chapitre.VideoPath" class="chap">Video</a>
       <button
         mat-icon-button
@@ -66,7 +66,7 @@
       </button>
     </div>
 
-    <div class="items">
+    <div class="items onit">
       <a [routerLink]="['/quiz', chapitre.quizId]" class="chap">Quiz {{ chapitre.quizId }}</a>
       <button
         mat-icon-button
