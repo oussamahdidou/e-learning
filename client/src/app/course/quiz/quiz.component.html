@@ -1,6 +1,6 @@
 <div class="m-5 quiz">
-  <h2 class="p-4">{{ quiz.nom }}</h2>
-  <div class="d-flex align-items-center flex-column">
+  <h2 class="p-4" *ngIf="quiz">{{ quiz.nom }}</h2>
+  <div class="d-flex align-items-center flex-column" *ngIf="currentQuestion">
     <div class="question border">
       <div class="qst-nmb">Question {{ currentQuestionIndex + 1 }}</div>
       <div><h5>{{ currentQuestion.nom }}</h5></div>

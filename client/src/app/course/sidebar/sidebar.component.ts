@@ -16,6 +16,7 @@ interface Question {
 
 interface Quiz {
   id: number;
+  nom : string;
   questions: Question[];
 }
 
@@ -24,10 +25,10 @@ interface Chapitre {
   ChapitreNum: number;
   nom: string;
   Statue: string;
-  CoursPdfPath: string;
-  VideoPath: string;
-  Synthese: string;
-  Schema: string;
+  CoursPdfPath: string | null;
+  VideoPath: string | null;
+  Synthese: string | null;
+  Schema: string | null;
   Premium: boolean;
   quizId: number;
   quiz: Quiz;
@@ -77,8 +78,10 @@ export class SidebarComponent implements OnInit {
   }
 
   getControles(chapitreNum: number) {
-    return this.module?.controles?.filter(controle =>
-      controle.ChapitreNum.includes(chapitreNum)
-    ) || [];
+    return this.module?.controles?.filter(controle => {
+      const maxNum = Math.max(...controle.ChapitreNum);
+      return maxNum === chapitreNum;
+    }) || [];
   }
+
 }
