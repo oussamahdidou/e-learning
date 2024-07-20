@@ -17,6 +17,7 @@ interface Question {
 
 interface Quiz {
   id: number;
+  nom : string;
   questions: Question[];
 }
 
@@ -25,10 +26,10 @@ interface Chapitre {
   ChapitreNum: number;
   nom: string;
   Statue: string;
-  CoursPdfPath: string;
-  VideoPath: string;
-  Synthese: string;
-  Schema: string;
+  CoursPdfPath: string | null;
+  VideoPath: string | null;
+  Synthese: string | null;
+  Schema: string | null;
   Premium: boolean;
   quizId: number;
   quiz: Quiz;
@@ -58,18 +59,19 @@ export class CourseService {
     nom: 'Module 1',
     chapitres: [
       {
-        id: 1,
+        id: 99,
         ChapitreNum: 1,
         nom: 'Chapitre 1',
         Statue: 'checked',
         CoursPdfPath: '/path/to/pdf',
-        VideoPath: '/path/to/video',
+        VideoPath: null,
         Synthese: 'Summary of Chapitre 1',
         Schema: 'Schema1',
         Premium: true,
         quizId: 1,
         quiz: {
           id: 1,
+          nom:"quiz 1",
           questions: [
             {
               id: 1,
@@ -79,11 +81,19 @@ export class CourseService {
                 { id: 2, nom: 'Option 2', truth: 'true' },
               ],
             },
+            {
+              id: 2,
+              nom: 'Question 2',
+              options: [
+                { id: 1, nom: 'Option 1', truth: 'false' },
+                { id: 2, nom: 'Option 2', truth: 'true' },
+              ],
+            },
           ],
         },
       },
       {
-        id: 2,
+        id: 100,
         ChapitreNum: 2,
         nom: 'Chapitre 2',
         Statue: 'unchecked',
@@ -95,9 +105,18 @@ export class CourseService {
         quizId: 2,
         quiz: {
           id: 2,
+          nom:"quiz 2",
           questions: [
             {
               id: 2,
+              nom: 'Question 1',
+              options: [
+                { id: 3, nom: 'Option kkfhgkdahsfk', truth: 'true' },
+                { id: 4, nom: 'Option fjakhfkahkf', truth: 'false' },
+              ],
+            },
+            {
+              id: 55,
               nom: 'Question 2',
               options: [
                 { id: 3, nom: 'Option 3', truth: 'true' },
@@ -111,10 +130,17 @@ export class CourseService {
     controles: [
       {
         id: 1,
-        nom: 'Controle 1',
+        nom: 'Controle 2',
         ennonce: 'Enonce for Controle 1',
         solution: 'Solution for Controle 1',
         ChapitreNum: [1, 2],
+      },
+      {
+        id: 1,
+        nom: 'Controle 1',
+        ennonce: 'Enonce for Controle 1',
+        solution: 'Solution for Controle 1',
+        ChapitreNum: [1],
       },
     ],
   };

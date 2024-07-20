@@ -23,36 +23,36 @@
       <a class="chap">{{ chapitre.nom }}</a>
     </div>
 
-    <div class="items" [ngClass]="chapitre.Statue">
+    <div class="items" *ngIf="chapitre.CoursPdfPath" [ngClass]="chapitre.Statue">
       <a [href]="chapitre.CoursPdfPath" class="chap">Course PDF</a>
       <button mat-icon-button color="primary" aria-label="Course PDF">
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </div>
 
-    <div class="items">
+    <div class="items" *ngIf="chapitre.VideoPath">
       <a [href]="chapitre.VideoPath" class="chap">Video</a>
       <button mat-icon-button color="primary" aria-label="Video">
         <mat-icon>videocam</mat-icon>
       </button>
     </div>
 
-    <div class="items">
-      <a class="chap">{{ chapitre.Schema }}</a>
+    <div class="items" *ngIf="chapitre.Schema">
+      <a  [href]="chapitre.Schema" class="chap">{{ chapitre.Schema }}</a>
       <button mat-icon-button color="primary">
         <mat-icon>insert_drive_file</mat-icon>
       </button>
     </div>
 
-    <div class="items">
-      <a class="chap">{{ chapitre.Synthese }}</a>
+    <div class="items" *ngIf="chapitre.Synthese">
+      <a [href]="chapitre.Synthese" class="chap">{{ chapitre.Synthese }}</a>
       <button mat-icon-button color="primary" aria-label="Synthese">
         <mat-icon>description</mat-icon>
       </button>
     </div>
 
-    <div class="items onit">
-      <a [routerLink]="['/quiz', chapitre.quizId]" class="chap"
+    <div class="items onit" *ngIf="chapitre.quizId">
+      <a [routerLink]="['/course/quiz', chapitre.quizId]" class="chap"
         >Quiz {{ chapitre.quizId }}</a
       >
       <button mat-icon-button color="primary" aria-label="Quiz">
@@ -62,7 +62,7 @@
 
     <div *ngFor="let controle of getControles(chapitre.ChapitreNum)">
       <div class="items">
-        <a class="chap">Controle: {{ controle.nom }}</a>
+        <a [href]="controle.ennonce"class="chap">Controle: {{ controle.nom }}</a>
         <button mat-icon-button color="primary" aria-label="Controle">
           <mat-icon>assessment</mat-icon>
         </button>
