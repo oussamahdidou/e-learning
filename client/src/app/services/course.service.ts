@@ -63,7 +63,7 @@ export class CourseService {
         nom: 'Chapitre 1',
         Statue: 'checked',
         CoursPdfPath: '/path/to/pdf',
-        VideoPath: '/path/to/video',
+        VideoPath: '/cour/20210807_223157.mp4',
         Synthese: 'Summary of Chapitre 1',
         Schema: 'Schema1',
         Premium: true,
