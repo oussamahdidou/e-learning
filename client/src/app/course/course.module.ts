@@ -43,7 +43,7 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     MatIconModule,
-    PdfViewerModule
-  ]
+    PdfViewerModule,
+  ],
 })
-export class CourseModule { }
+export class CourseModule {}
