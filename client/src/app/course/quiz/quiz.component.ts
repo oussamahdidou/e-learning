@@ -50,12 +50,10 @@ export class QuizComponent implements OnInit {
             this.quiz = quiz;
           } else {
             console.error('Quiz not found');
-            // Handle the case where the quiz is not found, e.g., display an error message
           }
         },
         (error) => {
           console.error('Error fetching quiz:', error);
-          // Handle the error, e.g., display an error message
         }
       );
     });
