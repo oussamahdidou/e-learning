@@ -63,10 +63,10 @@ export class CourseService {
         ChapitreNum: 1,
         nom: 'Chapitre 1',
         Statue: 'checked',
-        CoursPdfPath: '/path/to/pdf',
+        CoursPdfPath: '/cour/XMLChp1.pdf',
         VideoPath: null,
-        Synthese: 'Summary of Chapitre 1',
-        Schema: 'Schema1',
+        Synthese: '/cour/XMLChp1.pdf',
+        Schema: '/cour/XMLChp1.pdf',
         Premium: true,
         quizId: 1,
         quiz: {
@@ -97,10 +97,10 @@ export class CourseService {
         ChapitreNum: 2,
         nom: 'Chapitre 2',
         Statue: 'unchecked',
-        CoursPdfPath: '/path/to/pdf',
-        VideoPath: '/path/to/video',
-        Synthese: 'Summary of Chapitre 2',
-        Schema: 'Schema2',
+        CoursPdfPath: '/cour/cours3.pdf',
+        VideoPath: '/cour/20210807_223157.mp4',
+        Synthese: '/cour/cours3.pdf',
+        Schema: '/cour/cours3.pdf',
         Premium: false,
         quizId: 2,
         quiz: {
@@ -172,5 +172,21 @@ export class CourseService {
 
     const quiz = chapter ? chapter.quiz : undefined;
     return of(quiz);
+  }
+  getVdUrlById(id: number): Observable<string | undefined> {
+    const chapter = this.module.chapitres.find(
+      (chapitre) => chapitre.quiz.id === id
+    );
+
+    const vdUrl = chapter ? chapter.VideoPath : undefined;
+    return of(vdUrl as string | undefined);
+  }
+  getCourPdfUrlById(id: number): Observable<string | undefined> {
+    const chapter = this.module.chapitres.find(
+      (chapitre) => chapitre.quiz.id === id
+    );
+
+    const pdfUrl = chapter ? chapter.CoursPdfPath : undefined;
+    return of(pdfUrl as string | undefined);
   }
 }

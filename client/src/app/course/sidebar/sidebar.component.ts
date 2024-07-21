@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Renderer2 } from '@angular/core';
 import { CourseService } from '../../services/course.service';
-
 
 interface Option {
   id: number;
@@ -16,7 +15,7 @@ interface Question {
 
 interface Quiz {
   id: number;
-  nom : string;
+  nom: string;
   questions: Question[];
 }
 
@@ -53,16 +52,18 @@ interface Module {
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
 })
-
 export class SidebarComponent implements OnInit {
-
   module: Module | undefined;
   progress: number = 0;
+  private activeElement: HTMLElement | null = null;
 
-  constructor(private courseService: CourseService) { }
+  constructor(
+    private courseService: CourseService,
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit() {
-    this.courseService.getCourse().subscribe(module => {
+    this.courseService.getCourse().subscribe((module) => {
       this.module = module;
       this.calculateProgress();
     });
@@ -71,17 +72,26 @@ export class SidebarComponent implements OnInit {
   calculateProgress() {
     if (this.module) {
       const completedChapters = this.module.chapitres.filter(
-        chapitre => chapitre.Statue === 'checked'
+        (chapitre) => chapitre.Statue === 'checked'
       ).length;
       this.progress = (completedChapters / this.module.chapitres.length) * 100;
     }
   }
 
   getControles(chapitreNum: number) {
-    return this.module?.controles?.filter(controle => {
-      const maxNum = Math.max(...controle.ChapitreNum);
-      return maxNum === chapitreNum;
-    }) || [];
+    return (
+      this.module?.controles?.filter((controle) => {
+        const maxNum = Math.max(...controle.ChapitreNum);
+        return maxNum === chapitreNum;
+      }) || []
+    );
   }
-
+  setActive(event: Event): void {
+    const target = event.currentTarget as HTMLElement;
+    if (this.activeElement) {
+      this.renderer.removeClass(this.activeElement, 'onit');
+    }
+    this.renderer.addClass(target, 'onit');
+    this.activeElement = target;
+  }
 }

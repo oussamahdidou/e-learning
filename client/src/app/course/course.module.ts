@@ -16,7 +16,7 @@ const routes: Routes = [
     component: CourseComponent,
     children: [
       {
-        path: 'lecture',
+        path: 'lecture/:id',
         component: LectureComponent,
       },
       {
@@ -24,8 +24,8 @@ const routes: Routes = [
         component: QuizComponent,
       },
       {
-        path: 'lecture',
-        component: LectureComponent,
+        path: 'cour/:id',
+        component: PdfViewerComponent,
       },
     ],
   },
@@ -45,7 +45,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     MatIconModule,
     PdfViewerModule,
-
   ],
 })
 export class CourseModule {}

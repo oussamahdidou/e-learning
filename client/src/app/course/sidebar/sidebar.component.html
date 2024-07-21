@@ -27,35 +27,38 @@
       class="items"
       *ngIf="chapitre.CoursPdfPath"
       [ngClass]="chapitre.Statue"
+      (click)="setActive($event)"
     >
-      <a [href]="chapitre.CoursPdfPath" class="chap">Course PDF</a>
+      <a [routerLink]="['/course/cour/', chapitre.ChapitreNum]" class="chap"
+        >Course PDF</a
+      >
       <button mat-icon-button color="primary" aria-label="Course PDF">
         <mat-icon>picture_as_pdf</mat-icon>
       </button>
     </div>
 
-    <div class="items" *ngIf="chapitre.VideoPath">
-      <a [href]="chapitre.VideoPath" class="chap">Video</a>
+    <div class="items" *ngIf="chapitre.VideoPath" (click)="setActive($event)">
+      <a href="course/lecture/2" class="chap">Video</a>
       <button mat-icon-button color="primary" aria-label="Video">
         <mat-icon>videocam</mat-icon>
       </button>
     </div>
 
-    <div class="items" *ngIf="chapitre.Schema">
+    <div class="items" *ngIf="chapitre.Schema" (click)="setActive($event)">
       <a [href]="chapitre.Schema" class="chap">{{ chapitre.Schema }}</a>
       <button mat-icon-button color="primary">
         <mat-icon>insert_drive_file</mat-icon>
       </button>
     </div>
 
-    <div class="items" *ngIf="chapitre.Synthese">
+    <div class="items" *ngIf="chapitre.Synthese" (click)="setActive($event)">
       <a [href]="chapitre.Synthese" class="chap">{{ chapitre.Synthese }}</a>
       <button mat-icon-button color="primary" aria-label="Synthese">
         <mat-icon>description</mat-icon>
       </button>
     </div>
 
-    <div class="items onit" *ngIf="chapitre.quizId">
+    <div class="items" *ngIf="chapitre.quizId" (click)="setActive($event)">
       <a [routerLink]="['/course/quiz', chapitre.quizId]" class="chap"
         >Quiz {{ chapitre.quizId }}</a
       >
@@ -64,7 +67,10 @@
       </button>
     </div>
 
-    <div *ngFor="let controle of getControles(chapitre.ChapitreNum)">
+    <div
+      *ngFor="let controle of getControles(chapitre.ChapitreNum)"
+      (click)="setActive($event)"
+    >
       <div class="items">
         <a [href]="controle.ennonce" class="chap"
           >Controle: {{ controle.nom }}</a
