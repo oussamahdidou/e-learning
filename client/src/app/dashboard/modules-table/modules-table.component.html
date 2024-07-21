@@ -11,11 +11,7 @@
             placeholder="Ex. Name"
           />
         </mat-form-field>
-        <button
-          routerLink="/institutions/create"
-          mat-raised-button
-          color="primary"
-        >
+        <button (click)="addmodule()" mat-raised-button color="primary">
           <mat-icon>add</mat-icon>
           Ajouter Module
         </button>
@@ -37,13 +33,13 @@
             Niveau Scolaire
           </th>
           <td mat-cell *matCellDef="let element">
-            {{ element.niveauscolaire }}
+            {{ niveauscolaire }}
           </td>
         </ng-container>
         <!-- Name Column -->
-        <ng-container matColumnDef="name">
+        <ng-container matColumnDef="nom">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Name</th>
-          <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          <td mat-cell *matCellDef="let element">{{ element.nom }}</td>
         </ng-container>
 
         <!-- Action Column -->
@@ -53,7 +49,7 @@
             <button mat-flat-button color="warn" (click)="delete(element.id)">
               Supprimer
             </button>
-            <button mat-flat-button color="accent" (click)="edit(element.id)">
+            <button mat-flat-button color="accent" (click)="edit(element)">
               Modifier
             </button>
           </td>
@@ -64,7 +60,7 @@
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Plus</th>
           <td mat-cell *matCellDef="let element">
             <button
-              routerLink="/institutions/{{ element.id }}"
+              routerLink="/dashboard/niveautable/{{ element.id }}"
               mat-raised-button
               color="primary"
             >

@@ -19,8 +19,8 @@ namespace api.Controllers
         {
             this.moduleRepository = moduleRepository;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetModuleById(int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetModuleById([FromRoute] int id)
         {
             Result<Module> result = await moduleRepository.GetModuleById(id);
             if (result.IsSuccess)

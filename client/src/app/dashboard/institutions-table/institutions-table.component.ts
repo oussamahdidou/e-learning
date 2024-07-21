@@ -93,9 +93,21 @@ export class InstitutionsTableComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        institution.nom = result.value;
-        this.dataSource.data = [...this.institutions]; // Refresh the table data
-        Swal.fire('Saved!', 'Institution name has been updated.', 'success');
+        this.dashboardservice
+          .updateinstitution(result.value, institution.id)
+          .subscribe(
+            (response) => {
+              institution.nom = response.nom;
+              console.log(response);
+              this.dataSource.data = [...this.institutions]; // Refresh the table data
+              Swal.fire(
+                'Saved!',
+                'Institution name has been updated.',
+                'success'
+              );
+            },
+            (error) => {}
+          );
       }
     });
   }
