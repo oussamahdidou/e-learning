@@ -1,14 +1,21 @@
-
 <div class="container d-flex align-items-center flex-column">
   <div class="container d-flex align-items-center justify-content-between">
     <h1>This is the PDF</h1>
-    <button class="mx-5 rounded-pill btn-devoir px-4" data-bs-toggle="modal" data-bs-target="#devoirModal">+ Ajouter</button>
+    <button
+      class="mx-5 rounded-pill btn-devoir px-4"
+      data-bs-toggle="modal"
+      data-bs-target="#devoirModal"
+    >
+      + Ajouter
+    </button>
   </div>
   <div class="pdfcontainer">
-    <pdf-viewer [src]="pdfSrc"
-                [render-text]="true"
-                [original-size]="false"
-                class="pdfcour">
+    <pdf-viewer
+      [src]="pdfUrl"
+      [render-text]="true"
+      [original-size]="false"
+      class="pdfcour"
+    >
     </pdf-viewer>
   </div>
   <div class="btns">
@@ -18,16 +25,31 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="devoirModal" tabindex="-1" aria-labelledby="devoirModalLabel" aria-hidden="true">
+<div
+  class="modal fade"
+  id="devoirModal"
+  tabindex="-1"
+  aria-labelledby="devoirModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content d-flex">
       <div class="modal-header">
         <h5 class="modal-title" id="devoirModalLabel">Votre Devoir</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body text-center d-flex align-items-center flex-column">
-        <button class="modal-btn-ajouter rounded-pill">+ Ajouter votre devoir</button>
-        <button class="modal-btn-terminer rounded-pill mt-3">Marquer Comme Terminer</button>
+        <button class="modal-btn-ajouter rounded-pill">
+          + Ajouter votre devoir
+        </button>
+        <button class="modal-btn-terminer rounded-pill mt-3">
+          Marquer Comme Terminer
+        </button>
       </div>
     </div>
   </div>
