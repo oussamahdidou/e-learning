@@ -40,9 +40,9 @@ namespace api.Controllers
             return BadRequest(result.Error);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateInstitution([FromBody] string InstitutionName)
+        public async Task<IActionResult> CreateInstitution([FromBody] CreateInstitutionDto createInstitutionDto)
         {
-            Result<Institution> result = await institutionRepository.CreateInstitution(InstitutionName);
+            Result<Institution> result = await institutionRepository.CreateInstitution(createInstitutionDto.name);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
