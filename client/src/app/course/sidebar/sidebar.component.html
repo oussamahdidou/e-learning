@@ -38,7 +38,9 @@
     </div>
 
     <div class="items" *ngIf="chapitre.VideoPath" (click)="setActive($event)">
-      <a href="course/lecture/2" class="chap">Video</a>
+      <a [routerLink]="['/course/lecture/', chapitre.ChapitreNum]" class="chap"
+        >Video</a
+      >
       <button mat-icon-button color="primary" aria-label="Video">
         <mat-icon>videocam</mat-icon>
       </button>
