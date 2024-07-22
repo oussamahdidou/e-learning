@@ -1,6 +1,8 @@
 import { Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { ModuleRequirementsDialogComponent } from '../module-requirements-dialog/module-requirements-dialog.component';
 
 @Component({
   selector: 'app-module',
@@ -85,7 +87,18 @@ export class ModuleComponent {
       seuil: 18,
     },
   ];
-  constructor() {
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ModuleRequirementsDialogComponent, {
+      width: '400px',
+      data: { name: 'Angular' },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      console.log(result);
+    });
+  }
+  constructor(public dialog: MatDialog) {
     this.chapitressource = new MatTableDataSource(this.chapters);
     this.chapitressource.sortingDataAccessor = (item, property) => {
       switch (property) {

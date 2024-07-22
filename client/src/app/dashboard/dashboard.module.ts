@@ -30,6 +30,9 @@ import { CreateChapterQuizComponent } from './create-chapter-quiz/create-chapter
 import { MatRadioModule } from '@angular/material/radio';
 import { ChapterComponent } from './chapter/chapter.component';
 import { ModuleComponent } from './module/module.component';
+import { ModuleRequirementsDialogComponent } from './module-requirements-dialog/module-requirements-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 const routes: Routes = [
   {
     path: '',
@@ -63,6 +66,7 @@ const routes: Routes = [
     CreateChapterQuizComponent,
     ChapterComponent,
     ModuleComponent,
+    ModuleRequirementsDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -88,6 +92,8 @@ const routes: Routes = [
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
+    MatDialogModule,
+    MatSelectModule,
   ],
   providers: [DashboardService],
 })

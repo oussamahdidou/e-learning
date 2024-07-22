@@ -3,7 +3,16 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { MatStepperModule } from '@angular/material/stepper';
-
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogModule,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
@@ -46,7 +55,7 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
     RouterModule,
     ReactiveFormsModule,
     PdfViewerModule,
-
+    MatDialogModule,
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,

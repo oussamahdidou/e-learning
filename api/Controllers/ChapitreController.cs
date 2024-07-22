@@ -30,7 +30,7 @@ namespace api.Controllers
             return BadRequest(result.Error);
         }
         [HttpPost]
-        public async Task<IActionResult> CreateChapitre([FromBody] CreateChapitreDto createChapitreDto)
+        public async Task<IActionResult> CreateChapitre([FromForm] CreateChapitreDto createChapitreDto)
         {
             Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
             if (result.IsSuccess)

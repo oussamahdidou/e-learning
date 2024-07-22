@@ -153,13 +153,9 @@
               placeholder="Ex. UserName"
             />
           </mat-form-field>
-          <button
-            routerLink="/dashboard/createcontrole/9"
-            mat-raised-button
-            color="primary"
-          >
+          <button (click)="openDialog()" mat-raised-button color="primary">
             <mat-icon>add</mat-icon>
-            Ajouter Controle
+            Ajouter Module
           </button>
         </div>
         <table

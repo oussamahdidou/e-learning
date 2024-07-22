@@ -28,8 +28,8 @@ namespace api.Repository
             {
                 Result<string> syntheseresult = await createChapitreDto.Synthese.UploadSynthese(webHostEnvironment);
                 Result<string> schemaresult = await createChapitreDto.Schema.UploadSchema(webHostEnvironment);
-                Result<string> resultcoursPdf = await createChapitreDto.CoursPdf.UploadSynthese(webHostEnvironment);
-                Result<string> resultvideo = await createChapitreDto.Synthese.UploadVideo(webHostEnvironment);
+                Result<string> resultcoursPdf = await createChapitreDto.CoursPdf.UploadCoursPdf(webHostEnvironment);
+                Result<string> resultvideo = await createChapitreDto.Video.UploadVideo(webHostEnvironment);
 
                 if (syntheseresult.IsSuccess &&
                     schemaresult.IsSuccess &&
@@ -47,7 +47,9 @@ namespace api.Repository
                         Schema = schemaresult.Value,
                         Synthese = syntheseresult.Value,
                         Statue = ObjectStatus.Pending,
+                        Quiz = createChapitreDto.quiz,
                     };
+
 
                 }
                 return Result<Chapitre>.Failure("hasn`t been uploaded");
