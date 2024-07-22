@@ -74,7 +74,8 @@ namespace api.Repository
                 }
 
                 List<int> checkedChapters = await apiDbContext.checkChapters
-                    .Where(cc => cc.StudentId == studentId)
+                    .Where(cc => cc.StudentId == studentId && 
+                    module.Chapitres.Any(ch => ch.Id == cc.ChapitreId))
                     .Select(cc => cc.ChapitreId)
                     .ToListAsync();
 
