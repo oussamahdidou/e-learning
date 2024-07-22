@@ -2,6 +2,8 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MatStepperModule } from '@angular/material/stepper';
+
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
@@ -44,10 +46,12 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
     RouterModule,
     ReactiveFormsModule,
     PdfViewerModule,
+
     VgCoreModule,
     VgControlsModule,
     VgOverlayPlayModule,
     VgBufferingModule,
+    MatStepperModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

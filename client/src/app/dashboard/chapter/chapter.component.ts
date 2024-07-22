@@ -1,12 +1,31 @@
-import { Component } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { Quiz } from '../../interfaces/dashboard';
 
 @Component({
-  selector: 'app-updatequiz',
-  templateUrl: './updatequiz.component.html',
-  styleUrl: './updatequiz.component.css',
+  selector: 'app-chapter',
+  templateUrl: './chapter.component.html',
+  styleUrl: './chapter.component.css',
 })
-export class UpdatequizComponent {
+export class ChapterComponent implements AfterViewInit, OnInit {
+  pdfSrc!: string;
+
+  constructor(private cdr: ChangeDetectorRef) {}
+
+  ngOnInit(): void {
+    // Initialize the PDF path here
+    this.pdfSrc = '/documents/download_3.pdf';
+  }
+
+  ngAfterViewInit(): void {
+    // Manually trigger change detection if needed
+    this.cdr.detectChanges();
+  }
+  isLinear = false;
   quiz: Quiz = {
     id: 1,
     nom: 'General Knowledge Quiz',
@@ -142,9 +161,13 @@ export class UpdatequizComponent {
     });
   }
 
-  deleteOption(questionIndex: number) {
+  deleteOption(questionIndex: number, optionIndex: number) {
+    // Check if the option array has more than one item
     if (this.quiz.questions[questionIndex].options.length > 1) {
-      this.quiz.questions[questionIndex].options.pop();
+      // Remove the specific option using its index
+      this.quiz.questions[questionIndex].options.splice(optionIndex, 1);
+    } else {
+      console.error('Cannot delete the last option.');
     }
   }
 

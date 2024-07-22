@@ -14,7 +14,7 @@ import { VgCoreModule } from '@videogular/ngx-videogular/core';
 import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
-
+import { MatStepperModule } from '@angular/material/stepper';
 import { TeachersComponent } from './teachers/teachers.component';
 import { InstitutionsTableComponent } from './institutions-table/institutions-table.component';
 import { NiveauScolairesTableComponent } from './niveau-scolaires-table/niveau-scolaires-table.component';
@@ -22,16 +22,13 @@ import { ModulesTableComponent } from './modules-table/modules-table.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { ApprobationTableComponent } from './approbation-table/approbation-table.component';
 import { CreatecontroleComponent } from './createcontrole/createcontrole.component';
-import { CreatechapitreComponent } from './createchapitre/createchapitre.component';
-import { CreatequizComponent } from './createquiz/createquiz.component';
-import { UpdatequizComponent } from './updatequiz/updatequiz.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DashboardchapitrenavComponent } from './dashboardchapitrenav/dashboardchapitrenav.component';
-import { UpdatecoursComponent } from './updatecours/updatecours.component';
-import { UpdatevideoComponent } from './updatevideo/updatevideo.component';
-import { UpdatesyntheseComponent } from './updatesynthese/updatesynthese.component';
-import { UpdateschemaComponent } from './updateschema/updateschema.component';
-import { DashboardService } from '../services/dashboard.service';
 
+import { DashboardService } from '../services/dashboard.service';
+import { CreateChapterQuizComponent } from './create-chapter-quiz/create-chapter-quiz.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { ChapterComponent } from './chapter/chapter.component';
 const routes: Routes = [
   {
     path: '',
@@ -42,13 +39,9 @@ const routes: Routes = [
       { path: 'teacherstable', component: TeachersComponent },
       { path: 'approbtionstable', component: ApprobationTableComponent },
       { path: 'createcontrole/:id', component: CreatecontroleComponent },
-      { path: 'createchapitre/:id', component: CreatechapitreComponent },
-      { path: 'createquiz/:id', component: CreatequizComponent },
-      { path: 'quiz/:id', component: UpdatequizComponent },
-      { path: 'pdf/:id', component: UpdatecoursComponent },
-      { path: 'video/:id', component: UpdatevideoComponent },
-      { path: 'schema/:id', component: UpdateschemaComponent },
-      { path: 'synthese/:id', component: UpdatesyntheseComponent },
+      { path: 'chapter/:id', component: ChapterComponent },
+
+      { path: 'createchapter', component: CreateChapterQuizComponent },
     ],
   },
 ];
@@ -62,14 +55,11 @@ const routes: Routes = [
     SidenavComponent,
     ApprobationTableComponent,
     CreatecontroleComponent,
-    CreatechapitreComponent,
-    CreatequizComponent,
-    UpdatequizComponent,
+
     DashboardchapitrenavComponent,
-    UpdatecoursComponent,
-    UpdatevideoComponent,
-    UpdatesyntheseComponent,
-    UpdateschemaComponent,
+
+    CreateChapterQuizComponent,
+    ChapterComponent,
   ],
   imports: [
     CommonModule,
@@ -79,7 +69,14 @@ const routes: Routes = [
     MatInputModule,
     MatFormFieldModule,
     MatButtonModule,
+    MatStepperModule,
     MatIconModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatRadioModule,
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,

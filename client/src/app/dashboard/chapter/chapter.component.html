@@ -1,0 +1,148 @@
+<app-sidenav></app-sidenav>
+<div class="quiz-container">
+  <mat-horizontal-stepper [linear]="isLinear" #stepper class="pt-5 px-3">
+    <mat-step>
+      <ng-template matStepLabel> CoursPdf </ng-template>
+      <h4>CoursPdf</h4>
+      <div class="pdf-container w-75 px-5 mx-auto">
+        <pdf-viewer
+          src="/documents/download_3.pdf"
+          [render-text]="true"
+          [original-size]="false"
+          style="width: 100%; height: 700px"
+        >
+        </pdf-viewer>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel> CoursVideo </ng-template>
+      <h4>CoursVideo</h4>
+
+      <section class="video px-5 mt-3">
+        <video class="img-fluid" controls>
+          <source
+            src="video/University Promo Video Template (Editable).mp4"
+            type="video/mp4"
+          />
+        </video>
+      </section>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel> Schema </ng-template>
+      <h4>Schema</h4>
+      <div class="pdf-container w-75 mx-auto">
+        <pdf-viewer
+          src="/documents/download_3.pdf"
+          [render-text]="true"
+          [original-size]="false"
+          style="width: 100%; height: 700px"
+        >
+        </pdf-viewer>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel> Synthese </ng-template>
+      <h4>Synthese</h4>
+      <div class="pdf-container w-75 mx-auto">
+        <pdf-viewer
+          src="/documents/download_3.pdf"
+          [render-text]="true"
+          [original-size]="false"
+          style="width: 100%; height: 700px"
+        >
+        </pdf-viewer>
+      </div>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Quiz </ng-template>
+      <h4>Quiz</h4>
+
+      <form (ngSubmit)="onSubmit()" #quizForm="ngForm">
+        <div class="mb-3">
+          <label for="quizName" class="form-label">Quiz Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="quizName"
+            required
+            [(ngModel)]="quiz.nom"
+            name="quizName"
+          />
+        </div>
+
+        <div
+          *ngFor="let question of quiz.questions; let i = index"
+          class="mb-4"
+        >
+          <div class="mb-3">
+            <label for="questionText{{ i }}" class="form-label"
+              >Question {{ i + 1 }}</label
+            >
+
+            <input
+              type="text"
+              class="form-control"
+              id="questionText{{ i }}"
+              required
+              [(ngModel)]="question.nom"
+              name="questionText{{ i }}"
+            />
+          </div>
+
+          <div
+            *ngFor="let option of question.options; let j = index"
+            class="input-group mb-2"
+          >
+            <div class="input-group-text">
+              <input
+                type="radio"
+                [name]="'correctOption' + i"
+                [checked]="option.truth"
+                (change)="setCorrectOption(i, j)"
+              />
+            </div>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="option.nom"
+              name="option{{ i }}-{{ j }}"
+              placeholder="Option {{ j + 1 }}"
+            />
+            <button
+              type="button"
+              class="btn btn-danger btn-sm"
+              (click)="deleteOption(i, j)"
+            >
+              Delete Option
+            </button>
+          </div>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            (click)="addOption(i)"
+          >
+            Add Option
+          </button>
+
+          <button
+            type="button"
+            class="btn btn-danger btn-secondary btn-sm"
+            (click)="deleteQuestion(i)"
+          >
+            Delete Question
+          </button>
+        </div>
+
+        <button type="button" class="btn btn-secondary" (click)="addQuestion()">
+          Add Question
+        </button>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
