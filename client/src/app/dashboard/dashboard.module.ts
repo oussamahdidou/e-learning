@@ -29,6 +29,7 @@ import { DashboardService } from '../services/dashboard.service';
 import { CreateChapterQuizComponent } from './create-chapter-quiz/create-chapter-quiz.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { ChapterComponent } from './chapter/chapter.component';
+import { ModuleComponent } from './module/module.component';
 const routes: Routes = [
   {
     path: '',
@@ -41,7 +42,8 @@ const routes: Routes = [
       { path: 'createcontrole/:id', component: CreatecontroleComponent },
       { path: 'chapter/:id', component: ChapterComponent },
 
-      { path: 'createchapter', component: CreateChapterQuizComponent },
+      { path: 'createchapter/:id', component: CreateChapterQuizComponent },
+      { path: 'module/:id', component: ModuleComponent },
     ],
   },
 ];
@@ -60,6 +62,7 @@ const routes: Routes = [
 
     CreateChapterQuizComponent,
     ChapterComponent,
+    ModuleComponent,
   ],
   imports: [
     CommonModule,
