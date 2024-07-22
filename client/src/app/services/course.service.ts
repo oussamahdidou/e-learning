@@ -47,7 +47,7 @@ interface Module {
   id: number;
   nom: string;
   chapitres: Chapitre[];
-  controles?: Controle[];
+  controles: Controle[];
 }
 
 @Injectable({
@@ -131,14 +131,14 @@ export class CourseService {
       {
         id: 1,
         nom: 'Controle 2',
-        ennonce: 'Enonce for Controle 1',
+        ennonce: '/cour/XMLChp1.pdf',
         solution: 'Solution for Controle 1',
         ChapitreNum: [1, 2],
       },
       {
-        id: 1,
+        id: 2,
         nom: 'Controle 1',
-        ennonce: 'Enonce for Controle 1',
+        ennonce: '/cour/XMLChp1.pdf',
         solution: 'Solution for Controle 1',
         ChapitreNum: [1],
       },
@@ -167,26 +167,51 @@ export class CourseService {
   // }
   getQuizByID(id: number): Observable<Quiz | undefined> {
     const chapter = this.module.chapitres.find(
-      (chapitre) => chapitre.quiz.id === id
+      (chapitre) => chapitre.id === id
     );
 
     const quiz = chapter ? chapter.quiz : undefined;
     return of(quiz);
   }
+
   getVdUrlById(id: number): Observable<string | undefined> {
     const chapter = this.module.chapitres.find(
-      (chapitre) => chapitre.quiz.id === id
+      (chapitre) => chapitre.id === id
     );
 
     const vdUrl = chapter ? chapter.VideoPath : undefined;
     return of(vdUrl as string | undefined);
   }
+
   getCourPdfUrlById(id: number): Observable<string | undefined> {
     const chapter = this.module.chapitres.find(
-      (chapitre) => chapitre.quiz.id === id
+      (chapitre) => chapitre.id === id
     );
 
     const pdfUrl = chapter ? chapter.CoursPdfPath : undefined;
     return of(pdfUrl as string | undefined);
+  }
+
+  getSyntheseById(id: number): Observable<string | undefined>{
+    const chapter = this.module.chapitres.find(
+      (chapitre) => chapitre.id === id
+    );
+    const syntheseUrl = chapter ? chapter.Synthese : undefined;
+    return of(syntheseUrl as string | undefined);
+  }
+
+  getControleById(id: number): Observable<string | undefined>{
+    const controle = this.module.controles.find(
+      (controle) => controle.id === id
+    );
+    const controleUrl = controle ? controle.ennonce : undefined;
+    return of(controleUrl as string | undefined);
+  }
+  getSchemaById(id: number): Observable<string | undefined>{
+    const chapter = this.module.chapitres.find(
+      (chapitre) => chapitre.id === id
+    );
+    const schemaeUrl = chapter ? chapter.Schema : undefined;
+    return of(schemaeUrl as string | undefined);
   }
 }

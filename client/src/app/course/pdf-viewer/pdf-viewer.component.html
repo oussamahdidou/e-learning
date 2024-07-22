@@ -5,6 +5,7 @@
       class="mx-5 rounded-pill btn-devoir px-4"
       data-bs-toggle="modal"
       data-bs-target="#devoirModal"
+      *ngIf="isExam"
     >
       + Ajouter
     </button>
@@ -31,6 +32,7 @@
   tabindex="-1"
   aria-labelledby="devoirModalLabel"
   aria-hidden="true"
+  *ngIf="isExam"
 >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content d-flex">

@@ -27,6 +27,18 @@ const routes: Routes = [
         path: 'cour/:id',
         component: PdfViewerComponent,
       },
+      {
+        path: 'synthese/:id',
+        component: PdfViewerComponent,
+      },
+      {
+        path: 'exam/:id',
+        component: PdfViewerComponent,
+      },
+      {
+        path: 'schema/:id',
+        component: PdfViewerComponent,
+      }
     ],
   },
 ];
