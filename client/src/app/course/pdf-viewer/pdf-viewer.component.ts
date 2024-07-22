@@ -1,15 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 
 @Component({
   selector: 'app-pdf-viewer',
   templateUrl: './pdf-viewer.component.html',
-  styleUrl: './pdf-viewer.component.css',
+  styleUrls: ['./pdf-viewer.component.css'],
 })
 export class PdfViewerComponent {
-  @Input() pdfUrl: string | undefined;
-
+  pdfUrl: string | undefined;
+  isExam: boolean = false;
   constructor(
     private route: ActivatedRoute,
     private courseService: CourseService
@@ -20,14 +20,35 @@ export class PdfViewerComponent {
       const idParam = params.get('id');
       if (idParam) {
         const id = +idParam;
-        this.courseService
-          .getCourPdfUrlById(id)
-          .subscribe((url: string | undefined) => {
+        const routePath = this.route.snapshot.routeConfig?.path;
+
+        if (routePath?.includes('cour')) {
+          this.courseService.getCourPdfUrlById(id).subscribe((url) => {
             this.pdfUrl = url;
           });
+        }
+        else if (routePath?.includes('synthese')) {
+          this.courseService.getSyntheseById(id).subscribe((url) => {
+            this.pdfUrl = url;
+          });
+        }
+        else if (routePath?.includes('exam')) {
+          this.courseService.getControleById(id).subscribe((url) => {
+            this.pdfUrl = url;
+          });
+          this.isExam = true;
+        }
+        else if (routePath?.includes('schema')) {
+          this.courseService.getSchemaById(id).subscribe((url) => {
+            this.pdfUrl = url;
+          });
+        } else {
+          console.error('Unknown route type');
+        }
       } else {
         console.error('ID parameter is missing');
       }
     });
   }
+
 }

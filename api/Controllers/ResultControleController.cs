@@ -28,7 +28,7 @@ namespace api.Controllers
             _environment = environment;
         }
         [HttpPost("{id:int}")]
-        public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id)
+        public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id) 
         {
             var username = User.GetUsername();
             var user = await _manager.FindByNameAsync(username);
