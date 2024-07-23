@@ -20,7 +20,7 @@ export class PdfViewerComponent {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const idParam = params.get('id');
+      const idParam = params.get('pdfid');
       if (idParam) {
         const id = +idParam;
         const routePath = this.route.snapshot.routeConfig?.path;

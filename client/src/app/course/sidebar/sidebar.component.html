@@ -29,7 +29,7 @@
       (click)="setActive($event)"
     >
       <a
-        [routerLink]="['/course/{{module?.id}}/cour/', chapitre.id]"
+        [routerLink]="['/course',module?.id,'cour', chapitre.id]"
         class="d-flex align-items-center w-100 text-decoration-none"
       >
         <span class="flex-grow-1">Cour</span>
@@ -42,7 +42,7 @@
     <div class="items" *ngIf="chapitre.videoPath" (click)="setActive($event)">
       <a
         class="d-flex align-items-center w-100 text-decoration-none"
-        [routerLink]="['/course/{{module?.id}}/lecture/', chapitre.id]"
+        [routerLink]="['/course',module?.id,'lecture', chapitre.id]"
       >
         <span class="flex-grow-1">Video</span>
         <button mat-icon-button color="primary" aria-label="Video">
@@ -54,7 +54,7 @@
     <div class="items" *ngIf="chapitre.schema" (click)="setActive($event)">
       <a
         class="d-flex align-items-center w-100 text-decoration-none"
-        [routerLink]="['/course/{{module?.id}}/schema/', chapitre.id]"
+        [routerLink]="['/course',module?.id,'schema', chapitre.id]"
       >
         <span class="flex-grow-1">Schema</span>
         <button mat-icon-button color="primary">
@@ -65,7 +65,7 @@
 
     <div class="items" *ngIf="chapitre.synthese" (click)="setActive($event)">
       <a
-        [routerLink]="['/course/{{module?.id}}/synthese/', chapitre.id]"
+        [routerLink]="['/course',module?.id,'synthese', chapitre.id]"
         class="d-flex align-items-center w-100 text-decoration-none"
       >
         <span class="flex-grow-1">Synthese</span>
@@ -75,9 +75,9 @@
       </a>
     </div>
 
-    <div class="items" *ngIf="chapitre.quiz" (click)="setActive($event)">
+    <div class="items" *ngIf="chapitre?.quiz" (click)="setActive($event)">
       <a
-        [routerLink]="['/course/{{module?.id}}/quiz/', chapitre.quiz.id]"
+      [routerLink]="['/course', module?.id, 'quiz', chapitre.quiz.id]"
         class="d-flex align-items-center w-100 text-decoration-none"
       >
         <span class="flex-grow-1">Quiz</span>
@@ -93,7 +93,7 @@
     >
       <div class="items">
         <a
-          [routerLink]="['/course/{{module?.id}}/exam/', controle.id]"
+          [routerLink]="['/course',module?.id,'exam', controle.id]"
           class="d-flex align-items-center w-100 text-decoration-none"
         >
           <span class="flex-grow-1">Controle : {{ controle.nom }}</span>

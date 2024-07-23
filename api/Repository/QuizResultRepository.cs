@@ -31,7 +31,7 @@ namespace api.Repository
                 {
                     // Update existing quiz result
                     existingQuizResult.Note = createQuizResultDto.note;
-                    _context.Update(existingQuizResult);
+                    await _context.SaveChangesAsync();
                 }
                 else
                 {

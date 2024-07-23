@@ -16,27 +16,27 @@ const routes: Routes = [
     component : CourseComponent,
     children: [
       {
-        path: 'lecture/:id',
+        path: 'lecture/:lectureid',
         component: LectureComponent,
       },
       {
-        path: 'quiz/:id',
+        path: 'quiz/:quizid',
         component: QuizComponent,
       },
       {
-        path: 'cour/:id',
+        path: 'cour/::pdfid',
         component: PdfViewerComponent,
       },
       {
-        path: 'synthese/:id',
+        path: 'synthese/:pdfid',
         component: PdfViewerComponent,
       },
       {
-        path: 'exam/:id',
+        path: 'exam/:pdfid',
         component: PdfViewerComponent,
       },
       {
-        path: 'schema/:id',
+        path: 'schema/:pdfid',
         component: PdfViewerComponent,
       }
     ],
