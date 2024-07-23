@@ -10,6 +10,7 @@ import { CourseService } from '../../services/course.service';
 export class PdfViewerComponent {
   pdfUrl: string | undefined;
   isExam: boolean = false;
+  isFirstCour: number = 1;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -27,6 +28,7 @@ export class PdfViewerComponent {
           this.courseService.getCourPdfUrlById(id).subscribe((url) => {
             this.pdfUrl = url;
           });
+          this.IsfirstItem();
         } else if (routePath?.includes('synthese')) {
           this.courseService.getSyntheseById(id).subscribe((url) => {
             this.pdfUrl = url;
@@ -83,7 +85,7 @@ export class PdfViewerComponent {
         const id = +idParam;
         const routePath = this.route.snapshot.routeConfig?.path;
         if (routePath?.includes('cour')) {
-          this.router.navigate(['/course/lecture/', id]);
+          this.router.navigate(['/course/quiz/', id - 1]);
         }
         if (routePath?.includes('schema')) {
           this.router.navigate(['/course/lecture/', id]);
@@ -93,6 +95,25 @@ export class PdfViewerComponent {
         }
         if (routePath?.includes('exam')) {
           this.router.navigate(['/course/quiz/', id]);
+        }
+      }
+    });
+  }
+  IsfirstItem() {
+    this.route.paramMap.subscribe((params) => {
+      const idParam = params.get('id');
+      if (idParam) {
+        const id = +idParam;
+        const routePath = this.route.snapshot.routeConfig?.path;
+
+        if (routePath?.includes('cour')) {
+          this.courseService.getFirstChapterId(id).subscribe((state) => {
+            if (state) {
+              this.isFirstCour = 0;
+            } else {
+              this.isFirstCour = 1;
+            }
+          });
         }
       }
     });

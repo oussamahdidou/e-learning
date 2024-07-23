@@ -232,4 +232,9 @@ export class CourseService {
     }
     return of(false);
   }
+  getFirstChapterId(id: number): Observable<boolean> {
+    const chapterId = this.module.chapitres[0].id;
+    if (chapterId === id) return of(true);
+    return of(false);
+  }
 }
