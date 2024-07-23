@@ -10,7 +10,7 @@ namespace api.interfaces
     public interface ICheckChapterRepository
     {
         Task<Result<List<CheckChapter>>> GetStudentAllcheckChapters(AppUser student);
-        Task<Result<CheckChapter>> CreateCheckChapter(AppUser student , int chapterId);
+        Task<Result<CheckChapter>> CreateCheckChapter(string studentId , int chapterId);
         Task<Result<bool>> DeleteCheckChapter(AppUser user, int chapterId);
     }
 }

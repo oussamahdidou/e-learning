@@ -41,9 +41,9 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> CreateCheckChapter([FromRoute] int id)
         {
-            string username = User.GetUsername();
-            AppUser? user = await _manager.FindByNameAsync(username);
-            Result<CheckChapter> result = await _check.CreateCheckChapter(user, id);
+            // string username = User.GetUsername();
+            // AppUser? user = await _manager.FindByNameAsync(username);
+            Result<CheckChapter> result = await _check.CreateCheckChapter("0bcd548d-9341-4a51-9c3a-540a84ba67e9", id);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }

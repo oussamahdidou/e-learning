@@ -64,13 +64,12 @@ namespace api.Repository
         {
             return Result<ModuleDto>.Failure("Module not found");
         }
-
+        List<int> chapitreIds = module.Chapitres.Select(ch => ch.Id).ToList();
         // Fetch checked chapters for the given student
         List<int> checkedChapters = await apiDbContext.checkChapters
-            .Where(cc => cc.StudentId == studentId && 
-            module.Chapitres.Any(ch => ch.Id == cc.ChapitreId))
-            .Select(cc => cc.ChapitreId)
-            .ToListAsync();
+    .Where(cc => cc.StudentId == studentId && chapitreIds.Contains(cc.ChapitreId))
+    .Select(cc => cc.ChapitreId)
+    .ToListAsync();
 
         // Filter chapters in memory
         var filteredChapitres = module.Chapitres

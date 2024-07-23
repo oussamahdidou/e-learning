@@ -55,12 +55,17 @@ interface Module {
   styleUrls: ['./course.component.css'],
 })
 export class CourseComponent {
-  constructor(private router: Router, private route: ActivatedRoute, private courseService: CourseService ) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private courseService: CourseService
+  ) {}
   module: Module | undefined;
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id')!;
     this.courseService.getCourseById(id).subscribe((module) => {
+      console.log(module);
       this.module = module;
     });
   }

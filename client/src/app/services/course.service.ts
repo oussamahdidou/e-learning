@@ -164,10 +164,10 @@ export class CourseService {
     console.log('Module ID:', this.module?.id);
     console.log('ID Match:', this.module?.id === id);
 
-    if (this.module?.id === id) {
-      return of(this.module);
-    }
-    return this.http.get<Module>(`${environment.apiUrl}/modules/${id}`).pipe(
+    // if (this.module?.id === id) {
+    //   return of(this.module);
+    // }
+    return this.http.get<Module>(`${environment.apiUrl}/module?id=${id}`).pipe(
       map((data) => {
         this.module = data;
         return data;
@@ -179,10 +179,21 @@ export class CourseService {
     console.error('An error occurred:', error);
     return throwError('Something went wrong; please try again later.');
   }
+
+  checkChapter(id: number): Observable<boolean> {
+    return this.http.get<any>(`${environment.apiUrl}/checkChapter/${id}`).pipe(
+      map((data) => {
+        this.module = data;
+        return data;
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   getQuizByID(id: number): Observable<Quiz | undefined> {
     const quiz = this.module.chapitres
-    .map((chapitre) => chapitre.quiz)
-    .find((quiz) => quiz.id === id);
+      .map((chapitre) => chapitre.quiz)
+      .find((quiz) => quiz.id === id);
 
     return of(quiz);
   }
@@ -219,7 +230,6 @@ export class CourseService {
     );
     return of(controle);
   }
-
 
   getSchemaById(id: number): Observable<string | undefined> {
     const chapter = this.module.chapitres.find(
