@@ -19,34 +19,17 @@ interface Quiz {
   nom: string;
   questions: Question[];
 }
-interface Option {
-  id: number;
-  nom: string;
-  truth: string;
-}
-
-interface Question {
-  id: number;
-  nom: string;
-  options: Option[];
-}
-
-interface Quiz {
-  id: number;
-  nom: string;
-  questions: Question[];
-}
 
 interface Chapitre {
   id: number;
-  ChapitreNum: number;
+  chapitreNum: number;
   nom: string;
-  Statue: string;
-  CoursPdfPath: string | null;
-  VideoPath: string | null;
-  Synthese: string | null;
-  Schema: string | null;
-  Premium: boolean;
+  statue: boolean;
+  coursPdfPath: string | null;
+  videoPath: string | null;
+  synthese: string | null;
+  schema: string | null;
+  premium: boolean;
   quizId: number;
   quiz: Quiz;
 }
@@ -56,16 +39,15 @@ interface Controle {
   nom: string;
   ennonce: string;
   solution: string;
-  ChapitreNum: number[];
+  chapitreNum: number[];
 }
 
 interface Module {
   id: number;
   nom: string;
   chapitres: Chapitre[];
-  controles?: Controle[];
+  controles: Controle[];
 }
-
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',

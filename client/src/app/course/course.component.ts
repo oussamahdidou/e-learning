@@ -22,14 +22,14 @@ interface Quiz {
 
 interface Chapitre {
   id: number;
-  ChapitreNum: number;
+  chapitreNum: number;
   nom: string;
-  Statue: boolean;
-  CoursPdfPath: string | null;
-  VideoPath: string | null;
-  Synthese: string | null;
-  Schema: string | null;
-  Premium: boolean;
+  statue: boolean;
+  coursPdfPath: string | null;
+  videoPath: string | null;
+  synthese: string | null;
+  schema: string | null;
+  premium: boolean;
   quizId: number;
   quiz: Quiz;
 }
@@ -39,7 +39,7 @@ interface Controle {
   nom: string;
   ennonce: string;
   solution: string;
-  ChapitreNum: number[];
+  chapitreNum: number[];
 }
 
 interface Module {
@@ -48,7 +48,6 @@ interface Module {
   chapitres: Chapitre[];
   controles: Controle[];
 }
-
 @Component({
   selector: 'app-course',
   templateUrl: './course.component.html',

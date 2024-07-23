@@ -24,14 +24,14 @@ interface Quiz {
 
 interface Chapitre {
   id: number;
-  ChapitreNum: number;
+  chapitreNum: number;
   nom: string;
-  Statue: boolean;
-  CoursPdfPath: string | null;
-  VideoPath: string | null;
-  Synthese: string | null;
-  Schema: string | null;
-  Premium: boolean;
+  statue: boolean;
+  coursPdfPath: string | null;
+  videoPath: string | null;
+  synthese: string | null;
+  schema: string | null;
+  premium: boolean;
   quizId: number;
   quiz: Quiz;
 }
@@ -41,7 +41,7 @@ interface Controle {
   nom: string;
   ennonce: string;
   solution: string;
-  ChapitreNum: number[];
+  chapitreNum: number[];
 }
 
 interface Module {
@@ -61,14 +61,14 @@ export class CourseService {
     chapitres: [
       {
         id: 99,
-        ChapitreNum: 1,
+        chapitreNum: 1,
         nom: 'Chapitre 1',
-        Statue: true,
-        CoursPdfPath: '/cour/XMLChp1.pdf',
-        VideoPath: '/cour/20210807_223157.mp4',
-        Synthese: '/cour/XMLChp1.pdf',
-        Schema: '/cour/XMLChp1.pdf',
-        Premium: true,
+        statue: true,
+        coursPdfPath: '/cour/XMLChp1.pdf',
+        videoPath: '/cour/20210807_223157.mp4',
+        synthese: '/cour/XMLChp1.pdf',
+        schema: '/cour/XMLChp1.pdf',
+        premium: true,
         quizId: 1,
         quiz: {
           id: 1,
@@ -95,14 +95,14 @@ export class CourseService {
       },
       {
         id: 100,
-        ChapitreNum: 2,
+        chapitreNum: 2,
         nom: 'Chapitre 2',
-        Statue: false,
-        CoursPdfPath: '/cour/cours3.pdf',
-        VideoPath: '/cour/20210807_223157.mp4',
-        Synthese: '/cour/cours3.pdf',
-        Schema: '/cour/cours3.pdf',
-        Premium: false,
+        statue: false,
+        coursPdfPath: '/cour/cours3.pdf',
+        videoPath: '/cour/20210807_223157.mp4',
+        synthese: '/cour/cours3.pdf',
+        schema: '/cour/cours3.pdf',
+        premium: false,
         quizId: 2,
         quiz: {
           id: 2,
@@ -134,14 +134,14 @@ export class CourseService {
         nom: 'Controle 2',
         ennonce: '/cour/XMLChp1.pdf',
         solution: 'Solution for Controle 1',
-        ChapitreNum: [1, 2],
+        chapitreNum: [1, 2],
       },
       {
         id: 2,
         nom: 'Controle 1',
         ennonce: '/cour/XMLChp1.pdf',
         solution: 'Solution for Controle 1',
-        ChapitreNum: [1],
+        chapitreNum: [1],
       },
     ],
   };
@@ -149,10 +149,10 @@ export class CourseService {
   private currentChapterIndex: number = 0;
   private currentItemIndex: number = 0;
   private itemsOrder: (keyof Chapitre)[] = [
-    'CoursPdfPath',
-    'VideoPath',
-    'Schema',
-    'Synthese',
+    'coursPdfPath',
+    'videoPath',
+    'schema',
+    'synthese',
     'quiz',
   ];
 
@@ -203,7 +203,7 @@ export class CourseService {
       (chapitre) => chapitre.id === id
     );
 
-    const vdUrl = chapter ? chapter.VideoPath : undefined;
+    const vdUrl = chapter ? chapter.videoPath : undefined;
     return of(vdUrl as string | undefined);
   }
 
@@ -212,7 +212,7 @@ export class CourseService {
       (chapitre) => chapitre.id === id
     );
 
-    const pdfUrl = chapter ? chapter.CoursPdfPath : undefined;
+    const pdfUrl = chapter ? chapter.coursPdfPath : undefined;
     return of(pdfUrl as string | undefined);
   }
 
@@ -220,7 +220,7 @@ export class CourseService {
     const chapter = this.module.chapitres.find(
       (chapitre) => chapitre.id === id
     );
-    const syntheseUrl = chapter ? chapter.Synthese : undefined;
+    const syntheseUrl = chapter ? chapter.synthese : undefined;
     return of(syntheseUrl as string | undefined);
   }
 
@@ -235,23 +235,23 @@ export class CourseService {
     const chapter = this.module.chapitres.find(
       (chapitre) => chapitre.id === id
     );
-    const schemaUrl = chapter ? chapter.Schema : undefined;
+    const schemaUrl = chapter ? chapter.schema : undefined;
     return of(schemaUrl as string | undefined);
   }
 
   isVdUrlAvailable(id: number): Observable<boolean> {
     const chapter = this.module.chapitres.find((ch) => ch.id === id);
-    const vdUrlExists = chapter ? !!chapter.VideoPath : false;
+    const vdUrlExists = chapter ? !!chapter.videoPath : false;
     return of(vdUrlExists);
   }
   getChapterNumber(id: number): Observable<number | null> {
     const chapter = this.module.chapitres.find((ch) => ch.id === id);
-    const chapterNum = chapter ? chapter.ChapitreNum : null;
+    const chapterNum = chapter ? chapter.chapitreNum : null;
     return of(chapterNum);
   }
   getControle(id: number): Observable<boolean> {
     const controle = this.module.controles.find(
-      (controle) => Math.max(...controle.ChapitreNum) === id
+      (controle) => Math.max(...controle.chapitreNum) === id
     );
     if (controle) {
       return of(true);
@@ -264,11 +264,11 @@ export class CourseService {
     return of(false);
   }
   isLastChapter(id: number): Observable<boolean> {
-    const maxChapitreNum = Math.max(
-      ...this.module.chapitres.map((chapitre) => chapitre.ChapitreNum)
+    const maxchapitreNum = Math.max(
+      ...this.module.chapitres.map((chapitre) => chapitre.chapitreNum)
     );
     const chapter = this.module.chapitres.find((chapter) => chapter.id === id);
-    if (chapter?.ChapitreNum === maxChapitreNum) return of(true);
+    if (chapter?.chapitreNum === maxchapitreNum) return of(true);
     return of(false);
   }
 }

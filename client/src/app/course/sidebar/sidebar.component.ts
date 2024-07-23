@@ -22,14 +22,14 @@ interface Quiz {
 
 interface Chapitre {
   id: number;
-  ChapitreNum: number;
+  chapitreNum: number;
   nom: string;
-  Statue: boolean;
-  CoursPdfPath: string | null;
-  VideoPath: string | null;
-  Synthese: string | null;
-  Schema: string | null;
-  Premium: boolean;
+  statue: boolean;
+  coursPdfPath: string | null;
+  videoPath: string | null;
+  synthese: string | null;
+  schema: string | null;
+  premium: boolean;
   quizId: number;
   quiz: Quiz;
 }
@@ -39,14 +39,14 @@ interface Controle {
   nom: string;
   ennonce: string;
   solution: string;
-  ChapitreNum: number[];
+  chapitreNum: number[];
 }
 
 interface Module {
   id: number;
   nom: string;
   chapitres: Chapitre[];
-  controles?: Controle[];
+  controles: Controle[];
 }
 @Component({
   selector: 'app-sidebar',
@@ -75,7 +75,7 @@ export class SidebarComponent implements OnInit {
   calculateProgress() {
     if (this.module) {
       const completedChapters = this.module.chapitres.filter(
-        (chapitre) => chapitre.Statue === true
+        (chapitre) => chapitre.statue === true
       ).length;
       this.progress = (completedChapters / this.module.chapitres.length) * 100;
     }
@@ -84,7 +84,7 @@ export class SidebarComponent implements OnInit {
   getControles(chapitreNum: number) {
     return (
       this.module?.controles?.filter((controle) => {
-        const maxNum = Math.max(...controle.ChapitreNum);
+        const maxNum = Math.max(...controle.chapitreNum);
         return maxNum === chapitreNum;
       }) || []
     );

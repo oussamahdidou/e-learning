@@ -18,14 +18,14 @@
     </div>
   </div>
 
-  <div [ngClass]="chapitre.Statue ? 'checked' : 'unchecked'" *ngFor="let chapitre of module?.chapitres">
+  <div [ngClass]="chapitre.statue ? 'checked' : 'unchecked'" *ngFor="let chapitre of module?.chapitres">
     <div class="items chapitre">
       <a class="chap">{{ chapitre.nom }}</a>
     </div>
 
     <div
       class="items"
-      *ngIf="chapitre.CoursPdfPath"
+      *ngIf="chapitre.coursPdfPath"
       (click)="setActive($event)"
     >
       <a
@@ -39,7 +39,7 @@
       </a>
     </div>
 
-    <div class="items" *ngIf="chapitre.VideoPath" (click)="setActive($event)">
+    <div class="items" *ngIf="chapitre.videoPath" (click)="setActive($event)">
       <a
         class="d-flex align-items-center w-100 text-decoration-none"
         [routerLink]="['/course/{{module?.id}}/lecture/', chapitre.id]"
@@ -51,7 +51,7 @@
       </a>
     </div>
 
-    <div class="items" *ngIf="chapitre.Schema" (click)="setActive($event)">
+    <div class="items" *ngIf="chapitre.schema" (click)="setActive($event)">
       <a
         class="d-flex align-items-center w-100 text-decoration-none"
         [routerLink]="['/course/{{module?.id}}/schema/', chapitre.id]"
@@ -63,7 +63,7 @@
       </a>
     </div>
 
-    <div class="items" *ngIf="chapitre.Synthese" (click)="setActive($event)">
+    <div class="items" *ngIf="chapitre.synthese" (click)="setActive($event)">
       <a
         [routerLink]="['/course/{{module?.id}}/synthese/', chapitre.id]"
         class="d-flex align-items-center w-100 text-decoration-none"
@@ -75,9 +75,9 @@
       </a>
     </div>
 
-    <div class="items" *ngIf="chapitre.quizId" (click)="setActive($event)">
+    <div class="items" *ngIf="chapitre.quiz" (click)="setActive($event)">
       <a
-        [routerLink]="['/course/{{module?.id}}/quiz/', chapitre.quizId]"
+        [routerLink]="['/course/{{module?.id}}/quiz/', chapitre.quiz.id]"
         class="d-flex align-items-center w-100 text-decoration-none"
       >
         <span class="flex-grow-1">Quiz</span>
@@ -88,7 +88,7 @@
     </div>
 
     <div
-      *ngFor="let controle of getControles(chapitre.ChapitreNum)"
+      *ngFor="let controle of getControles(chapitre.chapitreNum)"
       (click)="setActive($event)"
     >
       <div class="items">
