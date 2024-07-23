@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 interface Option {
   id: number;
@@ -51,6 +52,8 @@ interface Course {
   styleUrls: ['./course.component.css'],
 })
 export class CourseComponent {
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
   course: Course = {
     id: 1,
     name: 'Introduction to Programming',

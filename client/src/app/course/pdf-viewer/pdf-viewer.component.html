@@ -20,10 +20,20 @@
     </pdf-viewer>
   </div>
   <div class="btns">
-    <button class="btn mx-5 rounded-pill" (click)="previousItem()">
+    <button
+      class="btn mx-5 rounded-pill"
+      (click)="previousItem()"
+      [disabled]="isFirstCour === 0"
+    >
       Précédent
     </button>
-    <button class="btn mx-5 rounded-pill" (click)="nextItem()">Suivant</button>
+    <button
+      class="btn mx-5 rounded-pill"
+      (click)="nextItem()"
+      [disabled]="isLastControle === 0"
+    >
+      Suivant
+    </button>
   </div>
 </div>
 
