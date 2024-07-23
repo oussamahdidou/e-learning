@@ -16,6 +16,10 @@ const routes: Routes = [
     component: CourseComponent,
     children: [
       {
+        path:'module/:id',
+        component: SidebarComponent
+      },
+      {
         path: 'lecture/:id',
         component: LectureComponent,
       },

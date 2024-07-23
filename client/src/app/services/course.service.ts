@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, Observable, of, retry, throwError } from 'rxjs';
+import { catchError, map, Observable, of, retry, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 
@@ -158,10 +158,29 @@ export class CourseService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  getCourse(): Observable<Module> {
-    return of(this.module);
-  }
+  getCourseById(id: number): Observable<Module | undefined> {
+    console.log('Current Module:', this.module);
+    console.log('Requested ID:', id);
+    console.log('Module ID:', this.module?.id);
+    console.log('ID Match:', this.module?.id === id);
 
+    if (this.module?.id === id) {
+      return of(this.module);
+    }
+
+    return of(undefined);
+    // return this.http.get<Module>(`${environment.apiUrl}/modules/${id}`).pipe(
+    //   map((data) => {
+    //     this.module = data;
+    //     return data;
+    //   }),
+    //   catchError(this.handleError)
+    // );
+  }
+  private handleError(error: HttpErrorResponse) {
+    console.error('An error occurred:', error);
+    return throwError('Something went wrong; please try again later.');
+  }
   getQuizByID(id: number): Observable<Quiz | undefined> {
     const chapter = this.module.chapitres.find(
       (chapitre) => chapitre.id === id

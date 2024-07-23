@@ -89,8 +89,14 @@ export class QuizComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
+      if (isNaN(id)) {
+        console.error('Invalid ID');
+        return;
+      }
+
       this.courseService.getQuizByID(id).subscribe(
         (quiz: Quiz | undefined) => {
           if (quiz) {
@@ -103,9 +109,6 @@ export class QuizComponent implements OnInit {
           console.error('Error fetching quiz:', error);
         }
       );
-    });
-    this.courseService.getCourse().subscribe((module) => {
-      this.module = module;
     });
   }
 

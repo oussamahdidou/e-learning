@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Renderer2 } from '@angular/core';
 import { CourseService } from '../../services/course.service';
+import { ActivatedRoute } from '@angular/router';
 
 interface Option {
   id: number;
@@ -59,11 +60,13 @@ export class SidebarComponent implements OnInit {
 
   constructor(
     private courseService: CourseService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
-    this.courseService.getCourse().subscribe((module) => {
+    const id = +this.route.snapshot.paramMap.get('id')!;
+    this.courseService.getCourseById(id).subscribe((module) => {
       this.module = module;
       this.calculateProgress();
     });
