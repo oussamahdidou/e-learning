@@ -136,13 +136,13 @@ export class CourseService {
         solution: 'Solution for Controle 1',
         ChapitreNum: [1, 2],
       },
-      // {
-      //   id: 2,
-      //   nom: 'Controle 1',
-      //   ennonce: '/cour/XMLChp1.pdf',
-      //   solution: 'Solution for Controle 1',
-      //   ChapitreNum: [1],
-      // },
+      {
+        id: 2,
+        nom: 'Controle 1',
+        ennonce: '/cour/XMLChp1.pdf',
+        solution: 'Solution for Controle 1',
+        ChapitreNum: [1],
+      },
     ],
   };
 
@@ -235,6 +235,14 @@ export class CourseService {
   getFirstChapterId(id: number): Observable<boolean> {
     const chapterId = this.module.chapitres[0].id;
     if (chapterId === id) return of(true);
+    return of(false);
+  }
+  isLastChapter(id: number): Observable<boolean> {
+    const maxChapitreNum = Math.max(
+      ...this.module.chapitres.map((chapitre) => chapitre.ChapitreNum)
+    );
+    const chapter = this.module.chapitres.find((chapter) => chapter.id === id);
+    if (chapter?.ChapitreNum === maxChapitreNum) return of(true);
     return of(false);
   }
 }

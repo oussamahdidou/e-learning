@@ -27,7 +27,13 @@
     >
       Précédent
     </button>
-    <button class="btn mx-5 rounded-pill" (click)="nextItem()">Suivant</button>
+    <button
+      class="btn mx-5 rounded-pill"
+      (click)="nextItem()"
+      [disabled]="isLastControle === 0"
+    >
+      Suivant
+    </button>
   </div>
 </div>
 
