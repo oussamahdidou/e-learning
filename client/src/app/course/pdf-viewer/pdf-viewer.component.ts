@@ -38,12 +38,12 @@ export class PdfViewerComponent {
           this.courseService.getChapterNumber(id).subscribe((chapterNumber) => {
             console.log(chapterNumber);
             if (chapterNumber !== null) {
-              this.courseService
-                .getControleById(chapterNumber)
-                .subscribe((pdfUrl) => {
-                  this.pdfUrl = pdfUrl;
-                });
-              this.IsLastItem();
+              // this.courseService
+              //   .getControleById(chapterNumber)
+              //   .subscribe((pdfUrl) => {
+              //     this.pdfUrl = pdfUrl;
+              //   });
+              // this.IsLastItem();
             } else {
               console.log('Chapter not found');
             }

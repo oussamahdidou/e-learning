@@ -12,13 +12,9 @@ import { CourseComponent } from './course.component';
 
 const routes: Routes = [
   {
-    path: '',
-    component: CourseComponent,
+    path: ':id',
+    component : CourseComponent,
     children: [
-      {
-        path:'module/:id',
-        component: SidebarComponent
-      },
       {
         path: 'lecture/:id',
         component: LectureComponent,

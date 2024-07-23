@@ -24,7 +24,7 @@ interface Chapitre {
   id: number;
   ChapitreNum: number;
   nom: string;
-  Statue: string;
+  Statue: boolean;
   CoursPdfPath: string | null;
   VideoPath: string | null;
   Synthese: string | null;
@@ -75,7 +75,7 @@ export class SidebarComponent implements OnInit {
   calculateProgress() {
     if (this.module) {
       const completedChapters = this.module.chapitres.filter(
-        (chapitre) => chapitre.Statue === 'checked'
+        (chapitre) => chapitre.Statue === true
       ).length;
       this.progress = (completedChapters / this.module.chapitres.length) * 100;
     }

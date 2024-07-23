@@ -47,47 +47,75 @@ namespace api.Repository
             }
         }
         public async Task<Result<ModuleDto>> GetModuleById(int id, string studentId)
+{
+    try
+    {
+        // Fetch the module along with related entities
+        var module = await apiDbContext.modules
+            .Include(x => x.Chapitres)
+                .ThenInclude(y => y.Quiz)
+                .ThenInclude(y => y.Questions)
+                .ThenInclude(y => y.Options)
+            .Include(x => x.Chapitres)
+                .ThenInclude(y => y.Controle)  // Ensure this is correct type
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (module == null)
         {
-            try
-            {
-                Module? module = await apiDbContext.modules
-                    .Include(x => x.Chapitres)
-                        .ThenInclude(y => y.Quiz)
-                        .ThenInclude(y => y.Questions)
-                        .ThenInclude(y => y.Options)
-                    .Include(x => x.Chapitres)
-                        .ThenInclude(y => y.Controle)
-                    .Where(x => x.Id == id)
-                    .Select(x => new Module
-                    {
-                        Id = x.Id,
-                        Nom = x.Nom,
-                        Chapitres = x.Chapitres
-                            .Where(c => c.Statue == ObjectStatus.Approuver) 
-                            .ToList()
-                    })
-                    .FirstOrDefaultAsync();
-
-                if (module == null)
-                {
-                    return Result<ModuleDto>.Failure("Module not found");
-                }
-
-                List<int> checkedChapters = await apiDbContext.checkChapters
-                    .Where(cc => cc.StudentId == studentId && 
-                    module.Chapitres.Any(ch => ch.Id == cc.ChapitreId))
-                    .Select(cc => cc.ChapitreId)
-                    .ToListAsync();
-
-                var moduleDto = module.toModuleDto(checkedChapters);
-
-                return Result<ModuleDto>.Success(moduleDto);
-            }
-            catch (System.Exception ex)
-            {
-                return Result<ModuleDto>.Failure(ex.Message);
-            }
+            return Result<ModuleDto>.Failure("Module not found");
         }
+
+        // Fetch checked chapters for the given student
+        List<int> checkedChapters = await apiDbContext.checkChapters
+            .Where(cc => cc.StudentId == studentId && 
+            module.Chapitres.Any(ch => ch.Id == cc.ChapitreId))
+            .Select(cc => cc.ChapitreId)
+            .ToListAsync();
+
+        // Filter chapters in memory
+        var filteredChapitres = module.Chapitres
+            .Where(c => c.Statue == ObjectStatus.Approuver)
+            .ToList();
+
+        // Create the DTO
+        var moduleDto = new ModuleDto
+        {
+            Id = module.Id,
+            Nom = module.Nom,
+            Chapitres = filteredChapitres.Select(c => new ChapitreDto
+            {
+                Id = c.Id,
+                ChapitreNum = c.ChapitreNum,
+                Nom = c.Nom,
+                Statue = checkedChapters.Contains(c.Id),
+                CoursPdfPath = c.CoursPdfPath,
+                VideoPath = c.VideoPath,
+                Synthese = c.Synthese,
+                Schema = c.Schema,
+                Premium = c.Premium,
+                Quiz = c.Quiz?.ToQuizDto() // Ensure Quiz is not null
+            }).ToList(),
+            Controles = filteredChapitres
+                .Select(c => c.Controle)  // If Controle is not a collection
+                .Where(ctrl => ctrl != null)
+                .Select(ctrl => new ControleDto
+                {
+                    Id = ctrl.Id,
+                    Nom = ctrl.Nom,
+                    Ennonce = ctrl.Ennonce,
+                    Solution = ctrl.Solution,
+                    ChapitreNum = ctrl.Chapitres.Select(ch => ch.ChapitreNum).ToList()
+                }).DistinctBy(ctrl => ctrl.Id) // Ensure DistinctBy works correctly
+                .ToList()
+        };
+
+        return Result<ModuleDto>.Success(moduleDto);
+    }
+    catch (System.Exception ex)
+    {
+        return Result<ModuleDto>.Failure(ex.Message);
+    }
+}
 
         public async Task<Result<Module>> UpdateModule(UpdateModuleDto updateModuleDto)
         {

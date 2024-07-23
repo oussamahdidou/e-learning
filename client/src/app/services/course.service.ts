@@ -26,7 +26,7 @@ interface Chapitre {
   id: number;
   ChapitreNum: number;
   nom: string;
-  Statue: string;
+  Statue: boolean;
   CoursPdfPath: string | null;
   VideoPath: string | null;
   Synthese: string | null;
@@ -63,7 +63,7 @@ export class CourseService {
         id: 99,
         ChapitreNum: 1,
         nom: 'Chapitre 1',
-        Statue: 'checked',
+        Statue: true,
         CoursPdfPath: '/cour/XMLChp1.pdf',
         VideoPath: '/cour/20210807_223157.mp4',
         Synthese: '/cour/XMLChp1.pdf',
@@ -97,7 +97,7 @@ export class CourseService {
         id: 100,
         ChapitreNum: 2,
         nom: 'Chapitre 2',
-        Statue: 'unchecked',
+        Statue: false,
         CoursPdfPath: '/cour/cours3.pdf',
         VideoPath: '/cour/20210807_223157.mp4',
         Synthese: '/cour/cours3.pdf',
@@ -167,26 +167,23 @@ export class CourseService {
     if (this.module?.id === id) {
       return of(this.module);
     }
-
-    return of(undefined);
-    // return this.http.get<Module>(`${environment.apiUrl}/modules/${id}`).pipe(
-    //   map((data) => {
-    //     this.module = data;
-    //     return data;
-    //   }),
-    //   catchError(this.handleError)
-    // );
+    return this.http.get<Module>(`${environment.apiUrl}/modules/${id}`).pipe(
+      map((data) => {
+        this.module = data;
+        return data;
+      }),
+      catchError(this.handleError)
+    );
   }
   private handleError(error: HttpErrorResponse) {
     console.error('An error occurred:', error);
     return throwError('Something went wrong; please try again later.');
   }
   getQuizByID(id: number): Observable<Quiz | undefined> {
-    const chapter = this.module.chapitres.find(
-      (chapitre) => chapitre.id === id
-    );
+    const quiz = this.module.chapitres
+    .map((chapitre) => chapitre.quiz)
+    .find((quiz) => quiz.id === id);
 
-    const quiz = chapter ? chapter.quiz : undefined;
     return of(quiz);
   }
 
@@ -216,13 +213,13 @@ export class CourseService {
     return of(syntheseUrl as string | undefined);
   }
 
-  getControleById(id: number): Observable<string | undefined> {
+  getControleById(id: number): Observable<Controle | undefined> {
     const controle = this.module.controles.find(
-      (controle) => Math.max(...controle.ChapitreNum) === id
+      (controle) => controle.id === id
     );
-    const controleUrl = controle?.ennonce;
-    return of(controleUrl);
+    return of(controle);
   }
+
 
   getSchemaById(id: number): Observable<string | undefined> {
     const chapter = this.module.chapitres.find(

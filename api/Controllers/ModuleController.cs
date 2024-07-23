@@ -26,12 +26,12 @@ namespace api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetModuleById(int id)
         {
-            string username = User.GetUsername();
-            AppUser? user = await _manager.FindByNameAsync(username);
-            if(user == null){
-                return BadRequest();
-            }
-            Result<ModuleDto> result = await moduleRepository.GetModuleById(id, user.Id);
+            // string username = User.GetUsername();
+            // AppUser? user = await _manager.FindByNameAsync(username);
+            // if(user == null){
+            //     return BadRequest();
+            // }
+            Result<ModuleDto> result = await moduleRepository.GetModuleById(id, "0bcd548d-9341-4a51-9c3a-540a84ba67e9");
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
