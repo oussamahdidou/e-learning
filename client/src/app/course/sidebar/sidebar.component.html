@@ -19,8 +19,8 @@
   </div>
 
   <div [ngClass]="chapitre.Statue" *ngFor="let chapitre of module?.chapitres">
-    <div   class="items chapitre" >
-      <a class="chap" >{{ chapitre.nom }}</a>
+    <div class="items chapitre">
+      <a class="chap">{{ chapitre.nom }}</a>
     </div>
 
     <div
@@ -29,15 +29,14 @@
       (click)="setActive($event)"
     >
       <a
-      [routerLink]="['/course/cour/', chapitre.id]"
-      class="d-flex align-items-center w-100 text-decoration-none"
+        [routerLink]="['/course/cour/', chapitre.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
       >
         <span class="flex-grow-1">Cour</span>
         <button mat-icon-button color="primary" aria-label="Course PDF">
           <mat-icon>picture_as_pdf</mat-icon>
         </button>
-      </a
-      >
+      </a>
     </div>
 
     <div class="items" *ngIf="chapitre.VideoPath" (click)="setActive($event)">
@@ -54,8 +53,8 @@
 
     <div class="items" *ngIf="chapitre.Schema" (click)="setActive($event)">
       <a
-      class="d-flex align-items-center w-100 text-decoration-none"
-      [routerLink]="['/course/schema/', chapitre.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+        [routerLink]="['/course/schema/', chapitre.id]"
       >
         <span class="flex-grow-1">Schema</span>
         <button mat-icon-button color="primary">
@@ -66,25 +65,26 @@
 
     <div class="items" *ngIf="chapitre.Synthese" (click)="setActive($event)">
       <a
-      [routerLink]="['/course/synthese/', chapitre.id]"
-      class="d-flex align-items-center w-100 text-decoration-none">
-      <span class="flex-grow-1">Synthese</span>
-      <button mat-icon-button color="primary" aria-label="Synthese">
-        <mat-icon>description</mat-icon>
-      </button>
+        [routerLink]="['/course/synthese/', chapitre.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+      >
+        <span class="flex-grow-1">Synthese</span>
+        <button mat-icon-button color="primary" aria-label="Synthese">
+          <mat-icon>description</mat-icon>
+        </button>
       </a>
     </div>
 
     <div class="items" *ngIf="chapitre.quizId" (click)="setActive($event)">
       <a
-      [routerLink]="['/course/quiz/', chapitre.id]"
-      class="d-flex align-items-center w-100 text-decoration-none">
-      <span class="flex-grow-1">Quiz</span>
-      <button mat-icon-button color="primary" aria-label="Quiz">
-        <mat-icon>quiz</mat-icon>
-      </button>
+        [routerLink]="['/course/quiz/', chapitre.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+      >
+        <span class="flex-grow-1">Quiz</span>
+        <button mat-icon-button color="primary" aria-label="Quiz">
+          <mat-icon>quiz</mat-icon>
+        </button>
       </a>
-
     </div>
 
     <div
@@ -93,10 +93,10 @@
     >
       <div class="items">
         <a
-        [routerLink]="['/course/exam/', controle.id]"
-        class="d-flex align-items-center w-100 text-decoration-none"
-          >
-          <span class="flex-grow-1">Controle : {{controle.nom}}</span>
+          [routerLink]="['/course/exam/', chapitre.id]"
+          class="d-flex align-items-center w-100 text-decoration-none"
+        >
+          <span class="flex-grow-1">Controle : {{ controle.nom }}</span>
           <button mat-icon-button color="primary" aria-label="Controle">
             <mat-icon>assessment</mat-icon>
           </button>
