@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, retry, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 interface Option {
   id: number;
@@ -54,7 +55,7 @@ interface Module {
   providedIn: 'root',
 })
 export class CourseService {
-  module: Module = {
+  private module: Module = {
     id: 1,
     nom: 'Module 1',
     chapitres: [
@@ -64,7 +65,7 @@ export class CourseService {
         nom: 'Chapitre 1',
         Statue: 'checked',
         CoursPdfPath: '/cour/XMLChp1.pdf',
-        VideoPath: null,
+        VideoPath: '/cour/20210807_223157.mp4',
         Synthese: '/cour/XMLChp1.pdf',
         Schema: '/cour/XMLChp1.pdf',
         Premium: true,
@@ -135,36 +136,32 @@ export class CourseService {
         solution: 'Solution for Controle 1',
         ChapitreNum: [1, 2],
       },
-      {
-        id: 2,
-        nom: 'Controle 1',
-        ennonce: '/cour/XMLChp1.pdf',
-        solution: 'Solution for Controle 1',
-        ChapitreNum: [1],
-      },
+      // {
+      //   id: 2,
+      //   nom: 'Controle 1',
+      //   ennonce: '/cour/XMLChp1.pdf',
+      //   solution: 'Solution for Controle 1',
+      //   ChapitreNum: [1],
+      // },
     ],
   };
-  constructor(private http: HttpClient) {}
+
+  private currentChapterIndex: number = 0;
+  private currentItemIndex: number = 0;
+  private itemsOrder: (keyof Chapitre)[] = [
+    'CoursPdfPath',
+    'VideoPath',
+    'Schema',
+    'Synthese',
+    'quiz',
+  ];
+
+  constructor(private http: HttpClient, private router: Router) {}
 
   getCourse(): Observable<Module> {
-    // return this.http
-    //   .get<Module>(`${environment.apiUrl}/Account/Login`)
-    //   .pipe(retry(1), catchError(this.handleError));
     return of(this.module);
   }
-  // private handleError(error: HttpErrorResponse) {
-  //   if (error.status === 0) {
-  //     console.error('An error occurred:', error.error);
-  //   } else {
-  //     console.error(
-  //       `Backend returned code ${error.status}, body was: `,
-  //       error.error
-  //     );
-  //   }
-  //   return throwError(
-  //     () => new Error('Something bad happened; please try again later.')
-  //   );
-  // }
+
   getQuizByID(id: number): Observable<Quiz | undefined> {
     const chapter = this.module.chapitres.find(
       (chapitre) => chapitre.id === id
@@ -192,7 +189,7 @@ export class CourseService {
     return of(pdfUrl as string | undefined);
   }
 
-  getSyntheseById(id: number): Observable<string | undefined>{
+  getSyntheseById(id: number): Observable<string | undefined> {
     const chapter = this.module.chapitres.find(
       (chapitre) => chapitre.id === id
     );
@@ -200,18 +197,39 @@ export class CourseService {
     return of(syntheseUrl as string | undefined);
   }
 
-  getControleById(id: number): Observable<string | undefined>{
+  getControleById(id: number): Observable<string | undefined> {
     const controle = this.module.controles.find(
-      (controle) => controle.id === id
+      (controle) => Math.max(...controle.ChapitreNum) === id
     );
-    const controleUrl = controle ? controle.ennonce : undefined;
-    return of(controleUrl as string | undefined);
+    const controleUrl = controle?.ennonce;
+    return of(controleUrl);
   }
-  getSchemaById(id: number): Observable<string | undefined>{
+
+  getSchemaById(id: number): Observable<string | undefined> {
     const chapter = this.module.chapitres.find(
       (chapitre) => chapitre.id === id
     );
-    const schemaeUrl = chapter ? chapter.Schema : undefined;
-    return of(schemaeUrl as string | undefined);
+    const schemaUrl = chapter ? chapter.Schema : undefined;
+    return of(schemaUrl as string | undefined);
+  }
+
+  isVdUrlAvailable(id: number): Observable<boolean> {
+    const chapter = this.module.chapitres.find((ch) => ch.id === id);
+    const vdUrlExists = chapter ? !!chapter.VideoPath : false;
+    return of(vdUrlExists);
+  }
+  getChapterNumber(id: number): Observable<number | null> {
+    const chapter = this.module.chapitres.find((ch) => ch.id === id);
+    const chapterNum = chapter ? chapter.ChapitreNum : null;
+    return of(chapterNum);
+  }
+  getControle(id: number): Observable<boolean> {
+    const controle = this.module.controles.find(
+      (controle) => Math.max(...controle.ChapitreNum) === id
+    );
+    if (controle) {
+      return of(true);
+    }
+    return of(false);
   }
 }
