@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Chapitre;
@@ -8,6 +9,7 @@ using api.extensions;
 using api.generique;
 using api.helpers;
 using api.interfaces;
+using api.Mappers;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -36,6 +38,7 @@ namespace api.Repository
                     resultcoursPdf.IsSuccess &&
                     resultvideo.IsSuccess)
                 {
+
                     Chapitre chapitre = new Chapitre()
                     {
                         ChapitreNum = createChapitreDto.ChapitreNum,
@@ -47,8 +50,12 @@ namespace api.Repository
                         Schema = schemaresult.Value,
                         Synthese = syntheseresult.Value,
                         Statue = ObjectStatus.Pending,
-                        Quiz = createChapitreDto.quiz,
+                        QuizId = createChapitreDto.QuizId,
+
                     };
+                    await apiDbContext.chapitres.AddAsync(chapitre);
+                    await apiDbContext.SaveChangesAsync();
+                    return Result<Chapitre>.Success(chapitre);
 
 
                 }

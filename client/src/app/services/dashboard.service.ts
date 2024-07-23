@@ -52,4 +52,10 @@ export class DashboardService {
       moduleId: id,
     });
   }
+  createchapter(chapter: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/Chapitre`, chapter);
+  }
+  createquiz(quiz: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/Quiz/Create`, quiz);
+  }
 }

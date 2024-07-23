@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ModuleRequirementsDialogComponent } from '../module-requirements-dialog/module-requirements-dialog.component';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-module',
@@ -98,7 +99,14 @@ export class ModuleComponent {
       console.log(result);
     });
   }
-  constructor(public dialog: MatDialog) {
+  moduleId: number = 0;
+  constructor(
+    public dialog: MatDialog,
+    private readonly route: ActivatedRoute
+  ) {
+    this.route.params.subscribe((params) => {
+      this.moduleId = params['id'];
+    });
     this.chapitressource = new MatTableDataSource(this.chapters);
     this.chapitressource.sortingDataAccessor = (item, property) => {
       switch (property) {

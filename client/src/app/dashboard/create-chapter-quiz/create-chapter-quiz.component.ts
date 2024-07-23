@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Quiz } from '../../interfaces/dashboard';
+import { ActivatedRoute } from '@angular/router';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-create-chapter-quiz',
@@ -11,8 +13,17 @@ export class CreateChapterQuizComponent {
   isLinear = true;
   chapterFormGroup: FormGroup;
   quizFormGroup: FormGroup;
+  moduleId: number = 0;
 
-  constructor(private _formBuilder: FormBuilder) {
+  constructor(
+    private _formBuilder: FormBuilder,
+    private readonly route: ActivatedRoute,
+    private readonly dashboardservice: DashboardService
+  ) {
+    this.route.params.subscribe((params) => {
+      this.moduleId = params['id'];
+    });
+
     this.chapterFormGroup = this._formBuilder.group({
       nom: ['', Validators.required],
       number: ['', Validators.required],
@@ -35,15 +46,11 @@ export class CreateChapterQuizComponent {
   addQuestion() {
     this.questions.push(
       this._formBuilder.group({
-        id: [0], // Initialize with default value
         nom: ['', Validators.required],
-        quizId: [0], // Initialize with default value
         options: this._formBuilder.array([
           this._formBuilder.group({
-            id: [0], // Initialize with default value
             nom: ['', Validators.required],
             truth: [false],
-            questionId: [0], // Initialize with default value
           }),
         ]),
       })
@@ -61,10 +68,8 @@ export class CreateChapterQuizComponent {
   addOption(questionIndex: number) {
     this.getOptions(questionIndex).push(
       this._formBuilder.group({
-        id: [0], // Initialize with default value
         nom: ['', Validators.required],
         truth: [false],
-        questionId: [this.questions.at(questionIndex).get('id')?.value], // Link to question ID
       })
     );
   }
@@ -78,30 +83,67 @@ export class CreateChapterQuizComponent {
     this.chapterFormGroup.patchValue({ [field]: file });
   }
 
+  validateQuizData(quizData: any) {
+    // Ensure that truth is a boolean
+    quizData.questions.forEach((question: any) => {
+      question.options.forEach((option: any) => {
+        option.truth = !!option.truth; // Convert to boolean if it's not
+      });
+    });
+    return quizData;
+  }
+
   onSubmit() {
     if (this.chapterFormGroup.valid && this.quizFormGroup.valid) {
-      const chapterData = this.chapterFormGroup.value;
-      const quizData = this.quizFormGroup.value;
+      const formData = new FormData();
+      formData.append(
+        'ChapitreNum',
+        this.chapterFormGroup.get('number')?.value.toString()
+      );
+      formData.append('Nom', this.chapterFormGroup.get('nom')?.value);
+      formData.append('Premium', 'true'); // Ensure boolean is correctly formatted
 
-      const quiz: Quiz = {
-        id: 0, // Default value or replace with actual ID logic
-        nom: quizData.quizName,
-        statue: 'Draft', // Or any other default status
-        questions: quizData.questions.map((q: any) => ({
-          id: q.id,
-          nom: q.nom,
-          quizId: 0, // Default value or replace with actual quiz ID logic
-          options: q.options.map((o: any) => ({
-            id: o.id,
-            nom: o.nom,
-            truth: o.truth,
-            questionId: q.id,
-          })),
-        })),
-      };
+      // Append files
+      const files = [
+        { key: 'CoursPdf', file: this.chapterFormGroup.get('coursPdf')?.value },
+        { key: 'Video', file: this.chapterFormGroup.get('coursVideo')?.value },
+        { key: 'Synthese', file: this.chapterFormGroup.get('synthese')?.value },
+        { key: 'Schema', file: this.chapterFormGroup.get('schema')?.value },
+      ];
+      files.forEach(({ key, file }) => {
+        if (file) {
+          formData.append(key, file, file.name);
+        }
+      });
 
-      console.log('Chapter Data:', chapterData);
-      console.log('Quiz Data:', quiz);
+      // Append quiz data
+      let quizData = this.quizFormGroup.value;
+      quizData = this.validateQuizData(quizData); // Ensure data is valid
+      formData.append('ModuleId', this.moduleId.toString());
+      console.log(JSON.stringify(quizData.questions));
+
+      this.dashboardservice
+        .createquiz({
+          nom: quizData.quizName,
+          statue: 'Pending',
+          questions: quizData.questions,
+        })
+        .subscribe(
+          (reponse) => {
+            formData.append('QuizId', reponse.id.toString());
+            this.dashboardservice.createchapter(formData).subscribe(
+              (response) => {
+                console.log(response);
+              },
+              (error) => {
+                console.error('Error response:', error);
+              }
+            );
+          },
+          (error) => {
+            console.error('Quiz creation error:', error);
+          }
+        );
     }
   }
 }

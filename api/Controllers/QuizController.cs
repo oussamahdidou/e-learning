@@ -22,7 +22,7 @@ namespace api.Controllers
         }
 
         [HttpPost("Create")]
-        [Authorize(Roles = "Admin,Teacher")]
+        // [Authorize(Roles = "Admin,Teacher")]
         public async Task<IActionResult> CreateQuiz([FromBody] CreateQuizDto createQuizDto)
         {
             Result<QuizDto> result = await _quizRepo.CreateQuiz(createQuizDto);

@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Question;
+using api.Dtos.Quiz;
 
 namespace api.Dtos.Chapitre
 {
@@ -14,7 +16,7 @@ namespace api.Dtos.Chapitre
         public IFormFile Synthese { get; set; }
         public IFormFile Schema { get; set; }
         public bool Premium { get; set; }
-        public Model.Quiz quiz { get; set; }
         public int ModuleId { get; set; }
+        public int QuizId { get; set; }
     }
 }
