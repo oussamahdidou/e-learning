@@ -150,7 +150,7 @@ export class QuizComponent implements OnInit {
             if (state) console.log(state);
           });
         console.log('your Note:', note);
-=========
+
         // this.route.paramMap.subscribe((params) => {
         //   const idParam = params.get('id');
         //   if (idParam) {
@@ -171,7 +171,7 @@ export class QuizComponent implements OnInit {
         //           console.log('Chapter not found');
         //         }
         // });
->>>>>>>>> Temporary merge branch 2
+
       }
     }
   }

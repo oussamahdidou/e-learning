@@ -70,9 +70,8 @@ export class PdfViewerComponent {
 
     const formData = new FormData();
     formData.append('file', this.selectedFile);
-    formData.append('controleId', this.exam.id.toString());
 
-    this.courseService.uploadSolution(formData).subscribe(
+    this.courseService.uploadSolution(formData,this.exam.id).subscribe(
       (response) => {
         console.log('File uploaded successfully:', response);
       },

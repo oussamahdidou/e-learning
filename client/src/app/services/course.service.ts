@@ -286,9 +286,9 @@ export class CourseService {
       catchError(this.handleError)
     );
   }
-  uploadSolution(formData: FormData): Observable<any> {
+  uploadSolution(formData: FormData, id : number): Observable<any> {
 
-    return this.http.post(`${environment.apiUrl}/uploadSolution`, formData).pipe(
+    return this.http.post(`${environment.apiUrl}/ResultControle/${id}`, formData,{ responseType: 'text' }).pipe(
       tap(response => {
         console.log("Response from backend:", response);
       }),
