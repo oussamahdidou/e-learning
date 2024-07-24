@@ -59,7 +59,7 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
-        [HttpDelete("{id}")]
+        /*[HttpDelete("{id}")]
         public async Task<IActionResult> DeleteInstitution(int id)
         {
         Result<Institution> result = await institutionRepository.DeleteInstitution(id);
@@ -72,7 +72,7 @@ namespace api.Controllers
       {
         return BadRequest(result.Error);
        }
-       }
+       }*/
          
 
     }

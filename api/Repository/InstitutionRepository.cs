@@ -7,10 +7,11 @@ using api.Dtos.Institution;
 using api.generique;
 using api.interfaces;
 using api.Model;
-using api.Dtos.Institution;
-using api.generique;
+//using api.Dtos.Institution;
+//using api.generique;
 using Microsoft.EntityFrameworkCore;
-using api.Dtos.NiveauScolaires;
+//using api.Dtos.NiveauScolaire;
+using api.Dtos.NiveauScolaire;
 
 namespace api.Repository
 {
@@ -96,7 +97,7 @@ namespace api.Repository
             }
         }
         //////////////
-       public async Task<Result<Institution>> DeleteInstitution(int id)
+      /* public async Task<Result<Institution>> DeleteInstitution(int id)
 {
     try
     {
@@ -115,7 +116,7 @@ namespace api.Repository
     {
         return Result<Institution>.Failure($"An error occurred while deleting the institution: {ex.Message}");
     }
-}
+}*/
 
     }
 }
