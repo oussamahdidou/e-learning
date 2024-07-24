@@ -134,18 +134,44 @@ export class QuizComponent implements OnInit {
         this.errorMessage = null;
         console.log('User answers:', this.selectedAnswers);
         let note: number = 0;
-        this.quiz.questions.forEach((question) =>{
+        this.quiz.questions.forEach((question) => {
           const selectedOptionId = this.selectedAnswers[question.id];
-          const correctOption = question.options.find( option => option.truth = 'true');
+          const correctOption = question.options.find(
+            (option) => (option.truth = 'true')
+          );
 
-          if(correctOption && correctOption.id === selectedOptionId){
+          if (correctOption && correctOption.id === selectedOptionId) {
             note++;
           }
-
         });
-        this.courseService.createQuizResult(this.quiz.id, note);
+        this.courseService
+          .createQuizResult(this.quiz.id, note)
+          .subscribe((state) => {
+            if (state) console.log(state);
+          });
         console.log('your Note:', note);
-
+=========
+        // this.route.paramMap.subscribe((params) => {
+        //   const idParam = params.get('id');
+        //   if (idParam) {
+        //     const id = +idParam;
+        //     this.courseService
+        //       .getChapterNumber(id)
+        //       .subscribe((chapterNumber) => {
+        //         console.log(chapterNumber);
+        //         if (chapterNumber !== null) {
+        //           this.courseService
+        //             .getControle(chapterNumber)
+        //             .subscribe((state) => {
+        //               console.log(state);
+        //               if (state) this.router.navigate(['/course/exam/', id]);
+        //               else this.router.navigate(['/course/cour/', id + 1]);
+        //             });
+        //         } else {
+        //           console.log('Chapter not found');
+        //         }
+        // });
+>>>>>>>>> Temporary merge branch 2
       }
     }
   }
