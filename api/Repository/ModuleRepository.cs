@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Module;
@@ -77,5 +78,21 @@ namespace api.Repository
                 return Result<Module>.Failure($"{ex.Message}");
             }
         }
+        public async Task<Result<Module>>DeleteModule(int id){
+            try{
+            Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x=>x.Id==id);
+            if(module==null){
+                return Result<Module>.Failure("module n'existe pas");
+
+            }
+             apiDbContext.modules.Remove(module);
+            await apiDbContext.SaveChangesAsync();
+            return Result<Module>.Success(module);
+
+        }
+        catch (System.Exception ex){
+
+            return Result<Module>.Failure($"{ex.Message}");
+        }
     }
-}
+    }}

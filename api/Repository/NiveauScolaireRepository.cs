@@ -77,5 +77,21 @@ namespace api.Repository
                 return Result<NiveauScolaire>.Failure($"{ex.Message}");
             }
         }
+        public async Task<Result<NiveauScolaire>> DeleteNiveauScolaire(int id){
+            try{
+                NiveauScolaire? niveauScolaire = await apiDbContext.niveauScolaires.FindAsync(id);
+                if(niveauScolaire == null){
+                    return Result<NiveauScolaire>.Failure("niveau scolaire not found")
+;                }
+                apiDbContext.niveauScolaires.Remove(niveauScolaire);
+                 await apiDbContext.SaveChangesAsync();
+                 return Result<NiveauScolaire>.Success(niveauScolaire);
+
+            }
+            catch(System.Exception ex){
+                return Result<NiveauScolaire>.Failure($"{ex.Message}");
+            }
+
+        }
     }
 }
