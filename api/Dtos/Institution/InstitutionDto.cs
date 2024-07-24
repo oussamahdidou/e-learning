@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using api.Dtos.NiveauScolaires;
+using api.Dtos.NiveauScolaire;
 
 namespace api.Dtos.Institution
 {
@@ -8,11 +8,11 @@ namespace api.Dtos.Institution
     {
         public int Id { get; set; }
         public string Nom { get; set; } = "";
-        public List<NiveauScolaireDto> NiveauScolaires { get; set; } = new List<NiveauScolaireDto>();
+       // public List<NiveauScolaireDto> NiveauScolaires { get; set; } = new List<NiveauScolaireDto>();
 
-        public InstitutionDto()
-        {
-            NiveauScolaires = new List<NiveauScolaireDto>();
-        }
+       // public InstitutionDto()
+        //{
+            //NiveauScolaires = new List<NiveauScolaireDto>();
+        //}
     }
 }

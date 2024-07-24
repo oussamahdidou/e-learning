@@ -15,10 +15,6 @@ using Newtonsoft.Json;
 
 using Microsoft.Extensions.DependencyInjection;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> manall
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -112,20 +108,6 @@ builder.Services.AddCors(options =>
                     );
 });
 builder.Services.AddScoped<ITokenService, TokenService>();
-<<<<<<< HEAD
-builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
-builder.Services.AddScoped<IInstitutionRepository, InstitutionRepository>();
-
-
-builder.Services.AddScoped<INiveauScolaireRepository, NiveauScolaireRepository>();
-
-builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
-
-
-
-
-=======
->>>>>>> manall
 builder.Services.AddScoped<ITestNiveauRepository, TestNiveauRepository>();
 builder.Services.AddScoped<IModuleRequirementsRepository, ModuleRequirementsRepository>();
 builder.Services.AddScoped<IQuizRepository, QuizRepository>();

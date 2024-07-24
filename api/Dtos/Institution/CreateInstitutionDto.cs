@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using api.Dtos.NiveauScolaires;
+//using api.Dtos.NiveauScolaire;
 
 namespace api.Dtos.Institution
 {
@@ -10,6 +10,6 @@ namespace api.Dtos.Institution
         [Required]
         public string Nom { get; set; } = "";
 
-        public List<NiveauScolaireDto> NiveauScolaires { get; set; } = new List<NiveauScolaireDto>();
+        //public List<NiveauScolaireDto> NiveauScolaires { get; set; } = new List<NiveauScolaireDto>();
     }
 }

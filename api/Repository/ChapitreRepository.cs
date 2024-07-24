@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
-<<<<<<< HEAD
-using api.generique;
-=======
 using api.Dtos.Chapitre;
 using api.extensions;
 using api.generique;
 using api.helpers;
->>>>>>> manall
 using api.interfaces;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
@@ -26,63 +22,6 @@ namespace api.Repository
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
         }
-<<<<<<< HEAD
-
-        public async Task<Result<List<Chapitre>>> GetAllAsync()
-        {
-            var chapitres = await _context.chapitres
-                .Include(c => c.Module)
-                .Include(c => c.Controle)
-                .Include(c => c.Quiz)
-                .Include(c => c.CheckChapters)
-                .ToListAsync();
-            return Result<List<Chapitre>>.Success(chapitres);
-        }
-
-        public async Task<Result<Chapitre>> GetByIdAsync(int id)
-        {
-            var chapitre = await _context.chapitres
-                .Include(c => c.Module)
-                .Include(c => c.Controle)
-                .Include(c => c.Quiz)
-                .Include(c => c.CheckChapters)
-                .FirstOrDefaultAsync(c => c.Id == id);
-
-            if (chapitre == null)
-            {
-                return Result<Chapitre>.Failure("Chapitre not found.");
-            }
-
-            return Result<Chapitre>.Success(chapitre);
-        }
-
-        public async Task<Result<Chapitre>> AddAsync(Chapitre chapitre)
-        {
-            _context.chapitres.Add(chapitre);
-            await _context.SaveChangesAsync();
-            return Result<Chapitre>.Success(chapitre);
-        }
-
-        public async Task<Result> UpdateAsync(Chapitre chapitre)
-        {
-            var existingChapitre = await _context.chapitres.FindAsync(chapitre.Id);
-            if (existingChapitre == null)
-            {
-                return Result.Failure($"Chapitre with ID {chapitre.Id} not found.");
-            }
-
-            _context.Entry(existingChapitre).CurrentValues.SetValues(chapitre);
-            await _context.SaveChangesAsync();
-            return Result.Success();
-        }
-
-        public async Task<Result> DeleteAsync(int id)
-        {
-            var chapitre = await _context.chapitres.FindAsync(id);
-            if (chapitre == null)
-            {
-                return Result.Failure($"Chapitre with ID {id} not found.");
-=======
         public async Task<Result<Chapitre>> CreateChapitre(CreateChapitreDto createChapitreDto)
         {
             try
@@ -117,12 +56,11 @@ namespace api.Repository
             {
 
                 return Result<Chapitre>.Failure(ex.Message);
->>>>>>> manall
             }
 
-            _context.chapitres.Remove(chapitre);
+           /*_context.chapitres.Remove(chapitre);
             await _context.SaveChangesAsync();
-            return Result.Success();
+            return Result.Success();*/
         }
 
         public async Task<Result<Chapitre>> GetChapitreById(int id)
