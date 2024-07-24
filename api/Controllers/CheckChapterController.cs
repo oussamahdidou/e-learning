@@ -38,22 +38,22 @@ namespace api.Controllers
             return Ok(result.Value);
         }
         [HttpGet("{id:int}")]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> CreateCheckChapter([FromRoute] int id)
         {
             // string username = User.GetUsername();
             // AppUser? user = await _manager.FindByNameAsync(username);
-            Result<CheckChapter> result = await _check.CreateCheckChapter("0bcd548d-9341-4a51-9c3a-540a84ba67e9", id);
+            Result<CheckChapter> result = await _check.CreateCheckChapter("5f584df6-2795-4a9b-9364-d57c912ef0d8", id);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }
         [HttpDelete("{chapterId}")]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> DeleteCheckChapter(int chapterId)
         {
-            string username = User.GetUsername();
-            AppUser? user = await _manager.FindByNameAsync(username);
-            Result<bool> result = await _check.DeleteCheckChapter(user, chapterId);
+            // string username = User.GetUsername();
+            // AppUser? user = await _manager.FindByNameAsync(username);
+            Result<bool> result = await _check.DeleteCheckChapter("5f584df6-2795-4a9b-9364-d57c912ef0d8", chapterId);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }

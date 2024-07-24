@@ -97,4 +97,10 @@ export class SidebarComponent implements OnInit {
     this.renderer.addClass(target, 'onit');
     this.activeElement = target;
   }
+  CheckChapter(id: number, event: Event) {
+    this.courseService.checkChapter(id).subscribe((state) => {
+      console.log(state);
+      if (state) this.setActive(event);
+    });
+  }
 }

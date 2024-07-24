@@ -71,7 +71,6 @@ export class QuizComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('id'));
       if (isNaN(id)) {
@@ -135,28 +134,26 @@ export class QuizComponent implements OnInit {
         this.errorMessage = null;
         // Handle quiz submission logic here, e.g., send answers to a server
         console.log('User answers:', this.selectedAnswers);
-        this.route.paramMap.subscribe((params) => {
-          const idParam = params.get('id');
-          if (idParam) {
-            const id = +idParam;
-            this.courseService
-              .getChapterNumber(id)
-              .subscribe((chapterNumber) => {
-                console.log(chapterNumber);
-                if (chapterNumber !== null) {
-                  this.courseService
-                    .getControle(chapterNumber)
-                    .subscribe((state) => {
-                      console.log(state);
-                      if (state) this.router.navigate(['/course/exam/', id]);
-                      else this.router.navigate(['/course/cour/', id + 1]);
-                    });
-                } else {
-                  console.log('Chapter not found');
-                }
-              });
-          }
-        });
+        // this.route.paramMap.subscribe((params) => {
+        //   const idParam = params.get('id');
+        //   if (idParam) {
+        //     const id = +idParam;
+        //     this.courseService
+        //       .getChapterNumber(id)
+        //       .subscribe((chapterNumber) => {
+        //         console.log(chapterNumber);
+        //         if (chapterNumber !== null) {
+        //           this.courseService
+        //             .getControle(chapterNumber)
+        //             .subscribe((state) => {
+        //               console.log(state);
+        //               if (state) this.router.navigate(['/course/exam/', id]);
+        //               else this.router.navigate(['/course/cour/', id + 1]);
+        //             });
+        //         } else {
+        //           console.log('Chapter not found');
+        //         }
+        // });
       }
     }
   }
