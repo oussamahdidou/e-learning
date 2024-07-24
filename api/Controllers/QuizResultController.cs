@@ -33,7 +33,7 @@ namespace api.Controllers
             // var student = await _userManager.FindByNameAsync(username);
 
             
-                var result = await _quizResultRepo.CreateQuizResult("0bcd548d-9341-4a51-9c3a-540a84ba67e9", createQuizResultDto);
+                var result = await _quizResultRepo.CreateQuizResult("5f584df6-2795-4a9b-9364-d57c912ef0d8", createQuizResultDto);
                 if(!result.IsSuccess)
                 {
                     return BadRequest(result.Error);
@@ -43,7 +43,7 @@ namespace api.Controllers
         }
     
         [HttpDelete("DeleteQuizResult/{quizId}/{studentId}")]
-        [Authorize(Roles="Admin,Teacher")]
+        // [Authorize(Roles="Admin,Teacher")]
         public async Task<IActionResult> DeleteQuizResult(string studentId, int quizId)
         {
             var result = await _quizResultRepo.DeleteQuizResult(studentId, quizId);

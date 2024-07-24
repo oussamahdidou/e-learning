@@ -144,7 +144,11 @@ export class QuizComponent implements OnInit {
             note++;
           }
         });
-        this.courseService.createQuizResult(this.quiz.id, note);
+        this.courseService
+          .createQuizResult(this.quiz.id, note)
+          .subscribe((state) => {
+            if (state) console.log(state);
+          });
         console.log('your Note:', note);
       }
     }
