@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, map, Observable, of, retry, throwError } from 'rxjs';
+import { catchError, map, Observable, of, retry, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 
@@ -164,9 +164,9 @@ export class CourseService {
     console.log('Module ID:', this.module?.id);
     console.log('ID Match:', this.module?.id === id);
 
-    // if (this.module?.id === id) {
-    //   return of(this.module);
-    // }
+    if (this.module?.id === id) {
+      return of(this.module);
+    }
     return this.http.get<Module>(`${environment.apiUrl}/module?id=${id}`).pipe(
       map((data) => {
         this.module = data;
@@ -263,6 +263,7 @@ export class CourseService {
     if (chapterId === id) return of(true);
     return of(false);
   }
+
   isLastChapter(id: number): Observable<boolean> {
     const maxchapitreNum = Math.max(
       ...this.module.chapitres.map((chapitre) => chapitre.chapitreNum)
@@ -271,4 +272,18 @@ export class CourseService {
     if (chapter?.chapitreNum === maxchapitreNum) return of(true);
     return of(false);
   }
+  createQuizResult(quizId: number, note: number): Observable<any> {
+    const result = { quizId, note };
+    console.log("Object being sent to backend:", result);
+
+    return this.http.post<any>(`${environment.apiUrl}/QuizResult/Create`, result).pipe(
+      tap(response => {
+        console.log("Response from backend:", response);
+      }),
+      catchError(this.handleError)
+    );
+
+  }
+
 }
+

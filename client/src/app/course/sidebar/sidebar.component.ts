@@ -69,6 +69,7 @@ export class SidebarComponent implements OnInit {
     this.courseService.getCourseById(id).subscribe((module) => {
       this.module = module;
       this.calculateProgress();
+      console.log("Module ID from service:", this.module?.id);
     });
   }
 
