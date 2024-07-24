@@ -31,23 +31,4 @@ export class LectureComponent {
       }
     });
   }
-  nextItem(): void {
-    this.route.paramMap.subscribe((params) => {
-      const idParam = params.get('id');
-      if (idParam) {
-        const id = +idParam;
-        this.router.navigate(['/course/schema/', id]);
-      }
-    });
-  }
-
-  previousItem(): void {
-    this.route.paramMap.subscribe((params) => {
-      const idParam = params.get('id');
-      if (idParam) {
-        const id = +idParam;
-        this.router.navigate(['/course/cour/', id]);
-      }
-    });
-  }
 }

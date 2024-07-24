@@ -19,51 +19,37 @@
     >
     </pdf-viewer>
   </div>
-  <div class="btns">
-    <button
-      class="btn mx-5 rounded-pill"
-      (click)="previousItem()"
-      [disabled]="isFirstCour === 0"
-    >
-      Précédent
-    </button>
-    <button
-      class="btn mx-5 rounded-pill"
-      (click)="nextItem()"
-      [disabled]="isLastControle === 0"
-    >
-      Suivant
-    </button>
-  </div>
-</div>
 
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="devoirModal"
-  tabindex="-1"
-  aria-labelledby="devoirModalLabel"
-  aria-hidden="true"
-  *ngIf="isExam"
->
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content d-flex">
-      <div class="modal-header">
-        <h5 class="modal-title" id="devoirModalLabel">Votre Devoir</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body text-center d-flex align-items-center flex-column">
-        <button class="modal-btn-ajouter rounded-pill">
-          + Ajouter votre devoir
-        </button>
-        <button class="modal-btn-terminer rounded-pill mt-3">
-          Marquer Comme Terminer
-        </button>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="devoirModal"
+    tabindex="-1"
+    aria-labelledby="devoirModalLabel"
+    aria-hidden="true"
+    *ngIf="isExam"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content d-flex">
+        <div class="modal-header">
+          <h5 class="modal-title" id="devoirModalLabel">Votre Devoir</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div
+          class="modal-body text-center d-flex align-items-center flex-column"
+        >
+          <button class="modal-btn-ajouter rounded-pill">
+            + Ajouter votre devoir
+          </button>
+          <button class="modal-btn-terminer rounded-pill mt-3">
+            Marquer Comme Terminer
+          </button>
+        </div>
       </div>
     </div>
   </div>

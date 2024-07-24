@@ -62,10 +62,10 @@ namespace api.Repository
             }
         }
 
-        public async Task<Result<bool>> DeleteCheckChapter(AppUser user, int chapterId)
+        public async Task<Result<bool>> DeleteCheckChapter(string id, int chapterId)
         {
             CheckChapter? checkChapter = await _context.checkChapters
-                .FirstOrDefaultAsync(cc => cc.StudentId == user.Id && cc.ChapitreId == chapterId);
+                .FirstOrDefaultAsync(cc => cc.StudentId == id && cc.ChapitreId == chapterId);
 
             if (checkChapter == null) return Result<bool>.Failure("CheckChapter not found");
 

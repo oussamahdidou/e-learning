@@ -71,7 +71,6 @@ export class QuizComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-
     this.route.paramMap.subscribe((params) => {
       const id = Number(params.get('quizid'));
       if (isNaN(id)) {
@@ -146,6 +145,7 @@ export class QuizComponent implements OnInit {
         });
         this.courseService.createQuizResult(this.quiz.id, note);
         console.log('your Note:', note);
+
       }
     }
   }

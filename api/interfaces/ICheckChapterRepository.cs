@@ -11,6 +11,6 @@ namespace api.interfaces
     {
         Task<Result<List<CheckChapter>>> GetStudentAllcheckChapters(AppUser student);
         Task<Result<CheckChapter>> CreateCheckChapter(string studentId , int chapterId);
-        Task<Result<bool>> DeleteCheckChapter(AppUser user, int chapterId);
+        Task<Result<bool>> DeleteCheckChapter(string id, int chapterId);
     }
 }
