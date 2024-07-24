@@ -1,16 +1,17 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ModuleRequirementsDialogComponent } from '../module-requirements-dialog/module-requirements-dialog.component';
 import { ActivatedRoute } from '@angular/router';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-module',
   templateUrl: './module.component.html',
   styleUrl: './module.component.css',
 })
-export class ModuleComponent {
+export class ModuleComponent implements OnInit {
   edit(_t283: any) {
     throw new Error('Method not implemented.');
   }
@@ -30,7 +31,7 @@ export class ModuleComponent {
   @ViewChild(MatSort) sort!: MatSort;
   chapitressource: MatTableDataSource<any>;
   controlessource: MatTableDataSource<any>;
-  modulessource: MatTableDataSource<any>;
+  modulessource!: MatTableDataSource<any>;
 
   chapters: any[] = [
     { id: 1, number: 2, nom: 'chapter1', module: 'High School' },
@@ -46,48 +47,7 @@ export class ModuleComponent {
     { id: 4, number: 2, nom: 'controle4', module: 'High School' },
     { id: 5, number: 2, nom: 'controle5', module: 'Middle School' },
   ];
-  modules: any[] = [
-    {
-      id: 1,
-
-      nom: 'module1',
-      niveauScolaire: 'High School',
-      institution: 'CPGE',
-      seuil: 18,
-    },
-    {
-      id: 2,
-
-      nom: 'module2',
-      niveauScolaire: 'Middle School',
-      institution: 'CPGE',
-      seuil: 18,
-    },
-    {
-      id: 3,
-
-      nom: 'module3',
-      niveauScolaire: 'Elementary School',
-      institution: 'CPGE',
-      seuil: 18,
-    },
-    {
-      id: 4,
-
-      nom: 'module4',
-      niveauScolaire: 'High School',
-      institution: 'CPGE',
-      seuil: 18,
-    },
-    {
-      id: 5,
-
-      nom: 'module5',
-      niveauScolaire: 'Middle School',
-      institution: 'CPGE',
-      seuil: 18,
-    },
-  ];
+  modules: any[] = [];
   openDialog(): void {
     const dialogRef = this.dialog.open(ModuleRequirementsDialogComponent, {
       width: '400px',
@@ -97,16 +57,41 @@ export class ModuleComponent {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
       console.log(result);
+      if (result) {
+        this.dashboardservice
+          .createmodulerequirements({
+            targetModuleId: this.moduleId,
+            requiredModuleId: result.moduleId,
+            seuill: result.seuil,
+          })
+          .subscribe(
+            (response) => {
+              this.dashboardservice.getrequiredmodules(this.moduleId).subscribe(
+                (response) => {
+                  this.modules = response;
+                  this.modulessource = new MatTableDataSource(this.modules);
+                  this.modulessource.sortingDataAccessor = (item, property) => {
+                    switch (property) {
+                      default:
+                        return item[property];
+                    }
+                  };
+                  this.modulessource.sort = this.sort;
+                },
+                (error) => {}
+              );
+            },
+            (error) => {}
+          );
+      }
     });
   }
   moduleId: number = 0;
   constructor(
     public dialog: MatDialog,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly dashboardservice: DashboardService
   ) {
-    this.route.params.subscribe((params) => {
-      this.moduleId = params['id'];
-    });
     this.chapitressource = new MatTableDataSource(this.chapters);
     this.chapitressource.sortingDataAccessor = (item, property) => {
       switch (property) {
@@ -121,21 +106,31 @@ export class ModuleComponent {
           return item[property];
       }
     };
-    this.modulessource = new MatTableDataSource(this.modules);
-    this.modulessource.sortingDataAccessor = (item, property) => {
-      switch (property) {
-        default:
-          return item[property];
-      }
-    };
   }
   ngAfterViewInit(): void {
     this.chapitressource.sort = this.sort;
     this.controlessource.sort = this.sort;
-    this.modulessource.sort = this.sort;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.params.subscribe((params) => {
+      this.moduleId = params['id'];
+      this.dashboardservice.getrequiredmodules(this.moduleId).subscribe(
+        (response) => {
+          this.modules = response;
+          this.modulessource = new MatTableDataSource(this.modules);
+          this.modulessource.sortingDataAccessor = (item, property) => {
+            switch (property) {
+              default:
+                return item[property];
+            }
+          };
+          this.modulessource.sort = this.sort;
+        },
+        (error) => {}
+      );
+    });
+  }
 
   applyChapitresFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;

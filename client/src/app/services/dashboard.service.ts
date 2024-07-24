@@ -58,4 +58,12 @@ export class DashboardService {
   createquiz(quiz: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/Quiz/Create`, quiz);
   }
+  getrequiredmodules(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/ModuleRequirement/RequiredModules/${id}`
+    );
+  }
+  createmodulerequirements(module: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/ModuleRequirement`, module);
+  }
 }

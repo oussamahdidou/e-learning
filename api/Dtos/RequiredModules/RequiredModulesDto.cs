@@ -8,7 +8,10 @@ namespace api.Dtos.RequiredModules
 {
     public class RequiredModulesDto
     {
-        public Model.Module Module { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string NiveauScolaire { get; set; }
+        public string Institution { get; set; }
         public double Seuill { get; set; }
 
     }
