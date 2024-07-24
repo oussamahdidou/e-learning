@@ -41,10 +41,18 @@
           ></button>
         </div>
         <div
-          class="modal-body text-center d-flex align-items-center flex-column"
-        >
-          <button class="modal-btn-ajouter rounded-pill">
-            + Ajouter votre devoir
+          class="modal-body text-center d-flex align-items-center flex-column">
+            <input
+            type="file"
+            (change)="onFileSelected($event)"
+            accept=".pdf"
+            id="fileInput"
+          />
+          <button
+            class="modal-btn-ajouter rounded-pill mt-3"
+            (click)="uploadDevoir()"
+          >
+                + Ajouter votre devoir
           </button>
           <button class="modal-btn-terminer rounded-pill mt-3">
             Marquer Comme Terminer

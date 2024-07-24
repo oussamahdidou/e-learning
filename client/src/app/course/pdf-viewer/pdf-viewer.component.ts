@@ -10,8 +10,10 @@ import { CourseService } from '../../services/course.service';
 export class PdfViewerComponent {
   pdfUrl: string | undefined;
   isExam: boolean = false;
+  exam : any;
   isFirstCour: number = 1;
   isLastControle: number = 1;
+  selectedFile: File | null = null;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -34,14 +36,12 @@ export class PdfViewerComponent {
             this.pdfUrl = url;
           });
         } else if (routePath?.includes('exam')) {
-          this.courseService.getChapterNumber(id).subscribe((chapterNumber) => {
-            console.log(chapterNumber);
-            if (chapterNumber !== null) {
-            } else {
-              console.log('Chapter not found');
-            }
+          this.courseService.getControleById(id).subscribe((url) => {
+            this.pdfUrl = url?.ennonce;
+            this.exam = url
           });
           this.isExam = true;
+
         } else if (routePath?.includes('schema')) {
           this.courseService.getSchemaById(id).subscribe((url) => {
             this.pdfUrl = url;
@@ -53,5 +53,32 @@ export class PdfViewerComponent {
         console.error('ID parameter is missing');
       }
     });
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      this.selectedFile = input.files[0];
+    }
+  }
+
+  uploadDevoir(): void {
+    if (!this.selectedFile || this.exam.id === null) {
+      console.error('No file selected or no controle ID available');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', this.selectedFile);
+    formData.append('controleId', this.exam.id.toString());
+
+    this.courseService.uploadSolution(formData).subscribe(
+      (response) => {
+        console.log('File uploaded successfully:', response);
+      },
+      (error) => {
+        console.error('Error uploading file:', error);
+      }
+    );
   }
 }

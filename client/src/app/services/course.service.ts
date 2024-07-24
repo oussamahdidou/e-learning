@@ -228,6 +228,8 @@ export class CourseService {
     const controle = this.module.controles.find(
       (controle) => controle.id === id
     );
+    if(controle == null)
+      return of(undefined);
     return of(controle);
   }
 
@@ -272,6 +274,7 @@ export class CourseService {
     if (chapter?.chapitreNum === maxchapitreNum) return of(true);
     return of(false);
   }
+
   createQuizResult(quizId: number, note: number): Observable<any> {
     const result = { quizId, note };
     console.log("Object being sent to backend:", result);
@@ -282,7 +285,15 @@ export class CourseService {
       }),
       catchError(this.handleError)
     );
+  }
+  uploadSolution(formData: FormData): Observable<any> {
 
+    return this.http.post(`${environment.apiUrl}/uploadSolution`, formData).pipe(
+      tap(response => {
+        console.log("Response from backend:", response);
+      }),
+      catchError(this.handleError)
+    );
   }
 
 }
