@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+<<<<<<< HEAD
 using System.ComponentModel.DataAnnotations;
 
 namespace api.Dto
@@ -19,3 +20,16 @@ namespace api.Dto
         public List<int> ChapitreIds { get; set; } = new List<int>();
     }
 }
+=======
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace api.Dtos.Module
+{
+    public class UpdateModuleDto
+    {
+        public string Nom { get; set; } = "";
+        public int ModuleId { get; set; }
+    }
+}
+>>>>>>> manall

@@ -3,6 +3,8 @@ using api.Data;
 using api.interfaces;
 using api.Model;
 using api.Repository;
+using api.Dtos.EmailConfirmation;
+
 using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -10,8 +12,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
+
 using Microsoft.Extensions.DependencyInjection;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> manall
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -67,7 +74,13 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequiredLength = 8;
 
 })
+
+.AddDefaultTokenProviders()
 .AddEntityFrameworkStores<apiDbContext>();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
+    opt.TokenLifespan = TimeSpan.FromHours(2));
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -85,8 +98,8 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidAudience = builder.Configuration["JWT:Audience"],//issuer url same as jwt token creation url
         ValidateIssuerSigningKey = true,
-        //IssuerSigningKey = new SymmetricSecurityKey(
-                //System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigninKey"]))
+        IssuerSigningKey = new SymmetricSecurityKey(
+                System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JWT:SigninKey"]))
 
     };
 });
@@ -99,6 +112,7 @@ builder.Services.AddCors(options =>
                     );
 });
 builder.Services.AddScoped<ITokenService, TokenService>();
+<<<<<<< HEAD
 builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 builder.Services.AddScoped<IInstitutionRepository, InstitutionRepository>();
 
@@ -110,13 +124,20 @@ builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
 
 
 
+=======
+>>>>>>> manall
 builder.Services.AddScoped<ITestNiveauRepository, TestNiveauRepository>();
 builder.Services.AddScoped<IModuleRequirementsRepository, ModuleRequirementsRepository>();
-
-builder.Services.AddScoped<IQuizRepository,QuizRepository>();
-builder.Services.AddScoped<IQuizResultRepository,QuizResultRepository>();
+builder.Services.AddScoped<IQuizRepository, QuizRepository>();
+builder.Services.AddScoped<IQuizResultRepository, QuizResultRepository>();
 builder.Services.AddScoped<ICheckChapterRepository, CheckChapterRepository>();
 builder.Services.AddScoped<IResultControleRepository, ResultControleRepository>();
+builder.Services.AddScoped<IinstitutionRepository, InstitutionRepository>();
+builder.Services.AddScoped<INiveauScolaireRepository, NiveauScolaireRepository>();
+builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
+builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
+builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
+builder.Services.AddSingleton<IMailer, Mailer>();
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")

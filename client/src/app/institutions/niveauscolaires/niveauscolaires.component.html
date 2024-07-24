@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Détails de l'Institution</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container-fluid min-vh-100 d-flex flex-column">
+    <h2 class="my-4 text-center display-4 text-secondary font-weight-normal">Niveaux Scolaires de l'institution</h2>
+    
+    <div *ngIf="institution" class="flex-grow-1 d-flex align-items-center">
+      <div class="w-100">
+        <h3 class="text-center mb-4">{{ institution.nom }}</h3>
+        
+        <div class="row justify-content-center">
+          <div *ngFor="let niveau of institution.niveauScolaires" class="col-lg-3 col-md-4 col-sm-6 mb-4">
+            <div class="card h-100 border-0 shadow-none">
+              <img src="img\niveau-scolaire.png" class="card-img-top" alt="Image Niveau Scolaire" style="object-fit: cover; aspect-ratio: 1;">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">{{ niveau.nom }}</h5>
+                <div class="mt-auto">
+                  <button class="btn btn-primary" [routerLink]="['/modules', niveau.id]">
+                    Module
+                    <svg fill="currentColor" viewBox="0 0 24 24" width="24" height="24">
+                      <path clip-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm4.28 10.28a.75.75 0 000-1.06l-3-3a.75.75 0 10-1.06 1.06l1.72 1.72H8.25a.75.75 0 000 1.5h5.69l-1.72 1.72a.75.75 0 101.06 1.06l3-3z" fill-rule="evenodd"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="!institution" class="text-center mt-5">
+      <p>Chargement des données...</p>
+    </div>
+    
+  </div>
+  
+  
+</body>
+</html>

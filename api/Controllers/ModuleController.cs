@@ -1,10 +1,23 @@
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Mvc;
+=======
+using System;
+>>>>>>> manall
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+<<<<<<< HEAD
 using api.Dto;
 using api.generique;
 using api.interfaces;
 using Microsoft.AspNetCore.Authorization;
+=======
+using api.Dtos.Module;
+using api.generique;
+using api.interfaces;
+using api.Model;
+using Microsoft.AspNetCore.Mvc;
+>>>>>>> manall
 
 namespace api.Controllers
 {
@@ -12,6 +25,7 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class ModuleController : ControllerBase
     {
+<<<<<<< HEAD
         private readonly IModuleRepository _moduleRepository;
 
         public ModuleController(IModuleRepository moduleRepository)
@@ -25,11 +39,24 @@ namespace api.Controllers
         {
             var result = await _moduleRepository.GetAllAsync();
             if (!result.IsSuccess)
-            {
-                return BadRequest(result.Error);
-            }
-            return Ok(result.Value);
+=======
+        private readonly IModuleRepository moduleRepository;
+        public ModuleController(IModuleRepository moduleRepository)
+        {
+            this.moduleRepository = moduleRepository;
         }
+        [HttpGet]
+        public async Task<IActionResult> GetModuleById(int id)
+        {
+            Result<Module> result = await moduleRepository.GetModuleById(id);
+            if (result.IsSuccess)
+>>>>>>> manall
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+<<<<<<< HEAD
 
         [HttpGet("GetById/{id}")]
        
@@ -50,17 +77,33 @@ namespace api.Controllers
         [HttpPost("Create")]
         
         public async Task<IActionResult> CreateModule([FromBody] ModuleDto moduleDto)
+=======
+        [HttpPost]
+        public async Task<IActionResult> CreateModule([FromBody] CreateModuleDto createModuleDto)
+>>>>>>> manall
         {
-            if (!ModelState.IsValid)
+            Result<Module> result = await moduleRepository.CreateModule(createModuleDto);
+            if (result.IsSuccess)
             {
-                return BadRequest(ModelState);
+                return Ok(result.Value);
             }
+<<<<<<< HEAD
 
             var result = await _moduleRepository.AddAsync(moduleDto);
             if (!result.IsSuccess)
+=======
+            return BadRequest(result.Error);
+        }
+        [HttpPut]
+        public async Task<IActionResult> UpdateModule([FromBody] UpdateModuleDto updateModuleDto)
+        {
+            Result<Module> result = await moduleRepository.UpdateModule(updateModuleDto);
+            if (result.IsSuccess)
+>>>>>>> manall
             {
-                return BadRequest(result.Error);
+                return Ok(result.Value);
             }
+<<<<<<< HEAD
             return CreatedAtAction(nameof(GetModule), new { id = result.Value?.Id }, result.Value);
         }
 
@@ -107,5 +150,23 @@ namespace api.Controllers
             }
             return Ok("Module deleted successfully");
         }
+=======
+            return BadRequest(result.Error);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteModule(int id){
+
+          Result<Module> result = await moduleRepository.DeleteModule(id);
+          if (result.IsSuccess){
+
+            return Ok(result.Value);
+          } 
+          else {
+
+            return BadRequest(result.Error);
+          }
+        }
+
+>>>>>>> manall
     }
 }

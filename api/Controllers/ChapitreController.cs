@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Mvc;
 using api.Dtos.Chapitre;
 using api.generique;
@@ -7,6 +8,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+=======
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using api.Dtos.Chapitre;
+using api.generique;
+using api.interfaces;
+using api.Model;
+using Microsoft.AspNetCore.Mvc;
+>>>>>>> manall
 
 namespace api.Controllers
 {
@@ -14,6 +26,7 @@ namespace api.Controllers
     [Route("api/[controller]")]
     public class ChapitreController : ControllerBase
     {
+<<<<<<< HEAD
         private readonly IChapitreRepository _chapitreRepository;
 
         public ChapitreController(IChapitreRepository chapitreRepository)
@@ -27,9 +40,22 @@ namespace api.Controllers
         {
             var result = await _chapitreRepository.GetAllAsync();
             if (!result.IsSuccess)
+=======
+        private readonly IChapitreRepository chapitreRepository;
+        public ChapitreController(IChapitreRepository chapitreRepository)
+        {
+            this.chapitreRepository = chapitreRepository;
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetChapitreById(int id)
+        {
+            Result<Chapitre> result = await chapitreRepository.GetChapitreById(id);
+            if (result.IsSuccess)
+>>>>>>> manall
             {
-                return BadRequest(result.Error);
+                return Ok(result.Value);
             }
+<<<<<<< HEAD
 
             var chapitreDtos = result.Value?.Select(ChapitreMapper.MapToDto) ?? Enumerable.Empty<ChapitreDto>();
             return Ok(chapitreDtos);
@@ -56,9 +82,19 @@ namespace api.Controllers
             var chapitre = ChapitreMapper.MapToEntity(chapitreDto);
             var result = await _chapitreRepository.AddAsync(chapitre);
             if (!result.IsSuccess)
+=======
+            return BadRequest(result.Error);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateChapitre([FromBody] CreateChapitreDto createChapitreDto)
+        {
+            Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
+            if (result.IsSuccess)
+>>>>>>> manall
             {
-                return BadRequest(result.Error);
+                return Ok(result.Value);
             }
+<<<<<<< HEAD
 
             var addedChapitreDto = result.Value != null ? ChapitreMapper.MapToDto(result.Value) : null;
             return addedChapitreDto != null 
@@ -126,5 +162,10 @@ namespace api.Controllers
 
             return Ok("Chapitre deleted successfully");
         }
+=======
+            return BadRequest(result.Error);
+        }
+
+>>>>>>> manall
     }
 }

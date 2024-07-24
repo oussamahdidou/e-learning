@@ -21,26 +21,27 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _manager;
         private readonly IResultControleRepository _resultRepo;
         private readonly IWebHostEnvironment _environment;
-        public ResultControleController(UserManager<AppUser> manager ,  IResultControleRepository resultRepo , IWebHostEnvironment environment)
+        public ResultControleController(UserManager<AppUser> manager, IResultControleRepository resultRepo, IWebHostEnvironment environment)
         {
             _manager = manager;
             _resultRepo = resultRepo;
             _environment = environment;
         }
         [HttpPost("{id:int}")]
-        public async Task<IActionResult> UploadSolution(IFormFile file , [FromRoute] int id){
+        public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id)
+        {
             var username = User.GetUsername();
             var user = await _manager.FindByNameAsync(username);
 
             if (user == null)
                 return BadRequest("User not found.");
 
-            var result = await file.UploadControleReponse(_environment, username);
+            var result = await file.UploadControleReponse(_environment);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
             var addResult = await _resultRepo.AddResult(user, id, result.Value);
-            if(!addResult.IsSuccess)
+            if (!addResult.IsSuccess)
                 return BadRequest(result.Error);
             return Ok(result.Value);
         }
@@ -75,7 +76,7 @@ namespace api.Controllers
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
-            
+
 
             return Ok(result.Value.ToResultControleDto());
         }
@@ -93,7 +94,7 @@ namespace api.Controllers
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
-            
+
             var filePath = Path.Combine(_environment.WebRootPath, result.Value.Reponse.TrimStart('/'));
             if (System.IO.File.Exists(filePath))
             {
@@ -109,6 +110,6 @@ namespace api.Controllers
 
             return Ok(result.Value);
         }
-        
+
     }
 }

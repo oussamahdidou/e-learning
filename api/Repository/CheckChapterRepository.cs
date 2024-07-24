@@ -21,7 +21,7 @@ namespace api.Repository
         {
             try
             {
-                var checkChapters = await _context.checkChapters.Where(x => x.StudentId == student.Id)
+                List<CheckChapter> checkChapters = await _context.checkChapters.Where(x => x.StudentId == student.Id)
                 .Select(checkChapitre => new CheckChapter
                 {
                     StudentId = student.Id,
@@ -38,32 +38,35 @@ namespace api.Repository
             }
         }
 
-        public async Task<Result<CheckChapter>> CreateCheckChapter(AppUser user , int chapterId)
+        public async Task<Result<CheckChapter>> CreateCheckChapter(AppUser user, int chapterId)
         {
-            if(await _context.checkChapters.AnyAsync(x => x.ChapitreId == chapterId && x.StudentId == user.Id)) return Result<CheckChapter>.Success(new CheckChapter());
-            var chapter = await _context.chapitres.FindAsync(chapterId);
-            if(chapter == null) return Result<CheckChapter>.Failure("chapter not found");
-            var student = await _context.students.FindAsync(user.Id);
-            if(student == null) return Result<CheckChapter>.Failure("Student not found");
-            var checkChapter = new CheckChapter
+            if (await _context.checkChapters.AnyAsync(x => x.ChapitreId == chapterId && x.StudentId == user.Id)) return Result<CheckChapter>.Success(new CheckChapter());
+            Chapitre? chapter = await _context.chapitres.FindAsync(chapterId);
+            if (chapter == null) return Result<CheckChapter>.Failure("chapter not found");
+            Student? student = await _context.students.FindAsync(user.Id);
+            if (student == null) return Result<CheckChapter>.Failure("Student not found");
+            CheckChapter checkChapter = new CheckChapter
             {
                 StudentId = student.Id,
                 ChapitreId = chapterId,
             };
-            try{
+            try
+            {
                 await _context.checkChapters.AddAsync(checkChapter);
                 await _context.SaveChangesAsync();
                 return Result<CheckChapter>.Success(checkChapter);
-            }catch(Exception ex){
+            }
+            catch (Exception ex)
+            {
                 return Result<CheckChapter>.Failure("Something went wrong");
             }
         }
 
         public async Task<Result<bool>> DeleteCheckChapter(AppUser user, int chapterId)
         {
-            var checkChapter = await _context.checkChapters
+            CheckChapter? checkChapter = await _context.checkChapters
                 .FirstOrDefaultAsync(cc => cc.StudentId == user.Id && cc.ChapitreId == chapterId);
-            
+
             if (checkChapter == null) return Result<bool>.Failure("CheckChapter not found");
 
             try
