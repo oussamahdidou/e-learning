@@ -35,6 +35,7 @@ import { DashboardModule } from './dashboard/dashboard.module';
     CourseModule,
     AuthModule,
     DashboardModule,
+
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
