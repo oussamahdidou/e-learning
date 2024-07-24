@@ -23,8 +23,6 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { ApprobationTableComponent } from './approbation-table/approbation-table.component';
 import { CreatecontroleComponent } from './createcontrole/createcontrole.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DashboardchapitrenavComponent } from './dashboardchapitrenav/dashboardchapitrenav.component';
-
 import { DashboardService } from '../services/dashboard.service';
 import { CreateChapterQuizComponent } from './create-chapter-quiz/create-chapter-quiz.component';
 import { MatRadioModule } from '@angular/material/radio';
@@ -44,7 +42,6 @@ const routes: Routes = [
       { path: 'approbtionstable', component: ApprobationTableComponent },
       { path: 'createcontrole/:id', component: CreatecontroleComponent },
       { path: 'chapter/:id', component: ChapterComponent },
-
       { path: 'createchapter/:id', component: CreateChapterQuizComponent },
       { path: 'module/:id', component: ModuleComponent },
     ],
@@ -60,8 +57,6 @@ const routes: Routes = [
     SidenavComponent,
     ApprobationTableComponent,
     CreatecontroleComponent,
-
-    DashboardchapitrenavComponent,
 
     CreateChapterQuizComponent,
     ChapterComponent,

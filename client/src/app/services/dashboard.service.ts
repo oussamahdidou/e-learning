@@ -69,4 +69,18 @@ export class DashboardService {
       module
     );
   }
+  GetChaptersForControleByModule(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/GetChaptersForControleByModule/${id}`
+    );
+  }
+  GetDashboardChaptersByModule(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/GetChaptersByModule/${id}`
+    );
+  }
+
+  CreateControle(controle: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/Controle`, controle);
+  }
 }

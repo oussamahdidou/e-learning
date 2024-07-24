@@ -8,7 +8,7 @@ namespace api.Dtos.ResultControle
 {
     public class ResultControleDto
     {
-        public Controle? Controle { get; set; }
+        public Model.Controle? Controle { get; set; }
         public string? Reponse { get; set; }
     }
 }

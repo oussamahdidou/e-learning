@@ -129,6 +129,22 @@ export class ModuleComponent implements OnInit {
         },
         (error) => {}
       );
+      this.dashboardservice
+        .GetDashboardChaptersByModule(this.moduleId)
+        .subscribe(
+          (response) => {
+            this.chapters = response;
+            this.chapitressource = new MatTableDataSource(this.chapters);
+            this.chapitressource.sortingDataAccessor = (item, property) => {
+              switch (property) {
+                default:
+                  return item[property];
+              }
+            };
+            this.chapitressource.sort = this.sort;
+          },
+          (error) => {}
+        );
     });
   }
 

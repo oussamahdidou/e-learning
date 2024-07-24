@@ -134,6 +134,7 @@ export class CreateChapterQuizComponent {
             this.dashboardservice.createchapter(formData).subscribe(
               (response) => {
                 console.log(response);
+                window.location.href = `/dashboard/module/${this.moduleId}`;
               },
               (error) => {
                 console.error('Error response:', error);
