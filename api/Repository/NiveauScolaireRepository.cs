@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.NiveauScolaire;
 using api.generique;
@@ -19,26 +15,48 @@ namespace api.Repository
             this.apiDbContext = apiDbContext;
         }
         public async Task<Result<NiveauScolaire>> CreateNiveauScolaire(CreateNiveauScolaireDto createNiveauScolaireDto)
+{
+    try
+    {
+        NiveauScolaire niveauScolaire = new NiveauScolaire()
         {
-            try
-            {
-                NiveauScolaire niveauScolaire = new NiveauScolaire()
+            Nom = createNiveauScolaireDto.Nom,
+            InstitutionId = createNiveauScolaireDto.InstitutionId,
+        };
+
+        if (createNiveauScolaireDto.Modules != null && createNiveauScolaireDto.Modules.Any())
+        {
+            niveauScolaire.Modules = createNiveauScolaireDto.Modules
+                .Select(m => new Module
                 {
-                    Nom = createNiveauScolaireDto.Nom,
-                    InstitutionId = createNiveauScolaireDto.InstitutionId,
-                };
-                await apiDbContext.niveauScolaires.AddAsync(niveauScolaire);
-                await apiDbContext.SaveChangesAsync();
-                return Result<NiveauScolaire>.Success(niveauScolaire);
-
-            }
-            catch (Exception ex)
-            {
-
-                return Result<NiveauScolaire>.Failure($"{ex.Message}");
-
-            }
+                   
+                    Id = m.Id,
+                    Nom = m.Nom,
+                })
+                .ToList();
         }
+
+        await apiDbContext.niveauScolaires.AddAsync(niveauScolaire);
+        await apiDbContext.SaveChangesAsync();
+        return Result<NiveauScolaire>.Success(niveauScolaire);
+    }
+    catch (Exception ex)
+    {
+        return Result<NiveauScolaire>.Failure($"{ex.Message}");
+    }
+}
+       /* public async Task<Result<NiveauScolaire>> DeleteAsync(int id)
+        {
+            var existingNiveauScolaire = await _context.niveauScolaires.FindAsync(id);
+            if (existingNiveauScolaire == null)
+            {
+                return Result.Failure($"NiveauScolaire with ID {id} not found.");
+            }
+
+            _context.niveauScolaires.Remove(existingNiveauScolaire);
+            await _context.SaveChangesAsync();
+            return Result.Success();
+        }*/
         public async Task<Result<NiveauScolaire>> GetNiveauScolaireById(int id)
         {
             try
@@ -76,6 +94,22 @@ namespace api.Repository
 
                 return Result<NiveauScolaire>.Failure($"{ex.Message}");
             }
+        }
+        public async Task<Result<NiveauScolaire>> DeleteNiveauScolaire(int id){
+            try{
+                NiveauScolaire? niveauScolaire = await apiDbContext.niveauScolaires.FindAsync(id);
+                if(niveauScolaire == null){
+                    return Result<NiveauScolaire>.Failure("niveau scolaire not found")
+;                }
+                apiDbContext.niveauScolaires.Remove(niveauScolaire);
+                 await apiDbContext.SaveChangesAsync();
+                 return Result<NiveauScolaire>.Success(niveauScolaire);
+
+            }
+            catch(System.Exception ex){
+                return Result<NiveauScolaire>.Failure($"{ex.Message}");
+            }
+
         }
     }
 }

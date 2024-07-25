@@ -57,6 +57,10 @@ namespace api.Repository
 
                 return Result<Chapitre>.Failure(ex.Message);
             }
+
+           /*_context.chapitres.Remove(chapitre);
+            await _context.SaveChangesAsync();
+            return Result.Success();*/
         }
 
         public async Task<Result<Chapitre>> GetChapitreById(int id)

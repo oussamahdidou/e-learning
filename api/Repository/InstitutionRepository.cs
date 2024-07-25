@@ -7,7 +7,11 @@ using api.Dtos.Institution;
 using api.generique;
 using api.interfaces;
 using api.Model;
+//using api.Dtos.Institution;
+//using api.generique;
 using Microsoft.EntityFrameworkCore;
+//using api.Dtos.NiveauScolaire;
+using api.Dtos.NiveauScolaire;
 
 namespace api.Repository
 {
@@ -92,5 +96,27 @@ namespace api.Repository
                 return Result<Institution>.Failure($"{ex.Message}");
             }
         }
+        //////////////
+      /* public async Task<Result<Institution>> DeleteInstitution(int id)
+{
+    try
+    {
+        Institution? institution = await apiDbContext.institutions.FindAsync(id);
+        if (institution == null)
+        {
+            return Result<Institution>.Failure("Institution not found");
+        }
+
+        apiDbContext.institutions.Remove(institution);
+        await apiDbContext.SaveChangesAsync();
+
+        return Result<Institution>.Success(institution);
+    }
+    catch (Exception ex)
+    {
+        return Result<Institution>.Failure($"An error occurred while deleting the institution: {ex.Message}");
+    }
+}*/
+
     }
 }

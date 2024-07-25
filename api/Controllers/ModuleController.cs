@@ -49,6 +49,19 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteModule(int id){
+
+          Result<Module> result = await moduleRepository.DeleteModule(id);
+          if (result.IsSuccess){
+
+            return Ok(result.Value);
+          } 
+          else {
+
+            return BadRequest(result.Error);
+          }
+        }
 
     }
 }

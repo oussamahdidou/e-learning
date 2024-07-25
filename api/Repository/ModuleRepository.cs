@@ -1,13 +1,17 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using api.Data;
 using api.Dtos.Module;
 using api.generique;
 using api.interfaces;
 using api.Model;
+using api.Mappers;
+using api.interfaces;
 using Microsoft.EntityFrameworkCore;
+using api.Data;
+using api.generique;
 
 namespace api.Repository
 {
@@ -77,5 +81,21 @@ namespace api.Repository
                 return Result<Module>.Failure($"{ex.Message}");
             }
         }
+        public async Task<Result<Module>>DeleteModule(int id){
+            try{
+            Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x=>x.Id==id);
+            if(module==null){
+                return Result<Module>.Failure("module n'existe pas");
+
+            }
+             apiDbContext.modules.Remove(module);
+            await apiDbContext.SaveChangesAsync();
+            return Result<Module>.Success(module);
+
+        }
+        catch (System.Exception ex){
+
+            return Result<Module>.Failure($"{ex.Message}");
+        }
     }
-}
+    }}

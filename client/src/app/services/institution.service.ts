@@ -10,16 +10,16 @@ export class InstitutionService {
   constructor(private http: HttpClient) { }
 
  getInstitutions(): Observable<any[]> {
-   return this.http.get<any[]>(`${environment.apiUrl}/Institution`);
+   return this.http.get<any[]>(`${environment.apiUrl}/api/Institution`);
   }
 
 //niveaux scolaire
 getNiveauScolaire(id: number): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/Institution/${id}`);
+    return this.http.get<any>(`${environment.apiUrl}/api/Institution/${id}`);
   }
  
    getModules(id: number): Observable<any> {
    
-    return this.http.get<any>(`${environment.apiUrl}/NiveauScolaire?id=${id}`);
+    return this.http.get<any>(`${environment.apiUrl}/api/NiveauScolaire?id=${id}`);
   }
 }
