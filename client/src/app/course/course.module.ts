@@ -24,7 +24,7 @@ const routes: Routes = [
         component: QuizComponent,
       },
       {
-        path: 'cour/::pdfid',
+        path: 'cour/:pdfid',
         component: PdfViewerComponent,
       },
       {
