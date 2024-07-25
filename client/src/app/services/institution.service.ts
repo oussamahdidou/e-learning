@@ -4,22 +4,21 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class InstitutionService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
- getInstitutions(): Observable<any[]> {
-   return this.http.get<any[]>(`${environment.apiUrl}/api/Institution`);
+  getInstitutions(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/api/Institution`);
   }
 
-//niveaux scolaire
-getNiveauScolaire(id: number): Observable<any> {
+  //niveaux scolaire
+  getNiveauScolaire(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/api/Institution/${id}`);
   }
- 
-   getModules(id: number): Observable<any> {
-   
-    return this.http.get<any>(`${environment.apiUrl}/api/NiveauScolaire?id=${id}`);
+
+  getModules(id: number): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/api/NiveauScolaire/${id}`);
   }
 }

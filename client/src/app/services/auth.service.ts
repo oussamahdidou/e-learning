@@ -80,7 +80,7 @@ export class AuthService {
     confirmPassword: string
   ): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/Register`, {
+      .post(`${environment.apiUrl}/api/Account/Register`, {
         userName,
         email,
         password,
@@ -88,28 +88,22 @@ export class AuthService {
       })
       .pipe(
         tap<any>(
-          (response) => {
-           
-          },
+          (response) => {},
           (error) => {
-            console.log("error : 1111111"+error);
+            console.log('error : 1111111' + error);
           }
         )
       );
   }
 
-  forgotPassword(
-    email: string,
-  ): Observable<any> {
+  forgotPassword(email: string): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/forgotpassword`, {
+      .post(`${environment.apiUrl}/api/Account/forgotpassword`, {
         email,
       })
       .pipe(
         tap<any>(
-          (response) => {
-
-          },
+          (response) => {},
           (error) => {
             console.log(error);
           }
@@ -123,44 +117,34 @@ export class AuthService {
     token: string
   ): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/resetpassword`, {
+      .post(`${environment.apiUrl}/api/Account/resetpassword`, {
         password,
         confirmpassword,
         email,
-        token
+        token,
       })
       .pipe(
         tap<any>(
-          (response) => {
-
-          },
+          (response) => {},
           (error) => {
             console.log(error);
           }
         )
       );
   }
-  verifyEmail(
-    email: string,
-    token: string
-  ): Observable<any> {
-    const params = new HttpParams()
-    .set('email', email)
-    .set('token', token);
+  verifyEmail(email: string, token: string): Observable<any> {
+    const params = new HttpParams().set('email', email).set('token', token);
     return this.http
-      .get(`${environment.apiUrl}/Account/emailconfirmation`, {
-        params
+      .get(`${environment.apiUrl}/api/Account/emailconfirmation`, {
+        params,
       })
       .pipe(
         tap<any>(
-          (response) => {
-
-          },
+          (response) => {},
           (error) => {
             console.log(error);
           }
         )
       );
-  
   }
 }
