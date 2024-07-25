@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Module;
+using api.Extensions;
 using api.generique;
 using api.interfaces;
 using api.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -15,19 +17,28 @@ namespace api.Controllers
     public class ModuleController : ControllerBase
     {
         private readonly IModuleRepository moduleRepository;
-        public ModuleController(IModuleRepository moduleRepository)
+         private readonly UserManager<AppUser> _manager;
+        public ModuleController(IModuleRepository moduleRepository, UserManager<AppUser> manager)
         {
             this.moduleRepository = moduleRepository;
+            _manager = manager;
         }
         [HttpGet]
         public async Task<IActionResult> GetModuleById(int id)
         {
-            Result<Module> result = await moduleRepository.GetModuleById(id);
+            // string username = User.GetUsername();
+            // AppUser? user = await _manager.FindByNameAsync(username);
+            // if(user == null){
+            //     return BadRequest();
+            // }
+            // 5f584df6-2795-4a9b-9364-d57c912ef0d8
+            // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
+            Result<ModuleDto> result = await moduleRepository.GetModuleById(id, "0bcd548d-9341-4a51-9c3a-540a84ba67e9");
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
             }
-            return BadRequest(result.Error);
+            return BadRequest(result.Error); 
         }
         [HttpPost]
         public async Task<IActionResult> CreateModule([FromBody] CreateModuleDto createModuleDto)

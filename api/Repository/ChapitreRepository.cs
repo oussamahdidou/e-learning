@@ -50,7 +50,7 @@ namespace api.Repository
                     };
 
                 }
-                return Result<Chapitre>.Failure("hasn`t been uploaded");
+                return Result<Chapitre>.Failure(syntheseresult.Error+schemaresult.Error+resultcoursPdf.Error+resultvideo.Error);
             }
             catch (System.Exception ex)
             {

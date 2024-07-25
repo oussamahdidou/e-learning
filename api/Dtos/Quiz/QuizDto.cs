@@ -11,7 +11,6 @@ namespace api.Dtos.Quiz
     {
         public int Id { get; set; }
         public string Nom { get; set; } = "";
-        public string Statue { get; set; } = "";
 
         public List<QuestionDto> Questions { get; set; } = new List<QuestionDto>();     
     }

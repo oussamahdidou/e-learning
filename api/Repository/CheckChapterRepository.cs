@@ -38,12 +38,12 @@ namespace api.Repository
             }
         }
 
-        public async Task<Result<CheckChapter>> CreateCheckChapter(AppUser user, int chapterId)
+        public async Task<Result<CheckChapter>> CreateCheckChapter(string studentId, int chapterId)
         {
-            if (await _context.checkChapters.AnyAsync(x => x.ChapitreId == chapterId && x.StudentId == user.Id)) return Result<CheckChapter>.Success(new CheckChapter());
+            if (await _context.checkChapters.AnyAsync(x => x.ChapitreId == chapterId && x.StudentId == studentId)) return Result<CheckChapter>.Success(new CheckChapter());
             Chapitre? chapter = await _context.chapitres.FindAsync(chapterId);
             if (chapter == null) return Result<CheckChapter>.Failure("chapter not found");
-            Student? student = await _context.students.FindAsync(user.Id);
+            Student? student = await _context.students.FindAsync(studentId);
             if (student == null) return Result<CheckChapter>.Failure("Student not found");
             CheckChapter checkChapter = new CheckChapter
             {
@@ -62,10 +62,10 @@ namespace api.Repository
             }
         }
 
-        public async Task<Result<bool>> DeleteCheckChapter(AppUser user, int chapterId)
+        public async Task<Result<bool>> DeleteCheckChapter(string id, int chapterId)
         {
             CheckChapter? checkChapter = await _context.checkChapters
-                .FirstOrDefaultAsync(cc => cc.StudentId == user.Id && cc.ChapitreId == chapterId);
+                .FirstOrDefaultAsync(cc => cc.StudentId == id && cc.ChapitreId == chapterId);
 
             if (checkChapter == null) return Result<bool>.Failure("CheckChapter not found");
 

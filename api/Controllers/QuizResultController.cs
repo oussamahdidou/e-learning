@@ -25,28 +25,25 @@ namespace api.Controllers
         }
 
          [HttpPost("Create")]
-         [Authorize(Roles ="Student")]
+        //  [Authorize(Roles ="Student")]
         public async Task<IActionResult> CreateQuizResult([FromBody] CreateQuizResultDto createQuizResultDto)
         {
-            var username = User.GetUsername();
+            // var username = User.GetUsername();
 
-            var student = await _userManager.FindByNameAsync(username);
+            // var student = await _userManager.FindByNameAsync(username);
 
-            if(student != null)
-            {
-                var result = await _quizResultRepo.CreateQuizResult(student.Id, createQuizResultDto);
+            
+                var result = await _quizResultRepo.CreateQuizResult("0bcd548d-9341-4a51-9c3a-540a84ba67e9", createQuizResultDto);
                 if(!result.IsSuccess)
                 {
                     return BadRequest(result.Error);
                 }
                 return Ok(result.Value);
-            } 
-            
-            return BadRequest("Internel Error");
+             
         }
     
         [HttpDelete("DeleteQuizResult/{quizId}/{studentId}")]
-        [Authorize(Roles="Admin,Teacher")]
+        // [Authorize(Roles="Admin,Teacher")]
         public async Task<IActionResult> DeleteQuizResult(string studentId, int quizId)
         {
             var result = await _quizResultRepo.DeleteQuizResult(studentId, quizId);

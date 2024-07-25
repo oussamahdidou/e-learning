@@ -1,0 +1,117 @@
+<div class="container d-flex flex-column p-0">
+  <div class="title p-3 bg-white">
+    {{ module?.nom }}
+    <div class="progress mt-3">
+      <div
+        class="progress-bar bg-success"
+        role="progressbar"
+        [style.width.%]="progress"
+        aria-valuenow="progress"
+        aria-valuemin="0"
+        aria-valuemax="100"
+      >
+        {{ progress }}%
+      </div>
+    </div>
+    <div class="mt-2">
+      <span class="text-success">{{ progress }}% Complete</span>
+    </div>
+  </div>
+
+  <div
+
+    *ngFor="let chapitre of module?.chapitres"
+  >
+
+    <div [ngClass]="chapitre.statue ? 'items checked' : 'items chapitre'">
+      <a class="chap">{{ chapitre.nom }}</a>
+      <div class="checkbox-wrapper" (click)="CheckChapter(chapitre, $event)" [class.disabled]="chapitre.statue">
+        <div class="checkbox" [ngClass]="chapitre.statue ? 'checked' : ''">
+          <span *ngIf="chapitre.statue">✔</span>
+        </div>
+      </div>
+    </div>
+
+
+    <div
+      class="items"
+      *ngIf="chapitre.coursPdfPath"
+      (click)="setActive($event)"
+    >
+      <a
+        [routerLink]="['/course',module?.id,'cour', chapitre.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+      >
+        <span class="flex-grow-1">Cour</span>
+        <button mat-icon-button color="primary" aria-label="Course PDF">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+      </a>
+    </div>
+
+    <div class="items" *ngIf="chapitre.videoPath" (click)="setActive($event)">
+      <a
+        class="d-flex align-items-center w-100 text-decoration-none"
+        [routerLink]="['/course',module?.id,'lecture', chapitre.id]"
+      >
+        <span class="flex-grow-1">Video</span>
+        <button mat-icon-button color="primary" aria-label="Video">
+          <mat-icon>videocam</mat-icon>
+        </button>
+      </a>
+    </div>
+
+    <div class="items" *ngIf="chapitre.schema" (click)="setActive($event)">
+      <a
+        class="d-flex align-items-center w-100 text-decoration-none"
+        [routerLink]="['/course',module?.id,'schema', chapitre.id]"
+      >
+        <span class="flex-grow-1">Schema</span>
+        <button mat-icon-button color="primary">
+          <mat-icon>insert_drive_file</mat-icon>
+        </button>
+      </a>
+    </div>
+
+    <div class="items" *ngIf="chapitre.synthese" (click)="setActive($event)">
+      <a
+        [routerLink]="['/course',module?.id,'synthese', chapitre.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+      >
+        <span class="flex-grow-1">Synthese</span>
+        <button mat-icon-button color="primary" aria-label="Synthese">
+          <mat-icon>description</mat-icon>
+        </button>
+      </a>
+    </div>
+
+    <div class="items" *ngIf="chapitre?.quiz" (click)="setActive($event)">
+      <a
+      [routerLink]="['/course', module?.id, 'quiz', chapitre.quiz.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+      >
+        <span class="flex-grow-1">Quiz</span>
+        <button mat-icon-button color="primary" aria-label="Quiz">
+          <mat-icon>quiz</mat-icon>
+        </button>
+      </a>
+    </div>
+
+    <div
+      *ngFor="let controle of getControles(chapitre.chapitreNum)"
+      (click)="setActive($event)"
+    >
+      <div class="items">
+        <a
+          [routerLink]="['/course',module?.id,'exam', controle.id]"
+          class="d-flex align-items-center w-100 text-decoration-none"
+        >
+          <span class="flex-grow-1">Controle : {{ controle.nom }}</span>
+          <button mat-icon-button color="primary" aria-label="Controle">
+            <mat-icon>assessment</mat-icon>
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

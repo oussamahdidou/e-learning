@@ -1,39 +1,45 @@
-using api.Dto;
+
+
+using api.Dtos.Chapitre;
+using api.Dtos.Control;
+using api.Dtos.Module;
 using api.Model;
-using System.Linq;
 
 namespace api.Mappers
 {
     public static class ModuleMapper
     {
-        public static ModuleDto MapToDto(Module module)
+        public static ModuleDto toModuleDto(this Module module, IEnumerable<int> checkedChapters)
         {
-            return new ModuleDto
+             return new ModuleDto 
             {
                 Id = module.Id,
                 Nom = module.Nom,
-                NiveauScolaireId = module.NiveauScolaireId,
-                NiveauScolaireName = module.NiveauScolaire?.Nom,
-                ChapitreIds = module.Chapitres.Select(c => c.Id).ToList()
-                // Vous pouvez mapper d'autres propriétés si nécessaire
-                // RequiredModuleIds = module.ModuleRequirements.Select(mr => mr.RequiredModuleId).ToList(),
-                // RequiredForModuleIds = module.ModulesRequiredIn.Select(mr => mr.ModuleId).ToList(),
-                // TestNiveauIds = module.TestNiveaus.Select(tn => tn.Id).ToList()
-            };
-        }
-
-        public static Module MapToEntity(ModuleDto moduleDto)
-        {
-            return new Module
-            {
-                Id = moduleDto.Id,
-                Nom = moduleDto.Nom,
-                NiveauScolaireId = moduleDto.NiveauScolaireId,
-                // Vous pouvez mapper d'autres propriétés si nécessaire
-                Chapitres = moduleDto.ChapitreIds.Select(id => new Chapitre { Id = id }).ToList()
-                // ModuleRequirements = moduleDto.RequiredModuleIds.Select(id => new ModuleRequirement { RequiredModuleId = id }).ToList(),
-                // ModulesRequiredIn = moduleDto.RequiredForModuleIds.Select(id => new ModuleRequirement { ModuleId = id }).ToList(),
-                // TestNiveaus = moduleDto.TestNiveauIds.Select(id => new TestNiveau { Id = id }).ToList()
+                Chapitres = module.Chapitres.Select(c => new ChapitreDto
+                {
+                    Id = c.Id,
+                    ChapitreNum = c.ChapitreNum,
+                    Nom = c.Nom,
+                    Statue = checkedChapters.Contains(c.Id), 
+                    CoursPdfPath = c.CoursPdfPath,
+                    VideoPath = c.VideoPath,
+                    Synthese = c.Synthese,
+                    Schema = c.Schema,
+                    Premium = c.Premium,
+                    Quiz = c.Quiz.ToQuizDto()
+                }).ToList(),
+                Controles = module.Chapitres
+                    .Select(c => c.Controle)
+                    .Where(ctrl => ctrl != null)
+                    .DistinctBy(ctrl => ctrl.Id)
+                    .Select(ctrl => new ControleDto
+                    {
+                        Id = ctrl.Id,
+                        Nom = ctrl.Nom,
+                        Ennonce = ctrl.Ennonce,
+                        Solution = ctrl.Solution,
+                        ChapitreNum = ctrl.Chapitres.Select(ch => ch.ChapitreNum).ToList()
+                    }).ToList()
             };
         }
     }

@@ -15,18 +15,16 @@ namespace api.Repository
         private readonly apiDbContext _context;
         public ResultControleRepository(apiDbContext context)
         {
-            _context = context;
+            _context = context; 
         }
-        public async Task<Result<ResultControle>> AddResult(AppUser user, int controleId, string filePath)
+        public async Task<Result<ResultControle>> AddResult(string userid, int controleId, string filePath)
         {
             Controle? controle = await _context.controles.FindAsync(controleId);
-            if (controle == null) return Result<ResultControle>.Failure("no chapter was found");
-            Student? student = await _context.students.FindAsync(user.Id);
+            if (controle == null) return Result<ResultControle>.Failure("no controle was found");
+            Student? student = await _context.students.FindAsync(userid);
             if (student == null) return Result<ResultControle>.Failure("no Student was found");
             ResultControle resultControle = new ResultControle
             {
-                StudentId = student.Id,
-                ControleId = controleId,
                 Student = student,
                 Controle = controle,
                 Reponse = filePath

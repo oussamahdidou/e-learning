@@ -15,7 +15,6 @@ namespace api.Mappers
             {
                 Id = quiz.Id,
                 Nom = quiz.Nom,
-                Statue = quiz.Statue,
                 Questions = quiz.Questions.Select(q => q.ToQuestionDto()).ToList()
             };
         }

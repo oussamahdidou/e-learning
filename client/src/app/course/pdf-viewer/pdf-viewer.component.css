@@ -1,0 +1,69 @@
+.container {
+  padding: 20px;
+}
+
+.container .d-flex{
+  width: 100%;
+}
+.container h1{
+  font-size: 35px;
+  padding: 10px;
+  margin-left: 75px;
+  margin-bottom: 0;
+  color: #666666;
+  align-self: flex-start;
+}
+.pdfcontainer {
+  width: 95%;
+  max-width: 1000px;
+  height: 70%;
+  overflow-x: hidden;
+  padding: 10px;
+  margin-left: 75px;
+  margin-top:15px
+}
+
+.pdfcour {
+  width: 100%;
+  height: 1100px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn {
+  background-color: #4d5e76;
+  color: #fff;
+  width: 129px;
+  margin: 10px;
+}
+
+.btn-devoir{
+  border: 1px solid #1866C9;
+  background-color: white;
+  font-size: 15px;
+  color: #1866C9;
+}
+.btn-devoir:hover{
+  border: 2px solid white;
+  background-color: #1866C9;
+  font-size: 15px;
+  color: white;
+}
+.modal-title{
+  color: #666666
+}
+
+.modal-btn-ajouter{
+  border: 1px solid #4D5E76;
+  background-color: white;
+  font-size: 15px;
+  color: #4D5E76;
+}
+
+.modal-btn-terminer{
+  border: 1px solid #ffffff;
+  background-color: #4D5E76;
+  font-size: 15px;
+  color: white;
+}

@@ -3,10 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { NiveauScolairesComponent } from './institutions/niveauscolaires/niveauscolaires.component';
 import { ModulesComponent } from './institutions/modules/modules.component';
 import { InstitutionsComponent } from './institutions/institutions/institutions.component';
-
- 
-  
- 
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ForgotPasswordComponent } from './auth/forgot-password/forgot-password.component';
@@ -19,19 +15,22 @@ const routes: Routes = [
   {path:'forgot-password',component:ForgotPasswordComponent},
   {path:'reset-password',component:ResetPasswordComponent},
   {path:'verify-email',component:VerifyEmailComponent},
- 
+
   {
-      path:"institutions",
-      loadChildren:()=>import("./institutions/institutions.module").then((m)=>m.InstitutionsModule)
-  
-  
-    }
+     path:"institutions",
+    loadChildren:()=>import("./institutions/institutions.module").then((m)=>m.InstitutionsModule)
+
+  },
+  {
+    path: 'course',
+    loadChildren: () => import('./course/course.module').then((m) => m.CourseModule),
+  },
 
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }
 
