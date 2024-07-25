@@ -25,8 +25,8 @@ namespace api.Controllers
         {
             this.niveauScolaireRepository = niveauScolaireRepository;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetNiveauScolaireById(int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetNiveauScolaireById([FromRoute] int id)
         {
             Result<NiveauScolaire> result = await niveauScolaireRepository.GetNiveauScolaireById(id);
             if (result.IsSuccess)

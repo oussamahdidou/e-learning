@@ -2,6 +2,17 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { MatStepperModule } from '@angular/material/stepper';
+import {
+  MAT_DIALOG_DATA,
+  MatDialog,
+  MatDialogActions,
+  MatDialogClose,
+  MatDialogContent,
+  MatDialogModule,
+  MatDialogRef,
+  MatDialogTitle,
+} from '@angular/material/dialog';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
@@ -17,6 +28,12 @@ import { CourseModule } from './course/course.module';
 import { HomeComponent } from './home/home.component';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { RouterModule } from '@angular/router';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { VgCoreModule } from '@videogular/ngx-videogular/core';
+import { VgControlsModule } from '@videogular/ngx-videogular/controls';
+import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
+import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -35,6 +52,15 @@ import { DashboardModule } from './dashboard/dashboard.module';
     CourseModule,
     AuthModule,
     DashboardModule,
+    RouterModule,
+    ReactiveFormsModule,
+    PdfViewerModule,
+    MatDialogModule,
+    VgCoreModule,
+    VgControlsModule,
+    VgOverlayPlayModule,
+    VgBufferingModule,
+    MatStepperModule,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

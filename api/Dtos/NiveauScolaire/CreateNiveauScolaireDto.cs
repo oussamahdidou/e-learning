@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using api.Dto;
+using api.Dtos;
+using api.Dtos.Module;
 using api.Dtos.NiveauScolaire;
 
 namespace api.Dtos.NiveauScolaire

@@ -18,9 +18,9 @@ namespace api.Model
         public string Synthese { get; set; } = "";
         public string Schema { get; set; } = "";
         public bool Premium { get; set; } = true;
-        public int QuizId { get; set; }
+        public int? QuizId { get; set; }
         public int ModuleId { get; set; }
-        public int ControleId { get; set; }
+        public int? ControleId { get; set; }
         public Controle? Controle { get; set; }
         public Module? Module { get; set; }
         public Quiz? Quiz { get; set; }

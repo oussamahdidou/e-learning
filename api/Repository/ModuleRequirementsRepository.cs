@@ -73,7 +73,7 @@ namespace api.Repository
             {
                 if (await apiDbContext.moduleRequirements.AnyAsync(x => x.RequiredModuleId == moduleId))
                 {
-                    List<RequiredModulesDto> requiredModulesDtos = await apiDbContext.moduleRequirements.Include(x => x.TargetModule).Where(x => x.RequiredModuleId == moduleId).Select(x => x.RequiredInModulesFromModelToDto()).ToListAsync();
+                    List<RequiredModulesDto> requiredModulesDtos = await apiDbContext.moduleRequirements.Include(x => x.TargetModule).ThenInclude(x => x.NiveauScolaire).ThenInclude(x => x.Institution).Where(x => x.RequiredModuleId == moduleId).Select(x => x.RequiredInModulesFromModelToDto()).ToListAsync();
                     return Result<List<RequiredModulesDto>>.Success(requiredModulesDtos);
                 }
                 return Result<List<RequiredModulesDto>>.Failure("Module NotFound");
@@ -91,7 +91,7 @@ namespace api.Repository
             {
                 if (await apiDbContext.moduleRequirements.AnyAsync(x => x.TargetModuleId == moduleId))
                 {
-                    List<RequiredModulesDto> requiredModulesDtos = await apiDbContext.moduleRequirements.Include(x => x.RequiredModule).Where(x => x.TargetModuleId == moduleId).Select(x => x.RequiredModulesFromModelToDto()).ToListAsync();
+                    List<RequiredModulesDto> requiredModulesDtos = await apiDbContext.moduleRequirements.Include(x => x.RequiredModule).ThenInclude(x => x.NiveauScolaire).ThenInclude(x => x.Institution).Where(x => x.TargetModuleId == moduleId).Select(x => x.RequiredModulesFromModelToDto()).ToListAsync();
                     return Result<List<RequiredModulesDto>>.Success(requiredModulesDtos);
                 }
                 return Result<List<RequiredModulesDto>>.Failure("Module NotFound");
@@ -118,7 +118,7 @@ namespace api.Repository
 
                     foreach (RequiredModulesDto requiredModulesDto in requiredModulesDtos)
                     {
-                        TestNiveau? testNiveau = testNiveaus.FirstOrDefault(tn => tn.ModuleId == requiredModulesDto.Module.Id);
+                        TestNiveau? testNiveau = testNiveaus.FirstOrDefault(tn => tn.ModuleId == requiredModulesDto.Id);
                         if (testNiveau == null || testNiveau.Note < requiredModulesDto.Seuill)
                         {
                             return false;

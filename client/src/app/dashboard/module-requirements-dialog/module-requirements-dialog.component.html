@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Module Requirements</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Institution</mat-label>
+      <mat-select formControlName="institution">
+        <mat-option
+          *ngFor="let institution of institutions"
+          [value]="institution.id"
+        >
+          {{ institution.nom }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="niveauscolaires.length > 0">
+      <mat-label>Niveauscolaire</mat-label>
+      <mat-select formControlName="niveauscolaire">
+        <mat-option *ngFor="let niveau of niveauscolaires" [value]="niveau.id">
+          {{ niveau.nom }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" *ngIf="modules.length > 0">
+      <mat-label>Module</mat-label>
+      <mat-select formControlName="module">
+        <mat-option *ngFor="let module of modules" [value]="module.id">
+          {{ module.nom }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Seuil</mat-label>
+      <input matInput type="number" formControlName="seuil" min="0" max="20" />
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancel()">Cancel</button>
+  <button mat-button (click)="onSubmit()" [disabled]="form.invalid">
+    Submit
+  </button>
+</div>

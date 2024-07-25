@@ -23,8 +23,8 @@ namespace api.Controllers
             this.moduleRepository = moduleRepository;
             _manager = manager;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetModuleById(int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetModuleById([FromRoute] int id)
         {
             // string username = User.GetUsername();
             // AppUser? user = await _manager.FindByNameAsync(username);

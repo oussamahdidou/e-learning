@@ -1,0 +1,93 @@
+<!-- stepper.component.html -->
+<app-sidenav></app-sidenav>
+<div class="chapter-container">
+  <mat-horizontal-stepper [linear]="isLinear" #stepper class="pt-5">
+    <mat-step [stepControl]="chapterFormGroup">
+      <form [formGroup]="chapterFormGroup">
+        <ng-template matStepLabel>Create Chapter</ng-template>
+        <div class="form-group">
+          <label for="nom">Chapter Name</label>
+          <input type="text" id="nom" class="form-control" formControlName="nom" required />
+        </div>
+        <div class="form-group">
+          <label for="number">Number</label>
+          <input type="number" id="number" class="form-control" formControlName="number" required />
+        </div>
+        <div class="form-group">
+          <label for="coursPdf">Cours PDF</label>
+          <input type="file" id="coursPdf" class="form-control-file form-control"
+            (change)="onFileChange($event, 'coursPdf')" accept=".pdf" required />
+        </div>
+        <div class="form-group">
+          <label for="coursVideo">Cours Video</label>
+          <input type="file" id="coursVideo" class="form-control-file form-control"
+            (change)="onFileChange($event, 'coursVideo')" accept="video/*" required />
+        </div>
+        <div class="form-group">
+          <label for="schema">Schema</label>
+          <input type="file" id="schema" class="form-control-file form-control"
+            (change)="onFileChange($event, 'schema')" accept=".pdf" required />
+        </div>
+        <div class="form-group">
+          <label for="synthese">Synthese</label>
+          <input type="file" id="synthese" class="form-control-file form-control"
+            (change)="onFileChange($event, 'synthese')" accept=".pdf" required />
+        </div>
+        <div>
+          <button mat-button matStepperNext [disabled]="chapterFormGroup.invalid">
+            Next
+          </button>
+        </div>
+      </form>
+    </mat-step>
+
+    <mat-step [stepControl]="quizFormGroup">
+      <form [formGroup]="quizFormGroup">
+        <ng-template matStepLabel>Create Quiz</ng-template>
+        <div class="form-group">
+          <label for="quizName">Quiz Name</label>
+          <input type="text" id="quizName" class="form-control" formControlName="quizName" required />
+        </div>
+
+        <div formArrayName="questions">
+          <div *ngFor="let question of questions.controls; let i = index" [formGroupName]="i" class="mb-4">
+            <div class="form-group">
+              <label for="questionText{{ i }}">Question {{ i + 1 }}</label>
+              <input type="text" id="questionText{{ i }}" class="form-control" formControlName="nom" required />
+            </div>
+
+            <div formArrayName="options">
+              <div *ngFor="let option of getOptions(i).controls; let j = index" [formGroupName]="j"
+                class="input-group mb-2">
+                <div class="input-group-text">
+                  <input type="radio" [attr.name]="'question' + i" formControlName="truth" [value]="option.value" />
+                </div>
+                <input type="text" class="form-control" formControlName="nom" placeholder="Option {{ j + 1 }}" />
+                <button type="button" class="btn btn-danger btn-sm" (click)="removeOption(i, j)">
+                  Delete Option
+                </button>
+              </div>
+            </div>
+
+            <button type="button" class="btn btn-secondary btn-sm" (click)="addOption(i)">
+              Add Option
+            </button>
+            <button type="button" class="btn btn-danger btn-sm" (click)="removeQuestion(i)">
+              Delete Question
+            </button>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-secondary" (click)="addQuestion()">
+          Add Question
+        </button>
+        <div>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button [disabled]="quizFormGroup.invalid" type="button" (click)="onSubmit()">
+            Submit
+          </button>
+        </div>
+      </form>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>
