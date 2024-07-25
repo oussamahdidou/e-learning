@@ -69,14 +69,15 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 8;
+    // options.Tokens.EmailConfirmationTokenProvider.Lifetime = TimeSpan.FromHours(1); 
+    // options.Tokens.PasswordResetTokenProvider.Lifetime = TimeSpan.FromHours(2);
 
 })
-
 .AddDefaultTokenProviders()
 .AddEntityFrameworkStores<apiDbContext>();
 
-builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
-    opt.TokenLifespan = TimeSpan.FromHours(2));
+// builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
+//     opt.TokenLifespan = TimeSpan.FromHours(2));
 
 builder.Services.AddAuthentication(options =>
 {
