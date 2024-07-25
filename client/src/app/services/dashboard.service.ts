@@ -83,4 +83,12 @@ export class DashboardService {
   CreateControle(controle: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/Controle`, controle);
   }
+  GetChapitrebyid(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/DashboardChapter/${id}`
+    );
+  }
+  updatequiz(id: number, quiz: any): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/Quiz/Update/${id}`, quiz);
+  }
 }

@@ -34,7 +34,6 @@ namespace api.Controllers
         }
 
         [HttpPut("Update/{id}")]
-        [Authorize(Roles = "Admin,Teacher")]
         public async Task<IActionResult> UpdateQuiz([FromRoute] int id, [FromBody] UpdateQuizDto updateQuizDto)
         {
             Result<QuizDto> result = await _quizRepo.UpdateQuiz(id, updateQuizDto);

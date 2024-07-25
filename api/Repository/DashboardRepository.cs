@@ -7,6 +7,7 @@ using api.Dtos.dashboard;
 using api.extensions;
 using api.generique;
 using api.interfaces;
+using api.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
@@ -48,6 +49,17 @@ namespace api.Repository
 
                 return Result<List<GetChapitresForControleDto>>.Failure(ex.Message);
             }
+        }
+
+        public async Task<Result<Chapitre>> GetDashboardChapiter(int id)
+        {
+            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.Quiz).ThenInclude(x => x.Questions).ThenInclude(x => x.Options).FirstOrDefaultAsync(x => x.Id == id);
+            if (chapitre == null)
+            {
+                return Result<Chapitre>.Failure("chapitre not found");
+            }
+            return Result<Chapitre>.Success(chapitre);
+
         }
     }
 }
