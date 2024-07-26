@@ -1,2 +1,4 @@
 api/bin/
 api/obj/
+.fake
+api/wwwroot

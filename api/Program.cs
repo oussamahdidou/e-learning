@@ -17,7 +17,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -69,14 +68,15 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     options.Password.RequireUppercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequiredLength = 8;
+    // options.Tokens.EmailConfirmationTokenProvider.Lifetime = TimeSpan.FromHours(1); 
+    // options.Tokens.PasswordResetTokenProvider.Lifetime = TimeSpan.FromHours(2);
 
 })
-
 .AddDefaultTokenProviders()
 .AddEntityFrameworkStores<apiDbContext>();
 
-builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
-    opt.TokenLifespan = TimeSpan.FromHours(2));
+// builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
+//     opt.TokenLifespan = TimeSpan.FromHours(2));
 
 builder.Services.AddAuthentication(options =>
 {
@@ -102,11 +102,13 @@ builder.Services.AddAuthentication(options =>
 });
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowOrigin",
-        builder => builder.WithOrigins("http://localhost:4200")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    );
+    options.AddPolicy("AllowSpecificOrigin",
+               builder =>
+               {
+                   builder.WithOrigins("http://localhost:4200")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
+               });
 });
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<ITestNiveauRepository, TestNiveauRepository>();
@@ -121,7 +123,8 @@ builder.Services.AddScoped<IModuleRepository, ModuleRepository>();
 builder.Services.AddScoped<IChapitreRepository, ChapitreRepository>();
 builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpSettings"));
 builder.Services.AddSingleton<IMailer, Mailer>();
-
+builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
+builder.Services.AddScoped<IControleRepository, ControleRepository>();
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {
@@ -139,9 +142,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseStaticFiles();
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        ctx.Context.Response.Headers.Append("Access-Control-Allow-Origin", "http://localhost:4200");
+        ctx.Context.Response.Headers.Append("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS");
+        ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
+    }
+});
+
 app.UseHttpsRedirection();
-app.UseCors("AllowOrigin");
+app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

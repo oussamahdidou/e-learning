@@ -13,6 +13,7 @@ namespace api.interfaces
         Task<Result<ModuleDto>> GetModuleById(int id ,string studentId);
         Task<Result<Module>> CreateModule(CreateModuleDto createModuleDto);
         Task<Result<Module>> UpdateModule(UpdateModuleDto updateModuleDto);
+        Task <Result<Module>> DeleteModule(int id);
 
     }
 }

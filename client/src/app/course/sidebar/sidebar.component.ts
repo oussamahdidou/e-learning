@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Renderer2 } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit, Renderer2 } from '@angular/core';
 import { CourseService } from '../../services/course.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -61,7 +61,7 @@ export class SidebarComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private renderer: Renderer2,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit() {
@@ -79,6 +79,7 @@ export class SidebarComponent implements OnInit {
         (chapitre) => chapitre.statue === true
       ).length;
       this.progress = (completedChapters / this.module.chapitres.length) * 100;
+
     }
   }
 
@@ -98,10 +99,20 @@ export class SidebarComponent implements OnInit {
     this.renderer.addClass(target, 'onit');
     this.activeElement = target;
   }
-  CheckChapter(id: number, event: Event) {
-    this.courseService.checkChapter(id).subscribe((state) => {
+  CheckChapter(chapite: Chapitre, event: Event) {
+    console.log("This is the module before checking ", this.module)
+    this.courseService.checkChapter(chapite.id).subscribe((state) => {
+
       console.log(state);
-      if (state) this.setActive(event);
+      if (state && this.module) {
+        const chapter = this.module.chapitres.find(c => c.id === chapite.id);
+        if (chapter) {
+          chapter.statue = true;
+          this.setActive(event);
+          this.calculateProgress();
+          console.log("This is the module after checking ", this.module)
+        }
+      }
     });
   }
 }

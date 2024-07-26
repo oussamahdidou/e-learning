@@ -1,6 +1,6 @@
 <div class="container d-flex align-items-center flex-column">
   <div class="container d-flex align-items-center justify-content-between">
-    <h1>This is the PDF</h1>
+    <h1>{{ isExam ? 'Controle' : 'lecture'}}</h1>
     <button
       class="mx-5 rounded-pill btn-devoir px-4"
       data-bs-toggle="modal"
@@ -12,7 +12,7 @@
   </div>
   <div class="pdfcontainer">
     <pdf-viewer
-      [src]="pdfUrl"
+      src="{{host}}{{pdfUrl}}"
       [render-text]="true"
       [original-size]="false"
       class="pdfcour"
@@ -41,10 +41,18 @@
           ></button>
         </div>
         <div
-          class="modal-body text-center d-flex align-items-center flex-column"
-        >
-          <button class="modal-btn-ajouter rounded-pill">
-            + Ajouter votre devoir
+          class="modal-body text-center d-flex align-items-center flex-column">
+            <input
+            type="file"
+            (change)="onFileSelected($event)"
+            accept=".pdf"
+            id="fileInput"
+          />
+          <button
+            class="modal-btn-ajouter rounded-pill mt-3"
+            (click)="uploadDevoir()"
+          >
+                + Ajouter votre devoir
           </button>
           <button class="modal-btn-terminer rounded-pill mt-3">
             Marquer Comme Terminer

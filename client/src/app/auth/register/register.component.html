@@ -1,0 +1,28 @@
+<div class="page-container">
+    <div class="form-container">
+    <div class="logo-container">
+      Register
+    </div>
+
+    <form class="form" (submit)="register()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="Enter your email" required="">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" [(ngModel)]="username"  placeholder="Enter your username" required="">
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required="">
+        <label for="c-password">Confirm Password</label>
+        <input type="password" id="c-password" name="c-password" [(ngModel)]="confirmpassword" placeholder="Enter your password" required="">
+      </div>
+      <br><br>
+      <button class="form-submit-btn" type="submit">Register</button>
+    </form>
+
+    <p class="signup-link">
+      Already have an account?
+      <a routerLink="/login" class="signup-link link"> Login now</a>
+    </p>
+    
+  </div>
+</div>

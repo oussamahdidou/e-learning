@@ -167,7 +167,7 @@ export class CourseService {
     if (this.module?.id === id) {
       return of(this.module);
     }
-    return this.http.get<Module>(`${environment.apiUrl}/module?id=${id}`).pipe(
+    return this.http.get<Module>(`${environment.apiUrl}/api/module/${id}`).pipe(
       map((data) => {
         this.module = data;
         return data;
@@ -181,13 +181,15 @@ export class CourseService {
   }
 
   checkChapter(id: number): Observable<boolean> {
-    return this.http.get<any>(`${environment.apiUrl}/checkChapter/${id}`).pipe(
-      map((data) => {
-        this.module = data;
-        return data;
-      }),
-      catchError(this.handleError)
-    );
+    return this.http
+      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}`)
+      .pipe(
+        map((data) => {
+          this.module = data;
+          return data;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getQuizByID(id: number): Observable<Quiz | undefined> {
@@ -228,6 +230,7 @@ export class CourseService {
     const controle = this.module.controles.find(
       (controle) => controle.id === id
     );
+    if (controle == null) return of(undefined);
     return of(controle);
   }
 
@@ -272,18 +275,30 @@ export class CourseService {
     if (chapter?.chapitreNum === maxchapitreNum) return of(true);
     return of(false);
   }
+
   createQuizResult(quizId: number, note: number): Observable<any> {
     const result = { quizId, note };
-    console.log("Object being sent to backend:", result);
+    console.log('Object being sent to backend:', result);
 
-    return this.http.post<any>(`${environment.apiUrl}/QuizResult/Create`, result).pipe(
-      tap(response => {
-        console.log("Response from backend:", response);
-      }),
-      catchError(this.handleError)
-    );
-
+    return this.http
+      .post<any>(`${environment.apiUrl}/api/QuizResult/Create`, result)
+      .pipe(
+        tap((response) => {
+          console.log('Response from backend:', response);
+        }),
+        catchError(this.handleError)
+      );
   }
-
+  uploadSolution(formData: FormData, id: number): Observable<any> {
+    return this.http
+      .post(`${environment.apiUrl}/api/ResultControle/${id}`, formData, {
+        responseType: 'text',
+      })
+      .pipe(
+        tap((response) => {
+          console.log('Response from backend:', response);
+        }),
+        catchError(this.handleError)
+      );
+  }
 }
-

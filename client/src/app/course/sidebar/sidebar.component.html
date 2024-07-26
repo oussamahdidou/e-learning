@@ -19,13 +19,19 @@
   </div>
 
   <div
-    [ngClass]="chapitre.statue ? 'checked' : 'unchecked'"
+
     *ngFor="let chapitre of module?.chapitres"
   >
-    <div class="items chapitre">
+
+    <div [ngClass]="chapitre.statue ? 'items checked' : 'items chapitre'">
       <a class="chap">{{ chapitre.nom }}</a>
-      <button (click)="CheckChapter(chapitre.id, $event)">check</button>
+      <div class="checkbox-wrapper" (click)="CheckChapter(chapitre, $event)" [class.disabled]="chapitre.statue">
+        <div class="checkbox" [ngClass]="chapitre.statue ? 'checked' : ''">
+          <span *ngIf="chapitre.statue">✔</span>
+        </div>
+      </div>
     </div>
+
 
     <div
       class="items"

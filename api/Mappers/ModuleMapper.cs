@@ -11,7 +11,7 @@ namespace api.Mappers
     {
         public static ModuleDto toModuleDto(this Module module, IEnumerable<int> checkedChapters)
         {
-             return new ModuleDto
+             return new ModuleDto 
             {
                 Id = module.Id,
                 Nom = module.Nom,

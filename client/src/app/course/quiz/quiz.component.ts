@@ -150,6 +150,28 @@ export class QuizComponent implements OnInit {
             if (state) console.log(state);
           });
         console.log('your Note:', note);
+
+        // this.route.paramMap.subscribe((params) => {
+        //   const idParam = params.get('id');
+        //   if (idParam) {
+        //     const id = +idParam;
+        //     this.courseService
+        //       .getChapterNumber(id)
+        //       .subscribe((chapterNumber) => {
+        //         console.log(chapterNumber);
+        //         if (chapterNumber !== null) {
+        //           this.courseService
+        //             .getControle(chapterNumber)
+        //             .subscribe((state) => {
+        //               console.log(state);
+        //               if (state) this.router.navigate(['/course/exam/', id]);
+        //               else this.router.navigate(['/course/cour/', id + 1]);
+        //             });
+        //         } else {
+        //           console.log('Chapter not found');
+        //         }
+        // });
+
       }
     }
   }

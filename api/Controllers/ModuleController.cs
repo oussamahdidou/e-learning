@@ -23,8 +23,8 @@ namespace api.Controllers
             this.moduleRepository = moduleRepository;
             _manager = manager;
         }
-        [HttpGet]
-        public async Task<IActionResult> GetModuleById(int id)
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> GetModuleById([FromRoute] int id)
         {
             // string username = User.GetUsername();
             // AppUser? user = await _manager.FindByNameAsync(username);
@@ -59,6 +59,19 @@ namespace api.Controllers
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteModule(int id){
+
+          Result<Module> result = await moduleRepository.DeleteModule(id);
+          if (result.IsSuccess){
+
+            return Ok(result.Value);
+          } 
+          else {
+
+            return BadRequest(result.Error);
+          }
         }
 
     }
