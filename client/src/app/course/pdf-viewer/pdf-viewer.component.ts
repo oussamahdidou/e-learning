@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../services/course.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -14,6 +15,7 @@ export class PdfViewerComponent {
   isFirstCour: number = 1;
   isLastControle: number = 1;
   selectedFile: File | null = null;
+  host = environment.apiUrl;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
