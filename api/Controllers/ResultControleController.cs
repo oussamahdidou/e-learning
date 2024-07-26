@@ -30,11 +30,11 @@ namespace api.Controllers
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id)  
         {
-            // var username = User.GetUsername();
-            // var user = await _manager.FindByNameAsync(username);
+            var username = User.GetUsername();
+            var user = await _manager.FindByNameAsync(username);
 
-            // if (user == null)
-            //     return BadRequest("User not found.");
+            if (user == null)
+                return BadRequest("User not found.");
             // 5f584df6-2795-4a9b-9364-d57c912ef0d8
             // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
 
@@ -42,7 +42,7 @@ namespace api.Controllers
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
-            var addResult = await _resultRepo.AddResult("0bcd548d-9341-4a51-9c3a-540a84ba67e9", id, result.Value); 
+            var addResult = await _resultRepo.AddResult(user, id, result.Value); 
             if (!addResult.IsSuccess)
                 return BadRequest(result.Error);
             return Ok(result.Value);
@@ -65,7 +65,7 @@ namespace api.Controllers
             return Ok(results.Value);
         }
         [HttpGet("{controleId}")]
-        [Authorize]
+        // [Authorize]
         public async Task<IActionResult> GetResultControleById(int controleId)
         {
             var username = User.GetUsername();

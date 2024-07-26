@@ -11,11 +11,14 @@ import { environment } from '../../../environments/environment';
 export class PdfViewerComponent {
   pdfUrl: string | undefined;
   isExam: boolean = false;
-  exam : any;
+  exam: any;
   isFirstCour: number = 1;
   isLastControle: number = 1;
   selectedFile: File | null = null;
   host = environment.apiUrl;
+  devoirePdfUrl: string = this.host;
+  devoirExists: boolean = false;
+  id: number = 0;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -26,26 +29,26 @@ export class PdfViewerComponent {
     this.route.paramMap.subscribe((params) => {
       const idParam = params.get('pdfid');
       if (idParam) {
-        const id = +idParam;
+        this.id = +idParam;
         const routePath = this.route.snapshot.routeConfig?.path;
 
         if (routePath?.includes('cour')) {
-          this.courseService.getCourPdfUrlById(id).subscribe((url) => {
+          this.courseService.getCourPdfUrlById(this.id).subscribe((url) => {
             this.pdfUrl = url;
           });
         } else if (routePath?.includes('synthese')) {
-          this.courseService.getSyntheseById(id).subscribe((url) => {
+          this.courseService.getSyntheseById(this.id).subscribe((url) => {
             this.pdfUrl = url;
           });
         } else if (routePath?.includes('exam')) {
-          this.courseService.getControleById(id).subscribe((url) => {
+          this.courseService.getControleById(this.id).subscribe((url) => {
             this.pdfUrl = url?.ennonce;
-            this.exam = url
+            this.exam = url;
+            this.isDevoirExists(this.id);
           });
           this.isExam = true;
-
         } else if (routePath?.includes('schema')) {
-          this.courseService.getSchemaById(id).subscribe((url) => {
+          this.courseService.getSchemaById(this.id).subscribe((url) => {
             this.pdfUrl = url;
           });
         } else {
@@ -73,13 +76,25 @@ export class PdfViewerComponent {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    this.courseService.uploadSolution(formData,this.exam.id).subscribe(
+    this.courseService.uploadSolution(formData, this.exam.id).subscribe(
       (response) => {
-        console.log('File uploaded successfully:', response);
+        this.devoirExists = true;
       },
       (error) => {
         console.error('Error uploading file:', error);
       }
     );
+  }
+  isDevoirExists(id: number) {
+    this.courseService.isDevoirUploaded(id).subscribe((res) => {
+      this.devoirePdfUrl = this.devoirePdfUrl + res.reponse;
+      this.devoirExists = true;
+      console.log(this.devoirePdfUrl);
+    });
+  }
+  deleteDevoir() {
+    this.courseService.deleteDevoir(this.id).subscribe((res) => {
+      this.devoirExists = false;
+    });
   }
 }

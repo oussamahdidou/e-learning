@@ -163,17 +163,24 @@ export class CourseService {
     console.log('Requested ID:', id);
     console.log('Module ID:', this.module?.id);
     console.log('ID Match:', this.module?.id === id);
+    const token = localStorage.getItem('token');
 
-    if (this.module?.id === id) {
-      return of(this.module);
-    }
-    return this.http.get<Module>(`${environment.apiUrl}/api/module/${id}`).pipe(
-      map((data) => {
-        this.module = data;
-        return data;
-      }),
-      catchError(this.handleError)
-    );
+    // if (this.module?.id === id) {
+    //   return of(this.module);
+    // }
+    return this.http
+      .get<Module>(`${environment.apiUrl}/api/module/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        map((data) => {
+          this.module = data;
+          return data;
+        }),
+        catchError(this.handleError)
+      );
   }
   private handleError(error: HttpErrorResponse) {
     console.error('An error occurred:', error);
@@ -290,13 +297,47 @@ export class CourseService {
       );
   }
   uploadSolution(formData: FormData, id: number): Observable<any> {
+    const token = localStorage.getItem('token');
     return this.http
       .post(`${environment.apiUrl}/api/ResultControle/${id}`, formData, {
         responseType: 'text',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .pipe(
         tap((response) => {
           console.log('Response from backend:', response);
+        }),
+        catchError(this.handleError)
+      );
+  }
+  isDevoirUploaded(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http
+      .get(`${environment.apiUrl}/api/ResultControle/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  deleteDevoir(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http
+      .delete(`${environment.apiUrl}/api/ResultControle/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          return true;
         }),
         catchError(this.handleError)
       );

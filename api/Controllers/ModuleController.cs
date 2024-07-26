@@ -9,7 +9,7 @@ using api.interfaces;
 using api.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using Microsoft.AspNetCore.Authorization;
 namespace api.Controllers
 {
     [ApiController]
@@ -24,16 +24,17 @@ namespace api.Controllers
             _manager = manager;
         }
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<IActionResult> GetModuleById([FromRoute] int id)
         {
-            // string username = User.GetUsername();
-            // AppUser? user = await _manager.FindByNameAsync(username);
-            // if(user == null){
-            //     return BadRequest();
-            // }
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+            if(user == null){
+                return BadRequest();
+            }
             // 5f584df6-2795-4a9b-9364-d57c912ef0d8
             // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
-            Result<ModuleDto> result = await moduleRepository.GetModuleById(id, "5f584df6-2795-4a9b-9364-d57c912ef0d8");
+            Result<ModuleDto> result = await moduleRepository.GetModuleById(id, user);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);

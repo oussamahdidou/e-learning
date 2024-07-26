@@ -53,7 +53,7 @@ export class AuthService {
   }
   login(username: string, password: string): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/Login`, { username, password })
+      .post(`${environment.apiUrl}/api/Account/Login`, { username, password })
       .pipe(
         tap<any>(
           (response) => {
@@ -88,28 +88,22 @@ export class AuthService {
       })
       .pipe(
         tap<any>(
-          (response) => {
-           
-          },
+          (response) => {},
           (error) => {
-            console.log("error : 1111111"+error);
+            console.log('error : 1111111' + error);
           }
         )
       );
   }
 
-  forgotPassword(
-    email: string,
-  ): Observable<any> {
+  forgotPassword(email: string): Observable<any> {
     return this.http
       .post(`${environment.apiUrl}/Account/forgotpassword`, {
         email,
       })
       .pipe(
         tap<any>(
-          (response) => {
-
-          },
+          (response) => {},
           (error) => {
             console.log(error);
           }
@@ -127,40 +121,30 @@ export class AuthService {
         password,
         confirmpassword,
         email,
-        token
+        token,
       })
       .pipe(
         tap<any>(
-          (response) => {
-
-          },
+          (response) => {},
           (error) => {
             console.log(error);
           }
         )
       );
   }
-  verifyEmail(
-    email: string,
-    token: string
-  ): Observable<any> {
-    const params = new HttpParams()
-    .set('email', email)
-    .set('token', token);
+  verifyEmail(email: string, token: string): Observable<any> {
+    const params = new HttpParams().set('email', email).set('token', token);
     return this.http
       .get(`${environment.apiUrl}/Account/emailconfirmation`, {
-        params
+        params,
       })
       .pipe(
         tap<any>(
-          (response) => {
-
-          },
+          (response) => {},
           (error) => {
             console.log(error);
           }
         )
       );
-  
   }
 }

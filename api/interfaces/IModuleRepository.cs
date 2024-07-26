@@ -10,7 +10,7 @@ namespace api.interfaces
 {
     public interface IModuleRepository
     {
-        Task<Result<ModuleDto>> GetModuleById(int id ,string studentId);
+        Task<Result<ModuleDto>> GetModuleById(int id ,AppUser user);
         Task<Result<Module>> CreateModule(CreateModuleDto createModuleDto);
         Task<Result<Module>> UpdateModule(UpdateModuleDto updateModuleDto);
         Task <Result<Module>> DeleteModule(int id);

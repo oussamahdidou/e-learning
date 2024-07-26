@@ -17,16 +17,16 @@ namespace api.Repository
         {
             _context = context; 
         }
-        public async Task<Result<ResultControle>> AddResult(string userid, int controleId, string filePath)
+        public async Task<Result<ResultControle>> AddResult(AppUser user, int controleId, string filePath)
         {
             Controle? controle = await _context.controles.FindAsync(controleId);
             if (controle == null) return Result<ResultControle>.Failure("no controle was found");
-            Student? student = await _context.students.FindAsync(userid);
+            Student? student = await _context.students.FindAsync(user.Id);
             if (student == null) return Result<ResultControle>.Failure("no Student was found");
             ResultControle resultControle = new ResultControle
             {
                 Student = student,
-                Controle = controle,
+                ControleId = controleId,
                 Reponse = filePath
             };
             try

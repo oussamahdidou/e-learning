@@ -50,7 +50,7 @@ namespace api.Repository
 
             }
         }
-         public async Task<Result<ModuleDto>> GetModuleById(int id, string studentId)
+         public async Task<Result<ModuleDto>> GetModuleById(int id, AppUser user)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace api.Repository
                 }
 
                 List<int> checkedChapters = await apiDbContext.checkChapters
-                    .Where(cc => cc.StudentId == studentId)
+                    .Where(cc => cc.StudentId == user.Id)
                     .Select(cc => cc.ChapitreId)
                     .ToListAsync();
 
