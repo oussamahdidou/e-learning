@@ -81,19 +81,11 @@ export class QuizComponent implements OnInit {
         return;
       }
 
-      this.courseService.getQuizByID(id).subscribe(
-        (quiz: Quiz | undefined) => {
-          if (quiz) {
-            this.quiz = quiz;
-            this.getQuizResult(id, this.quiz.questions.length);
-          } else {
-            console.error('Quiz not found');
-          }
-        },
-        (error) => {
-          console.error('Error fetching quiz:', error);
-        }
-      );
+      this.courseService.getQuizByID(id).subscribe((res) => {
+        this.quiz = res;
+      });
+      this.getQuizResult(id, this.quiz.questions.length);
+      console.log('quiz object', this.quiz);
     });
   }
 
@@ -175,15 +167,20 @@ export class QuizComponent implements OnInit {
   }
 
   getQuizResult(id: number, noteTotal: number) {
-    this.courseService.getQuizResultById(id).subscribe((res) => {
-      Swal.fire({
-        title: `Votre note est :${res.note} / ${noteTotal}`,
-        text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-        icon: 'success',
-      });
-      this.note = res.note;
-      this.isQuizAlreadyPassed = true;
-      return this.note;
-    });
+    this.courseService.getQuizResultById(id).subscribe(
+      (res) => {
+        Swal.fire({
+          title: `Votre note est :${res.note} / ${noteTotal}`,
+          text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+          icon: 'success',
+        });
+        this.note = res.note;
+        this.isQuizAlreadyPassed = true;
+        return this.note;
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

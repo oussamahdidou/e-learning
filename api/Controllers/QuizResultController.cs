@@ -28,6 +28,7 @@ namespace api.Controllers
 
          [HttpPost("Create")]
         //  [Authorize(Roles ="Student")]
+        [Authorize]
         public async Task<IActionResult> CreateQuizResult([FromBody] CreateQuizResultDto createQuizResultDto)
         {
             string username = User.GetUsername();
@@ -39,8 +40,7 @@ namespace api.Controllers
                 {
                     return BadRequest(result.Error);
                 }
-                return Ok(result.Value.ToQuizResultDto());
-             
+                return Ok(result.Value);
         }
 
         [HttpGet("{quizId:int}/{note:double}")]

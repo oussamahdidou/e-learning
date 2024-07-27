@@ -199,12 +199,20 @@ export class CourseService {
       );
   }
 
-  getQuizByID(id: number): Observable<Quiz | undefined> {
-    const quiz = this.module.chapitres
-      .map((chapitre) => chapitre.quiz)
-      .find((quiz) => quiz.id === id);
-
-    return of(quiz);
+  getQuizByID(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http
+      .get(`${environment.apiUrl}/api/Quiz/GetById/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          console.log('Response from backend:', response);
+          return response;
+        })
+      );
   }
 
   getVdUrlById(id: number): Observable<string | undefined> {
@@ -284,11 +292,16 @@ export class CourseService {
   }
 
   createQuizResult(quizId: number, note: number): Observable<any> {
+    const token = localStorage.getItem('token');
     const result = { quizId, note };
     console.log('Object being sent to backend:', result);
 
     return this.http
-      .post<any>(`${environment.apiUrl}/api/QuizResult/Create`, result)
+      .post<any>(`${environment.apiUrl}/api/QuizResult/Create`, result, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         tap((response) => {
           console.log('Response from backend:', response);
@@ -352,7 +365,7 @@ export class CourseService {
       })
       .pipe(
         tap((response) => {
-          console.log(response);
+          console.log('res', response);
           return response;
         }),
         catchError(this.handleError)
