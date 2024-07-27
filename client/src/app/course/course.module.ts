@@ -24,6 +24,10 @@ const routes: Routes = [
         component: QuizComponent,
       },
       {
+        path: 'testniveau/:testniveauid',
+        component: QuizComponent,
+      },
+      {
         path: 'cour/:pdfid',
         component: PdfViewerComponent,
       },

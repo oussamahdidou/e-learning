@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Quiz;
 using api.Dtos.TestNiveau;
 using api.Extensions;
 using api.generique;
@@ -28,7 +29,7 @@ namespace api.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetTestNiveauQuestions([FromRoute] int id)
         {
-            Result<List<Question>> result = await testNiveauRepository.GetTestNiveauQuestions(id);
+            Result<QuizDto> result = await testNiveauRepository.GetTestNiveauQuestions(id);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
