@@ -78,7 +78,7 @@ export class SidebarComponent implements OnInit {
       const completedChapters = this.module.chapitres.filter(
         (chapitre) => chapitre.statue === true
       ).length;
-      this.progress = (completedChapters / this.module.chapitres.length) * 100;
+      this.progress = parseFloat(((completedChapters / this.module.chapitres.length) * 100).toFixed(2));
 
     }
   }
@@ -91,13 +91,16 @@ export class SidebarComponent implements OnInit {
       }) || []
     );
   }
+
   setActive(event: Event): void {
     const target = event.currentTarget as HTMLElement;
-    if (this.activeElement) {
-      this.renderer.removeClass(this.activeElement, 'onit');
+    if (target) {
+      if (this.activeElement) {
+        this.renderer.removeClass(this.activeElement, 'onit');
+      }
+      this.renderer.addClass(target, 'onit');
+      this.activeElement = target;
     }
-    this.renderer.addClass(target, 'onit');
-    this.activeElement = target;
   }
   CheckChapter(chapite: Chapitre, event: Event) {
     console.log("This is the module before checking ", this.module)
@@ -111,6 +114,7 @@ export class SidebarComponent implements OnInit {
           this.setActive(event);
           this.calculateProgress();
           console.log("This is the module after checking ", this.module)
+          console.log("This is the progress ", this.progress)
         }
       }
     });
