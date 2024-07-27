@@ -20,12 +20,12 @@ namespace api.Repository
             _context = context;
         }
 
-        public async Task<Result<QuizResultDto>> CreateQuizResult(string studentId, CreateQuizResultDto createQuizResultDto)
+        public async Task<Result<QuizResult>> CreateQuizResult(AppUser student, CreateQuizResultDto createQuizResultDto)
         {
             try
             {
                 QuizResult? existingQuizResult = await _context.quizResults
-                    .FirstOrDefaultAsync(qr => qr.StudentId == studentId && qr.QuizId == createQuizResultDto.QuizId);
+                    .FirstOrDefaultAsync(qr => qr.StudentId == student.Id && qr.QuizId == createQuizResultDto.QuizId);
 
                 if (existingQuizResult != null)
                 {
@@ -38,7 +38,7 @@ namespace api.Repository
                     // Create new quiz result
                     QuizResult quizResult = new QuizResult
                     {
-                        StudentId = studentId,
+                        StudentId = student.Id,
                         QuizId = createQuizResultDto.QuizId,
                         Note = createQuizResultDto.note
                     };
@@ -48,29 +48,30 @@ namespace api.Repository
 
                 await _context.SaveChangesAsync();
 
-                return Result<QuizResultDto>.Success(new QuizResultDto
+                return Result<QuizResult>.Success(new QuizResult
                 {
-                    StudentId = studentId,
+                    StudentId = student.Id,
                     QuizId = createQuizResultDto.QuizId,
                     Note = createQuizResultDto.note
                 });
             }
             catch (Exception ex)
             {
-                return Result<QuizResultDto>.Failure($"An error occurred while adding quiz results: {ex.Message}");
+                return Result<QuizResult>.Failure($"An error occurred while adding quiz results: {ex.Message}");
             }
         }
 
-        public async Task<Result<bool>> DeleteQuizResult(string studentId, int quizId)
+
+        public async Task<Result<bool>> DeleteQuizResult(AppUser student, int quizId)
         {
             try
             {
                 QuizResult? quizResult = await _context.quizResults
-                    .FirstOrDefaultAsync(qr => qr.StudentId == studentId && qr.QuizId == quizId);
+                    .FirstOrDefaultAsync(qr => qr.StudentId == student.Id && qr.QuizId == quizId);
 
                 if (quizResult == null)
                 {
-                    return Result<bool>.Failure($"Quiz result not found for student '{studentId}' and quiz '{quizId}'.");
+                    return Result<bool>.Failure($"Quiz result not found for student '{student.Id}' and quiz '{quizId}'.");
                 }
 
                 _context.quizResults.Remove(quizResult);
@@ -84,5 +85,20 @@ namespace api.Repository
             }
         }
 
+        public async Task<Result<QuizResult>> UpdateQuizResult(AppUser student, CreateQuizResultDto result)
+        {
+            QuizResult? quizResult = await _context.quizResults.FirstOrDefaultAsync((x) => x.StudentId == student.Id && x.QuizId == result.QuizId);
+            if(quizResult == null)return Result<QuizResult>.Failure("quiz Resultat n'est existe pas");
+            quizResult.Note = result.note;
+            await _context.SaveChangesAsync();
+            return Result<QuizResult>.Success(quizResult);
+        }
+
+        public async Task<Result<QuizResult>> GetQuizResultId(AppUser student, int quizId)
+        {
+            QuizResult? quizResult = await _context.quizResults.FirstOrDefaultAsync((x) => x.StudentId == student.Id && x.QuizId == quizId);
+            if(quizResult == null)return Result<QuizResult>.Failure("quiz Resultat n'est existe pas");
+            return Result<QuizResult>.Success(quizResult);
+        }
     }
 }
