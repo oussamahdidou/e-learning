@@ -41,6 +41,9 @@ namespace api.Controllers
         public async Task<IActionResult> RegisterTestNiveauResult([FromRoute] int moduleId, [FromRoute] double note)
         {
             string username = User.GetUsername();
+            if(username == null){
+                return BadRequest("User not found");
+            }
             AppUser appUser = await userManager.FindByNameAsync(username);
             TestNiveauResultDto testNiveauResultDto = new TestNiveauResultDto()
             {

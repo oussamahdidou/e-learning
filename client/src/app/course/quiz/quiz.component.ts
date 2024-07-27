@@ -102,6 +102,7 @@ export class QuizComponent implements OnInit {
           (quiz : Quiz | undefined) => {
             if(quiz){
               this.quiz = quiz;
+              this.quiz.id = moduleId;
               this.isTest = true
             }
             else{
@@ -168,7 +169,15 @@ export class QuizComponent implements OnInit {
           }
         });
         if(this.isTest){
-          console.log("the test will be uploaded")
+          this.courseService
+          .createTestNiveau(this.quiz.id, note)
+          .subscribe((res) =>{
+            Swal.fire({
+              title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
+              text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+              icon: 'success',
+            })
+          })
         }
         else{
           if (this.isQuizAlreadyPassed) {

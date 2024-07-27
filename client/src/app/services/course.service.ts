@@ -391,4 +391,20 @@ export class CourseService {
         catchError(this.handleError)
       );
   }
+
+  createTestNiveau(moduleId : number , note : number) : Observable<any>{
+    const token = localStorage.getItem('token');
+    return this.http
+      .post<any>(`${environment.apiUrl}/api/TestNiveau/TestResult/${moduleId}/${note}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          console.log('Response from backend:', response);
+        }),
+        catchError(this.handleError)
+      );
+  }
 }
