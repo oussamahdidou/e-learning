@@ -18,10 +18,7 @@
     </div>
   </div>
 
-  <div
-
-    *ngFor="let chapitre of module?.chapitres"
-  >
+  <div *ngFor="let chapitre of module?.chapitres">
 
     <div [ngClass]="chapitre.statue ? 'items checked' : 'items chapitre'">
       <a class="chap">{{ chapitre.nom }}</a>
@@ -113,5 +110,16 @@
         </a>
       </div>
     </div>
+  </div>
+  <div class="items" (click)="setActive($event)">
+    <a
+    [routerLink]="['/course', module?.id, 'testniveau', module?.id]"
+      class="d-flex align-items-center w-100 text-decoration-none"
+    >
+      <span class="flex-grow-1">Test De Niveau</span>
+      <button mat-icon-button color="primary" aria-label="Quiz">
+        <mat-icon>quiz</mat-icon>
+      </button>
+    </a>
   </div>
 </div>

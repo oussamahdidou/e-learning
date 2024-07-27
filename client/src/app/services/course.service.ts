@@ -374,4 +374,21 @@ export class CourseService {
         catchError(this.handleError)
       );
   }
+
+  getTestNiveau(moduleId : number) : Observable<any>{
+    const token = localStorage.getItem('token');
+    return this.http
+      .get(`${environment.apiUrl}/api/TestNiveau/${moduleId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          console.log(response);
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
 }

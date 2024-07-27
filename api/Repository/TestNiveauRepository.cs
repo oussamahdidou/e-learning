@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Quiz;
 using api.Dtos.TestNiveau;
 using api.generique;
 using api.interfaces;
+using api.Mappers;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +20,7 @@ namespace api.Repository
         {
             this.apiDbContext = apiDbContext;
         }
-        public async Task<Result<List<Question>>> GetTestNiveauQuestions(int moduleId)
+        public async Task<Result<QuizDto>> GetTestNiveauQuestions(int moduleId)
         {
             try
             {
@@ -34,14 +36,20 @@ namespace api.Repository
                                            .OrderBy(q => Guid.NewGuid())
                                            .Take(20)
                                            .ToListAsync();
-                    return Result<List<Question>>.Success(questions);
+
+                    Quiz quiz = new Quiz{
+                        Nom = "Test De Niveau",
+                        Questions = questions
+                    };
+                    QuizDto quizDto = quiz.ToQuizDto();
+                    return Result<QuizDto>.Success(quizDto);
                 }
-                return Result<List<Question>>.Failure("module notfound");
+                return Result<QuizDto>.Failure("module notfound");
             }
             catch (Exception ex)
             {
 
-                return Result<List<Question>>.Failure(ex.Message);
+                return Result<QuizDto>.Failure(ex.Message);
 
             }
 

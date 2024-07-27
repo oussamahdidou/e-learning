@@ -63,9 +63,9 @@ export class QuizComponent implements OnInit {
   currentQuestionIndex = 0;
   selectedAnswers: { [questionId: number]: number } = {};
   errorMessage: string | null = null;
-  module: Module | undefined;
   isQuizAlreadyPassed: boolean = false;
   note: number = 0;
+  isTest: boolean = false;
 
   constructor(
     private courseService: CourseService,
@@ -75,25 +75,44 @@ export class QuizComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const id = Number(params.get('quizid'));
-      if (isNaN(id)) {
+      const quizId = Number(params.get('quizid'));
+      const moduleId = Number(params.get('testniveauid'));
+      if (isNaN(quizId) && isNaN(moduleId)) {
         console.error('Invalid ID');
         return;
       }
-
-      this.courseService.getQuizByID(id).subscribe(
-        (quiz: Quiz | undefined) => {
-          if (quiz) {
-            this.quiz = quiz;
-            this.getQuizResult(id, this.quiz.questions.length);
-          } else {
-            console.error('Quiz not found');
+      if(!isNaN(quizId)){
+        this.courseService.getQuizByID(quizId).subscribe(
+          (quiz: Quiz | undefined) => {
+            if (quiz) {
+              this.quiz = quiz;
+              this.getQuizResult(quizId, this.quiz.questions.length);
+            } else {
+              console.error('Quiz not found',quizId);
+            }
+          },
+          (error) => {
+            console.error('Error fetching quiz:', error);
           }
-        },
-        (error) => {
-          console.error('Error fetching quiz:', error);
-        }
-      );
+        );
+      }
+      if(!isNaN(moduleId)){
+        console.log("ID of module received")
+        this.courseService.getTestNiveau(moduleId).subscribe(
+          (quiz : Quiz | undefined) => {
+            if(quiz){
+              this.quiz = quiz;
+              this.isTest = true
+            }
+            else{
+              console.log("Test Niveau Not found")
+            }
+          },
+          (error) =>{
+            console.error('An error occured while requestion testniveau', error)
+          }
+        )
+      }
     });
   }
 
@@ -148,27 +167,32 @@ export class QuizComponent implements OnInit {
             note++;
           }
         });
-        if (this.isQuizAlreadyPassed) {
-          this.courseService
-            .updateQuizResult(this.quiz.id, note)
-            .subscribe((res) => {
-              Swal.fire({
-                title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
-                text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-                icon: 'success',
+        if(this.isTest){
+          console.log("the test will be uploaded")
+        }
+        else{
+          if (this.isQuizAlreadyPassed) {
+            this.courseService
+              .updateQuizResult(this.quiz.id, note)
+              .subscribe((res) => {
+                Swal.fire({
+                  title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
+                  text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+                  icon: 'success',
+                });
               });
-            });
-        } else {
-          this.courseService
-            .createQuizResult(this.quiz.id, note)
-            .subscribe((state) => {
-              Swal.fire({
-                title: `Votre note est :${note} / ${this.quiz.questions.length}`,
-                text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-                icon: 'success',
+          } else {
+            this.courseService
+              .createQuizResult(this.quiz.id, note)
+              .subscribe((state) => {
+                Swal.fire({
+                  title: `Votre note est :${note} / ${this.quiz.questions.length}`,
+                  text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+                  icon: 'success',
+                });
               });
-            });
-          console.log('your Note:', note);
+            console.log('your Note:', note);
+          }
         }
       }
     }
