@@ -43,14 +43,15 @@ namespace api.Controllers
              
         }
 
-        [HttpPut]
+        [HttpGet("{quizId:int}/{note:double}")]
         [Authorize]
 
-        public async Task<IActionResult> UpdateQuizResult([FromBody] CreateQuizResultDto resultat){
+        public async Task<IActionResult> UpdateQuizResult(int quizId , double note){
             string username = User.GetUsername();
             AppUser? student = await _userManager.FindByNameAsync(username);
             if (student == null) return BadRequest();
-            Result<QuizResult> result = await _quizResultRepo.UpdateQuizResult(student, resultat);
+            
+            Result<QuizResult> result = await _quizResultRepo.UpdateQuizResult(student, quizId ,  note);
 
             if (!result.IsSuccess)
             {

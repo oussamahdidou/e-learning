@@ -25,7 +25,7 @@
 
     <div [ngClass]="chapitre.statue ? 'items checked' : 'items chapitre'">
       <a class="chap">{{ chapitre.nom }}</a>
-      <div class="checkbox-wrapper" (click)="CheckChapter(chapitre, $event)" [class.disabled]="chapitre.statue">
+      <div class="checkbox-wrapper" (click)="CheckChapter(chapitre, $event)" [class.disabled]="chapitre.statue" [style.pointer-events]="chapitre.statue ? 'none' : 'auto'">
         <div class="checkbox" [ngClass]="chapitre.statue ? 'checked' : ''">
           <span *ngIf="chapitre.statue">✔</span>
         </div>

@@ -11,7 +11,7 @@ namespace api.interfaces
     public interface IQuizResultRepository
     {
         Task<Result<QuizResult>> CreateQuizResult(AppUser student, CreateQuizResultDto createQuizResultDto);
-        Task<Result<QuizResult>> UpdateQuizResult(AppUser student, CreateQuizResultDto result);
+        Task<Result<QuizResult>> UpdateQuizResult(AppUser student, int quizId , double note);
         Task<Result<QuizResult>> GetQuizResultId(AppUser student, int quizId);
         Task<Result<bool>> DeleteQuizResult(AppUser student, int quizId);
     }

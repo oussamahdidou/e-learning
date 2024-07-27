@@ -85,11 +85,11 @@ namespace api.Repository
             }
         }
 
-        public async Task<Result<QuizResult>> UpdateQuizResult(AppUser student, CreateQuizResultDto result)
+        public async Task<Result<QuizResult>> UpdateQuizResult(AppUser student, int quizId , double note)
         {
-            QuizResult? quizResult = await _context.quizResults.FirstOrDefaultAsync((x) => x.StudentId == student.Id && x.QuizId == result.QuizId);
+            QuizResult? quizResult = await _context.quizResults.FirstOrDefaultAsync((x) => x.StudentId == student.Id && x.QuizId == quizId);
             if(quizResult == null)return Result<QuizResult>.Failure("quiz Resultat n'est existe pas");
-            quizResult.Note = result.note;
+            quizResult.Note = note;
             await _context.SaveChangesAsync();
             return Result<QuizResult>.Success(quizResult);
         }

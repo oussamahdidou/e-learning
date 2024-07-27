@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../../services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 interface Option {
   id: number;
@@ -63,6 +64,8 @@ export class QuizComponent implements OnInit {
   selectedAnswers: { [questionId: number]: number } = {};
   errorMessage: string | null = null;
   module: Module | undefined;
+  isQuizAlreadyPassed: boolean = false;
+  note: number = 0;
 
   constructor(
     private courseService: CourseService,
@@ -82,6 +85,7 @@ export class QuizComponent implements OnInit {
         (quiz: Quiz | undefined) => {
           if (quiz) {
             this.quiz = quiz;
+            this.getQuizResult(id, this.quiz.questions.length);
           } else {
             console.error('Quiz not found');
           }
@@ -144,35 +148,42 @@ export class QuizComponent implements OnInit {
             note++;
           }
         });
-        this.courseService
-          .createQuizResult(this.quiz.id, note)
-          .subscribe((state) => {
-            if (state) console.log(state);
-          });
-        console.log('your Note:', note);
-
-        // this.route.paramMap.subscribe((params) => {
-        //   const idParam = params.get('id');
-        //   if (idParam) {
-        //     const id = +idParam;
-        //     this.courseService
-        //       .getChapterNumber(id)
-        //       .subscribe((chapterNumber) => {
-        //         console.log(chapterNumber);
-        //         if (chapterNumber !== null) {
-        //           this.courseService
-        //             .getControle(chapterNumber)
-        //             .subscribe((state) => {
-        //               console.log(state);
-        //               if (state) this.router.navigate(['/course/exam/', id]);
-        //               else this.router.navigate(['/course/cour/', id + 1]);
-        //             });
-        //         } else {
-        //           console.log('Chapter not found');
-        //         }
-        // });
-
+        if (this.isQuizAlreadyPassed) {
+          this.courseService
+            .updateQuizResult(this.quiz.id, note)
+            .subscribe((res) => {
+              Swal.fire({
+                title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
+                text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+                icon: 'success',
+              });
+            });
+        } else {
+          this.courseService
+            .createQuizResult(this.quiz.id, note)
+            .subscribe((state) => {
+              Swal.fire({
+                title: `Votre note est :${note} / ${this.quiz.questions.length}`,
+                text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+                icon: 'success',
+              });
+            });
+          console.log('your Note:', note);
+        }
       }
     }
+  }
+
+  getQuizResult(id: number, noteTotal: number) {
+    this.courseService.getQuizResultById(id).subscribe((res) => {
+      Swal.fire({
+        title: `Votre note est :${res.note} / ${noteTotal}`,
+        text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+        icon: 'success',
+      });
+      this.note = res.note;
+      this.isQuizAlreadyPassed = true;
+      return this.note;
+    });
   }
 }

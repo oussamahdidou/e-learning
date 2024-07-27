@@ -1,9 +1,12 @@
 .navbar {
   background-color: #1e2f40;
   z-index: 10;
+  top: 0;
   position: fixed;
   z-index: 99;
   width: 100%;
+  height: 57px;
+  padding: 0 20px;
 }
 .container {
   margin: 0 auto;
@@ -19,11 +22,7 @@
   font-weight: bold;
   text-align: center;
 }
-#navbarSupportedContent {
-  width: 306px;
-  display: flex;
-  justify-content: space-between;
-}
+
 .green-square-btn {
   background-color: #00b33c;
   height: 50px;
@@ -33,7 +32,7 @@
 .navbar-nav {
   width: 100%;
   display: flex;
-  justify-content: space-between; /* Aligns items to left and right */
+  justify-content: space-between;
 }
 .profile-circle-btn:hover {
   background-color: #fff;

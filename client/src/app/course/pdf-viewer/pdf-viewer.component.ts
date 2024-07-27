@@ -38,7 +38,10 @@ export class PdfViewerComponent {
           });
         } else if (routePath?.includes('synthese')) {
           this.courseService.getSyntheseById(this.id).subscribe((url) => {
-            this.pdfUrl = url;
+            if (url) {
+              this.pdfUrl = url;
+            }
+            console.log('synthese not found');
           });
         } else if (routePath?.includes('exam')) {
           this.courseService.getControleById(this.id).subscribe((url) => {

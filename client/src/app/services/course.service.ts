@@ -342,4 +342,36 @@ export class CourseService {
         catchError(this.handleError)
       );
   }
+  getQuizResultById(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http
+      .get(`${environment.apiUrl}/api/QuizResult/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          console.log(response);
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  updateQuizResult(quizId: number, note: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http
+      .get(`${environment.apiUrl}/api/QuizResult/${quizId}/${note}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          console.log(response);
+          return response;
+        }),
+        catchError(this.handleError)
+      );
+  }
 }
