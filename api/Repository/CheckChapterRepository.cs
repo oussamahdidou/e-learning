@@ -34,7 +34,7 @@ namespace api.Repository
             }
             catch (Exception ex)
             {
-                return Result<List<CheckChapter>>.Failure("Non checked Chaptre Found");
+                return Result<List<CheckChapter>>.Failure(ex.Message);
             }
         }
 
@@ -58,7 +58,7 @@ namespace api.Repository
             }
             catch (Exception ex)
             {
-                return Result<CheckChapter>.Failure("Something went wrong");
+                return Result<CheckChapter>.Failure(ex.Message);
             }
         }
 
@@ -77,7 +77,7 @@ namespace api.Repository
             }
             catch (Exception ex)
             {
-                return Result<bool>.Failure("Something went wrong");
+                return Result<bool>.Failure(ex.Message);
             }
         }
     }

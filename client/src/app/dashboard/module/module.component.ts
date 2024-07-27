@@ -19,6 +19,7 @@ export class ModuleComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   displayedColumns: string[] = ['id', 'number', 'nom', 'module', 'plus'];
+  controlesColumns: string[] = ['id', 'nom', 'action', 'plus'];
   modulesColumns: string[] = [
     'id',
     'nom',
@@ -109,7 +110,6 @@ export class ModuleComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     this.chapitressource.sort = this.sort;
-    this.controlessource.sort = this.sort;
   }
 
   ngOnInit(): void {
@@ -145,6 +145,20 @@ export class ModuleComponent implements OnInit {
           },
           (error) => {}
         );
+      this.dashboardservice.getcontrolesbymodule(this.moduleId).subscribe(
+        (response) => {
+          this.controles = response;
+          this.controlessource = new MatTableDataSource(this.controles);
+          this.chapitressource.sortingDataAccessor = (item, property) => {
+            switch (property) {
+              default:
+                return item[property];
+            }
+          };
+          this.controlessource.sort = this.sort;
+        },
+        (error) => {}
+      );
     });
   }
 

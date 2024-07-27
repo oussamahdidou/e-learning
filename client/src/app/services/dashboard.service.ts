@@ -91,4 +91,9 @@ export class DashboardService {
   updatequiz(id: number, quiz: any): Observable<any> {
     return this.http.put(`${environment.apiUrl}/api/Quiz/Update/${id}`, quiz);
   }
+  getcontrolesbymodule(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Controle/GetControleByModule/${id}`
+    );
+  }
 }
