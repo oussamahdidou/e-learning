@@ -199,54 +199,75 @@ export class CourseService {
       );
   }
 
-  getQuizByID(id: number): Observable<Quiz | undefined> {
-    const quiz = this.module.chapitres
-      .map((chapitre) => chapitre.quiz)
-      .find((quiz) => quiz.id === id);
-
-    return of(quiz);
+  getQuizByID(id: number): Observable<any> {
+    const token = localStorage.getItem('token');
+    return this.http
+      .get(`${environment.apiUrl}/api/Quiz/GetById/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          console.log('Response from backend:', response);
+          return response;
+        })
+      );
   }
 
   getVdUrlById(id: number): Observable<string | undefined> {
-    const chapter = this.module.chapitres.find(
-      (chapitre) => chapitre.id === id
-    );
-
-    const vdUrl = chapter ? chapter.videoPath : undefined;
-    return of(vdUrl as string | undefined);
+    return this.http
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .pipe(
+        map((data) => {
+          return data.videoPath;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getCourPdfUrlById(id: number): Observable<string | undefined> {
-    const chapter = this.module.chapitres.find(
-      (chapitre) => chapitre.id === id
-    );
-
-    const pdfUrl = chapter ? chapter.coursPdfPath : undefined;
-    return of(pdfUrl as string | undefined);
+    return this.http
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .pipe(
+        map((data) => {
+          return data.coursPdfPath;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getSyntheseById(id: number): Observable<string | undefined> {
-    const chapter = this.module.chapitres.find(
-      (chapitre) => chapitre.id === id
-    );
-    const syntheseUrl = chapter ? chapter.synthese : undefined;
-    return of(syntheseUrl as string | undefined);
+    return this.http
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .pipe(
+        map((data) => {
+          return data.synthese;
+        }),
+        catchError(this.handleError)
+      );
   }
 
-  getControleById(id: number): Observable<Controle | undefined> {
-    const controle = this.module.controles.find(
-      (controle) => controle.id === id
-    );
-    if (controle == null) return of(undefined);
-    return of(controle);
+  getControleById(controleId: number): Observable<Controle | undefined> {
+    return this.http
+    .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`)
+    .pipe(
+      map((data) =>{
+        return data;
+      }),
+      catchError(this.handleError)
+    )
   }
 
   getSchemaById(id: number): Observable<string | undefined> {
-    const chapter = this.module.chapitres.find(
-      (chapitre) => chapitre.id === id
+    return this.http
+    .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+    .pipe(
+      map((data) => {
+        return data.schema;
+      }),
+      catchError(this.handleError)
     );
-    const schemaUrl = chapter ? chapter.schema : undefined;
-    return of(schemaUrl as string | undefined);
   }
 
   isVdUrlAvailable(id: number): Observable<boolean> {

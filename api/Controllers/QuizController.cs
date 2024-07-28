@@ -46,7 +46,7 @@ namespace api.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        [Authorize(Roles = "Admin,Teacher")]
+        // [Authorize(Roles = "Admin,Teacher")]
         public async Task<IActionResult> GetQuizById(int id)
         {
             Result<QuizDto> result = await _quizRepo.GetQuizById(id);
