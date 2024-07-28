@@ -24,6 +24,28 @@ namespace api.Repository
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
         }
+
+        public async Task<Result<Chapitre>> Approuver(int id)
+        {
+            try
+            {
+                Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == id);
+                if (chapitre == null)
+                {
+                    return Result<Chapitre>.Failure("Chapitre not found");
+                }
+                chapitre.Statue = ObjectStatus.Approuver;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Chapitre>.Success(chapitre);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Chapitre>.Failure(ex.Message);
+
+            }
+        }
+
         public async Task<Result<Chapitre>> CreateChapitre(CreateChapitreDto createChapitreDto)
         {
             try
@@ -49,7 +71,7 @@ namespace api.Repository
                         VideoPath = resultvideo.Value,
                         Schema = schemaresult.Value,
                         Synthese = syntheseresult.Value,
-                        Statue = ObjectStatus.Pending,
+                        Statue = createChapitreDto.Statue,
                         QuizId = createChapitreDto.QuizId,
 
                     };
@@ -88,6 +110,27 @@ namespace api.Repository
             {
 
                 return Result<Chapitre>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Chapitre>> Refuser(int id)
+        {
+            try
+            {
+                Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == id);
+                if (chapitre == null)
+                {
+                    return Result<Chapitre>.Failure("Chapitre not found");
+                }
+                chapitre.Statue = ObjectStatus.Pending;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Chapitre>.Success(chapitre);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Chapitre>.Failure(ex.Message);
+
             }
         }
 

@@ -2,10 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Data;
 using api.Dtos.dashboard;
 using api.generique;
 using api.interfaces;
 using api.Model;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -15,9 +17,11 @@ namespace api.Controllers
     public class DashboardController : ControllerBase
     {
         private readonly IDashboardRepository dashboardRepository;
-        public DashboardController(IDashboardRepository dashboardRepository)
+        private readonly UserManager<AppUser> userManager;
+        public DashboardController(IDashboardRepository dashboardRepository, UserManager<AppUser> userManager)
         {
             this.dashboardRepository = dashboardRepository;
+            this.userManager = userManager;
         }
         [HttpGet("GetChaptersByModule/{id:int}")]
         public async Task<IActionResult> GetChaptersByModule([FromRoute] int id)
@@ -44,6 +48,32 @@ namespace api.Controllers
         public async Task<IActionResult> GetDashboardChapter([FromRoute] int id)
         {
             Result<Chapitre> result = await dashboardRepository.GetDashboardChapiter(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return Ok(result.Error);
+        }
+        [HttpGet("Teachers")]
+        public async Task<IActionResult> GetAllTeachers()
+        {
+            IList<AppUser> teachers = await userManager.GetUsersInRoleAsync(UserRoles.Teacher);
+            return Ok(teachers);
+        }
+        [HttpPut("Grant/{id}")]
+        public async Task<IActionResult> GrantTeacherAccess(string id)
+        {
+            Result<Teacher> result = await dashboardRepository.GrantTeacherAccess(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return Ok(result.Error);
+        }
+        [HttpPut("RemoveGrant/{id}")]
+        public async Task<IActionResult> RemoveGrantTeacherAccess(string id)
+        {
+            Result<Teacher> result = await dashboardRepository.RemoveGrantTeacherAccess(id);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);

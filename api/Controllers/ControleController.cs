@@ -2,10 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Data;
 using api.Dtos.Controle;
+using api.Extensions;
 using api.generique;
+using api.helpers;
 using api.interfaces;
 using api.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -15,20 +20,50 @@ namespace api.Controllers
     public class ControleController : ControllerBase
     {
         private readonly IControleRepository controleRepository;
-        public ControleController(IControleRepository controleRepository)
+        private readonly UserManager<AppUser> userManager;
+        public ControleController(IControleRepository controleRepository, UserManager<AppUser> userManager)
         {
             this.controleRepository = controleRepository;
+            this.userManager = userManager;
         }
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
+
         [HttpPost]
         public async Task<IActionResult> CreateControle([FromForm] CreateControleDto createControleDto)
         {
-            Result<Controle> result = await controleRepository.CreateControle(createControleDto);
-            if (result.IsSuccess)
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if (appUser == null)
             {
-                return Ok(result.Value);
+
+                return Unauthorized("u need to logging");
 
             }
-            return BadRequest(result.Error);
+            IList<string> roles = await userManager.GetRolesAsync(appUser);
+            if (roles.Contains(UserRoles.Admin))
+            {
+                createControleDto.Statue = ObjectStatus.Approuver;
+                Result<Controle> result = await controleRepository.CreateControle(createControleDto);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.Error);
+                }
+                return Ok(result.Value);
+            }
+            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
+            {
+                Result<Controle> result = await controleRepository.CreateControle(createControleDto);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.Error);
+                }
+                return Ok(result.Value);
+            }
+            else
+            {
+                return Unauthorized("u need to logging");
+
+            }
         }
         [HttpGet("GetControleById/{Id:int}")]
         public async Task<IActionResult> GetControleById([FromRoute] int Id)
@@ -80,7 +115,28 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpPut("Approuver/{id:int}")]
+        public async Task<IActionResult> ApprouverControle([FromRoute] int id)
+        {
+            Result<Controle> result = await controleRepository.Approuver(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
 
+        }
+        [HttpPut("Refuser{id:int}")]
+        public async Task<IActionResult> RefuserControle([FromRoute] int id)
+        {
+            Result<Controle> result = await controleRepository.Refuser(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
 
 
     }

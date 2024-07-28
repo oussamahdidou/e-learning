@@ -14,5 +14,8 @@ namespace api.interfaces
         Task<Result<List<GetChaptersDashboardByModuleDto>>> GetChaptersDashboardbyModule(int id);
         Task<Result<Chapitre>> GetDashboardChapiter(int id);
         Task<Result<ObjectsDto>> GetObjectspourApprouver();
+        Task<Result<Teacher>> GrantTeacherAccess(string id);
+        Task<Result<Teacher>> RemoveGrantTeacherAccess(string id);
+
     }
 }

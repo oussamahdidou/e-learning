@@ -2,10 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Data;
 using api.Dtos.Quiz;
+using api.Extensions;
 using api.generique;
+using api.helpers;
 using api.interfaces;
+using api.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -15,22 +20,52 @@ namespace api.Controllers
     public class QuizController : ControllerBase
     {
         private readonly IQuizRepository _quizRepo;
+        private readonly UserManager<AppUser> userManager;
 
-        public QuizController(IQuizRepository quizRepository)
+        public QuizController(IQuizRepository quizRepository, UserManager<AppUser> userManager)
         {
             _quizRepo = quizRepository;
+            this.userManager = userManager;
         }
 
         [HttpPost("Create")]
-        // [Authorize(Roles = "Admin,Teacher")]
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
         public async Task<IActionResult> CreateQuiz([FromBody] CreateQuizDto createQuizDto)
         {
-            Result<QuizDto> result = await _quizRepo.CreateQuiz(createQuizDto);
-            if (!result.IsSuccess)
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if (appUser == null)
             {
-                return BadRequest(result.Error);
+
+                return Unauthorized("u need to logging");
+
             }
-            return Ok(result.Value);
+            IList<string> roles = await userManager.GetRolesAsync(appUser);
+            if (roles.Contains(UserRoles.Admin))
+            {
+                createQuizDto.Statue = ObjectStatus.Approuver;
+                Result<QuizDto> result = await _quizRepo.CreateQuiz(createQuizDto);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.Error);
+                }
+                return Ok(result.Value);
+            }
+            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
+            {
+                Result<QuizDto> result = await _quizRepo.CreateQuiz(createQuizDto);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.Error);
+                }
+                return Ok(result.Value);
+            }
+            else
+            {
+                return Unauthorized("u need to logging");
+
+            }
+
         }
 
         [HttpPut("Update/{id}")]
@@ -68,5 +103,28 @@ namespace api.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpPut("Approuver/{id:int}")]
+        public async Task<IActionResult> ApprouverQuiz([FromRoute] int id)
+        {
+            Result<Quiz> result = await _quizRepo.Approuver(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("Refuser{id:int}")]
+        public async Task<IActionResult> RefuserQuiz([FromRoute] int id)
+        {
+            Result<Quiz> result = await _quizRepo.Refuser(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+
     }
 }

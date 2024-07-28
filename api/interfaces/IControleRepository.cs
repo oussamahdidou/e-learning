@@ -16,5 +16,7 @@ namespace api.interfaces
         Task<Result<Controle>> UpdateControleName(UpdateControleNameDto updateControleNameDto);
         Task<Result<List<Controle>>> GetControlesByModule(int Id);
         Task<Result<Controle>> GetControleById(int Id);
+        Task<Result<Controle>> Approuver(int id);
+        Task<Result<Controle>> Refuser(int id);
     }
 }

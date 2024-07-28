@@ -22,6 +22,28 @@ namespace api.Repository
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
         }
+
+        public async Task<Result<Controle>> Approuver(int id)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == id);
+                if (controle == null)
+                {
+                    return Result<Controle>.Failure("Controle not found");
+                }
+                controle.Status = ObjectStatus.Approuver;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Controle>.Success(controle);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Controle>.Failure(ex.Message);
+
+            }
+        }
+
         public async Task<Result<Controle>> CreateControle(CreateControleDto createControleDto)
         {
             try
@@ -36,7 +58,7 @@ namespace api.Repository
                         Ennonce = ennonceresult.Value,
                         Solution = solutionresult.Value,
                         Nom = createControleDto.Nom,
-                        Status = ObjectStatus.Pending,
+                        Status = createControleDto.Statue,
 
                     };
                     await apiDbContext.controles.AddAsync(controle);
@@ -100,6 +122,27 @@ namespace api.Repository
             {
 
                 return Result<List<Controle>>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Controle>> Refuser(int id)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == id);
+                if (controle == null)
+                {
+                    return Result<Controle>.Failure("Controle not found");
+                }
+                controle.Status = ObjectStatus.Denied;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Controle>.Success(controle);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Controle>.Failure(ex.Message);
+
             }
         }
 

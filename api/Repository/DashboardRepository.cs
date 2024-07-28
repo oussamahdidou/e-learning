@@ -82,5 +82,48 @@ namespace api.Repository
                 return Result<ObjectsDto>.Failure(ex.Message);
             }
         }
+
+        public async Task<Result<Teacher>> GrantTeacherAccess(string id)
+        {
+            try
+            {
+                Teacher? teacher = await apiDbContext.teachers.FirstOrDefaultAsync(x => x.Id == id);
+                if (teacher == null)
+                {
+                    return Result<Teacher>.Failure("teacher not found");
+                }
+                teacher.Granted = true;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Teacher>.Success(teacher);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Teacher>.Failure(ex.Message);
+
+            }
+
+        }
+
+        public async Task<Result<Teacher>> RemoveGrantTeacherAccess(string id)
+        {
+            try
+            {
+                Teacher? teacher = await apiDbContext.teachers.FirstOrDefaultAsync(x => x.Id == id);
+                if (teacher == null)
+                {
+                    return Result<Teacher>.Failure("teacher not found");
+                }
+                teacher.Granted = false;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Teacher>.Success(teacher);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Teacher>.Failure(ex.Message);
+
+            }
+        }
     }
 }

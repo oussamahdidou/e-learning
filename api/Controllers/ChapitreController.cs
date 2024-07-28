@@ -2,10 +2,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Data;
 using api.Dtos.Chapitre;
+using api.Extensions;
 using api.generique;
+using api.helpers;
 using api.interfaces;
 using api.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -15,9 +21,11 @@ namespace api.Controllers
     public class ChapitreController : ControllerBase
     {
         private readonly IChapitreRepository chapitreRepository;
-        public ChapitreController(IChapitreRepository chapitreRepository)
+        private readonly UserManager<AppUser> userManager;
+        public ChapitreController(IChapitreRepository chapitreRepository, UserManager<AppUser> userManager)
         {
             this.chapitreRepository = chapitreRepository;
+            this.userManager = userManager;
         }
         [HttpGet]
         public async Task<IActionResult> GetChapitreById(int id)
@@ -29,15 +37,43 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
         [HttpPost]
         public async Task<IActionResult> CreateChapitre([FromForm] CreateChapitreDto createChapitreDto)
         {
-            Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
-            if (result.IsSuccess)
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if (appUser == null)
             {
+
+                return Unauthorized("u need to logging");
+
+            }
+            IList<string> roles = await userManager.GetRolesAsync(appUser);
+            if (roles.Contains(UserRoles.Admin))
+            {
+                createChapitreDto.Statue = ObjectStatus.Approuver;
+                Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.Error);
+                }
                 return Ok(result.Value);
             }
-            return BadRequest(result.Error);
+            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
+            {
+                Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
+                if (!result.IsSuccess)
+                {
+                    return BadRequest(result.Error);
+                }
+                return Ok(result.Value);
+            }
+            else
+            {
+                return Unauthorized("u need to logging");
+
+            }
         }
         [HttpPut("UpdateChapitrePdf")]
         public async Task<IActionResult> UpdateChapitrePdf([FromForm] UpdateChapitrePdfDto updateChapitrePdfDto)
@@ -83,6 +119,27 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpPut("Approuver/{id:int}")]
+        public async Task<IActionResult> ApprouverChapitre([FromRoute] int id)
+        {
+            Result<Chapitre> result = await chapitreRepository.Approuver(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
 
+        }
+        [HttpPut("Refuser{id:int}")]
+        public async Task<IActionResult> RefuserChapitre([FromRoute] int id)
+        {
+            Result<Chapitre> result = await chapitreRepository.Refuser(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
     }
 }
