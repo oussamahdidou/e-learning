@@ -13,5 +13,6 @@ namespace api.interfaces
         Task<Result<List<GetChapitresForControleDto>>> GetChaptersForControle(int id);
         Task<Result<List<GetChaptersDashboardByModuleDto>>> GetChaptersDashboardbyModule(int id);
         Task<Result<Chapitre>> GetDashboardChapiter(int id);
+        Task<Result<ObjectsDto>> GetObjectspourApprouver();
     }
 }

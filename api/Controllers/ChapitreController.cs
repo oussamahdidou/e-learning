@@ -39,6 +39,50 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpPut("UpdateChapitrePdf")]
+        public async Task<IActionResult> UpdateChapitrePdf([FromForm] UpdateChapitrePdfDto updateChapitrePdfDto)
+        {
+
+            Result<Chapitre> result = await chapitreRepository.UpdateChapitrePdf(updateChapitrePdfDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("UpdateChapitreVideo")]
+        public async Task<IActionResult> UpdateChapitreVideo([FromForm] UpdateChapitreVideoDto updateChapitreVideoDto)
+        {
+
+            Result<Chapitre> result = await chapitreRepository.UpdateChapitreVideo(updateChapitreVideoDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateChapitreSchema")]
+        public async Task<IActionResult> UpdateChapitreSchema([FromForm] UpdateChapitreSchemaDto updateChapitreSchemaDto)
+        {
+
+            Result<Chapitre> result = await chapitreRepository.UpdateChapitreSchema(updateChapitreSchemaDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateChapitreSynthese")]
+        public async Task<IActionResult> UpdateChapitreSynthese([FromForm] UpdateChapitreSyntheseDto updateChapitreSyntheseDto)
+        {
+            Result<Chapitre> result = await chapitreRepository.UpdateChapitreSynthese(updateChapitreSyntheseDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
 
     }
 }

@@ -70,7 +70,7 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
-        [HttpPut(" UpdateControleName")]
+        [HttpPut("UpdateControleName")]
         public async Task<IActionResult> UpdateControleName([FromBody] UpdateControleNameDto updateControleNameDto)
         {
             Result<Controle> result = await controleRepository.UpdateControleName(updateControleNameDto);

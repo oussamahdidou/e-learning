@@ -6,6 +6,7 @@ using api.Data;
 using api.Dtos.dashboard;
 using api.extensions;
 using api.generique;
+using api.helpers;
 using api.interfaces;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +61,26 @@ namespace api.Repository
             }
             return Result<Chapitre>.Success(chapitre);
 
+        }
+
+        public async Task<Result<ObjectsDto>> GetObjectspourApprouver()
+        {
+            try
+            {
+                List<Chapitre> chapitres = await apiDbContext.chapitres.Where(x => x.Statue == ObjectStatus.Pending).ToListAsync();
+                List<Controle> controles = await apiDbContext.controles.Where(x => x.Status == ObjectStatus.Pending).ToListAsync();
+
+                return Result<ObjectsDto>.Success(new ObjectsDto()
+                {
+                    chapitres = chapitres,
+                    controles = controles
+                });
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<ObjectsDto>.Failure(ex.Message);
+            }
         }
     }
 }
