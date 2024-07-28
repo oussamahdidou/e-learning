@@ -104,6 +104,7 @@ export class QuizComponent implements OnInit {
               this.quiz = quiz;
               this.quiz.id = moduleId;
               this.isTest = true
+              this.getTestNiveauScore(moduleId,this.quiz.questions.length)
             }
             else{
               console.log("Test Niveau Not found")
@@ -170,7 +171,7 @@ export class QuizComponent implements OnInit {
         });
         if(this.isTest){
           this.courseService
-          .createTestNiveau(this.quiz.id, note)
+          .createTestNiveauScore(this.quiz.id, note)
           .subscribe((res) =>{
             Swal.fire({
               title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
@@ -218,5 +219,23 @@ export class QuizComponent implements OnInit {
       this.isQuizAlreadyPassed = true;
       return this.note;
     });
+  }
+
+  getTestNiveauScore(moduleId : number, noteTotal: number){
+    this.courseService.getTestNiveauScore(moduleId).subscribe(
+      (res) => {
+        if(res != 0){
+          Swal.fire({
+            title: `Votre note est :${res} / ${noteTotal}`,
+            text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois clicker sur ok`,
+            icon: 'success',
+          });
+          this.note = res.note;
+          this.isQuizAlreadyPassed = true;
+          return this.note;
+        }
+        return
+      }
+    )
   }
 }

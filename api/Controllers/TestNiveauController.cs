@@ -58,5 +58,21 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+
+        [HttpGet("GetScore/{moduleId:int}")]
+        public async Task<IActionResult> GetTestNiveauScore([FromRoute] int moduleId)
+        {
+            string username = User.GetUsername();
+            if(username == null){
+                return BadRequest("User not found");
+            }
+            AppUser appUser = await userManager.FindByNameAsync(username);
+            Result<double> result = await testNiveauRepository.GetTestNiveauScore(appUser.Id,moduleId);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }

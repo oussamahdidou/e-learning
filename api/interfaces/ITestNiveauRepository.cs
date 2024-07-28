@@ -13,5 +13,7 @@ namespace api.interfaces
     {
         Task<Result<QuizDto>> GetTestNiveauQuestions(int moduleId);
         Task<Result<TestNiveau>> RegisterTestNiveauResult(TestNiveauResultDto testNiveauResultDto);
+
+        Task<Result<double>> GetTestNiveauScore(string studentId, int moduleId);
     }
 }

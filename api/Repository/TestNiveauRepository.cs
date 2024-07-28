@@ -55,6 +55,18 @@ namespace api.Repository
 
         }
 
+        public async Task<Result<double>> GetTestNiveauScore(string studentId, int moduleId)
+        {
+            double note = await apiDbContext.testNiveaus
+            .Where(x => x.ModuleId == moduleId && x.StudentId == studentId)
+            .Select(x => x.Note)
+            .FirstOrDefaultAsync();
+            if(note == null){
+                return Result<double>.Failure("Not found");
+            }
+            return Result<double>.Success(note);
+        }
+
         public async Task<Result<TestNiveau>> RegisterTestNiveauResult(TestNiveauResultDto testNiveauResultDto)
         {
             try

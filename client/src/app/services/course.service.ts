@@ -392,7 +392,7 @@ export class CourseService {
       );
   }
 
-  createTestNiveau(moduleId : number , note : number) : Observable<any>{
+  createTestNiveauScore(moduleId : number , note : number) : Observable<any>{
     const token = localStorage.getItem('token');
     return this.http
       .post<any>(`${environment.apiUrl}/api/TestNiveau/TestResult/${moduleId}/${note}`,{},{
@@ -406,5 +406,24 @@ export class CourseService {
         }),
         catchError(this.handleError)
       );
+  }
+
+  getTestNiveauScore(moduleId : number): Observable<any>{
+    const token = localStorage.getItem('token');
+    return this.http
+      .get<any>(`${environment.apiUrl}/api/TestNiveau/GetScore/${moduleId}`,
+        {
+          headers:{
+            Authorization: `Bearer ${token}`,
+          }
+        }
+      ).pipe(
+        tap(
+          (response) =>{
+            console.log('Response from backen is : ', response);
+          }
+        ),
+        catchError(this.handleError)
+      )
   }
 }
