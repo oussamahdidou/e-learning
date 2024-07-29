@@ -1,1 +1,22 @@
-<h1>jfjjdkdkdd</h1>
+<div class="container">
+  <h2>My Learning</h2>
+  <div class="module-grid d-grid">
+    <div class="module-card d-flex flex-column justify-content-center" *ngFor="let module of modules">
+      <img src="img/college admission-amico.png" alt="">
+      <div class="module-details">
+        <h3 class="module-title">{{module.nom}}</h3>
+          <p
+          class="progress-bar bg-success rounded"
+          role="progressbar"
+          [style.width.%]="calculateProgress(module.moduleID)"
+          aria-valuenow="progress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+          >
+            {{calculateProgress(module.moduleID)}} % Complete
+      </p>
+      </div>
+      <a class="testniveau text-decoration-none text-reset">Passer Test De niveau</a>
+    </div>
+  </div>
+</div>
