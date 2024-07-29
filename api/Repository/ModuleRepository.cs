@@ -19,6 +19,7 @@ using api.interfaces;
 using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.generique;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api.Repository
 {
@@ -92,6 +93,11 @@ namespace api.Repository
                 return Result<ModuleDto>.Failure(ex.Message);
             }
         }
+        public async Task<Result<Module>> GetModuleInformationByID(int moduleId){
+            Module? module = await apiDbContext.modules.FindAsync(moduleId);
+            if (module == null) return Result<Module>.Failure("module not found");
+            return Result<Module>.Success(module);
+        } 
         public async Task<Result<Module>> UpdateModule(UpdateModuleDto updateModuleDto)
         {
             try
