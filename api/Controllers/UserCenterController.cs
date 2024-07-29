@@ -12,6 +12,7 @@ using api.Mappers;
 using api.Dtos.UserCenter;
 using api.generique;
 using api.Dtos.Module;
+using Microsoft.AspNetCore.Authorization;
 
 namespace api.Controllers
 {
@@ -30,6 +31,7 @@ namespace api.Controllers
             _checkchapter = checkchapter;
         }
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult>  GetAllStudentCheckChapter(){
             string username = User.GetUsername();
             AppUser? student = await _userManager.FindByNameAsync(username);
@@ -53,11 +55,9 @@ namespace api.Controllers
 
                     modulesWithCheckCount.Add(new ModuleWithCheckCountDto
                     {
-                        Module = new ModuleDto {
-                            Id = module.Id,
-                            Nom = module.Nom,
-                            NumberOfChapter = module.Chapitres.Count()
-                        },
+                        ModuleID = module.Id,
+                        Nom = module.Nom,
+                        NumberOfChapter = module.Chapitres.Count(),
                         CheckCount = checkCount
                     });
                 }

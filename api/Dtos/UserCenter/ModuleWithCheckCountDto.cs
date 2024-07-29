@@ -8,7 +8,9 @@ namespace api.Dtos.UserCenter
 {
     public class ModuleWithCheckCountDto
     {
-        public ModuleDto Module { get; set; }
+        public int ModuleID { get; set; }
+        public string? Nom { get; set; }
+        public int NumberOfChapter { get; set; }
         public int CheckCount { get; set; }
     }
 }
