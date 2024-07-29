@@ -20,6 +20,41 @@ namespace api.Repository
         {
             this.apiDbContext = apiDbContext;
         }
+
+        public async Task<Result<List<GetChapitresToUpdateControlesDto>>> GetChapitresToUpdateControles(int id)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Id == id);
+                if (controle == null)
+                {
+                    return Result<List<GetChapitresToUpdateControlesDto>>.Failure("controlenotfound");
+                }
+                List<Chapitre> controleschapitres = controle.Chapitres;
+                int ModuleId = controleschapitres.First().ModuleId;
+                List<GetChapitresToUpdateControlesDto> checkedchapters = new List<GetChapitresToUpdateControlesDto>();
+                List<Chapitre> modulechapitres = await apiDbContext.chapitres.Where(x => x.ModuleId == ModuleId).ToListAsync();
+                foreach (Chapitre chapitre in modulechapitres)
+                {
+                    if (controleschapitres.Any(x => x.Id == chapitre.Id))
+                    {
+                        checkedchapters.Add(chapitre.FromChapitreToGetChapitresToUpdateControlesDto(true));
+                    }
+                    else
+                    {
+                        checkedchapters.Add(chapitre.FromChapitreToGetChapitresToUpdateControlesDto(false));
+
+                    }
+                }
+                return Result<List<GetChapitresToUpdateControlesDto>>.Success(checkedchapters);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<List<GetChapitresToUpdateControlesDto>>.Failure(ex.Message);
+            }
+        }
+
         public async Task<Result<List<GetChaptersDashboardByModuleDto>>> GetChaptersDashboardbyModule(int id)
         {
             try
@@ -63,23 +98,19 @@ namespace api.Repository
 
         }
 
-        public async Task<Result<ObjectsDto>> GetObjectspourApprouver()
+        public async Task<Result<List<PendingObjectsDto>>> GetObjectspourApprouver()
         {
             try
             {
-                List<Chapitre> chapitres = await apiDbContext.chapitres.Where(x => x.Statue == ObjectStatus.Pending).ToListAsync();
-                List<Controle> controles = await apiDbContext.controles.Where(x => x.Status == ObjectStatus.Pending).ToListAsync();
+                List<PendingObjectsDto> chapitres = await apiDbContext.chapitres.Where(x => x.Statue == ObjectStatus.Pending).Select(x => x.FromChapitreToPendingObjectsDto()).ToListAsync();
+                List<PendingObjectsDto> controles = await apiDbContext.controles.Where(x => x.Status == ObjectStatus.Pending).Select(x => x.FromControleToPendingObjectsDto()).ToListAsync();
 
-                return Result<ObjectsDto>.Success(new ObjectsDto()
-                {
-                    chapitres = chapitres,
-                    controles = controles
-                });
+                return Result<List<PendingObjectsDto>>.Success(chapitres.Concat(controles).ToList());
             }
             catch (System.Exception ex)
             {
 
-                return Result<ObjectsDto>.Failure(ex.Message);
+                return Result<List<PendingObjectsDto>>.Failure(ex.Message);
             }
         }
 
@@ -123,6 +154,36 @@ namespace api.Repository
 
                 return Result<Teacher>.Failure(ex.Message);
 
+            }
+        }
+
+        public async Task<bool> UpdateControleChapitres(List<GetChapitresToUpdateControlesDto> getChapitresToUpdateControlesDtos, int controleId)
+        {
+            try
+            {
+                foreach (GetChapitresToUpdateControlesDto item in getChapitresToUpdateControlesDtos)
+                {
+                    Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == item.Id);
+                    if (chapitre == null)
+                    {
+                        return false;
+                    }
+                    if (item.Checked)
+                    {
+                        chapitre.ControleId = controleId;
+                    }
+                    else
+                    {
+                        chapitre.ControleId = null;
+                    }
+                    await apiDbContext.SaveChangesAsync();
+                }
+                return true;
+            }
+            catch (System.Exception)
+            {
+
+                return false;
             }
         }
     }

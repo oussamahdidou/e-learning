@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-teachers',
@@ -11,17 +12,9 @@ export class TeachersComponent implements OnInit {
   displayedColumns: string[] = ['userName', 'email', 'action'];
   @ViewChild(MatSort) sort!: MatSort;
   dataSource: MatTableDataSource<any>;
-  teachers: any[] = [
-    { userName: 'john_doe', email: 'john_doe@example.com', status: false },
-    {
-      userName: 'jane_smith',
-      email: 'jane_smith@example.com',
-      status: false,
-    },
-    { userName: 'sam_brown', email: 'sam_brown@example.com', status: true },
-  ];
+  teachers: any[] = [];
 
-  constructor() {
+  constructor(private readonly dashboardservice: DashboardService) {
     this.dataSource = new MatTableDataSource(this.teachers);
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
@@ -30,11 +23,23 @@ export class TeachersComponent implements OnInit {
       }
     };
   }
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-  }
+  ngAfterViewInit(): void {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.dashboardservice.getteachers().subscribe(
+      (response) => {
+        this.dataSource = new MatTableDataSource(response);
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            default:
+              return item[property];
+          }
+        };
+        this.dataSource.sort = this.sort;
+      },
+      (error) => {}
+    );
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -42,6 +47,20 @@ export class TeachersComponent implements OnInit {
   }
 
   toggleApproval(teacher: any) {
-    teacher.status = !teacher.status;
+    if (teacher.granted) {
+      this.dashboardservice.removeaccessgrant(teacher.id).subscribe(
+        (response) => {
+          teacher.granted = !teacher.granted;
+        },
+        (error) => {}
+      );
+    } else {
+      this.dashboardservice.grantaccess(teacher.id).subscribe(
+        (response) => {
+          teacher.granted = !teacher.granted;
+        },
+        (error) => {}
+      );
+    }
   }
 }

@@ -1,0 +1,39 @@
+@if (controle) {
+<app-sidenav></app-sidenav>
+
+<div class="controle-container">
+
+    <mat-horizontal-stepper [linear]="false" #stepper class="pt-5 px-3">
+        <mat-step>
+            <h4>{{controle.nom}} <button mat-button color="primary" (click)="modifierNom()">Modifier Controle Nom
+                </button> <button mat-button (click)="openDialog()">Changer chapitres</button>
+            </h4>
+
+            <ng-template matStepLabel> Ennonce </ng-template>
+            <h4>Ennonce <button mat-raised-button color="primary" (click)="ennonce.click()">Modifier Ennonce </button>
+            </h4>
+            <input type="file" #ennonce (change)="SelectEnnonce($event)" style="display: none">
+            <div class="pdf-container w-75 px-5 mx-auto">
+                <pdf-viewer src="{{host}}{{controle.ennonce}}" [render-text]="true" [original-size]="false"
+                    style="width: 100%; height: 700px">
+                </pdf-viewer>
+            </div>
+        </mat-step>
+
+        <mat-step>
+            <ng-template matStepLabel> Solution </ng-template>
+
+            <h4>Solution <button mat-raised-button color="primary" (click)="solution.click()">Modifier Solution
+                </button>
+            </h4>
+            <input type="file" #solution (change)="SelectSolution($event)" style="display: none">
+
+            <section class="pdf-container w-75 px-5 mx-auto">
+                <pdf-viewer src="{{host}}{{controle.solution}}" [render-text]="true" [original-size]="false"
+                    style="width: 100%; height: 700px">
+                </pdf-viewer>
+            </section>
+        </mat-step>
+    </mat-horizontal-stepper>
+</div>
+}

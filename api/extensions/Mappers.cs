@@ -51,5 +51,33 @@ namespace api.extensions
                 Name = chapitre.Nom
             };
         }
+        public static PendingObjectsDto FromChapitreToPendingObjectsDto(this Chapitre chapitre)
+        {
+            return new PendingObjectsDto()
+            {
+                Id = chapitre.Id,
+                Nom = chapitre.Nom,
+                Type = "Chapitre"
+            };
+        }
+        public static PendingObjectsDto FromControleToPendingObjectsDto(this Controle controle)
+        {
+            return new PendingObjectsDto()
+            {
+                Id = controle.Id,
+                Nom = controle.Nom,
+                Type = "Controle"
+            };
+        }
+        public static GetChapitresToUpdateControlesDto FromChapitreToGetChapitresToUpdateControlesDto(this Chapitre chapitre, bool Checked)
+        {
+            return new GetChapitresToUpdateControlesDto()
+            {
+                Id = chapitre.Id,
+                Name = chapitre.Nom,
+                Checked = Checked
+
+            };
+        }
     }
 }

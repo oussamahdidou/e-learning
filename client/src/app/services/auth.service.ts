@@ -53,7 +53,7 @@ export class AuthService {
   }
   login(username: string, password: string): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/Login`, { username, password })
+      .post(`${environment.apiUrl}/api/Account/Login`, { username, password })
       .pipe(
         tap<any>(
           (response) => {

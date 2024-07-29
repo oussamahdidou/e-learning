@@ -31,7 +31,7 @@ namespace api.Controllers
             {
                 return Ok(result.Value);
             }
-            return Ok(result.Error);
+            return BadRequest(result.Error);
         }
         [HttpGet("GetChaptersForControleByModule/{id:int}")]
         public async Task<IActionResult> GetChaptersForControleByModule([FromRoute] int id)
@@ -41,7 +41,7 @@ namespace api.Controllers
             {
                 return Ok(result.Value);
             }
-            return Ok(result.Error);
+            return BadRequest(result.Error);
         }
         [HttpGet("DashboardChapter/{id:int}")]
 
@@ -52,7 +52,7 @@ namespace api.Controllers
             {
                 return Ok(result.Value);
             }
-            return Ok(result.Error);
+            return BadRequest(result.Error);
         }
         [HttpGet("Teachers")]
         public async Task<IActionResult> GetAllTeachers()
@@ -61,24 +61,54 @@ namespace api.Controllers
             return Ok(teachers);
         }
         [HttpPut("Grant/{id}")]
-        public async Task<IActionResult> GrantTeacherAccess(string id)
+        public async Task<IActionResult> GrantTeacherAccess([FromRoute] string id)
         {
             Result<Teacher> result = await dashboardRepository.GrantTeacherAccess(id);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
             }
-            return Ok(result.Error);
+            return BadRequest(result.Error);
         }
         [HttpPut("RemoveGrant/{id}")]
-        public async Task<IActionResult> RemoveGrantTeacherAccess(string id)
+        public async Task<IActionResult> RemoveGrantTeacherAccess([FromRoute] string id)
         {
             Result<Teacher> result = await dashboardRepository.RemoveGrantTeacherAccess(id);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
             }
-            return Ok(result.Error);
+            return BadRequest(result.Error);
+        }
+        [HttpGet("GetObjectspourApprouver")]
+        public async Task<IActionResult> GetObjectspourApprouver()
+        {
+            Result<List<PendingObjectsDto>> result = await dashboardRepository.GetObjectspourApprouver();
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpGet("GetChapitresToUpdateControles/{id:int}")]
+        public async Task<IActionResult> GetChapitresToUpdateControles([FromRoute] int id)
+        {
+            Result<List<GetChapitresToUpdateControlesDto>> result = await dashboardRepository.GetChapitresToUpdateControles(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("Updatecontrolechapters/{id:int}")]
+        public async Task<IActionResult> Updatecontrolechapters([FromRoute] int id, [FromBody] List<GetChapitresToUpdateControlesDto> getChapitresToUpdateControlesDtos)
+        {
+            bool result = await dashboardRepository.UpdateControleChapitres(getChapitresToUpdateControlesDtos, id);
+            if (result)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
     }
 }

@@ -31,6 +31,9 @@ import { ModuleComponent } from './module/module.component';
 import { ModuleRequirementsDialogComponent } from './module-requirements-dialog/module-requirements-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { ControleComponent } from './controle/controle.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { UpdateControleChaptersDialogComponent } from './update-controle-chapters-dialog/update-controle-chapters-dialog.component';
 const routes: Routes = [
   {
     path: '',
@@ -44,6 +47,7 @@ const routes: Routes = [
       { path: 'chapter/:id', component: ChapterComponent },
       { path: 'createchapter/:id', component: CreateChapterQuizComponent },
       { path: 'module/:id', component: ModuleComponent },
+      { path: 'controle/:id', component: ControleComponent },
     ],
   },
 ];
@@ -62,6 +66,8 @@ const routes: Routes = [
     ChapterComponent,
     ModuleComponent,
     ModuleRequirementsDialogComponent,
+    ControleComponent,
+    UpdateControleChaptersDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -79,6 +85,7 @@ const routes: Routes = [
     MatInputModule,
     MatButtonModule,
     MatRadioModule,
+    MatCheckboxModule,
     FormsModule,
     ReactiveFormsModule,
     MatCardModule,

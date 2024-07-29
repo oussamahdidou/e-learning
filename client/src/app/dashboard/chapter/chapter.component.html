@@ -3,6 +3,7 @@
 <div class="quiz-container">
   <mat-horizontal-stepper [linear]="isLinear" #stepper class="pt-5 px-3">
     <mat-step>
+      <h4>{{chapitre.nom}}</h4>
       <ng-template matStepLabel> CoursPdf </ng-template>
       <h4>CoursPdf</h4>
       <div class="pdf-container w-75 px-5 mx-auto">
@@ -13,6 +14,7 @@
     </mat-step>
 
     <mat-step>
+      <h4>{{chapitre.nom}}</h4>
       <ng-template matStepLabel> CoursVideo </ng-template>
       <h4>CoursVideo</h4>
 
@@ -26,9 +28,11 @@
       </section>
     </mat-step>
 
-    <mat-step id="schema">
+    <mat-step>
       <ng-template matStepLabel> Schema </ng-template>
       <h4>Schema</h4>
+      <h4>{{chapitre.nom}}</h4>
+
       <div class="pdf-container w-75 mx-auto">
         <pdf-viewer src="{{host}}{{chapitre.schema}}" [render-text]="true" [original-size]="false"
           style="width: 100%; height: 700px">
@@ -37,6 +41,7 @@
     </mat-step>
 
     <mat-step>
+      <h4>{{chapitre.nom}}</h4>
       <ng-template matStepLabel> Synthese </ng-template>
       <h4>Synthese</h4>
       <div class="pdf-container w-75 mx-auto">
@@ -47,6 +52,7 @@
     </mat-step>
 
     <mat-step>
+      <h4>{{chapitre.nom}}</h4>
       <ng-template matStepLabel>Quiz </ng-template>
       <h4>Quiz</h4>
       @if (quiz) {

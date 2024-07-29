@@ -86,7 +86,7 @@ namespace api.Controllers
             return BadRequest(result.Error);
         }
         [HttpPut("UpdateControleEnnonce")]
-        public async Task<IActionResult> UpdateControleEnnonce([FromBody] UpdateControleEnnonceDto updateControleEnnonceDto)
+        public async Task<IActionResult> UpdateControleEnnonce([FromForm] UpdateControleEnnonceDto updateControleEnnonceDto)
         {
             Result<Controle> result = await controleRepository.UpdateControleEnnonce(updateControleEnnonceDto);
             if (result.IsSuccess)
@@ -96,7 +96,7 @@ namespace api.Controllers
             return BadRequest(result.Error);
         }
         [HttpPut("UpdateControleSolution")]
-        public async Task<IActionResult> UpdateControleSolution([FromBody] UpdateControleSolutionDto updateControleSolutionDto)
+        public async Task<IActionResult> UpdateControleSolution([FromForm] UpdateControleSolutionDto updateControleSolutionDto)
         {
             Result<Controle> result = await controleRepository.UpdateControleSolution(updateControleSolutionDto);
             if (result.IsSuccess)

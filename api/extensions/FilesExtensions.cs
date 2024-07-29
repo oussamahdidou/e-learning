@@ -247,10 +247,8 @@ namespace api.extensions
                 return Result<string>.Success(filePath);
 
             }
-            else
-            {
-                return Result<string>.Failure($"The file specified in the path was not found. {filePath}");
-            }
+            return Result<string>.Success(filePath);
+
         }
 
     }
