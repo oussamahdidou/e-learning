@@ -125,6 +125,8 @@ builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpS
 builder.Services.AddSingleton<IMailer, Mailer>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IControleRepository, ControleRepository>();
+builder.Services.AddScoped<IExamFinalRepository, ExamFinalRepository>();
+
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {

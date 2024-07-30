@@ -5,6 +5,13 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ModuleRequirementsDialogComponent } from '../module-requirements-dialog/module-requirements-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-module',
@@ -12,6 +19,7 @@ import { DashboardService } from '../../services/dashboard.service';
   styleUrl: './module.component.css',
 })
 export class ModuleComponent implements OnInit {
+  controleForm: FormGroup;
   edit(_t283: any) {
     throw new Error('Method not implemented.');
   }
@@ -88,11 +96,61 @@ export class ModuleComponent implements OnInit {
     });
   }
   moduleId: number = 0;
+  enonceFile: File | null = null;
+  solutionFile: File | null = null;
+  onFileChange(event: any, type: string) {
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      if (type === 'enonce') {
+        this.enonceFile = file;
+      } else if (type === 'solution') {
+        this.solutionFile = file;
+      }
+    } else {
+      Swal.fire({
+        title: 'Warning',
+        text: 'Veuillez sélectionner un fichier PDF',
+        icon: 'warning',
+      });
+    }
+  }
+
+  onSubmit() {
+    if (this.controleForm.valid) {
+      const formData = new FormData();
+      formData.append('Nom', this.controleForm.get('nomControle')?.value);
+      if (this.enonceFile) {
+        formData.append('Ennonce', this.enonceFile);
+      }
+      if (this.solutionFile) {
+        formData.append('Solution', this.solutionFile);
+      }
+
+      // this.dashboardservice.CreateControle(formData).subscribe(
+      //   (response) => {
+      //     console.log(response);
+      //     window.location.href = `/dashboard/module/${this.moduleId}`;
+      //   },
+      //   (error) => {
+      //     console.log(error);
+      //   }
+      // );
+      formData.forEach((value, key) => {
+        console.log(`${key}: ${value}`);
+      });
+    }
+  }
   constructor(
+    private fb: FormBuilder,
     public dialog: MatDialog,
     private readonly route: ActivatedRoute,
     private readonly dashboardservice: DashboardService
   ) {
+    this.controleForm = this.fb.group({
+      nomControle: ['', Validators.required],
+      enonce: [null],
+      solution: [null],
+    });
     this.chapitressource = new MatTableDataSource(this.chapters);
     this.chapitressource.sortingDataAccessor = (item, property) => {
       switch (property) {

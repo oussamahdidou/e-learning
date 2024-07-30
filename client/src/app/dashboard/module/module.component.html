@@ -102,6 +102,56 @@
         </table>
       </div>
     </mat-step>
+    @if (false) {
+    <mat-step>
+      <ng-template matStepLabel> ExamFinal Ennonce </ng-template>
+      <h4>ExamFinal Ennonce</h4>
+      <div class="pdf-container w-75 px-5 mx-auto">
+        <pdf-viewer src="" [render-text]="true" [original-size]="false" style="width: 100%; height: 700px">
+        </pdf-viewer>
+      </div>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>ExamFinal Solution</ng-template>
+      <h4>ExamFinal Solution</h4>
+      <div class="pdf-container w-75 px-5 mx-auto">
+        <pdf-viewer src="" [render-text]="true" [original-size]="false" style="width: 100%; height: 700px">
+        </pdf-viewer>
+      </div>
+    </mat-step>
+    }
+    @else {
+    <mat-step>
+      <ng-template matStepLabel> Create Exam </ng-template>
+      <h4>Create Exam</h4>
+      <form *ngIf="controleForm" [formGroup]="controleForm" (ngSubmit)="onSubmit()" class="container mt-4">
+        <div class="mb-3">
+          <label for="nomControle" class="form-label">Nom du contrôle</label>
+          <input id="nomControle" type="text" class="form-control" formControlName="nomControle" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="enonce" class="form-label">Énoncé du contrôle</label>
+          <input id="enonce" type="file" accept="application/pdf" (change)="onFileChange($event, 'enonce')"
+            class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="solution" class="form-label">Solution du contrôle</label>
+          <input id="solution" type="file" accept="application/pdf" (change)="onFileChange($event, 'solution')"
+            class="form-control" required />
+        </div>
+
+
+
+
+
+        <button type="submit" class="btn btn-primary" [disabled]="!controleForm.valid">
+          Soumettre
+        </button>
+      </form>
+    </mat-step>
+    }
     <mat-step>
       <ng-template matStepLabel> Modules Requis Table </ng-template>
       <h4>Modules Requis Table</h4>
