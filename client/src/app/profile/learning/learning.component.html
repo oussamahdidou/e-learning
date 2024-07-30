@@ -1,8 +1,9 @@
 <div class="container">
   <h2>My Learning</h2>
   <div class="module-grid d-grid">
-    <div class="module-card d-flex flex-column justify-content-center" *ngFor="let module of modules">
-      <img src="img/college admission-amico.png" alt="">
+    <a class="module-card text-decoration-none d-flex flex-column justify-content-center rounded" *ngFor="let module of modules"
+    [routerLink]="['/course',module.moduleID]">
+      <img src="img/Pricing plans-rafiki.png" alt="">
       <div class="module-details">
         <h3 class="module-title">{{module.nom}}</h3>
           <p
@@ -15,8 +16,12 @@
           >
             {{calculateProgress(module.moduleID)}} % Complete
       </p>
+      <a class="testniveau text-decoration-none text-reset" [routerLink] = "['/course',module.moduleID,'testniveau',module.moduleID]">Passer Test De niveau</a>
+      <div class="play-button" [routerLink]="['/course', module.moduleID]">
+        <span>&#9658;</span>
       </div>
-      <a class="testniveau text-decoration-none text-reset">Passer Test De niveau</a>
-    </div>
+      </div>
+
+    </a>
   </div>
 </div>
