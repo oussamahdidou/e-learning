@@ -104,8 +104,8 @@ namespace api.Repository
             {
                 List<PendingObjectsDto> chapitres = await apiDbContext.chapitres.Where(x => x.Statue == ObjectStatus.Pending).Select(x => x.FromChapitreToPendingObjectsDto()).ToListAsync();
                 List<PendingObjectsDto> controles = await apiDbContext.controles.Where(x => x.Status == ObjectStatus.Pending).Select(x => x.FromControleToPendingObjectsDto()).ToListAsync();
-
-                return Result<List<PendingObjectsDto>>.Success(chapitres.Concat(controles).ToList());
+                List<PendingObjectsDto> exams = await apiDbContext.modules.Include(x => x.ExamFinal).Where(x => x.ExamFinal.Status == ObjectStatus.Pending).Select(x => x.FromExamToPendingObjectsDto()).ToListAsync();
+                return Result<List<PendingObjectsDto>>.Success(chapitres.Concat(controles).Concat(exams).ToList());
             }
             catch (System.Exception ex)
             {

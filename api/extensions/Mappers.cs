@@ -69,6 +69,15 @@ namespace api.extensions
                 Type = "Controle"
             };
         }
+        public static PendingObjectsDto FromExamToPendingObjectsDto(this Module module)
+        {
+            return new PendingObjectsDto()
+            {
+                Id = module.Id,
+                Nom = module.ExamFinal.Nom,
+                Type = "Exam"
+            };
+        }
         public static GetChapitresToUpdateControlesDto FromChapitreToGetChapitresToUpdateControlesDto(this Chapitre chapitre, bool Checked)
         {
             return new GetChapitresToUpdateControlesDto()

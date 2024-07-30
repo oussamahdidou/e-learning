@@ -34,6 +34,7 @@ import { VgCoreModule } from '@videogular/ngx-videogular/core';
 import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
+
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -51,6 +52,7 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
     InstitutionsModule,
     CourseModule,
     AuthModule,
+
     DashboardModule,
     RouterModule,
     ReactiveFormsModule,

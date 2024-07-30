@@ -1,0 +1,9 @@
+.dashboard-container {
+  margin-left: 200px;
+}
+.chart {
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+  background-color: white;
+  position: relative;
+  border-radius: 5px;
+}

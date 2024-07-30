@@ -74,5 +74,45 @@ namespace api.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpPut("UpdateExamEnnonce")]
+        public async Task<IActionResult> UpdateExamFinaleEnnonce([FromForm] UpdateExamFinalDto updateExamFinalDto)
+        {
+            Result<ExamFinal> result = await examFinalRepository.UpdateExamFinalEnnonce(updateExamFinalDto);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpPut("UpdateExamSolution")]
+        public async Task<IActionResult> UpdateExamFinaleSolution([FromForm] UpdateExamFinalDto updateExamFinalDto)
+        {
+            Result<ExamFinal> result = await examFinalRepository.UpdateExamFinalSolution(updateExamFinalDto);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpPut("Approuver/{id:int}")]
+        public async Task<IActionResult> Approuver([FromRoute] int id)
+        {
+            Result<ExamFinal> result = await examFinalRepository.Approuver(id);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
+        [HttpPut("Refuser/{id:int}")]
+        public async Task<IActionResult> Refuser([FromRoute] int id)
+        {
+            Result<ExamFinal> result = await examFinalRepository.Refuser(id);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
     }
 }

@@ -172,6 +172,7 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
+  //********************************************** controle ************************* */
   getcontrolebyid(id: number): Observable<any> {
     return this.http.get(
       `${environment.apiUrl}/api/Controle/GetControleById/${id}`,
@@ -228,7 +229,7 @@ api/Dashboard/GetObjectspourApprouver`,
       {}
     );
   }
-  //******************************************************************************* */
+  //**************************************** chapitre ********************************** */
   updatechapitrePdf(Pdf: any): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/api/Chapitre/UpdateChapitrePdf`,
@@ -271,6 +272,7 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
+  //********************************************** exam ************************* */
   createexam(exam: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/ExamFinal`, exam, {
       headers: this.authservice.headers,
@@ -282,6 +284,38 @@ api/Dashboard/GetObjectspourApprouver`,
       {
         headers: this.authservice.headers,
       }
+    );
+  }
+  updateexamennonce(exam: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/ExamFinal/UpdateExamEnnonce`,
+      exam,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateexamsolution(exam: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/ExamFinal/UpdateExamSolution`,
+      exam,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  approuverexam(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/ExamFinal/Approuver/${id}`,
+      {},
+      { headers: this.authservice.headers }
+    );
+  }
+  refuserexam(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/ExamFinal/Refuser/${id}`,
+      {},
+      { headers: this.authservice.headers }
     );
   }
 }

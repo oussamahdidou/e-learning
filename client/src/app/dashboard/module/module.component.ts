@@ -20,6 +20,58 @@ import { environment } from '../../../environments/environment';
   styleUrl: './module.component.css',
 })
 export class ModuleComponent implements OnInit {
+  refuser() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes !',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.refuserexam(this.moduleId).subscribe(
+          (response) => {
+            console.log(response);
+            this.exam.status = response.status;
+            Swal.fire({
+              title: 'Refuser!',
+              text: 'Your file has been Refuser.',
+              icon: 'success',
+            });
+          },
+          (error) => {}
+        );
+      }
+    });
+  }
+  approuver() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.approuverexam(this.moduleId).subscribe(
+          (response) => {
+            console.log(response);
+            this.exam.status = response.status;
+            Swal.fire({
+              title: 'Accepter!',
+              text: 'Your file has been Accepter.',
+              icon: 'success',
+            });
+          },
+          (error) => {}
+        );
+      }
+    });
+  }
   controleForm: FormGroup;
   host = environment.apiUrl;
   exam: any;
@@ -109,9 +161,9 @@ export class ModuleComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
-      formData.append('Solution', file);
+      formData.append('File', file);
       formData.append('Id', this.moduleId.toString());
-      this.dashboardservice.updatecontroleSolution(formData).subscribe(
+      this.dashboardservice.updateexamsolution(formData).subscribe(
         (response) => {
           this.exam.solution = response.solution;
         },
@@ -123,9 +175,9 @@ export class ModuleComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
-      formData.append('Ennonce', file);
+      formData.append('File', file);
       formData.append('Id', this.moduleId.toString());
-      this.dashboardservice.updatecontroleEnnonce(formData).subscribe(
+      this.dashboardservice.updateexamsolution(formData).subscribe(
         (response) => {
           this.exam.ennonce = response.ennonce;
         },

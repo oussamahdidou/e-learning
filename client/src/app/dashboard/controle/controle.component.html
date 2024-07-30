@@ -17,6 +17,18 @@
                     Refuser
                 </button>
                 }
+                @else if (controle.status==='Approuver') {
+                <button mat-flat-button color="warn" (click)="refuser()">
+                    <mat-icon>cancel</mat-icon>
+                    Refuser
+                </button>
+                }
+                @else {
+                <button mat-flat-button color="primary" (click)="approuver()">
+                    <mat-icon>check_circle</mat-icon>
+                    Approuver
+                </button>
+                }
             </h4>
 
             <ng-template matStepLabel> Ennonce </ng-template>
