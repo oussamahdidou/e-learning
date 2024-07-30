@@ -2,8 +2,9 @@
 <mat-dialog-content>
     <form [formGroup]="form">
         <div *ngFor="let item of items">
-            <mat-checkbox [formControlName]="item.id" [checked]="item.checked">{{ item.name }}</mat-checkbox>
+            <mat-checkbox [formControlName]="item.id.toString()" [checked]="item.checked">{{ item.name }}</mat-checkbox>
         </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
     </form>
 </mat-dialog-content>
 <mat-dialog-actions>

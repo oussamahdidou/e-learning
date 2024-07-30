@@ -71,6 +71,22 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "examFinals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Ennonce = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Solution = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_examFinals", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "institutions",
                 columns: table => new
                 {
@@ -229,6 +245,31 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "resultExams",
+                columns: table => new
+                {
+                    StudentId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ExamFinalId = table.Column<int>(type: "int", nullable: false),
+                    Reponse = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_resultExams", x => new { x.StudentId, x.ExamFinalId });
+                    table.ForeignKey(
+                        name: "FK_resultExams_AspNetUsers_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_resultExams_examFinals_ExamFinalId",
+                        column: x => x.ExamFinalId,
+                        principalTable: "examFinals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "niveauScolaires",
                 columns: table => new
                 {
@@ -300,11 +341,17 @@ namespace api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NiveauScolaireId = table.Column<int>(type: "int", nullable: false)
+                    NiveauScolaireId = table.Column<int>(type: "int", nullable: false),
+                    ExamFinalId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_modules", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_modules_examFinals_ExamFinalId",
+                        column: x => x.ExamFinalId,
+                        principalTable: "examFinals",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_modules_niveauScolaires_NiveauScolaireId",
                         column: x => x.NiveauScolaireId,
@@ -452,9 +499,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0bdb9093-301d-4fc2-b173-338d0eb76fce", null, "Teacher", "TEACHER" },
-                    { "6508dd72-91c5-43a7-9743-3e92fe05a081", null, "Student", "STUDENT" },
-                    { "af6efa3a-f31c-47eb-9ec6-e14f20f94702", null, "Admin", "ADMIN" }
+                    { "2fa96eca-d266-48e2-aeb4-0c02ef0000fb", null, "Student", "STUDENT" },
+                    { "7c222b58-1ebf-4393-9f18-b0d58813282a", null, "Teacher", "TEACHER" },
+                    { "d4400eb6-9a43-490f-b736-e9ea3a93220a", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -522,6 +569,11 @@ namespace api.Migrations
                 column: "TargetModuleId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_modules_ExamFinalId",
+                table: "modules",
+                column: "ExamFinalId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_modules_NiveauScolaireId",
                 table: "modules",
                 column: "NiveauScolaireId");
@@ -550,6 +602,11 @@ namespace api.Migrations
                 name: "IX_resultControles_ControleId",
                 table: "resultControles",
                 column: "ControleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_resultExams_ExamFinalId",
+                table: "resultExams",
+                column: "ExamFinalId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_testNiveaus_ModuleId",
@@ -591,6 +648,9 @@ namespace api.Migrations
                 name: "resultControles");
 
             migrationBuilder.DropTable(
+                name: "resultExams");
+
+            migrationBuilder.DropTable(
                 name: "testNiveaus");
 
             migrationBuilder.DropTable(
@@ -613,6 +673,9 @@ namespace api.Migrations
 
             migrationBuilder.DropTable(
                 name: "quizzes");
+
+            migrationBuilder.DropTable(
+                name: "examFinals");
 
             migrationBuilder.DropTable(
                 name: "niveauScolaires");

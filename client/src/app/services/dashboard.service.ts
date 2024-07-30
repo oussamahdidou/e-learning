@@ -216,4 +216,57 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
+  approuvercontrole(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Controle/Approuver/${id}`,
+      {}
+    );
+  }
+  refusercontrole(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Controle/Refuser/${id}`,
+      {}
+    );
+  }
+  //******************************************************************************* */
+  updatechapitrePdf(Pdf: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateChapitrePdf`,
+      Pdf,
+      { headers: this.authservice.headers }
+    );
+  }
+  updatechapitreVideo(video: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateChapitreVideo`,
+      video,
+      { headers: this.authservice.headers }
+    );
+  }
+  updatechapitreSchema(schema: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateChapitreSchema`,
+      schema,
+      { headers: this.authservice.headers }
+    );
+  }
+  updatechapitreSynthese(synthese: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateChapitreSynthese`,
+      synthese,
+      { headers: this.authservice.headers }
+    );
+  }
+  approuverchapitre(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/Approuver/${id}`,
+      {}
+    );
+  }
+  refuserchapitre(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/Refuser/${id}`,
+      {}
+    );
+  }
 }

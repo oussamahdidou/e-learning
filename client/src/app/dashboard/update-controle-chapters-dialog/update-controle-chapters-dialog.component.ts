@@ -11,7 +11,7 @@ import { DashboardService } from '../../services/dashboard.service';
 export class UpdateControleChaptersDialogComponent implements OnInit {
   form: FormGroup;
   items: any[] = [];
-
+  errorMessage: string | null = null;
   constructor(
     public dialogRef: MatDialogRef<UpdateControleChaptersDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -39,10 +39,17 @@ export class UpdateControleChaptersDialogComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const updatedItems = this.items.map((item) => ({
-      ...item,
-      checked: this.form.get(item.id.toString())?.value ?? item.checked,
-    }));
-    this.dialogRef.close(updatedItems);
+    if (this.isAtLeastOneChecked()) {
+      const updatedItems = this.items.map((item) => ({
+        ...item,
+        checked: this.form.get(item.id.toString())?.value ?? item.checked,
+      }));
+      this.dialogRef.close(updatedItems);
+    } else {
+      this.errorMessage = 'You must select at least one chapter.';
+    }
+  }
+  private isAtLeastOneChecked(): boolean {
+    return this.items.some((item) => this.form.get(item.id.toString())?.value);
   }
 }

@@ -7,6 +7,16 @@
         <mat-step>
             <h4>{{controle.nom}} <button mat-button color="primary" (click)="modifierNom()">Modifier Controle Nom
                 </button> <button mat-button (click)="openDialog()">Changer chapitres</button>
+                @if (controle.status==='Pending') {
+                <button mat-flat-button color="primary" (click)="approuver()">
+                    <mat-icon>check_circle</mat-icon>
+                    Approuver
+                </button>
+                <button mat-flat-button color="warn" (click)="refuser()">
+                    <mat-icon>cancel</mat-icon>
+                    Refuser
+                </button>
+                }
             </h4>
 
             <ng-template matStepLabel> Ennonce </ng-template>

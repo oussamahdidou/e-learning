@@ -117,4 +117,56 @@ export class ControleComponent implements OnInit {
       }
     });
   }
+  refuser() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes !',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.refusercontrole(this.controleid).subscribe(
+          (response) => {
+            console.log(response);
+            this.controle.status = response.status;
+            Swal.fire({
+              title: 'Refuser!',
+              text: 'Your file has been Refuser.',
+              icon: 'success',
+            });
+          },
+          (error) => {}
+        );
+      }
+    });
+  }
+  approuver() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.approuvercontrole(this.controleid).subscribe(
+          (response) => {
+            console.log(response);
+            this.controle.status = response.status;
+            Swal.fire({
+              title: 'Accepter!',
+              text: 'Your file has been Accepter.',
+              icon: 'success',
+            });
+          },
+          (error) => {}
+        );
+      }
+    });
+  }
 }

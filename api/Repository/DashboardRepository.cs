@@ -33,7 +33,7 @@ namespace api.Repository
                 List<Chapitre> controleschapitres = controle.Chapitres;
                 int ModuleId = controleschapitres.First().ModuleId;
                 List<GetChapitresToUpdateControlesDto> checkedchapters = new List<GetChapitresToUpdateControlesDto>();
-                List<Chapitre> modulechapitres = await apiDbContext.chapitres.Where(x => x.ModuleId == ModuleId).ToListAsync();
+                List<Chapitre> modulechapitres = await apiDbContext.chapitres.Where(x => x.ModuleId == ModuleId && (x.ControleId == null || x.ControleId == id)).ToListAsync();
                 foreach (Chapitre chapitre in modulechapitres)
                 {
                     if (controleschapitres.Any(x => x.Id == chapitre.Id))
@@ -76,7 +76,7 @@ namespace api.Repository
             try
             {
 
-                List<GetChapitresForControleDto> chapitres = await apiDbContext.chapitres.Where(x => x.ModuleId == id).Select(x => x.getChapitresForControleDtoFromModelToDto()).ToListAsync();
+                List<GetChapitresForControleDto> chapitres = await apiDbContext.chapitres.Where(x => x.ModuleId == id && x.ControleId == null).Select(x => x.getChapitresForControleDtoFromModelToDto()).ToListAsync();
                 return Result<List<GetChapitresForControleDto>>.Success(chapitres);
 
             }

@@ -1,5 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, FormArray } from '@angular/forms';
+import {
+  FormGroup,
+  FormBuilder,
+  FormControl,
+  FormArray,
+  Validators,
+  ValidatorFn,
+  AbstractControl,
+} from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { DashboardService } from '../../services/dashboard.service';
@@ -22,11 +30,11 @@ export class CreatecontroleComponent implements OnInit {
     private readonly dashboardservice: DashboardService
   ) {
     this.controleForm = this.fb.group({
-      nomControle: [''],
+      nomControle: ['', Validators.required],
       enonce: [null],
       solution: [null],
       examFinal: [false],
-      chapitres: this.fb.array([]),
+      chapitres: this.fb.array([], this.minSelectedCheckboxes(1)),
     });
   }
 
@@ -38,6 +46,13 @@ export class CreatecontroleComponent implements OnInit {
         .subscribe(
           (reponse) => {
             this.chapitreList = reponse;
+            if (this.chapitreList.length == 0) {
+              Swal.fire(
+                'info',
+                'il y`a pas de chapitres ajouter plus de chapitres pour cree se controle',
+                'info'
+              );
+            }
             console.log(reponse);
             this.addChapitreCheckboxes();
           },
@@ -73,12 +88,6 @@ export class CreatecontroleComponent implements OnInit {
     }
   }
 
-  onExamFinalChange(event: any) {
-    this.chapitres.controls.forEach((control) =>
-      control.setValue(event.target.checked)
-    );
-  }
-
   onSubmit() {
     if (this.controleForm.valid) {
       const formData = new FormData();
@@ -109,5 +118,15 @@ export class CreatecontroleComponent implements OnInit {
         console.log(`${key}: ${value}`);
       });
     }
+  }
+
+  private minSelectedCheckboxes(min: number) {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+      const formArray = control as FormArray;
+      const totalSelected = formArray.controls
+        .map((control) => control.value)
+        .reduce((prev, next) => (next ? prev + 1 : prev), 0);
+      return totalSelected >= min ? null : { required: true };
+    };
   }
 }

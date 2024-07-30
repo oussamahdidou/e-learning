@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "af6efa3a-f31c-47eb-9ec6-e14f20f94702",
+                            Id = "d4400eb6-9a43-490f-b736-e9ea3a93220a",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0bdb9093-301d-4fc2-b173-338d0eb76fce",
+                            Id = "7c222b58-1ebf-4393-9f18-b0d58813282a",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "6508dd72-91c5-43a7-9743-3e92fe05a081",
+                            Id = "2fa96eca-d266-48e2-aeb4-0c02ef0000fb",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -351,6 +351,35 @@ namespace api.Migrations
                     b.ToTable("controles");
                 });
 
+            modelBuilder.Entity("api.Model.ExamFinal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Ennonce")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Solution")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("examFinals");
+                });
+
             modelBuilder.Entity("api.Model.Institution", b =>
                 {
                     b.Property<int>("Id")
@@ -376,6 +405,9 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ExamFinalId")
+                        .HasColumnType("int");
+
                     b.Property<int>("NiveauScolaireId")
                         .HasColumnType("int");
 
@@ -384,6 +416,8 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ExamFinalId");
 
                     b.HasIndex("NiveauScolaireId");
 
@@ -535,6 +569,25 @@ namespace api.Migrations
                     b.ToTable("resultControles");
                 });
 
+            modelBuilder.Entity("api.Model.ResultExam", b =>
+                {
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("ExamFinalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Reponse")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("StudentId", "ExamFinalId");
+
+                    b.HasIndex("ExamFinalId");
+
+                    b.ToTable("resultExams");
+                });
+
             modelBuilder.Entity("api.Model.TestNiveau", b =>
                 {
                     b.Property<string>("StudentId")
@@ -672,11 +725,17 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Model.Module", b =>
                 {
+                    b.HasOne("api.Model.ExamFinal", "ExamFinal")
+                        .WithMany()
+                        .HasForeignKey("ExamFinalId");
+
                     b.HasOne("api.Model.NiveauScolaire", "NiveauScolaire")
                         .WithMany("Modules")
                         .HasForeignKey("NiveauScolaireId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ExamFinal");
 
                     b.Navigation("NiveauScolaire");
                 });
@@ -771,6 +830,25 @@ namespace api.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("api.Model.ResultExam", b =>
+                {
+                    b.HasOne("api.Model.ExamFinal", "ExamFinal")
+                        .WithMany("ResultExams")
+                        .HasForeignKey("ExamFinalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Model.Student", "Student")
+                        .WithMany("ResultExams")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExamFinal");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("api.Model.TestNiveau", b =>
                 {
                     b.HasOne("api.Model.Module", "Module")
@@ -800,6 +878,11 @@ namespace api.Migrations
                     b.Navigation("Chapitres");
 
                     b.Navigation("ResultControles");
+                });
+
+            modelBuilder.Entity("api.Model.ExamFinal", b =>
+                {
+                    b.Navigation("ResultExams");
                 });
 
             modelBuilder.Entity("api.Model.Institution", b =>
@@ -842,6 +925,8 @@ namespace api.Migrations
                     b.Navigation("QuizResults");
 
                     b.Navigation("ResultControles");
+
+                    b.Navigation("ResultExams");
 
                     b.Navigation("TestNiveaus");
                 });
