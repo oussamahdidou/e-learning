@@ -64,5 +64,15 @@ namespace api.Controllers
 
             }
         }
+        [HttpGet("GetExamFinaleByModule/{id:int}")]
+        public async Task<IActionResult> GetExamFinaleByModule([FromRoute] int id)
+        {
+            Result<ExamFinal> result = await examFinalRepository.GetExamFinaleByModule(id);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
     }
 }

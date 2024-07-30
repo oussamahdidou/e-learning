@@ -159,7 +159,7 @@ namespace api.Repository
                 Result<string> resultUpload = await updateControleEnnonceDto.Ennonce.UploadControle(webHostEnvironment);
                 if (resultUpload.IsSuccess)
                 {
-                    Result<string> resultDelete = controle.Solution.DeleteFile();
+                    Result<string> resultDelete = controle.Ennonce.DeleteFile();
                     if (resultDelete.IsSuccess)
                     {
                         controle.Ennonce = resultUpload.Value;

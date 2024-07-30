@@ -12,6 +12,7 @@ import {
   Validators,
 } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-module',
@@ -20,6 +21,8 @@ import Swal from 'sweetalert2';
 })
 export class ModuleComponent implements OnInit {
   controleForm: FormGroup;
+  host = environment.apiUrl;
+  exam: any;
   edit(_t283: any) {
     throw new Error('Method not implemented.');
   }
@@ -42,20 +45,8 @@ export class ModuleComponent implements OnInit {
   controlessource: MatTableDataSource<any>;
   modulessource!: MatTableDataSource<any>;
 
-  chapters: any[] = [
-    { id: 1, number: 2, nom: 'chapter1', module: 'High School' },
-    { id: 2, number: 2, nom: 'chapter2', module: 'Middle School' },
-    { id: 3, number: 2, nom: 'chapter3', module: 'Elementary School' },
-    { id: 4, number: 2, nom: 'chapter4', module: 'High School' },
-    { id: 5, number: 2, nom: 'chapter5', module: 'Middle School' },
-  ];
-  controles: any[] = [
-    { id: 1, number: 2, nom: 'controle1', module: 'High School' },
-    { id: 2, number: 2, nom: 'controle2', module: 'Middle School' },
-    { id: 3, number: 2, nom: 'controle3', module: 'Elementary School' },
-    { id: 4, number: 2, nom: 'controle4', module: 'High School' },
-    { id: 5, number: 2, nom: 'controle5', module: 'Middle School' },
-  ];
+  chapters: any[] = [];
+  controles: any[] = [];
   modules: any[] = [];
   openDialog(): void {
     const dialogRef = this.dialog.open(ModuleRequirementsDialogComponent, {
@@ -114,7 +105,34 @@ export class ModuleComponent implements OnInit {
       });
     }
   }
-
+  SelectSolution(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('Solution', file);
+      formData.append('Id', this.moduleId.toString());
+      this.dashboardservice.updatecontroleSolution(formData).subscribe(
+        (response) => {
+          this.exam.solution = response.solution;
+        },
+        (error) => {}
+      );
+    }
+  }
+  SelectEnnonce(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('Ennonce', file);
+      formData.append('Id', this.moduleId.toString());
+      this.dashboardservice.updatecontroleEnnonce(formData).subscribe(
+        (response) => {
+          this.exam.ennonce = response.ennonce;
+        },
+        (error) => {}
+      );
+    }
+  }
   onSubmit() {
     if (this.controleForm.valid) {
       const formData = new FormData();
@@ -125,19 +143,17 @@ export class ModuleComponent implements OnInit {
       if (this.solutionFile) {
         formData.append('Solution', this.solutionFile);
       }
+      formData.append('ModuleId', this.moduleId.toString());
 
-      // this.dashboardservice.CreateControle(formData).subscribe(
-      //   (response) => {
-      //     console.log(response);
-      //     window.location.href = `/dashboard/module/${this.moduleId}`;
-      //   },
-      //   (error) => {
-      //     console.log(error);
-      //   }
-      // );
-      formData.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      });
+      this.dashboardservice.createexam(formData).subscribe(
+        (response) => {
+          console.log(response);
+          this.exam = response;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
     }
   }
   constructor(
@@ -173,6 +189,13 @@ export class ModuleComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.moduleId = params['id'];
+      this.dashboardservice.getexambymodule(this.moduleId).subscribe(
+        (response) => {
+          this.exam = response;
+          console.log(response);
+        },
+        (error) => {}
+      );
       this.dashboardservice.getrequiredmodules(this.moduleId).subscribe(
         (response) => {
           this.modules = response;

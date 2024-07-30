@@ -13,6 +13,8 @@ namespace api.interfaces
         Task<Result<ExamFinal>> CreateExamFinal(CreateExamFinalDto createExamFinalDto);
         Task<Result<ExamFinal>> UpdateExamFinalEnnonce(UpdateExamFinalDto updateExamFinalDto);
         Task<Result<ExamFinal>> UpdateExamFinalSolution(UpdateExamFinalDto updateExamFinalDto);
-
+        Task<Result<ExamFinal>> GetExamFinaleByModule(int Id);
+        Task<Result<ExamFinal>> Refuser(int id);
+        Task<Result<ExamFinal>> Approuver(int id);
     }
 }

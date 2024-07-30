@@ -94,7 +94,7 @@ namespace api.Repository
                     List<RequiredModulesDto> requiredModulesDtos = await apiDbContext.moduleRequirements.Include(x => x.RequiredModule).ThenInclude(x => x.NiveauScolaire).ThenInclude(x => x.Institution).Where(x => x.TargetModuleId == moduleId).Select(x => x.RequiredModulesFromModelToDto()).ToListAsync();
                     return Result<List<RequiredModulesDto>>.Success(requiredModulesDtos);
                 }
-                return Result<List<RequiredModulesDto>>.Failure("Module NotFound");
+                return Result<List<RequiredModulesDto>>.Success(new List<RequiredModulesDto>());
             }
             catch (Exception ex)
             {

@@ -260,13 +260,28 @@ api/Dashboard/GetObjectspourApprouver`,
   approuverchapitre(id: number): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/api/Chapitre/Approuver/${id}`,
-      {}
+      {},
+      { headers: this.authservice.headers }
     );
   }
   refuserchapitre(id: number): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/api/Chapitre/Refuser/${id}`,
-      {}
+      {},
+      { headers: this.authservice.headers }
+    );
+  }
+  createexam(exam: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/ExamFinal`, exam, {
+      headers: this.authservice.headers,
+    });
+  }
+  getexambymodule(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/ExamFinal/GetExamFinaleByModule/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
     );
   }
 }
