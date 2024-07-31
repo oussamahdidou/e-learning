@@ -19,6 +19,9 @@ namespace api.interfaces
         Task<Result<List<GetChapitresToUpdateControlesDto>>> GetChapitresToUpdateControles(int id);
         Task<bool> UpdateControleChapitres(List<GetChapitresToUpdateControlesDto> getChapitresToUpdateControlesDtos, int controleId);
         Task<Result<List<BarChartsDto>>> GetMostCheckedModules();
+        Task<Result<List<BarChartsDto>>> GetLeastCheckedModules();
+        Task<Result<List<BarChartsDto>>> GetTopTestNiveauModules();
+        Task<Result<List<BarChartsDto>>> GetWorstTestNiveauModules();
         Task<Result<StatsDto>> GetStats();
     }
 }

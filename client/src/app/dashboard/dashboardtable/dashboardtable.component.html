@@ -1,6 +1,38 @@
 <div class="container-fluid" style="  background-color: aliceblue;">
     <app-sidenav></app-sidenav>
     <div class="dashboard-container px-3">
+        @if (stats) {
+        <div class="row justify-content-center align-items-center py-5">
+            <div class="col-lg-3">
+                <div class="stats py-3 ps-3 ">
+                    Nombre des etudiant
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="stats py-3 ps-3 ">
+                    Nombre des professeur
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="stats py-3 ps-3 ">
+                    nombre des coures
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="stats py-3 ps-3 ">
+                    Lorem, ipsum dolor.
+                </div>
+            </div>
+        </div>
+        }
+        @if (topmoduleslabels.length > 0 &&
+        topmodulesnmbr.length > 0 &&
+        leastmoduleslabels.length > 0 &&
+        leastmodulesnmbr.length > 0 &&
+        toptestniveaulabels.length > 0 &&
+        toptestniveaunmbr.length > 0 &&
+        leasttestniveaulabels.length > 0 &&
+        leasttestniveaunmbr.length > 0) {
         <div class="row justify-content-center align-items-center">
             <div class="col-lg-6  p-3">
                 <div class="chart">
@@ -28,6 +60,6 @@
                 </div>
             </div>
         </div>
-
+        }
     </div>
 </div>

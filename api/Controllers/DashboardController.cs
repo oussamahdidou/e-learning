@@ -130,5 +130,35 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpGet("LeastModulesCharts")]
+        public async Task<IActionResult> LeastModulesCharts()
+        {
+            Result<List<BarChartsDto>> result = await dashboardRepository.GetLeastCheckedModules();
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpGet("TopModulesTestNiveau")]
+        public async Task<IActionResult> TopModulesTestNiveau()
+        {
+            Result<List<BarChartsDto>> result = await dashboardRepository.GetTopTestNiveauModules();
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpGet("WorstModulesTestNiveau")]
+        public async Task<IActionResult> WorstModulesTestNiveau()
+        {
+            Result<List<BarChartsDto>> result = await dashboardRepository.GetWorstTestNiveauModules();
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }

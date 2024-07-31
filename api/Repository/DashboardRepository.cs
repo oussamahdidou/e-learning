@@ -97,17 +97,41 @@ namespace api.Repository
 
         }
 
+        public async Task<Result<List<BarChartsDto>>> GetLeastCheckedModules()
+        {
+            var top5ModulesWithCheckCounts = await apiDbContext.modules
+                                    .Select(m => new
+                                    {
+                                        ModuleName = m.Nom,
+                                        CheckCount = m.Chapitres.SelectMany(c => c.CheckChapters).Count()
+                                    })
+                                            .OrderBy(x => x.CheckCount)
+                                            .Take(5)
+                                            .ToListAsync();
+
+            List<BarChartsDto> chartsdata = top5ModulesWithCheckCounts
+                .Select(x => new BarChartsDto
+                {
+                    Name = x.ModuleName,
+                    Count = x.CheckCount
+                })
+                .ToList();
+
+            return Result<List<BarChartsDto>>.Success(chartsdata);
+
+        }
+
         public async Task<Result<List<BarChartsDto>>> GetMostCheckedModules()
         {
             var top5ModulesWithCheckCounts = await apiDbContext.modules
-    .Select(m => new
-    {
-        ModuleName = m.Nom,
-        CheckCount = m.Chapitres.SelectMany(c => c.CheckChapters).Count()
-    })
-    .OrderByDescending(x => x.CheckCount)
-    .Take(5)
-    .ToListAsync();
+                        .Select(m => new
+                        {
+                            ModuleName = m.Nom,
+                            CheckCount = m.Chapitres.SelectMany(c => c.CheckChapters).Count()
+                        })
+                                .OrderByDescending(x => x.CheckCount)
+                                .Take(5)
+                                .ToListAsync();
 
             List<BarChartsDto> chartsdata = top5ModulesWithCheckCounts
                 .Select(x => new BarChartsDto
@@ -161,6 +185,61 @@ namespace api.Repository
 
                 return Result<StatsDto>.Failure(ex.Message);
             }
+
+        }
+
+        public async Task<Result<List<BarChartsDto>>> GetTopTestNiveauModules()
+        {
+            var top5ModulesWithAverageNotes = await apiDbContext.modules
+                           .GroupJoin(apiDbContext.testNiveaus,
+                                      m => m.Id,
+                                      tn => tn.ModuleId,
+                                      (m, tn) => new { Module = m, TestNiveaux = tn })
+                           .Select(g => new
+                           {
+                               ModuleName = g.Module.Nom,
+                               AverageNote = g.TestNiveaux.Any() ? g.TestNiveaux.Average(tn => tn.Note) : 0
+                           })
+                           .OrderByDescending(x => x.AverageNote)
+                           .Take(5)
+                           .ToListAsync();
+
+            List<BarChartsDto> chartsdata = top5ModulesWithAverageNotes
+                .Select(x => new BarChartsDto
+                {
+                    Name = x.ModuleName,
+                    Count = (int)Math.Round(x.AverageNote)
+                })
+                .ToList();
+
+            return Result<List<BarChartsDto>>.Success(chartsdata);
+        }
+
+        public async Task<Result<List<BarChartsDto>>> GetWorstTestNiveauModules()
+        {
+            var top5ModulesWithAverageNotes = await apiDbContext.modules
+                           .GroupJoin(apiDbContext.testNiveaus,
+                                      m => m.Id,
+                                      tn => tn.ModuleId,
+                                      (m, tn) => new { Module = m, TestNiveaux = tn })
+                           .Select(g => new
+                           {
+                               ModuleName = g.Module.Nom,
+                               AverageNote = g.TestNiveaux.Any() ? g.TestNiveaux.Average(tn => tn.Note) : 0
+                           })
+                           .OrderBy(x => x.AverageNote)
+                           .Take(5)
+                           .ToListAsync();
+
+            List<BarChartsDto> chartsdata = top5ModulesWithAverageNotes
+                .Select(x => new BarChartsDto
+                {
+                    Name = x.ModuleName,
+                    Count = (int)Math.Round(x.AverageNote)
+                })
+                .ToList();
+
+            return Result<List<BarChartsDto>>.Success(chartsdata);
 
         }
 

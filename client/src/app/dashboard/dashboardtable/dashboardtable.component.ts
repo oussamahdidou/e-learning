@@ -25,13 +25,48 @@ Chart.register(
   styleUrl: './dashboardtable.component.css',
 })
 export class DashboardtableComponent implements OnInit {
-  moduleslabels: any[] = [];
-  modulesnmbr: any[] = [];
+  topmoduleslabels: any[] = [];
+  topmodulesnmbr: any[] = [];
+  leastmoduleslabels: any[] = [];
+  leastmodulesnmbr: any[] = [];
+  toptestniveaulabels: any[] = [];
+  toptestniveaunmbr: any[] = [];
+  leasttestniveaulabels: any[] = [];
+  leasttestniveaunmbr: any[] = [];
+  stats: any;
   constructor(private readonly dashboardservice: DashboardService) {}
   ngOnInit(): void {
     this.dashboardservice.getmostcheckedmodules().subscribe(
       (response) => {
-        this.extractTopColumnsAbscences(response);
+        this.extractTopmodules(response);
+        console.log(response);
+      },
+      (error) => {}
+    );
+    this.dashboardservice.getleastcheckedmodules().subscribe(
+      (response) => {
+        this.extractleastmodules(response);
+        console.log(response);
+      },
+      (error) => {}
+    );
+    this.dashboardservice.gettoptestniveaumodules().subscribe(
+      (response) => {
+        this.extractToptestniveau(response);
+        console.log(response);
+      },
+      (error) => {}
+    );
+    this.dashboardservice.getworsttestniveaumodules().subscribe(
+      (response) => {
+        this.extractleasttestniveau(response);
+        console.log(response);
+      },
+      (error) => {}
+    );
+    this.dashboardservice.getstats().subscribe(
+      (response) => {
+        this.stats = response;
       },
       (error) => {}
     );
@@ -53,10 +88,10 @@ export class DashboardtableComponent implements OnInit {
   };
 
   public barChartData1: ChartConfiguration<'bar'>['data'] = {
-    labels: this.moduleslabels,
+    labels: this.topmoduleslabels,
     datasets: [
       {
-        data: this.modulesnmbr,
+        data: this.topmodulesnmbr,
         label: 'Les cours les plus populaires parmi les étudiants',
         backgroundColor: 'rgba(0,0,255,0.3)',
         borderColor: 'black',
@@ -66,12 +101,12 @@ export class DashboardtableComponent implements OnInit {
   };
 
   public barChartData2: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
+    labels: this.leastmoduleslabels,
     datasets: [
       {
-        data: [20, 30, 40, 50],
-        label: 'Dataset 2',
-        backgroundColor: 'rgba(0,0,255,0.3)',
+        data: this.leastmodulesnmbr,
+        label: 'Les cours les moins populaires parmi les étudiants',
+        backgroundColor: 'rgba(255,0,0,0.3)',
         borderColor: 'black',
         borderWidth: 1,
       },
@@ -79,11 +114,11 @@ export class DashboardtableComponent implements OnInit {
   };
 
   public barChartData3: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
+    labels: this.toptestniveaulabels,
     datasets: [
       {
-        data: [30, 40, 50, 60],
-        label: 'Dataset 3',
+        data: this.toptestniveaunmbr,
+        label: 'Top Performance aux test niveau',
         backgroundColor: 'rgba(0,0,255,0.3)',
         borderColor: 'black',
         borderWidth: 1,
@@ -92,21 +127,39 @@ export class DashboardtableComponent implements OnInit {
   };
 
   public barChartData4: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
+    labels: this.leasttestniveaulabels,
     datasets: [
       {
-        data: [40, 50, 60, 70],
-        label: 'Dataset 4',
-        backgroundColor: 'rgba(0,0,255,0.3)',
+        data: this.leasttestniveaunmbr,
+        label: 'Mauvaise Performance aux test niveau',
+        backgroundColor: 'rgba(255,0,0,0.3)',
         borderColor: 'black',
         borderWidth: 1,
       },
     ],
   };
-  extractTopColumnsAbscences(objects: any[]) {
+  extractleastmodules(objects: any[]) {
     objects.forEach((obj) => {
-      this.moduleslabels.unshift(obj.name);
-      this.modulesnmbr.unshift(obj.count);
+      this.leastmoduleslabels.unshift(obj.name);
+      this.leastmodulesnmbr.unshift(obj.count);
+    });
+  }
+  extractTopmodules(objects: any[]) {
+    objects.forEach((obj) => {
+      this.topmoduleslabels.unshift(obj.name);
+      this.topmodulesnmbr.unshift(obj.count);
+    });
+  }
+  extractleasttestniveau(objects: any[]) {
+    objects.forEach((obj) => {
+      this.leasttestniveaulabels.unshift(obj.name);
+      this.leasttestniveaunmbr.unshift(obj.count);
+    });
+  }
+  extractToptestniveau(objects: any[]) {
+    objects.forEach((obj) => {
+      this.toptestniveaulabels.unshift(obj.name);
+      this.toptestniveaunmbr.unshift(obj.count);
     });
   }
 }

@@ -323,4 +323,33 @@ api/Dashboard/GetObjectspourApprouver`,
       headers: this.authservice.headers,
     });
   }
+  getleastcheckedmodules(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/LeastModulesCharts`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  gettoptestniveaumodules(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/TopModulesTestNiveau`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getworsttestniveaumodules(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/WorstModulesTestNiveau`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getstats(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/Dashboard/GetStats`, {
+      headers: this.authservice.headers,
+    });
+  }
 }

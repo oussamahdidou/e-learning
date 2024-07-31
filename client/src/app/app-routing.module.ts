@@ -42,7 +42,7 @@ const routerOptions: ExtraOptions = {
   scrollPositionRestoration: 'enabled', // Optional: Restores scroll position on navigation
 };
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule],
 })
 export class AppRoutingModule {}
