@@ -1,0 +1,21 @@
+.container-fluid {
+  padding-right: 0;
+  padding-left: 0;
+}
+.main {
+  width: 50px;
+}
+.btn {
+  background-color: #4d5e76;
+  color: #fff;
+  width: 129px;
+  margin: 10px;
+}
+.row {
+  margin: 0;
+  padding: 0;
+}
+.col-md-9,
+.col-md-3 {
+  padding: 0;
+}

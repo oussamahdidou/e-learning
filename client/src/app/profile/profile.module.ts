@@ -3,10 +3,14 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LearningComponent } from './learning/learning.component';
 import { TruncatePipe } from '../pipes/truncate.pipe';
+import { ProfileComponent } from './profile.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { MatIcon } from '@angular/material/icon';
 
 const routes: Routes = [
   {
     path: '',
+    component:ProfileComponent,
     children: [
       {
         path: 'mylearning',
@@ -16,7 +20,7 @@ const routes: Routes = [
   },
 ];
 @NgModule({
-  declarations: [LearningComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), TruncatePipe],
+  declarations: [LearningComponent, ProfileComponent, NavbarComponent],
+  imports: [CommonModule, RouterModule.forChild(routes), TruncatePipe , MatIcon],
 })
 export class ProfileModule {}
