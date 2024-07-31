@@ -1,5 +1,5 @@
 api/bin/
 api/obj/
 .fake
-api/wwwroot
+api/wwwroot/
 api/appsettings.json

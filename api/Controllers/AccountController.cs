@@ -93,13 +93,13 @@ namespace api.Controllers
                             {"token",token},
                             {"email",user.Email}
                         };
-                        
 
-                        var callback = QueryHelpers.AddQueryString("http://localhost:4200/verify-email", param);
+
+                        var callback = QueryHelpers.AddQueryString("http://localhost:4200/auth/verify-email", param);
 
                         string message = "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Confirm Your Email Address</title><style>body {font-family: sans-serif;margin: 0;padding: 0;}.container {padding: 20px;max-width: 600px;margin: 0 auto;border: 1px solid #ddd;border-radius: 5px;}header {text-align: center;margin-bottom: 20px;}h1 {font-size: 24px;}p {line-height: 1.5;}a.confirm-button {display: block;padding: 10px 20px;background-color: #4CAF50;color: white;text-decoration: none;border: none;border-radius: 5px;text-align: center;}.confirm-button:hover {background-color: #3e8e41;}</style></head><body><div class='container'><header><h1>Welcome to E-Learning Plateform</h1></header><p>Hi " + user.UserName + " ,</p><p>Welcome to in E-Learning plateform we sent this email for your account activation . To complete your email confirmation, please click the button below:</p><center><a href=" + callback + " class='confirm-button'>Confirm Email</a></center><p>If you can't click the button, please copy and paste the following link into your web browser:</p><p>" + callback + "</p><p>**Please note:** This link will expire in 2 hours.</p><p>Thanks,</p><p>The E-Learning Team</p></div></body></html>";
-            
-                       
+
+
                         await mailer.SendEmailAsync(user.Email, "Email Confirmation Token", message);
                         Console.WriteLine("44444444444444444444444444444444444444444444444444444444444444444444444444.");
 
@@ -128,7 +128,7 @@ namespace api.Controllers
             }
             catch (Exception e)
             {
-                Console.WriteLine("777777777777777777777777777777777777777 : "+ e);
+                Console.WriteLine("777777777777777777777777777777777777777 : " + e);
                 return StatusCode(500, e);
             }
         }
@@ -137,7 +137,8 @@ namespace api.Controllers
         {
             var user = await userManager.FindByEmailAsync(email);
             Console.WriteLine("11111111111111111111111111111111111111111111111111111111111111111111111111.");
-            if (user is null){
+            if (user is null)
+            {
                 Console.WriteLine(email);
                 Console.WriteLine("15151515151515151515151515151515151515151515151515.");
                 return BadRequest("Invalid Email Confirmation Request");
@@ -150,22 +151,24 @@ namespace api.Controllers
 
 
             return Ok(new NewUserDto()
-                            {
-                                Username = user.UserName,
-                                Email = user.Email,
-                                Token = "Your Email is confirmed successfuly"
-                            });
+            {
+                Username = user.UserName,
+                Email = user.Email,
+                Token = "Your Email is confirmed successfuly"
+            });
         }
         [HttpPost("forgotpassword")]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto forgotPasswordDto)
         {
-            if (!ModelState.IsValid){
+            if (!ModelState.IsValid)
+            {
                 Console.WriteLine("1111111111111111111111111111111111111111111111111111111111111111111111111111111.");
                 return BadRequest();
             }
             var user = await userManager.FindByEmailAsync(forgotPasswordDto.Email!);
             Console.WriteLine("2222222222222222222222222222222222222222222222222222222222222222222222222.");
-            if (user is null){
+            if (user is null)
+            {
                 Console.WriteLine("3333333333333333333333333333333333333333333333333333333333333333333333333333333.");
                 return BadRequest("Invalid Request");
             }
@@ -176,17 +179,17 @@ namespace api.Controllers
                 {"token",token},
                 {"email",forgotPasswordDto.Email}
             };
-            var callback = QueryHelpers.AddQueryString("http://localhost:4200/reset-password", param);
+            var callback = QueryHelpers.AddQueryString("http://localhost:4200/auth/reset-password", param);
             string message = "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Confirm Your Email Address</title><style>body {font-family: sans-serif;margin: 0;padding: 0;}.container {padding: 20px;max-width: 600px;margin: 0 auto;border: 1px solid #ddd;border-radius: 5px;}header {text-align: center;margin-bottom: 20px;}h1 {font-size: 24px;}p {line-height: 1.5;}a.confirm-button {display: block;padding: 10px 20px;background-color: #4CAF50;color: white;text-decoration: none;border: none;border-radius: 5px;text-align: center;}.confirm-button:hover {background-color: #3e8e41;}</style></head><body><div class='container'><header><h1>E-Learning</h1></header><p>Hi " + user.UserName + " ,</p><p>You sent a password reset request in E-Learning plateform. To complete your password reset, please click the button below:</p><center><a href=" + callback + " class='confirm-button'>Reset Password</a></center><p>If you can't click the button, please copy and paste the following link into your web browser:</p><p>" + callback + "</p><p>**Please note:** This link will expire in 2 hours.</p><p>Thanks,</p><p>The E-Learning Team</p></div></body></html>";
             await mailer.SendEmailAsync(user.Email, "Reset Password Token", message);
             Console.WriteLine("4444444444444444444444444444444444444444.");
             return Ok(
                     new NewUserDto()
-                            {
-                                Username = user.UserName,
-                                Email = user.Email,
-                                Token = "Reset Password link Sent To Your EMail"
-                            }
+                    {
+                        Username = user.UserName,
+                        Email = user.Email,
+                        Token = "Reset Password link Sent To Your EMail"
+                    }
                     );
         }
         [HttpPost("resetpassword")]
@@ -206,11 +209,11 @@ namespace api.Controllers
                 return BadRequest(new { Errors = errors });
             }
             return Ok(new NewUserDto()
-                            {
-                                Username = user.UserName,
-                                Email = user.Email,
-                                Token = "Your Password reset successfuly"
-                            }
+            {
+                Username = user.UserName,
+                Email = user.Email,
+                Token = "Your Password reset successfuly"
+            }
                 );
         }
 

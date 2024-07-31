@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "ng2-pdf-viewer": "^10.2.2",
-    "tslib": "^2.6.3"
-  }
-}
