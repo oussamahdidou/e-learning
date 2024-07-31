@@ -352,4 +352,18 @@ api/Dashboard/GetObjectspourApprouver`,
       headers: this.authservice.headers,
     });
   }
+  approuverquiz(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Quiz/Approuver/${id}`,
+      {},
+      { headers: this.authservice.headers }
+    );
+  }
+  refuserquiz(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Quiz/Refuser/${id}`,
+      {},
+      { headers: this.authservice.headers }
+    );
+  }
 }

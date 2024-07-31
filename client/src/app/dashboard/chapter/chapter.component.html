@@ -22,7 +22,7 @@
           Refuser
         </button>
         }
-        @else if (chapitre.statue==='Denied') {
+        @else {
         <button mat-flat-button color="primary" (click)="approuver()">
           <mat-icon>check_circle</mat-icon>
           Approuver
@@ -93,7 +93,31 @@
 
       <ng-template matStepLabel>Quiz </ng-template>
       <h4>Quiz</h4>
+      @if (authservice.$IsAdmin|async) {
+      @if (chapitre.quiz.statue==='Pending') {
+      <button mat-flat-button color="primary" (click)="approuverquiz()">
+        <mat-icon>check_circle</mat-icon>
+        Approuver
+      </button>
+      <button mat-flat-button color="warn" (click)="refuserquiz()">
+        <mat-icon>cancel</mat-icon>
+        Refuser
+      </button>
+      }
+      @else if (chapitre.quiz.statue==='Approuver') {
+      <button mat-flat-button color="warn" (click)="refuserquiz()">
+        <mat-icon>cancel</mat-icon>
+        Refuser
+      </button>
+      }
+      @else {
+      <button mat-flat-button color="primary" (click)="approuverquiz()">
+        <mat-icon>check_circle</mat-icon>
+        Approuver
+      </button>
+      }}
       @if (quiz) {
+
       <form (ngSubmit)="onSubmit()" #quizForm="ngForm">
         <div class="mb-3">
           <label for="quizName" class="form-label">Quiz Name</label>

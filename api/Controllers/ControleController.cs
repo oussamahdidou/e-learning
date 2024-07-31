@@ -138,7 +138,7 @@ namespace api.Controllers
             return BadRequest(result.Error);
 
         }
-        [HttpPut("Refuser{id:int}")]
+        [HttpPut("Refuser/{id:int}")]
         public async Task<IActionResult> RefuserControle([FromRoute] int id)
         {
             Result<Controle> result = await controleRepository.Refuser(id);

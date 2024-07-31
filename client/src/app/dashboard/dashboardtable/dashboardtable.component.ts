@@ -139,24 +139,28 @@ export class DashboardtableComponent implements OnInit {
     ],
   };
   extractleastmodules(objects: any[]) {
+    objects.reverse();
     objects.forEach((obj) => {
       this.leastmoduleslabels.unshift(obj.name);
       this.leastmodulesnmbr.unshift(obj.count);
     });
   }
   extractTopmodules(objects: any[]) {
+    objects.reverse();
     objects.forEach((obj) => {
       this.topmoduleslabels.unshift(obj.name);
       this.topmodulesnmbr.unshift(obj.count);
     });
   }
   extractleasttestniveau(objects: any[]) {
+    objects.reverse();
     objects.forEach((obj) => {
       this.leasttestniveaulabels.unshift(obj.name);
       this.leasttestniveaunmbr.unshift(obj.count);
     });
   }
   extractToptestniveau(objects: any[]) {
+    objects.reverse();
     objects.forEach((obj) => {
       this.toptestniveaulabels.unshift(obj.name);
       this.toptestniveaunmbr.unshift(obj.count);

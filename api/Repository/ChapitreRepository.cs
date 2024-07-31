@@ -122,7 +122,7 @@ namespace api.Repository
                 {
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
-                chapitre.Statue = ObjectStatus.Pending;
+                chapitre.Statue = ObjectStatus.Denied;
                 await apiDbContext.SaveChangesAsync();
                 return Result<Chapitre>.Success(chapitre);
             }
