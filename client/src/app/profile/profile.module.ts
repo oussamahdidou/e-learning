@@ -1,27 +1,22 @@
-import {  NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { LearningComponent } from './learning/learning.component';
+import { TruncatePipe } from '../pipes/truncate.pipe';
 
-
-const routes : Routes = [
+const routes: Routes = [
   {
     path: '',
     children: [
       {
         path: 'mylearning',
         component: LearningComponent,
-      }
-    ]
-  }
-]
+      },
+    ],
+  },
+];
 @NgModule({
-  declarations: [
-    LearningComponent
-  ],
-  imports: [
-    CommonModule,
-    RouterModule.forChild(routes)
-  ]
+  declarations: [LearningComponent],
+  imports: [CommonModule, RouterModule.forChild(routes), TruncatePipe],
 })
-export class ProfileModule { }
+export class ProfileModule {}

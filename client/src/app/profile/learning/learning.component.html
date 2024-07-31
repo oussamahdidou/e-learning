@@ -1,27 +1,55 @@
 <div class="container">
   <h2>My Learning</h2>
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="sort d-flex align-items-center">
+      <p class="mb-0 me-2">Sort By</p>
+      <select name="sortby" class="form-select me-3" style="width: auto">
+        <option value="name">name</option>
+      </select>
+    </div>
+    <div class="search d-flex align-items-center">
+      <input
+        type="text"
+        class="form-control input-search me-2"
+        placeholder="Search"
+        style="width: auto"
+      />
+      <button class="btn btn-primary search-btn">Search</button>
+    </div>
+  </div>
   <div class="module-grid d-grid">
-    <a class="module-card text-decoration-none d-flex flex-column justify-content-center rounded" *ngFor="let module of modules"
-    [routerLink]="['/course',module.moduleID]">
-      <img src="img/Pricing plans-rafiki.png" alt="">
+    <a
+      class="module-card text-decoration-none d-flex flex-column justify-content-center rounded"
+      *ngFor="let module of sortedModules"
+      [routerLink]="['/course', module.moduleID]"
+    >
+      <img src="img/Pricing plans-rafiki.png" class="module-img" alt="" />
       <div class="module-details">
-        <h3 class="module-title">{{module.nom}}</h3>
-          <p
-          class="progress-bar bg-success rounded"
+        <h6 class="module-title">{{ module.nom | truncate : 22 }}</h6>
+        <p
+          class="progress-bar bg-primary rounded"
           role="progressbar"
           [style.width.%]="calculateProgress(module.moduleID)"
           aria-valuenow="progress"
           aria-valuemin="0"
           aria-valuemax="100"
-          >
-            {{calculateProgress(module.moduleID)}} % Complete
-      </p>
-      <a class="testniveau text-decoration-none text-reset" [routerLink] = "['/course',module.moduleID,'testniveau',module.moduleID]">Passer Test De niveau</a>
-      <div class="play-button" [routerLink]="['/course', module.moduleID]">
-        <span>&#9658;</span>
+        >
+          <span class="bar"></span>
+        </p>
+        <a
+          class="testniveau text-decoration-none text-reset"
+          [routerLink]="[
+            '/course',
+            module.moduleID,
+            'testniveau',
+            module.moduleID
+          ]"
+          >Passer Test De niveau</a
+        >
+        <div class="play-button" [routerLink]="['/course', module.moduleID]">
+          <span>&#9658;</span>
+        </div>
       </div>
-      </div>
-
     </a>
   </div>
 </div>

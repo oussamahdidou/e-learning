@@ -36,6 +36,7 @@ import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { ProfileModule } from './profile/profile.module';
 import { LearningComponent } from './profile/learning/learning.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -63,6 +64,7 @@ import { LearningComponent } from './profile/learning/learning.component';
     VgOverlayPlayModule,
     VgBufferingModule,
     MatStepperModule,
+    TruncatePipe,
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
