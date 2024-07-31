@@ -2,3 +2,4 @@ api/bin/
 api/obj/
 .fake
 api/wwwroot/
+api/appsettings.json

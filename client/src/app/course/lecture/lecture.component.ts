@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../services/course.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-lecture',
@@ -9,6 +10,7 @@ import { CourseService } from '../../services/course.service';
 })
 export class LectureComponent {
   @Input() vdUrl: string | undefined;
+  host = environment.apiUrl;
 
   constructor(
     private router: Router,
@@ -18,7 +20,7 @@ export class LectureComponent {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const idParam = params.get('id');
+      const idParam = params.get('lectureid');
       if (idParam) {
         const id = +idParam;
         this.courseService
@@ -26,6 +28,7 @@ export class LectureComponent {
           .subscribe((url: string | undefined) => {
             this.vdUrl = url;
           });
+          console.error('videourl', this.vdUrl);
       } else {
         console.error('ID parameter is missing');
       }

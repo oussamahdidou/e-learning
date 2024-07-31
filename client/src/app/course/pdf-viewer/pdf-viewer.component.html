@@ -1,6 +1,16 @@
 <div class="container d-flex align-items-center flex-column">
   <div class="container d-flex align-items-center justify-content-between">
-    <h1>{{ isExam ? 'Controle' : 'lecture'}}</h1>
+    <h1>{{ isExam ? "Controle" : "lecture" }}</h1>
+    @if(devoirExists){
+    <button
+      class="mx-5 rounded-pill btn-devoir px-4 --bs-danger-border-subtle"
+      data-bs-toggle="modal"
+      data-bs-target="#devoirModal"
+      *ngIf="isExam"
+    >
+      - Annuler
+    </button>
+    }@else{
     <button
       class="mx-5 rounded-pill btn-devoir px-4"
       data-bs-toggle="modal"
@@ -9,10 +19,11 @@
     >
       + Ajouter
     </button>
+    }
   </div>
   <div class="pdfcontainer">
     <pdf-viewer
-      [src]="pdfUrl"
+      src="{{ host }}{{ pdfUrl }}"
       [render-text]="true"
       [original-size]="false"
       class="pdfcour"
@@ -41,8 +52,19 @@
           ></button>
         </div>
         <div
-          class="modal-body text-center d-flex align-items-center flex-column">
-            <input
+          class="modal-body text-center d-flex align-items-center flex-column"
+        >
+          @if(devoirExists){
+          <a [href]="devoirePdfUrl" target="_blank">Votre devoir</a>
+          <button
+            class="modal-btn-ajouter rounded-pill mt-3 --bs-danger-border-subtle"
+            (click)="deleteDevoir()"
+          >
+            - Annuler Votre Devoir
+          </button>
+          }@else{
+          <input
+            [disabled]="devoirExists"
             type="file"
             (change)="onFileSelected($event)"
             accept=".pdf"
@@ -52,8 +74,9 @@
             class="modal-btn-ajouter rounded-pill mt-3"
             (click)="uploadDevoir()"
           >
-                + Ajouter votre devoir
+            + Ajouter votre devoir
           </button>
+          }
           <button class="modal-btn-terminer rounded-pill mt-3">
             Marquer Comme Terminer
           </button>

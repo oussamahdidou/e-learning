@@ -10,11 +10,9 @@ namespace api.Dtos.Module
 {
     public class ModuleDto
     {
-
     public int Id { get; set; }
-    public string Nom { get; set; }
-    public List<ChapitreDto> Chapitres { get; set; }
-    public List<ControleDto> Controles { get; set; }
-
+    public string? Nom { get; set; }
+    public List<ChapitreDto>? Chapitres { get; set; }
+    public List<ControleDto>? Controles { get; set; }
     }
 }

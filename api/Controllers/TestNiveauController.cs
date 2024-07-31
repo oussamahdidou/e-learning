@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Quiz;
 using api.Dtos.TestNiveau;
 using api.Extensions;
 using api.generique;
@@ -28,7 +29,7 @@ namespace api.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetTestNiveauQuestions([FromRoute] int id)
         {
-            Result<List<Question>> result = await testNiveauRepository.GetTestNiveauQuestions(id);
+            Result<QuizDto> result = await testNiveauRepository.GetTestNiveauQuestions(id);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
@@ -40,6 +41,9 @@ namespace api.Controllers
         public async Task<IActionResult> RegisterTestNiveauResult([FromRoute] int moduleId, [FromRoute] double note)
         {
             string username = User.GetUsername();
+            if(username == null){
+                return BadRequest("User not found");
+            }
             AppUser appUser = await userManager.FindByNameAsync(username);
             TestNiveauResultDto testNiveauResultDto = new TestNiveauResultDto()
             {
@@ -48,6 +52,22 @@ namespace api.Controllers
                 StudentId = appUser.Id
             };
             Result<TestNiveau> result = await testNiveauRepository.RegisterTestNiveauResult(testNiveauResultDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+
+        [HttpGet("GetScore/{moduleId:int}")]
+        public async Task<IActionResult> GetTestNiveauScore([FromRoute] int moduleId)
+        {
+            string username = User.GetUsername();
+            if(username == null){
+                return BadRequest("User not found");
+            }
+            AppUser appUser = await userManager.FindByNameAsync(username);
+            Result<double> result = await testNiveauRepository.GetTestNiveauScore(appUser.Id,moduleId);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
+using api.Dtos.Control;
 using api.Dtos.Controle;
 using api.extensions;
 using api.generique;
@@ -62,5 +63,23 @@ namespace api.Repository
 
 
         }
+
+        public async Task<Result<ControleDto>> GetControleById(int controleId)
+        {
+            Controle? controle = await apiDbContext.controles.Include(c => c.Chapitres).FirstOrDefaultAsync(x => x.Id == controleId);
+
+            if(controle == null){
+                return Result<ControleDto>.Failure("Controle Not Found");
+            }
+
+            ControleDto controleDto = new ControleDto{
+                Id = controle.Id,
+                Ennonce = controle.Ennonce,
+                Solution = controle.Solution,
+                ChapitreNum = controle.Chapitres.Select(x => x.ChapitreNum).ToList()
+            };
+            return Result<ControleDto>.Success(controleDto);
+        }
+        
     }
 }

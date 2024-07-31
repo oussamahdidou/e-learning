@@ -19,6 +19,7 @@ using api.interfaces;
 using Microsoft.EntityFrameworkCore;
 using api.Data;
 using api.generique;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api.Repository
 {
@@ -50,7 +51,7 @@ namespace api.Repository
 
             }
         }
-         public async Task<Result<ModuleDto>> GetModuleById(int id, string studentId)
+         public async Task<Result<ModuleDto>> GetModuleById(int id, AppUser user)
         {
             try
             {
@@ -78,7 +79,7 @@ namespace api.Repository
                 }
 
                 List<int> checkedChapters = await apiDbContext.checkChapters
-                    .Where(cc => cc.StudentId == studentId)
+                    .Where(cc => cc.StudentId == user.Id)
                     .Select(cc => cc.ChapitreId)
                     .ToListAsync();
 
@@ -92,6 +93,11 @@ namespace api.Repository
                 return Result<ModuleDto>.Failure(ex.Message);
             }
         }
+        public async Task<Result<Module>> GetModuleInformationByID(int moduleId){
+            Module? module = await apiDbContext.modules.FindAsync(moduleId);
+            if (module == null) return Result<Module>.Failure("module not found");
+            return Result<Module>.Success(module);
+        } 
         public async Task<Result<Module>> UpdateModule(UpdateModuleDto updateModuleDto)
         {
             try

@@ -34,6 +34,8 @@ import { VgCoreModule } from '@videogular/ngx-videogular/core';
 import { VgControlsModule } from '@videogular/ngx-videogular/controls';
 import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
+import { ProfileModule } from './profile/profile.module';
+import { LearningComponent } from './profile/learning/learning.component';
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
