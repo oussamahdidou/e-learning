@@ -5,23 +5,16 @@
       <div class="mb-4 d-flex justify-content-between align-items-center px-4">
         <mat-form-field>
           <mat-label>Search</mat-label>
-          <input
-            matInput
-            (keyup)="applyFilter($event)"
-            placeholder="Ex. Name"
-          />
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Name" />
         </mat-form-field>
+        @if (authservice.$IsAdmin|async) {
         <button (click)="addInstitution()" mat-raised-button color="primary">
           <mat-icon>add</mat-icon>
           Ajouter Institution
         </button>
+        }
       </div>
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        matSort
-        class="mat-elevation-z8"
-      >
+      <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
         <!-- ID Column -->
         <ng-container matColumnDef="id">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
@@ -38,12 +31,17 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
           <td mat-cell *matCellDef="let element">
+            @if (authservice.$IsAdmin|async) {
             <button mat-flat-button color="warn" (click)="delete(element.id)">
               Supprimer
             </button>
             <button mat-flat-button color="accent" (click)="edit(element)">
               Modifier
             </button>
+            }
+            @else {
+            <span style="color: red;">les actions sont exclusifs pour l`admin</span>
+            }
           </td>
         </ng-container>
 
@@ -51,11 +49,7 @@
         <ng-container matColumnDef="plus">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Plus</th>
           <td mat-cell *matCellDef="let element">
-            <button
-              routerLink="/dashboard/niveautable/{{ element.id }}"
-              mat-raised-button
-              color="primary"
-            >
+            <button routerLink="/dashboard/niveautable/{{ element.id }}" mat-raised-button color="primary">
               Plus
             </button>
           </td>

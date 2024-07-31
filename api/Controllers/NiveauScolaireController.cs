@@ -10,9 +10,7 @@ using api.Repository;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using api.Dtos.NiveauScolaire;
-using api.generique;
-using api.interfaces;
+
 
 namespace api.Controllers
 {
@@ -55,19 +53,6 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
-        /*[HttpDelete]
-        public async Task<IActionResult> DeleteNiveauScolaire(int id){
-           
-             Result<NiveauScolaire> result = await niveauScolaireRepository.DeleteNiveauScolaire(id);
-            if(result.IsSuccess){
 
-                return Ok(result.Value);
-
-            }
-            else{
-
-            return BadRequest(result.Error);
-            }
-        }*/
     }
 }

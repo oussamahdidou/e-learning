@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using Microsoft.AspNetCore.Authorization;
 using api.interfaces;
-using api.interfaces;
+
 using api.generique;
 
 namespace api.Controllers

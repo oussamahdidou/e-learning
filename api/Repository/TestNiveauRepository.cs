@@ -75,7 +75,7 @@ namespace api.Repository
                 {
                     if (await apiDbContext.testNiveaus.AnyAsync(x => x.ModuleId == testNiveauResultDto.ModuleId && x.StudentId == testNiveauResultDto.StudentId))
                     {
-                        TestNiveau testNiveau = await apiDbContext.testNiveaus.FirstOrDefaultAsync(x => x.ModuleId == testNiveauResultDto.ModuleId && x.StudentId == testNiveauResultDto.StudentId);
+                        TestNiveau? testNiveau = await apiDbContext.testNiveaus.FirstOrDefaultAsync(x => x.ModuleId == testNiveauResultDto.ModuleId && x.StudentId == testNiveauResultDto.StudentId);
                         testNiveau.Note = testNiveauResultDto.Note;
                         await apiDbContext.SaveChangesAsync();
                         return Result<TestNiveau>.Success(testNiveau);

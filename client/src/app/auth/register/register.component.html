@@ -1,28 +1,69 @@
-<div class="page-container">
-    <div class="form-container">
-    <div class="logo-container">
-      Register
-    </div>
+<section class="background-radial-gradient overflow-hidden">
+  
 
-    <form class="form" (submit)="register()">
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" placeholder="Enter your email" required="">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username" [(ngModel)]="username"  placeholder="Enter your username" required="">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" placeholder="Enter your password" required="">
-        <label for="c-password">Confirm Password</label>
-        <input type="password" id="c-password" name="c-password" [(ngModel)]="confirmpassword" placeholder="Enter your password" required="">
+  <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
+    <div class="row gx-lg-5 align-items-center mb-5">
+      <div class="col-lg-6 mb-5 mb-lg-0" style="z-index: 10">
+        <h1 class="my-5 display-5 fw-bold ls-tight" style="color: hsl(218, 81%, 95%)">
+          The best E-learning Plateform <br />
+          <span style="color: hsl(218, 81%, 75%)">E-learning</span>
+        </h1>
+        <p class="mb-4 opacity-70" style="color: hsl(218, 81%, 85%)">
+          Une vaste gamme de cours couvrant divers domaines. Des ressources conçues pour répondre aux besoins d'apprenants de tous niveaux. 
+          Un accompagnement tout au long de votre parcours d'apprentissage. Une communauté dynamique. 
+        </p>
       </div>
-      <br><br>
-      <button class="form-submit-btn" type="submit">Register</button>
-    </form>
 
-    <p class="signup-link">
-      Already have an account?
-      <a routerLink="/login" class="signup-link link"> Login now</a>
-    </p>
-    
+      <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
+        <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
+        <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
+
+        <div class="card bg-glass">
+          <div class="card-body px-4 py-5 px-md-5">
+            <form (submit)="register()">
+              <div data-mdb-input-init class="form-outline mb-4">
+                <label class="form-label" for="form3Example3">Email address</label>
+                <input type="email" id="form3Example3" name="email" [(ngModel)]="email" placeholder="Enter your Email" class="form-control" />
+              </div>
+
+              <div data-mdb-input-init class="form-outline mb-4">
+                <label class="form-label" for="form3Example4">Username</label>
+                <input type="text" id="form3Example4" name="username" [(ngModel)]="username" placeholder="Enter a username" class="form-control" />
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <label class="form-label" for="form3Example1">Password</label>
+                    <input type="password" id="form3Example1"  name="password" [(ngModel)]="password" placeholder="Enter a password" class="form-control" />
+                  </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                  <div data-mdb-input-init class="form-outline">
+                    <label class="form-label" for="form3Example2">Confirm Password</label>
+                    <input type="password" id="form3Example2" name="confirmpassword" [(ngModel)]="confirmpassword" placeholder="confirm the  password" class="form-control" />
+                  </div>
+                </div>
+              </div>
+         
+<!--          <div class="form-check d-flex justify-content-center mb-4">
+                
+              </div> -->
+               
+              <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
+                Sign up
+              </button>
+
+              <div class="text-center">
+                <p>Already have an account?
+                  <a routerLink="/auth/login" class="signup-link link"> Login now</a></p>
+                
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+</section>
+<!-- Section: Design Block -->

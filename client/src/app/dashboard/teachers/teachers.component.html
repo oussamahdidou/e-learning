@@ -5,27 +5,14 @@
       <div class="mb-4 d-flex justify-content-between align-items-center px-4">
         <mat-form-field>
           <mat-label>Search</mat-label>
-          <input
-            matInput
-            (keyup)="applyFilter($event)"
-            placeholder="Ex. UserName"
-          />
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. UserName" />
         </mat-form-field>
-        <button
-          routerLink="/institutions/create"
-          mat-raised-button
-          color="primary"
-        >
+        <button routerLink="/institutions/create" mat-raised-button color="primary">
           <mat-icon>add</mat-icon>
           Ajouter Teacher
         </button>
       </div>
-      <table
-        mat-table
-        [dataSource]="dataSource"
-        class="mat-elevation-z8"
-        matSort
-      >
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
         <!-- UserName Column -->
         <ng-container matColumnDef="userName">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>UserName</th>
@@ -42,22 +29,14 @@
         <ng-container matColumnDef="action">
           <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
           <td mat-cell *matCellDef="let element">
-            <ng-container [ngSwitch]="element.status">
-              <div *ngSwitchCase="true">
-                <button
-                  (click)="toggleApproval(element)"
-                  mat-raised-button
-                  color="primary"
-                >
+            <ng-container [ngSwitch]="element.granted">
+              <div *ngSwitchCase="false">
+                <button (click)="toggleApproval(element)" mat-raised-button color="primary">
                   <mat-icon color="primary">check_circle</mat-icon> Accepté
                 </button>
               </div>
-              <div *ngSwitchCase="false">
-                <button
-                  (click)="toggleApproval(element)"
-                  mat-raised-button
-                  color="warn"
-                >
+              <div *ngSwitchCase="true">
+                <button (click)="toggleApproval(element)" mat-raised-button color="warn">
                   <mat-icon color="warn">cancel</mat-icon> Refusé
                 </button>
               </div>

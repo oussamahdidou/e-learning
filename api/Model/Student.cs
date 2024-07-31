@@ -11,6 +11,8 @@ namespace api.Model
         public List<CheckChapter> CheckChapters = new List<CheckChapter>();
         public List<ResultControle> ResultControles = new List<ResultControle>();
         public List<QuizResult> QuizResults { get; set; } = new List<QuizResult>();
+        public List<ResultExam> ResultExams { get; set; } = new List<ResultExam>();
+
 
     }
 }

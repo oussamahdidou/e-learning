@@ -1,24 +1,16 @@
-button {
-    padding: 12.5px 30px;
-    border: 0;
-    border-radius: 100px;
-    background-color: #2ba8fb;
-    color: #ffffff;
-    font-weight: Bold;
-    transition: all 0.5s;
-    -webkit-transition: all 0.5s;
-  }
-  
-  button:hover {
-    background-color: #6fc5ff;
-    box-shadow: 0 0 20px #6fc5ff50;
-    transform: scale(1.1);
-  }
-  
-  button:active {
-    background-color: #3d94cf;
-    transition: all 0.25s;
-    -webkit-transition: all 0.25s;
-    box-shadow: none;
-    transform: scale(0.98);
-  }
+.section-title {
+  color: rgba(0, 0, 0, 0.8);
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 800;
+}
+.item-description {
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
+  hyphens: auto;
+  word-break: break-word;
+}
+.item-container {
+  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+}

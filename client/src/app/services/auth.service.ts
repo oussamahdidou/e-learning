@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import Swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +19,7 @@ export class AuthService {
   jwt: string = '';
   token: any;
   headers: any | undefined;
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient , private _router: Router) {
     if (
       localStorage.getItem('token') &&
       !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))
@@ -46,6 +48,7 @@ export class AuthService {
   getUser(token: string) {
     return this.jwtHelper.decodeToken(token);
   }
+  
   logout() {
     localStorage.removeItem('token');
     this._$isLoggedin.next(false);
@@ -80,7 +83,7 @@ export class AuthService {
     confirmPassword: string
   ): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/Register`, {
+      .post(`${environment.apiUrl}/api/Account/Register`, {
         userName,
         email,
         password,
@@ -98,7 +101,7 @@ export class AuthService {
 
   forgotPassword(email: string): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/forgotpassword`, {
+      .post(`${environment.apiUrl}/api/Account/forgotpassword`, {
         email,
       })
       .pipe(
@@ -117,7 +120,7 @@ export class AuthService {
     token: string
   ): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/resetpassword`, {
+      .post(`${environment.apiUrl}/api/Account/resetpassword`, {
         password,
         confirmpassword,
         email,
@@ -135,7 +138,7 @@ export class AuthService {
   verifyEmail(email: string, token: string): Observable<any> {
     const params = new HttpParams().set('email', email).set('token', token);
     return this.http
-      .get(`${environment.apiUrl}/Account/emailconfirmation`, {
+      .get(`${environment.apiUrl}/api/Account/emailconfirmation`, {
         params,
       })
       .pipe(

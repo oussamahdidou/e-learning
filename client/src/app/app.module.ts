@@ -54,6 +54,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     InstitutionsModule,
     CourseModule,
     AuthModule,
+
     DashboardModule,
     RouterModule,
     ReactiveFormsModule,

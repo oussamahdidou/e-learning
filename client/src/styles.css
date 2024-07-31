@@ -7,11 +7,20 @@ body {
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
+  word-break: break-all;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  hyphens: auto;
+  word-break: break-word;
+}
+
+html,
+body {
+  height: 100%;
 }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

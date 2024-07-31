@@ -7,8 +7,20 @@ import { AppRoutingModule } from '../app-routing.module';
 import { FormsModule } from '@angular/forms';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { VerifyEmailComponent } from './verify-email/verify-email.component';
+import { RouterModule, Routes } from '@angular/router';
 
-
+const routes: Routes = [
+  {
+    path: '',
+    children: [
+      { path: 'login', component: LoginComponent },
+      { path: 'register', component: RegisterComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'reset-password', component: ResetPasswordComponent },
+      { path: 'verify-email', component: VerifyEmailComponent },
+    ],
+  },
+];
 
 @NgModule({
   declarations: [
@@ -16,12 +28,8 @@ import { VerifyEmailComponent } from './verify-email/verify-email.component';
     RegisterComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
-    VerifyEmailComponent
+    VerifyEmailComponent,
   ],
-  imports: [
-    CommonModule,
-    AppRoutingModule,
-    FormsModule
-  ]
+  imports: [CommonModule, FormsModule, RouterModule.forChild(routes)],
 })
-export class AuthModule { }
+export class AuthModule {}

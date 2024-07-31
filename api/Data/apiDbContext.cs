@@ -32,7 +32,8 @@ namespace api.Data
         public DbSet<CheckChapter> checkChapters { get; set; }
         public DbSet<ResultControle> resultControles { get; set; }
         public DbSet<ModuleRequirement> moduleRequirements { get; set; }
-
+        public DbSet<ResultExam> resultExams { get; set; }
+        public DbSet<ExamFinal> examFinals { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -55,34 +56,7 @@ namespace api.Data
                 }
 
             };
-            // List<Country> countries = new List<Country>()
-            // {
-            //     new Country(){
-            //         Id=1,
-            //         Name="Morocco"
-            //     },
-            //     new Country(){
-            //         Id=2,
-            //         Name="France",
-            //     }
-            // };
-            // List<Ville> villes = new List<Ville>(){
-            //     new Ville(){
-            //         Id=1,
-            //         Name="Casablanca",
-            //         CountryId=1
-            //     },
-            //     new Ville(){
-            //         Id=2,
-            //         Name="Marrakech",
-            //         CountryId=1
-            //     },
-            //     new Ville(){
-            //          Id=3,
-            //         Name="Errachidia",
-            //         CountryId=1
-            //     },
-            // };
+
 
             builder.Entity<ModuleRequirement>(x => x.HasKey(p => new { p.RequiredModuleId, p.TargetModuleId }));
 
@@ -139,8 +113,16 @@ namespace api.Data
             .WithMany(u => u.TestNiveaus)
             .HasForeignKey(p => p.ModuleId);
             builder.Entity<IdentityRole>().HasData(Roles);
-            // builder.Entity<Country>().HasData(countries);
-            // builder.Entity<Ville>().HasData(villes);
+            //*************************************************************************************************
+            builder.Entity<ResultExam>(x => x.HasKey(p => new { p.StudentId, p.ExamFinalId }));
+            builder.Entity<ResultExam>()
+            .HasOne(u => u.Student)
+            .WithMany(u => u.ResultExams)
+            .HasForeignKey(p => p.StudentId);
+            builder.Entity<ResultExam>()
+            .HasOne(u => u.ExamFinal)
+            .WithMany(u => u.ResultExams)
+            .HasForeignKey(p => p.ExamFinalId);
         }
     }
 }
