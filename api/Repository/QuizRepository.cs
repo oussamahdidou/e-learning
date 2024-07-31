@@ -7,6 +7,7 @@ using api.Dtos.Option;
 using api.Dtos.Question;
 using api.Dtos.Quiz;
 using api.generique;
+using api.helpers;
 using api.interfaces;
 using api.Mappers;
 using api.Model;
@@ -214,6 +215,47 @@ namespace api.Repository
             }
         }
 
+        public async Task<Result<Quiz>> Approuver(int id)
+        {
+            try
+            {
+                Quiz? quiz = await _context.quizzes.FirstOrDefaultAsync(x => x.Id == id);
+                if (quiz == null)
+                {
+                    return Result<Quiz>.Failure("Quiz not found");
+                }
+                quiz.Statue = ObjectStatus.Approuver;
+                await _context.SaveChangesAsync();
+                return Result<Quiz>.Success(quiz);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Quiz>.Failure(ex.Message);
+
+            }
+        }
+
+        public async Task<Result<Quiz>> Refuser(int id)
+        {
+            try
+            {
+                Quiz? quiz = await _context.quizzes.FirstOrDefaultAsync(x => x.Id == id);
+                if (quiz == null)
+                {
+                    return Result<Quiz>.Failure("Quiz not found");
+                }
+                quiz.Statue = ObjectStatus.Denied;
+                await _context.SaveChangesAsync();
+                return Result<Quiz>.Success(quiz);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Quiz>.Failure(ex.Message);
+
+            }
+        }
     }
 
 

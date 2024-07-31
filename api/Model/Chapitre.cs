@@ -25,5 +25,5 @@ namespace api.Model
         public Module? Module { get; set; }
         public Quiz? Quiz { get; set; }
         public List<CheckChapter> CheckChapters { get; set; } = new List<CheckChapter>();
-    } 
+    }
 }

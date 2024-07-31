@@ -17,6 +17,7 @@ namespace api.Model
         public List<ModuleRequirement> ModuleRequirements { get; set; } = new List<ModuleRequirement>();
         public List<ModuleRequirement> ModulesRequiredIn { get; set; } = new List<ModuleRequirement>();
         public List<TestNiveau> TestNiveaus { get; set; } = new List<TestNiveau>();
-
+        public ExamFinal? ExamFinal { get; set; }
+        public int? ExamFinalId { get; set; }
     }
 }

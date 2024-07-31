@@ -13,5 +13,15 @@ namespace api.interfaces
         Task<Result<List<GetChapitresForControleDto>>> GetChaptersForControle(int id);
         Task<Result<List<GetChaptersDashboardByModuleDto>>> GetChaptersDashboardbyModule(int id);
         Task<Result<Chapitre>> GetDashboardChapiter(int id);
+        Task<Result<List<PendingObjectsDto>>> GetObjectspourApprouver();
+        Task<Result<Teacher>> GrantTeacherAccess(string id);
+        Task<Result<Teacher>> RemoveGrantTeacherAccess(string id);
+        Task<Result<List<GetChapitresToUpdateControlesDto>>> GetChapitresToUpdateControles(int id);
+        Task<bool> UpdateControleChapitres(List<GetChapitresToUpdateControlesDto> getChapitresToUpdateControlesDtos, int controleId);
+        Task<Result<List<BarChartsDto>>> GetMostCheckedModules();
+        Task<Result<List<BarChartsDto>>> GetLeastCheckedModules();
+        Task<Result<List<BarChartsDto>>> GetTopTestNiveauModules();
+        Task<Result<List<BarChartsDto>>> GetWorstTestNiveauModules();
+        Task<Result<StatsDto>> GetStats();
     }
 }

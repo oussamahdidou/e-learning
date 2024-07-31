@@ -76,7 +76,7 @@ namespace api.Controllers
             return BadRequest(result.Error);
         }
         [Authorize(Roles = UserRoles.Student)]
-        [HttpGet("[Action]/{moduleId:int}")]
+        [HttpGet("IsStudentEligibleForModule/{moduleId:int}")]
         public async Task<IActionResult> IsStudentEligibleForModule([FromRoute] int moduleId)
         {
             string userId = (await userManager.FindByNameAsync(User.GetUsername())).Id;

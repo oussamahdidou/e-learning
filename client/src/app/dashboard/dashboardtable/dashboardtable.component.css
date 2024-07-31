@@ -1,0 +1,16 @@
+.dashboard-container {
+  margin-left: 200px;
+}
+.chart {
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+  background-color: white;
+  position: relative;
+  border-radius: 5px;
+}
+.stats {
+  background-color: white;
+  color: rgb(70, 38, 206);
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  border-radius: 25px;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+}

@@ -115,14 +115,12 @@ namespace api.Controllers
                     else
                     {
                         return StatusCode(500, userRole.Errors);
-                        Console.WriteLine("5555555555555555555555555555555555555555555555555555555555555555555555555555.");
                     }
 
                 }
                 else
                 {
                     return StatusCode(500, userCreation.Errors);
-                    Console.WriteLine("666666666666666666666666666666666666666666666666666666666666666666666666666666.");
                 }
 
             }

@@ -36,6 +36,7 @@ import { VgOverlayPlayModule } from '@videogular/ngx-videogular/overlay-play';
 import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { ProfileModule } from './profile/profile.module';
 import { LearningComponent } from './profile/learning/learning.component';
+
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -53,6 +54,7 @@ import { LearningComponent } from './profile/learning/learning.component';
     InstitutionsModule,
     CourseModule,
     AuthModule,
+
     DashboardModule,
     RouterModule,
     ReactiveFormsModule,
