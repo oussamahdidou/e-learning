@@ -1,12 +1,17 @@
 <div class="d-flex justify-content-between navbar">
   <div class="navbar-brand">E-learning</div>
-  <div class="module-name"></div>
   <div class="" id="navbarSupportedContent">
     <ul class="navbar-nav d-flex flex-row justify-content-center">
-      <li class="nav-item">
-        <button class="btn ml-2" type="button">
+      <li class="nav-item dropdown">
+        <button class="btn ml-2" type="button" data-bs-toggle="dropdown">
           <mat-icon class="account">perm_identity</mat-icon>
         </button>
+        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+          <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><a class="dropdown-item" href="#">My Learning</a></li>
+          <li><a class="dropdown-item" href="#">Contact Us</a></li>
+          <li><a class="dropdown-item" href="#">About</a></li>
+        </ul>
       </li>
     </ul>
   </div>

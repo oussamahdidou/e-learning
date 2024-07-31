@@ -8,6 +8,9 @@
   height: 57px;
   padding: 0 20px;
 }
+ul li{
+  color: white;
+}
 .container {
   margin: 0 auto;
 }
@@ -48,4 +51,24 @@
 }
 .account {
   color: white;
+}
+
+.dropdown-menu {
+  background-color: #343a40;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  transform: translateX(-50%); /* Centers the dropdown menu */
+  margin-top: 0.5rem; /* Adjust as needed */
+}
+
+.dropdown-item {
+  color: white;
+}
+
+.dropdown-item:hover {
+  background-color: #00b33c;
+}
+.nav-item.dropdown {
+  position: relative;
 }
