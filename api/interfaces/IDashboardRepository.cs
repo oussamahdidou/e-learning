@@ -18,5 +18,7 @@ namespace api.interfaces
         Task<Result<Teacher>> RemoveGrantTeacherAccess(string id);
         Task<Result<List<GetChapitresToUpdateControlesDto>>> GetChapitresToUpdateControles(int id);
         Task<bool> UpdateControleChapitres(List<GetChapitresToUpdateControlesDto> getChapitresToUpdateControlesDtos, int controleId);
+        Task<Result<List<BarChartsDto>>> GetMostCheckedModules();
+        Task<Result<StatsDto>> GetStats();
     }
 }

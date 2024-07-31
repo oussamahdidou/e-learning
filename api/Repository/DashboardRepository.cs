@@ -20,7 +20,6 @@ namespace api.Repository
         {
             this.apiDbContext = apiDbContext;
         }
-
         public async Task<Result<List<GetChapitresToUpdateControlesDto>>> GetChapitresToUpdateControles(int id)
         {
             try
@@ -98,6 +97,31 @@ namespace api.Repository
 
         }
 
+        public async Task<Result<List<BarChartsDto>>> GetMostCheckedModules()
+        {
+            var top5ModulesWithCheckCounts = await apiDbContext.modules
+    .Select(m => new
+    {
+        ModuleName = m.Nom,
+        CheckCount = m.Chapitres.SelectMany(c => c.CheckChapters).Count()
+    })
+    .OrderByDescending(x => x.CheckCount)
+    .Take(5)
+    .ToListAsync();
+
+            List<BarChartsDto> chartsdata = top5ModulesWithCheckCounts
+                .Select(x => new BarChartsDto
+                {
+                    Name = x.ModuleName,
+                    Count = x.CheckCount
+                })
+                .ToList();
+
+            return Result<List<BarChartsDto>>.Success(chartsdata);
+
+
+        }
+
         public async Task<Result<List<PendingObjectsDto>>> GetObjectspourApprouver()
         {
             try
@@ -112,6 +136,32 @@ namespace api.Repository
 
                 return Result<List<PendingObjectsDto>>.Failure(ex.Message);
             }
+        }
+
+        public async Task<Result<StatsDto>> GetStats()
+        {
+            try
+            {
+                List<Student> students = await apiDbContext.students.ToListAsync();
+                List<Teacher> teachers = await apiDbContext.teachers.ToListAsync();
+                List<Module> modules = await apiDbContext.modules.ToListAsync();
+                List<Chapitre> chapitres = await apiDbContext.chapitres.Where(x => x.Statue == ObjectStatus.Pending).ToListAsync();
+                List<Controle> controles = await apiDbContext.controles.Where(x => x.Status == ObjectStatus.Pending).ToListAsync();
+                List<ExamFinal> Exams = await apiDbContext.examFinals.Where(x => x.Status == ObjectStatus.Pending).ToListAsync();
+                return Result<StatsDto>.Success(new StatsDto()
+                {
+                    CoursesNmbr = modules.Count,
+                    StudentNmbr = students.Count,
+                    TeacherNmbr = teachers.Count,
+                    UnapprouvedNmbr = chapitres.Count + controles.Count + Exams.Count,
+                });
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<StatsDto>.Failure(ex.Message);
+            }
+
         }
 
         public async Task<Result<Teacher>> GrantTeacherAccess(string id)

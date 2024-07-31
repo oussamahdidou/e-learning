@@ -12,10 +12,10 @@ namespace api.Dtos.Chapitre
     {
         public int ChapitreNum { get; set; }
         public string Nom { get; set; } = "";
-        public IFormFile CoursPdf { get; set; }
-        public IFormFile Video { get; set; }
-        public IFormFile Synthese { get; set; }
-        public IFormFile Schema { get; set; }
+        public required IFormFile CoursPdf { get; set; }
+        public required IFormFile Video { get; set; }
+        public required IFormFile Synthese { get; set; }
+        public required IFormFile Schema { get; set; }
         public bool Premium { get; set; }
         public string Statue { get; set; } = ObjectStatus.Pending;
         public int ModuleId { get; set; }

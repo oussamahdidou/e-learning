@@ -110,5 +110,25 @@ namespace api.Controllers
             }
             return BadRequest(result);
         }
+        [HttpGet("GetStats")]
+        public async Task<IActionResult> GetStats()
+        {
+            Result<StatsDto> result = await dashboardRepository.GetStats();
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpGet("ModulesCharts")]
+        public async Task<IActionResult> ModulesCharts()
+        {
+            Result<List<BarChartsDto>> result = await dashboardRepository.GetMostCheckedModules();
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }

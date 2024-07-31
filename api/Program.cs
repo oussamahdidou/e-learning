@@ -131,7 +131,7 @@ var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {
     await SeedData.SeedUsersAndRolesAsync(app);
-    await SeedData.Initialize(app);
+    SeedData.Initialize(app);
 
 }
 else

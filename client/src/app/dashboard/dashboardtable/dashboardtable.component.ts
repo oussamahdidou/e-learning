@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import {
   BarController,
@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { DashboardService } from '../../services/dashboard.service';
 Chart.register(
   BarController,
   BarElement,
@@ -23,7 +24,18 @@ Chart.register(
   templateUrl: './dashboardtable.component.html',
   styleUrl: './dashboardtable.component.css',
 })
-export class DashboardtableComponent {
+export class DashboardtableComponent implements OnInit {
+  moduleslabels: any[] = [];
+  modulesnmbr: any[] = [];
+  constructor(private readonly dashboardservice: DashboardService) {}
+  ngOnInit(): void {
+    this.dashboardservice.getmostcheckedmodules().subscribe(
+      (response) => {
+        this.extractTopColumnsAbscences(response);
+      },
+      (error) => {}
+    );
+  }
   public barChartOptions: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
@@ -41,11 +53,11 @@ export class DashboardtableComponent {
   };
 
   public barChartData1: ChartConfiguration<'bar'>['data'] = {
-    labels: ['Label 1', 'Label 2', 'Label 3', 'Label 4'],
+    labels: this.moduleslabels,
     datasets: [
       {
-        data: [10, 20, 30, 40],
-        label: 'Dataset 1',
+        data: this.modulesnmbr,
+        label: 'Les cours les plus populaires parmi les étudiants',
         backgroundColor: 'rgba(0,0,255,0.3)',
         borderColor: 'black',
         borderWidth: 1,
@@ -91,4 +103,10 @@ export class DashboardtableComponent {
       },
     ],
   };
+  extractTopColumnsAbscences(objects: any[]) {
+    objects.forEach((obj) => {
+      this.moduleslabels.unshift(obj.name);
+      this.modulesnmbr.unshift(obj.count);
+    });
+  }
 }

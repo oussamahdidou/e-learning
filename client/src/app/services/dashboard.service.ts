@@ -318,4 +318,9 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
+  getmostcheckedmodules(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/Dashboard/ModulesCharts`, {
+      headers: this.authservice.headers,
+    });
+  }
 }
