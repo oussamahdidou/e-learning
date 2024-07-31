@@ -45,9 +45,11 @@ export class LearningComponent {
     },
   ];
   sortedModules: any = [];
+  filteredModules: any = [];
 
   ngOnInit(): void {
     this.sortedModules = this.sortModulesByName(this.modules);
+    this.filteredModules = this.sortedModules;
   }
 
   sortModulesByName(modules: any[]): any[] {
@@ -59,5 +61,19 @@ export class LearningComponent {
       return (module.checkCount * 100) / module.numberOfChapter;
     }
     return undefined;
+  }
+  filterResults(text: string) {
+    if (!text) {
+      this.filteredModules = this.modules;
+      return;
+    }
+
+    this.filteredModules = this.modules.filter((module) =>
+      module?.nom.toLowerCase().includes(text.toLowerCase())
+    );
+  }
+  onInputChange(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.filterResults(inputElement.value);
   }
 }

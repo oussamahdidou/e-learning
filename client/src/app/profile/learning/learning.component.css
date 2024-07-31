@@ -9,9 +9,9 @@
   font: bold;
   color: #666666;
 }
-div img {
-  height: 228px;
-  /* border: 2px solid green; */
+.module-card img {
+  width: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
 }
@@ -28,6 +28,8 @@ div h3 {
   /* border: 2px solid #eeeded; */
   /* box-shadow: 0 4px 8px rgba(98, 97, 97, 0.9); */
   color: black;
+  margin-bottom: 15px;
+  padding: 10px;
 }
 .play-button {
   position: absolute;
@@ -45,29 +47,16 @@ div h3 {
   font-size: 24px;
   cursor: pointer;
 }
-.module-card:hover {
-  .module-img {
-    background-color: rgba(112, 113, 115, 0.5);
-  }
-  cursor: pointer;
-  transition: 1s;
+.module-card:hover .module-img {
+  background-color: rgba(112, 113, 115, 0.5);
+  transition: background-color 1s;
 }
 .module-card:hover .play-button {
   display: block;
 }
-.module-grid {
-  /* border: 2px solid black; */
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-.module-card {
-  /* border: 2px solid black; */
-  height: 350px;
-}
 .bar {
   height: 5px;
+}
+.module {
+  width: 100%;
 }
