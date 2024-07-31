@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
+import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
+import Swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root',
 })
@@ -17,7 +19,7 @@ export class AuthService {
   jwt: string = '';
   token: any;
   headers: any | undefined;
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient , private _router: Router) {
     if (
       localStorage.getItem('token') &&
       !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))
@@ -46,6 +48,7 @@ export class AuthService {
   getUser(token: string) {
     return this.jwtHelper.decodeToken(token);
   }
+  
   logout() {
     localStorage.removeItem('token');
     this._$isLoggedin.next(false);
@@ -53,7 +56,7 @@ export class AuthService {
   }
   login(username: string, password: string): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/Account/Login`, { username, password })
+      .post(`${environment.apiUrl}/api/Account/Login`, { username, password })
       .pipe(
         tap<any>(
           (response) => {
