@@ -79,12 +79,15 @@
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>action</th>
             <td mat-cell *matCellDef="let element">
+              @if (authservice.$IsAdmin|async) {
               <button mat-flat-button color="warn">
                 Supprimer
               </button>
-              <button mat-flat-button color="accent">
-                Modifier
-              </button>
+
+              }
+              @else {
+              <span style="color: red;">les actions sont exclusifs pour l`admin</span>
+              }
             </td>
           </ng-container>
 
@@ -105,8 +108,12 @@
     @if (exam) {
     <mat-step>
       <ng-template matStepLabel> ExamFinal Ennonce </ng-template>
-      <h4>Ennonce <button mat-raised-button color="primary" (click)="ennonce.click()">Modifier Ennonce </button>
-      </h4>@if (exam.status==='Pending') {
+      <h4>Ennonce@if (authservice.$IsAdmin|async) {
+        <button mat-raised-button color="primary" (click)="ennonce.click()">Modifier Ennonce </button>
+        }
+      </h4>
+      @if (authservice.$IsAdmin|async) {
+      @if (exam.status==='Pending') {
       <button mat-flat-button color="primary" (click)="approuver()">
         <mat-icon>check_circle</mat-icon>
         Approuver
@@ -128,6 +135,7 @@
         Approuver
       </button>
       }
+      }
       <input type="file" #ennonce (change)="SelectEnnonce($event)" style="display: none">
       <div class="pdf-container w-75 px-5 mx-auto">
         <pdf-viewer src="{{host}}{{exam.ennonce}}" [render-text]="true" [original-size]="false"
@@ -137,8 +145,9 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>ExamFinal Solution</ng-template>
-      <h4>Solution <button mat-raised-button color="primary" (click)="solution.click()">Modifier Solution
-        </button>
+      <h4>Solution @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary"
+          (click)="solution.click()">Modifier Solution
+        </button>}
       </h4>
       <input type="file" #solution (change)="SelectSolution($event)" style="display: none">
       <div class="pdf-container w-75 px-5 mx-auto">
@@ -184,10 +193,11 @@
             <mat-label>Search</mat-label>
             <input matInput (keyup)="applyControlesFilter($event)" placeholder="Ex. UserName" />
           </mat-form-field>
+          @if (authservice.$IsAdmin|async){
           <button (click)="openDialog()" mat-raised-button color="primary">
             <mat-icon>add</mat-icon>
             Ajouter Module
-          </button>
+          </button>}
         </div>
         <table mat-table [dataSource]="modulessource" class="mat-elevation-z8" matSort>
           <ng-container matColumnDef="id">
@@ -224,12 +234,16 @@
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
             <td mat-cell *matCellDef="let element">
+              @if (authservice.$IsAdmin|async) {
               <button mat-flat-button color="warn" (click)="delete(element.id)">
                 Supprimer
               </button>
               <button mat-flat-button color="accent" (click)="edit(element)">
                 Modifier
-              </button>
+              </button>}
+              @else {
+              <span style="color: red;">les actions sont exclusifs pour l`admin</span>
+              }
             </td>
           </ng-container>
           <ng-container matColumnDef="plus">

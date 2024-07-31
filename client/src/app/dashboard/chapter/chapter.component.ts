@@ -9,6 +9,7 @@ import { DashboardService } from '../../services/dashboard.service';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-chapter',
@@ -26,7 +27,8 @@ export class ChapterComponent implements OnInit {
 
   constructor(
     private readonly dashboardService: DashboardService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    public authservice: AuthService
   ) {}
   chapitre: any;
 

@@ -3,6 +3,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { DashboardService } from '../../services/dashboard.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-institutions-table',
@@ -16,7 +17,10 @@ export class InstitutionsTableComponent implements OnInit {
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private readonly dashboardservice: DashboardService) {}
+  constructor(
+    private readonly dashboardservice: DashboardService,
+    public authservice: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.dashboardservice.getinstitutions().subscribe(

@@ -3,7 +3,8 @@
 <div class="quiz-container">
   <mat-horizontal-stepper [linear]="isLinear" #stepper class="pt-5 px-3">
     <mat-step>
-      <h4>{{chapitre.nom}} <button mat-button color="primary" (click)="modifierNom()">Modifier Chapitre Nom
+      <h4>{{chapitre.nom}} @if (authservice.$IsAdmin|async) { <button mat-button color="primary"
+          (click)="modifierNom()">Modifier Chapitre Nom
         </button>
         @if (chapitre.statue==='Pending') {
         <button mat-flat-button color="primary" (click)="approuver()">
@@ -26,10 +27,12 @@
           <mat-icon>check_circle</mat-icon>
           Approuver
         </button>
-        }
+        }}
       </h4>
       <ng-template matStepLabel> CoursPdf </ng-template>
-      <h4>CoursPdf<button mat-raised-button color="primary" (click)="Pdf.click()">Modifier Pdf </button>
+      <h4>CoursPdf
+        @if (authservice.$IsAdmin|async) {
+        <button mat-raised-button color="primary" (click)="Pdf.click()">Modifier Pdf </button>}
       </h4>
       <input type="file" #Pdf (change)="SelectPdf($event)" style="display: none">
       <div class="pdf-container w-75 px-5 mx-auto">
@@ -42,8 +45,9 @@
     <mat-step>
 
       <ng-template matStepLabel> CoursVideo </ng-template>
-      <h4>CoursVideo<button mat-raised-button color="primary" (click)="Video.click()">Modifier Video </button>
-      </h4>
+      <h4>CoursVideo @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary"
+          (click)="Video.click()">Modifier Video </button>
+        } </h4>
       <input type="file" #Video (change)="SelectVideo($event)" accept="video/*" style="display: none">
 
       <section class="video px-5 mt-3">
@@ -58,8 +62,9 @@
 
     <mat-step>
       <ng-template matStepLabel> Schema </ng-template>
-      <h4>Schema<button mat-raised-button color="primary" (click)="Schema.click()">Modifier Schema </button>
-      </h4>
+      <h4>Schema @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary"
+          (click)="Schema.click()">Modifier Schema </button>
+        } </h4>
       <input type="file" #Schema (change)="SelectSchema($event)" style="display: none">
 
 
@@ -73,8 +78,9 @@
     <mat-step>
 
       <ng-template matStepLabel> Synthese </ng-template>
-      <h4>Synthese<button mat-raised-button color="primary" (click)="Synthese.click()">Modifier Synthese </button>
-      </h4>
+      <h4>Synthese @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary"
+          (click)="Synthese.click()">Modifier Synthese </button>
+        } </h4>
       <input type="file" #Synthese (change)="SelectSynthese($event)" style="display: none">
       <div class="pdf-container w-75 mx-auto">
         <pdf-viewer src="{{host}}{{chapitre.synthese}}" [render-text]="true" [original-size]="false"
@@ -109,24 +115,26 @@
             </div>
             <input type="text" class="form-control" [(ngModel)]="option.nom" name="option{{ i }}-{{ j }}"
               placeholder="Option {{ j + 1 }}" />
+            @if (authservice.$IsAdmin|async) {
             <button type="button" class="btn btn-danger btn-sm" (click)="deleteOption(i, j)">
               Delete Option
-            </button>
+            </button>}
           </div>
+          @if (authservice.$IsAdmin|async) {
           <button type="button" class="btn btn-secondary btn-sm" (click)="addOption(i)">
             Add Option
           </button>
 
           <button type="button" class="btn btn-danger btn-secondary btn-sm" (click)="deleteQuestion(i)">
             Delete Question
-          </button>
+          </button>}
         </div>
-
+        @if (authservice.$IsAdmin|async) {
         <button type="button" class="btn btn-secondary" (click)="addQuestion()">
           Add Question
         </button>
 
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit</button>}
       </form>}
     </mat-step>
   </mat-horizontal-stepper>

@@ -13,6 +13,7 @@ import {
 } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-module',
@@ -212,7 +213,8 @@ export class ModuleComponent implements OnInit {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private readonly route: ActivatedRoute,
-    private readonly dashboardservice: DashboardService
+    private readonly dashboardservice: DashboardService,
+    public authservice: AuthService
   ) {
     this.controleForm = this.fb.group({
       nomControle: ['', Validators.required],

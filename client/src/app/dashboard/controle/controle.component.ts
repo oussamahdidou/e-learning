@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { MatDialog } from '@angular/material/dialog';
 import { UpdateControleChaptersDialogComponent } from '../update-controle-chapters-dialog/update-controle-chapters-dialog.component';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-controle',
@@ -81,7 +82,8 @@ export class ControleComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private readonly dashboardservice: DashboardService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    public authservice: AuthService
   ) {}
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
