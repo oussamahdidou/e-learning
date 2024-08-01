@@ -5,7 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 interface Option {
   id: number;
   nom: string;
-  truth: string;
+  truth: boolean;
 }
 
 interface Question {
