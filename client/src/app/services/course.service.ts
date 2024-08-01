@@ -221,8 +221,13 @@ export class CourseService {
   }
 
   getVdUrlById(id: number): Observable<string | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           return data.videoPath;
@@ -232,8 +237,13 @@ export class CourseService {
   }
 
   getCourPdfUrlById(id: number): Observable<string | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           return data.coursPdfPath;
@@ -243,8 +253,13 @@ export class CourseService {
   }
 
   getSyntheseById(id: number): Observable<string | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           return data.synthese;
@@ -254,8 +269,13 @@ export class CourseService {
   }
 
   getControleById(controleId: number): Observable<Controle | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-    .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`)
+    .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .pipe(
       map((data) =>{
         return data;
@@ -265,8 +285,13 @@ export class CourseService {
   }
 
   getSchemaById(id: number): Observable<string | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-    .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+    .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`,{
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
     .pipe(
       map((data) => {
         return data.schema;
