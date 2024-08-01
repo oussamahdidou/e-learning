@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    partial class apiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240801165510_Migration1")]
+    partial class Migration1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,31 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-<<<<<<< HEAD
-                            Id = "5dd56300-9a38-4c98-afe5-e16fffce2f30",
-=======
                             Id = "bd246efc-2f8b-46c2-bd78-fce697388fb4",
->>>>>>> main
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-<<<<<<< HEAD
-                            Id = "f58e5146-66b4-41d9-9661-804cccd87c8d",
-=======
                             Id = "aaf53ca6-2fe4-45a2-bd68-3dd456756fe0",
->>>>>>> main
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-<<<<<<< HEAD
-                            Id = "922739c1-13c2-41de-aaf6-53ad18d99602",
-=======
                             Id = "f76bfced-d40c-4306-9bd8-af6bcb176ce6",
->>>>>>> main
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });

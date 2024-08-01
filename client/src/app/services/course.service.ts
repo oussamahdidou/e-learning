@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 interface Option {
   id: number;
   nom: string;
-  truth: string;
+  truth: boolean;
 }
 
 interface Question {
@@ -78,16 +78,16 @@ export class CourseService {
               id: 1,
               nom: 'Question 1',
               options: [
-                { id: 1, nom: 'Option 1', truth: 'false' },
-                { id: 2, nom: 'Option 2', truth: 'true' },
+                { id: 1, nom: 'Option 1', truth: false },
+                { id: 2, nom: 'Option 2', truth: true },
               ],
             },
             {
               id: 2,
               nom: 'Question 2',
               options: [
-                { id: 1, nom: 'Option 1', truth: 'false' },
-                { id: 2, nom: 'Option 2', truth: 'true' },
+                { id: 1, nom: 'Option 1', truth: false },
+                { id: 2, nom: 'Option 2', truth: true },
               ],
             },
           ],
@@ -112,16 +112,16 @@ export class CourseService {
               id: 2,
               nom: 'Question 1',
               options: [
-                { id: 3, nom: 'Option kkfhgkdahsfk', truth: 'true' },
-                { id: 4, nom: 'Option fjakhfkahkf', truth: 'false' },
+                { id: 3, nom: 'Option kkfhgkdahsfk', truth: true },
+                { id: 4, nom: 'Option fjakhfkahkf', truth: false },
               ],
             },
             {
               id: 55,
               nom: 'Question 2',
               options: [
-                { id: 3, nom: 'Option 3', truth: 'true' },
-                { id: 4, nom: 'Option 4', truth: 'false' },
+                { id: 3, nom: 'Option 3', truth: true },
+                { id: 4, nom: 'Option 4', truth: false },
               ],
             },
           ],
@@ -188,8 +188,13 @@ export class CourseService {
   }
 
   checkChapter(id: number): Observable<boolean> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}`)
+      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           this.module = data;
@@ -216,8 +221,13 @@ export class CourseService {
   }
 
   getVdUrlById(id: number): Observable<string | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           return data.videoPath;
@@ -227,8 +237,13 @@ export class CourseService {
   }
 
   getCourPdfUrlById(id: number): Observable<string | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           return data.coursPdfPath;
@@ -238,8 +253,13 @@ export class CourseService {
   }
 
   getSyntheseById(id: number): Observable<string | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           return data.synthese;
@@ -249,8 +269,13 @@ export class CourseService {
   }
 
   getControleById(controleId: number): Observable<Controle | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`)
+      .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           return data;
@@ -260,8 +285,13 @@ export class CourseService {
   }
 
   getSchemaById(id: number): Observable<string | undefined> {
+    const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`)
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         map((data) => {
           return data.schema;
@@ -306,10 +336,15 @@ export class CourseService {
 
   createQuizResult(quizId: number, note: number): Observable<any> {
     const result = { quizId, note };
+    const token = localStorage.getItem('token');
     console.log('Object being sent to backend:', result);
 
     return this.http
-      .post<any>(`${environment.apiUrl}/api/QuizResult/Create`, result)
+      .post<any>(`${environment.apiUrl}/api/QuizResult/Create`, result, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .pipe(
         tap((response) => {
           console.log('Response from backend:', response);

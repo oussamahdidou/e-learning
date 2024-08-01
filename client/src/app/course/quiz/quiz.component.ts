@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 interface Option {
   id: number;
   nom: string;
-  truth: string;
+  truth: boolean;
 }
 
 interface Question {
@@ -72,52 +72,73 @@ export class QuizComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router
   ) {}
-
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
-      const quizId = Number(params.get('quizid'));
-      const moduleId = Number(params.get('testniveauid'));
-      if (isNaN(quizId) && isNaN(moduleId)) {
-        console.error('Invalid ID');
-        return;
-      }
-      if (!isNaN(quizId)) {
-        this.courseService.getQuizByID(quizId).subscribe(
-          (quiz: Quiz | undefined) => {
-            if (quiz) {
-              this.quiz = quiz;
-              this.getQuizResult(quizId, this.quiz.questions.length);
-            } else {
-              console.error('Quiz not found', quizId);
-            }
-          },
-          (error) => {
-            console.error('Error fetching quiz:', error);
-          }
+      const pathSegment = this.route.snapshot.url[0]?.path;
+
+      if (pathSegment === 'quiz') {
+        const quizId = Number(params.get('quizid'));
+        if (!isNaN(quizId)) {
+          this.loadQuiz(quizId);
+        } else {
+          console.error('Invalid quiz ID:', quizId);
+          this.router.navigate(['/']);
+        }
+      } else if (pathSegment === 'testniveau') {
+        const testNiveauId = Number(params.get('testniveauid'));
+        if (!isNaN(testNiveauId)) {
+          this.loadTestNiveau(testNiveauId);
+        } else {
+          console.error('Invalid Test Niveau ID:', testNiveauId);
+          this.router.navigate(['/']);
+        }
+      } else {
+        console.error(
+          'Invalid route: No valid quiz or testniveau path segment.'
         );
-      }
-      if (!isNaN(moduleId)) {
-        console.log('ID of module received');
-        this.courseService.getTestNiveau(moduleId).subscribe(
-          (quiz: Quiz | undefined) => {
-            if (quiz) {
-              this.quiz = quiz;
-              this.quiz.id = moduleId;
-              this.isTest = true;
-              this.getTestNiveauScore(moduleId, this.quiz.questions.length);
-            } else {
-              console.log('Test Niveau Not found');
-            }
-          },
-          (error) => {
-            console.error(
-              'An error occured while requestion testniveau',
-              error
-            );
-          }
-        );
+        this.router.navigate(['/']);
       }
     });
+  }
+
+  private loadQuiz(quizId: number): void {
+    this.courseService.getQuizByID(quizId).subscribe(
+      (quiz: Quiz | undefined) => {
+        if (quiz) {
+          this.quiz = quiz;
+          this.getQuizResult(quizId, this.quiz.questions.length);
+          console.log('Quiz loaded:', quiz);
+        } else {
+          console.error('Quiz not found', quizId);
+          this.router.navigate(['/']);
+        }
+      },
+      (error) => {
+        console.error('Error fetching quiz:', error);
+        this.router.navigate(['/']);
+      }
+    );
+  }
+
+  private loadTestNiveau(testNiveauId: number): void {
+    this.courseService.getTestNiveau(testNiveauId).subscribe(
+      (quiz: Quiz | undefined) => {
+        if (quiz) {
+          this.quiz = quiz;
+          this.quiz.id = testNiveauId;
+          this.isTest = true;
+          this.getTestNiveauScore(testNiveauId, this.quiz.questions.length);
+          console.log('Test Niveau loaded:', quiz);
+        } else {
+          console.error('Test Niveau not found', testNiveauId);
+          this.router.navigate(['/']);
+        }
+      },
+      (error) => {
+        console.error('Error fetching Test Niveau:', error);
+        this.router.navigate(['/']);
+      }
+    );
   }
 
   get currentQuestion(): Question {
@@ -164,49 +185,47 @@ export class QuizComponent implements OnInit {
         this.quiz.questions.forEach((question) => {
           const selectedOptionId = this.selectedAnswers[question.id];
           const correctOption = question.options.find(
-            (option) => (option.truth = 'true')
+            (option) => option.truth === true
           );
 
           if (correctOption && correctOption.id === selectedOptionId) {
             note++;
           }
         });
+
+        const resultMessage = `Votre note est :${note} / ${this.quiz.questions.length}`;
         if (this.isTest) {
           this.courseService
             .createTestNiveauScore(this.quiz.id, note)
             .subscribe((res) => {
-              Swal.fire({
-                title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
-                text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-                icon: 'success',
-              });
+              this.showResultMessage(resultMessage, res.note);
             });
         } else {
           if (this.isQuizAlreadyPassed) {
             this.courseService
               .updateQuizResult(this.quiz.id, note)
               .subscribe((res) => {
-                Swal.fire({
-                  title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
-                  text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-                  icon: 'success',
-                });
+                this.showResultMessage(resultMessage, res.note);
               });
           } else {
             this.courseService
               .createQuizResult(this.quiz.id, note)
               .subscribe((state) => {
-                Swal.fire({
-                  title: `Votre note est :${note} / ${this.quiz.questions.length}`,
-                  text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-                  icon: 'success',
-                });
+                this.showResultMessage(resultMessage, note);
               });
             console.log('your Note:', note);
           }
         }
       }
     }
+  }
+
+  private showResultMessage(title: string, note: number) {
+    Swal.fire({
+      title,
+      text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+      icon: 'success',
+    });
   }
 
   getQuizResult(id: number, noteTotal: number) {

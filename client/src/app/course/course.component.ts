@@ -5,7 +5,7 @@ import { CourseService } from '../services/course.service';
 interface Option {
   id: number;
   nom: string;
-  truth: string;
+  truth: boolean;
 }
 
 interface Question {
