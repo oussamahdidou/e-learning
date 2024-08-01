@@ -12,5 +12,6 @@ namespace api.interfaces
         Task<Result<NiveauScolaire>> GetNiveauScolaireById(int id);
         Task<Result<NiveauScolaire>> CreateNiveauScolaire(CreateNiveauScolaireDto createNiveauScolaireDto);
         Task<Result<NiveauScolaire>> UpdateNiveauScolaire(UpdateNiveauScolaireDto updateNiveauScolaireDto);
+        Task<bool> DeleteNiveauScolaire(int niveauScolaireId);
     }
 }

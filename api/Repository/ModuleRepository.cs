@@ -115,26 +115,42 @@ namespace api.Repository
                 return Result<Module>.Failure($"{ex.Message}");
             }
         }
-        public async Task<Result<Module>> DeleteModule(int id)
+        public async Task<bool> DeleteModule(int moduleId)
         {
             try
             {
-                Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == id);
-                if (module == null)
+                var module = await apiDbContext.modules
+                .Include(x => x.ExamFinal).ThenInclude(x => x.ResultExams)
+                    .Include(m => m.Chapitres)
+                        .ThenInclude(c => c.Quiz)
+                            .ThenInclude(q => q.Questions)
+                                .ThenInclude(q => q.Options)
+                    .Include(m => m.Chapitres)
+                        .ThenInclude(c => c.Quiz)
+                        .ThenInclude(q => q.QuizResults)
+                    .Include(m => m.TestNiveaus)
+                    .Include(m => m.ModuleRequirements)
+                    .Include(m => m.ModulesRequiredIn)
+                    .Include(m => m.ExamFinal)
+                    .Include(m => m.Chapitres)
+                        .ThenInclude(c => c.Controle).ThenInclude(x => x.ResultControles)
+                    .Include(m => m.Chapitres)
+                        .ThenInclude(c => c.CheckChapters)
+                    .FirstOrDefaultAsync(m => m.Id == moduleId);
+
+                if (module != null)
                 {
-                    return Result<Module>.Failure("module n'existe pas");
-
+                    apiDbContext.modules.Remove(module);
+                    await apiDbContext.SaveChangesAsync();
+                    return true;
                 }
-                apiDbContext.modules.Remove(module);
-                await apiDbContext.SaveChangesAsync();
-                return Result<Module>.Success(module);
-
+                return false;
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-
-                return Result<Module>.Failure($"{ex.Message}");
+                return false;
             }
         }
+
     }
 }
