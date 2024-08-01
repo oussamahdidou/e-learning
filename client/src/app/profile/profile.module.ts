@@ -6,6 +6,7 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
 import { ProfileComponent } from './profile.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { MatIcon } from '@angular/material/icon';
+import { PersonelinfoComponent } from './personelinfo/personelinfo.component';
 
 const routes: Routes = [
   {
@@ -16,11 +17,15 @@ const routes: Routes = [
         path: 'mylearning',
         component: LearningComponent,
       },
+      {
+        path:'info',
+        component:PersonelinfoComponent
+      }
     ],
   },
 ];
 @NgModule({
-  declarations: [LearningComponent, ProfileComponent, NavbarComponent],
+  declarations: [LearningComponent, ProfileComponent, NavbarComponent, PersonelinfoComponent],
   imports: [CommonModule, RouterModule.forChild(routes), TruncatePipe , MatIcon],
 })
 export class ProfileModule {}
