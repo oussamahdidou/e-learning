@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, Input, OnInit, Renderer2 } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { CourseService } from '../../services/course.service';
 import { ActivatedRoute } from '@angular/router';
 
@@ -61,7 +67,7 @@ export class SidebarComponent implements OnInit {
   constructor(
     private courseService: CourseService,
     private renderer: Renderer2,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -69,7 +75,7 @@ export class SidebarComponent implements OnInit {
     this.courseService.getCourseById(id).subscribe((module) => {
       this.module = module;
       this.calculateProgress();
-      console.log("Module ID from service:", this.module?.id);
+      console.log('Module ID from service:', this.module?.id);
     });
   }
 
@@ -78,8 +84,9 @@ export class SidebarComponent implements OnInit {
       const completedChapters = this.module.chapitres.filter(
         (chapitre) => chapitre.statue === true
       ).length;
-      this.progress = parseFloat(((completedChapters / this.module.chapitres.length) * 100).toFixed(2));
-
+      this.progress = parseFloat(
+        ((completedChapters / this.module.chapitres.length) * 100).toFixed(2)
+      );
     }
   }
 
@@ -103,18 +110,17 @@ export class SidebarComponent implements OnInit {
     }
   }
   CheckChapter(chapite: Chapitre, event: Event) {
-    console.log("This is the module before checking ", this.module)
+    console.log('This is the module before checking ', this.module);
     this.courseService.checkChapter(chapite.id).subscribe((state) => {
-
       console.log(state);
       if (state && this.module) {
-        const chapter = this.module.chapitres.find(c => c.id === chapite.id);
+        const chapter = this.module.chapitres.find((c) => c.id === chapite.id);
         if (chapter) {
           chapter.statue = true;
           this.setActive(event);
           this.calculateProgress();
-          console.log("This is the module after checking ", this.module)
-          console.log("This is the progress ", this.progress)
+          console.log('This is the module after checking ', this.module);
+          console.log('This is the progress ', this.progress);
         }
       }
     });

@@ -71,7 +71,7 @@ export class DashboardtableComponent implements OnInit {
       (error) => {}
     );
   }
-  public barChartOptions: ChartOptions<'bar'> = {
+  public modulescharts: ChartOptions<'bar'> = {
     responsive: true,
     maintainAspectRatio: false,
     aspectRatio: 20 / 20,
@@ -86,7 +86,21 @@ export class DashboardtableComponent implements OnInit {
       },
     },
   };
-
+  public testniveauscharts: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    aspectRatio: 20 / 20,
+    scales: {
+      y: {
+        beginAtZero: true,
+        min: 0,
+        max: 20,
+        ticks: {
+          stepSize: 2,
+        },
+      },
+    },
+  };
   public barChartData1: ChartConfiguration<'bar'>['data'] = {
     labels: this.topmoduleslabels,
     datasets: [

@@ -81,14 +81,14 @@ export class QuizComponent implements OnInit {
         console.error('Invalid ID');
         return;
       }
-      if(!isNaN(quizId)){
+      if (!isNaN(quizId)) {
         this.courseService.getQuizByID(quizId).subscribe(
           (quiz: Quiz | undefined) => {
             if (quiz) {
               this.quiz = quiz;
               this.getQuizResult(quizId, this.quiz.questions.length);
             } else {
-              console.error('Quiz not found',quizId);
+              console.error('Quiz not found', quizId);
             }
           },
           (error) => {
@@ -96,24 +96,26 @@ export class QuizComponent implements OnInit {
           }
         );
       }
-      if(!isNaN(moduleId)){
-        console.log("ID of module received")
+      if (!isNaN(moduleId)) {
+        console.log('ID of module received');
         this.courseService.getTestNiveau(moduleId).subscribe(
-          (quiz : Quiz | undefined) => {
-            if(quiz){
+          (quiz: Quiz | undefined) => {
+            if (quiz) {
               this.quiz = quiz;
               this.quiz.id = moduleId;
-              this.isTest = true
-              this.getTestNiveauScore(moduleId,this.quiz.questions.length)
-            }
-            else{
-              console.log("Test Niveau Not found")
+              this.isTest = true;
+              this.getTestNiveauScore(moduleId, this.quiz.questions.length);
+            } else {
+              console.log('Test Niveau Not found');
             }
           },
-          (error) =>{
-            console.error('An error occured while requestion testniveau', error)
+          (error) => {
+            console.error(
+              'An error occured while requestion testniveau',
+              error
+            );
           }
-        )
+        );
       }
     });
   }
@@ -169,18 +171,17 @@ export class QuizComponent implements OnInit {
             note++;
           }
         });
-        if(this.isTest){
+        if (this.isTest) {
           this.courseService
-          .createTestNiveauScore(this.quiz.id, note)
-          .subscribe((res) =>{
-            Swal.fire({
-              title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
-              text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-              icon: 'success',
-            })
-          })
-        }
-        else{
+            .createTestNiveauScore(this.quiz.id, note)
+            .subscribe((res) => {
+              Swal.fire({
+                title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
+                text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+                icon: 'success',
+              });
+            });
+        } else {
           if (this.isQuizAlreadyPassed) {
             this.courseService
               .updateQuizResult(this.quiz.id, note)
@@ -221,21 +222,19 @@ export class QuizComponent implements OnInit {
     });
   }
 
-  getTestNiveauScore(moduleId : number, noteTotal: number){
-    this.courseService.getTestNiveauScore(moduleId).subscribe(
-      (res) => {
-        if(res != 0){
-          Swal.fire({
-            title: `Votre note est :${res} / ${noteTotal}`,
-            text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois clicker sur ok`,
-            icon: 'success',
-          });
-          this.note = res.note;
-          this.isQuizAlreadyPassed = true;
-          return this.note;
-        }
-        return
+  getTestNiveauScore(moduleId: number, noteTotal: number) {
+    this.courseService.getTestNiveauScore(moduleId).subscribe((res) => {
+      if (res != 0) {
+        Swal.fire({
+          title: `Votre note est :${res} / ${noteTotal}`,
+          text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois clicker sur ok`,
+          icon: 'success',
+        });
+        this.note = res.note;
+        this.isQuizAlreadyPassed = true;
+        return this.note;
       }
-    )
+      return;
+    });
   }
 }

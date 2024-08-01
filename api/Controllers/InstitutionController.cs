@@ -59,8 +59,11 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
-
-
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteInstitution([FromRoute] int id)
+        {
+            return Ok(await institutionRepository.DeleteInstitution(id));
+        }
 
     }
 }

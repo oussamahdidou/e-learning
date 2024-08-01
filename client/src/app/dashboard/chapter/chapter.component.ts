@@ -21,9 +21,6 @@ export class ChapterComponent implements OnInit {
 
   host = environment.apiUrl;
   pdfSrc!: string;
-  /**
-   *
-   */
 
   constructor(
     private readonly dashboardService: DashboardService,
