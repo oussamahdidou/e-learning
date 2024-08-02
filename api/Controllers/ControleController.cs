@@ -150,6 +150,10 @@ namespace api.Controllers
 
         }
 
-
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteControle([FromRoute] int id)
+        {
+            return Ok(await controleRepository.DeleteControle(id));
+        }
     }
 }

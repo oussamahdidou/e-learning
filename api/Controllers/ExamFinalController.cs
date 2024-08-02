@@ -114,5 +114,10 @@ namespace api.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteExam([FromRoute] int id)
+        {
+            return Ok(await examFinalRepository.DeleteExam(id));
+        }
     }
 }

@@ -166,5 +166,27 @@ namespace api.Repository
 
             }
         }
+
+        public async Task<bool> DeleteExam(int id)
+        {
+            try
+            {
+                Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.ExamFinalId == id);
+                ExamFinal? examFinal = await apiDbContext.examFinals.FirstOrDefaultAsync(x => x.Id == id);
+                if (module == null || examFinal == null)
+                {
+                    return false;
+                }
+                module.ExamFinalId = null;
+                apiDbContext.examFinals.Remove(examFinal);
+                await apiDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (System.Exception)
+            {
+
+                return false;
+            }
+        }
     }
 }
