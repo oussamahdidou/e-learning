@@ -52,8 +52,8 @@ namespace api.Controllers
             {
                 Result<Module> moduleResult = await _module.GetModuleInformationByID(moduleId);
                 if (moduleResult == null && !moduleResult.IsSuccess) return Ok(null);
-                var module = moduleResult.Value;
-                var checkCount = studentAllCheckedChapter.Value.Count(x => x.Chapitre.ModuleId == moduleId);
+                Module module = moduleResult.Value;
+                int checkCount = studentAllCheckedChapter.Value.Count(x => x.Chapitre?.ModuleId == moduleId);
 
                 modulesWithCheckCount.Add(new ModuleWithCheckCountDto
                 {

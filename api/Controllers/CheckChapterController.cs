@@ -33,6 +33,7 @@ namespace api.Controllers
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
+            if (user == null) return BadRequest();
             Result<List<CheckChapter>> result = await _check.GetStudentAllcheckChapters(user);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
@@ -43,6 +44,7 @@ namespace api.Controllers
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
+            if (user == null) return BadRequest();
             Result<CheckChapter> result = await _check.CreateCheckChapter(user.Id, id);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
@@ -53,6 +55,7 @@ namespace api.Controllers
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
+            if (user == null) return BadRequest();
             Result<bool> result = await _check.DeleteCheckChapter(user.Id, chapterId);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
