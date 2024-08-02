@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ProfileService } from '../../services/profile.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-learning',
@@ -6,50 +8,29 @@ import { Component } from '@angular/core';
   styleUrl: './learning.component.css',
 })
 export class LearningComponent {
-  modules = [
-    {
-      moduleID: 1,
-      nom: 'Mathematics',
-      numberOfChapter: 4,
-      checkCount: 2,
-    },
-    {
-      moduleID: 3,
-      nom: 'XML',
-      numberOfChapter: 1,
-      checkCount: 1,
-    },
-    {
-      moduleID: 3,
-      nom: 'AI',
-      numberOfChapter: 1,
-      checkCount: 1,
-    },
-    {
-      moduleID: 3,
-      nom: 'Programation Web',
-      numberOfChapter: 1,
-      checkCount: 1,
-    },
-    {
-      moduleID: 3,
-      nom: 'Programmation Orienté objet',
-      numberOfChapter: 1,
-      checkCount: 1,
-    },
-    {
-      moduleID: 3,
-      nom: 'Physics',
-      numberOfChapter: 1,
-      checkCount: 1,
-    },
-  ];
-  sortedModules: any = [];
+  modules: any[] = [ ];
+  sortedModules: any[] = [];
   filteredModules: any = [];
 
+
+  constructor(
+    private profileService:ProfileService,
+    private router: Router
+  ){}
+
   ngOnInit(): void {
-    this.sortedModules = this.sortModulesByName(this.modules);
-    this.filteredModules = this.sortedModules;
+    this.profileService.getLearning().subscribe(
+      (data) =>{
+        this.modules = data
+        this.sortedModules = this.sortModulesByName(this.modules);
+        this.filteredModules = this.sortedModules;
+      },
+      (error) => {
+        console.error('Error fetching learning modules:', error);
+        this.router.navigate(['/']);
+      }
+    )
+
   }
 
   sortModulesByName(modules: any[]): any[] {
