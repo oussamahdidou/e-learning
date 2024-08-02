@@ -51,19 +51,17 @@ namespace api.Controllers
             foreach (int moduleId in moduleIds.ModuleIds)
             {
                 Result<Module> moduleResult = await _module.GetModuleInformationByID(moduleId);
-                if (moduleResult != null && moduleResult.IsSuccess)
-                {
-                    var module = moduleResult.Value;
-                    var checkCount = studentAllCheckedChapter.Value.Count(x => x.Chapitre.ModuleId == moduleId);
+                if (moduleResult == null && !moduleResult.IsSuccess) return BadRequest(moduleResult.Error);
+                var module = moduleResult.Value;
+                var checkCount = studentAllCheckedChapter.Value.Count(x => x.Chapitre.ModuleId == moduleId);
 
-                    modulesWithCheckCount.Add(new ModuleWithCheckCountDto
-                    {
-                        ModuleID = module.Id,
-                        Nom = module.Nom,
-                        NumberOfChapter = module.Chapitres.Count(),
-                        CheckCount = checkCount
-                    });
-                }
+                modulesWithCheckCount.Add(new ModuleWithCheckCountDto
+                {
+                    ModuleID = module.Id,
+                    Nom = module.Nom,
+                    NumberOfChapter = module.Chapitres.Count(),
+                    CheckCount = checkCount
+                });
             }
             return Ok(modulesWithCheckCount);
         } 

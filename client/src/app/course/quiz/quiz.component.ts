@@ -66,6 +66,8 @@ export class QuizComponent implements OnInit {
   isQuizAlreadyPassed: boolean = false;
   note: number = 0;
   isTest: boolean = false;
+  id: number = 0;
+  courseId: number = 0;
 
   constructor(
     private courseService: CourseService,
@@ -73,11 +75,18 @@ export class QuizComponent implements OnInit {
     private router: Router
   ) {}
   ngOnInit(): void {
-    this.route.paramMap.subscribe(params => {
+    this.courseService.getCourseId().subscribe((courseID) => {
+      if (courseID != null) {
+        this.courseId = courseID;
+        console.log('course Id ', this.courseId);
+      } else console.log('course id is null');
+    });
+    this.route.paramMap.subscribe((params) => {
       const pathSegment = this.route.snapshot.url[0]?.path;
-
+      console.log('routz', pathSegment);
       if (pathSegment === 'quiz') {
         const quizId = Number(params.get('quizid'));
+        this.id = quizId;
         if (!isNaN(quizId)) {
           this.loadQuiz(quizId);
         } else {
@@ -93,7 +102,9 @@ export class QuizComponent implements OnInit {
           this.router.navigate(['/']);
         }
       } else {
-        console.error('Invalid route: No valid quiz or testniveau path segment.');
+        console.error(
+          'Invalid route: No valid quiz or testniveau path segment.'
+        );
         this.router.navigate(['/']);
       }
     });
@@ -138,7 +149,6 @@ export class QuizComponent implements OnInit {
       }
     );
   }
-
 
   get currentQuestion(): Question {
     return (
@@ -222,17 +232,31 @@ export class QuizComponent implements OnInit {
   private showResultMessage(title: string, note: number) {
     Swal.fire({
       title,
-      text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+      text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois cliquer sur ok`,
       icon: 'success',
+      preConfirm: () => {
+        this.router.navigate([`/course/${this.courseId}/quiz/${this.id}`]);
+      },
+      footer:
+        '<button id="suivantButton" class="swal2-confirm swal2-styled">Suivant</button>',
+      didOpen: () => {
+        const suivantButton = document.getElementById('suivantButton');
+
+        if (suivantButton) {
+          suivantButton.addEventListener('click', () => {
+            this.suivantFunction();
+            Swal.close();
+          });
+        }
+      },
     });
   }
-
 
   getQuizResult(id: number, noteTotal: number) {
     this.courseService.getQuizResultById(id).subscribe((res) => {
       Swal.fire({
         title: `Votre note est :${res.note} / ${noteTotal}`,
-        text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+        text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois cliquer sur ok`,
         icon: 'success',
       });
       this.note = res.note;
@@ -241,21 +265,36 @@ export class QuizComponent implements OnInit {
     });
   }
 
-  getTestNiveauScore(moduleId : number, noteTotal: number){
-    this.courseService.getTestNiveauScore(moduleId).subscribe(
-      (res) => {
-        if(res != 0){
-          Swal.fire({
-            title: `Votre note est :${res} / ${noteTotal}`,
-            text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois clicker sur ok`,
-            icon: 'success',
-          });
-          this.note = res.note;
-          this.isQuizAlreadyPassed = true;
-          return this.note;
-        }
-        return
+  getTestNiveauScore(moduleId: number, noteTotal: number) {
+    this.courseService.getTestNiveauScore(moduleId).subscribe((res) => {
+      if (res != 0) {
+        Swal.fire({
+          title: `Votre note est :${res} / ${noteTotal}`,
+          text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois cliquer sur ok`,
+          icon: 'success',
+        });
+        this.note = res.note;
+        this.isQuizAlreadyPassed = true;
+        return this.note;
       }
-    )
+      return;
+    });
+  }
+  suivantFunction() {
+    this.courseService.getChapterId(this.id).subscribe((chapterId) => {
+      if (chapterId != null) {
+        this.courseService.getControle(chapterId).subscribe((controleId) => {
+          if (controleId != null) {
+            this.router.navigate([
+              `/course/${this.courseId}/exam/${controleId}`,
+            ]);
+          } else {
+            this.router.navigate([
+              `/course/${this.courseId}/cour/${this.id + 1}`,
+            ]);
+          }
+        });
+      }
+    });
   }
 }

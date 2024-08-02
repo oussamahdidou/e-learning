@@ -87,7 +87,7 @@ export class CourseService {
               nom: 'Question 2',
               options: [
                 { id: 1, nom: 'Option 1', truth: false },
-                { id: 2, nom: 'Option 2', truth:true },
+                { id: 2, nom: 'Option 2', truth: true },
               ],
             },
           ],
@@ -190,7 +190,7 @@ export class CourseService {
   checkChapter(id: number): Observable<boolean> {
     const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}`,{
+      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -223,7 +223,7 @@ export class CourseService {
   getVdUrlById(id: number): Observable<string | undefined> {
     const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`,{
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -239,7 +239,7 @@ export class CourseService {
   getCourPdfUrlById(id: number): Observable<string | undefined> {
     const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`,{
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -255,7 +255,7 @@ export class CourseService {
   getSyntheseById(id: number): Observable<string | undefined> {
     const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`,{
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -271,33 +271,33 @@ export class CourseService {
   getControleById(controleId: number): Observable<Controle | undefined> {
     const token = localStorage.getItem('token');
     return this.http
-    .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .pipe(
-      map((data) =>{
-        return data;
-      }),
-      catchError(this.handleError)
-    )
+      .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        map((data) => {
+          return data;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   getSchemaById(id: number): Observable<string | undefined> {
     const token = localStorage.getItem('token');
     return this.http
-    .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`,{
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-    .pipe(
-      map((data) => {
-        return data.schema;
-      }),
-      catchError(this.handleError)
-    );
+      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        map((data) => {
+          return data.schema;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   isVdUrlAvailable(id: number): Observable<boolean> {
@@ -310,14 +310,25 @@ export class CourseService {
     const chapterNum = chapter ? chapter.chapitreNum : null;
     return of(chapterNum);
   }
-  getControle(id: number): Observable<boolean> {
+  getCourseId(): Observable<number | null> {
+    return of(this.module.id);
+  }
+  getChapterId(id: number): Observable<number | null> {
+    const chapter = this.module.chapitres.find(
+      (chapter) => chapter.quiz.id === id
+    );
+    console.log(chapter);
+    if (!chapter) return of(null);
+    return of(chapter.chapitreNum);
+  }
+  getControle(id: number): Observable<number | null> {
     const controle = this.module.controles.find(
       (controle) => Math.max(...controle.chapitreNum) === id
     );
     if (controle) {
-      return of(true);
+      return of(controle.id);
     }
-    return of(false);
+    return of(null);
   }
   getFirstChapterId(id: number): Observable<boolean> {
     const chapterId = this.module.chapitres[0].id;
@@ -340,7 +351,7 @@ export class CourseService {
     console.log('Object being sent to backend:', result);
 
     return this.http
-      .post<any>(`${environment.apiUrl}/api/QuizResult/Create`, result,{
+      .post<any>(`${environment.apiUrl}/api/QuizResult/Create`, result, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -431,7 +442,7 @@ export class CourseService {
       );
   }
 
-  getTestNiveau(moduleId : number) : Observable<any>{
+  getTestNiveau(moduleId: number): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http
       .get(`${environment.apiUrl}/api/TestNiveau/${moduleId}`, {
@@ -448,14 +459,18 @@ export class CourseService {
       );
   }
 
-  createTestNiveauScore(moduleId : number , note : number) : Observable<any>{
+  createTestNiveauScore(moduleId: number, note: number): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http
-      .post<any>(`${environment.apiUrl}/api/TestNiveau/TestResult/${moduleId}/${note}`,{},{
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .post<any>(
+        `${environment.apiUrl}/api/TestNiveau/TestResult/${moduleId}/${note}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .pipe(
         tap((response) => {
           console.log('Response from backend:', response);
@@ -464,22 +479,19 @@ export class CourseService {
       );
   }
 
-  getTestNiveauScore(moduleId : number): Observable<any>{
+  getTestNiveauScore(moduleId: number): Observable<any> {
     const token = localStorage.getItem('token');
     return this.http
-      .get<any>(`${environment.apiUrl}/api/TestNiveau/GetScore/${moduleId}`,
-        {
-          headers:{
-            Authorization: `Bearer ${token}`,
-          }
-        }
-      ).pipe(
-        tap(
-          (response) =>{
-            console.log('Response from backen is : ', response);
-          }
-        ),
+      .get<any>(`${environment.apiUrl}/api/TestNiveau/GetScore/${moduleId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .pipe(
+        tap((response) => {
+          console.log('Response from backen is : ', response);
+        }),
         catchError(this.handleError)
-      )
+      );
   }
 }
