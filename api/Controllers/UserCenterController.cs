@@ -51,7 +51,7 @@ namespace api.Controllers
             foreach (int moduleId in moduleIds.ModuleIds)
             {
                 Result<Module> moduleResult = await _module.GetModuleInformationByID(moduleId);
-                if (moduleResult == null && !moduleResult.IsSuccess) return BadRequest(moduleResult.Error);
+                if (moduleResult == null && !moduleResult.IsSuccess) return Ok(null);
                 var module = moduleResult.Value;
                 var checkCount = studentAllCheckedChapter.Value.Count(x => x.Chapitre.ModuleId == moduleId);
 

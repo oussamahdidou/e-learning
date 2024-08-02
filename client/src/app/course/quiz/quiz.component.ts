@@ -2,53 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../../services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Question, Quiz } from '../../interfaces/dashboard';
 
-interface Option {
-  id: number;
-  nom: string;
-  truth: boolean;
-}
-
-interface Question {
-  id: number;
-  nom: string;
-  options: Option[];
-}
-
-interface Quiz {
-  id: number;
-  nom: string;
-  questions: Question[];
-}
-
-interface Chapitre {
-  id: number;
-  chapitreNum: number;
-  nom: string;
-  statue: boolean;
-  coursPdfPath: string | null;
-  videoPath: string | null;
-  synthese: string | null;
-  schema: string | null;
-  premium: boolean;
-  quizId: number;
-  quiz: Quiz;
-}
-
-interface Controle {
-  id: number;
-  nom: string;
-  ennonce: string;
-  solution: string;
-  chapitreNum: number[];
-}
-
-interface Module {
-  id: number;
-  nom: string;
-  chapitres: Chapitre[];
-  controles: Controle[];
-}
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
