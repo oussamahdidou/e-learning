@@ -110,6 +110,10 @@
       <ng-template matStepLabel> ExamFinal Ennonce </ng-template>
       <h4>Ennonce@if (authservice.$IsAdmin|async) {
         <button mat-raised-button color="primary" (click)="ennonce.click()">Modifier Ennonce </button>
+        <button mat-button color="warn" (click)="deleteexamfinal(exam.id)">
+          <mat-icon>check_circle</mat-icon>
+          Delete Exam Final
+        </button>
         }
       </h4>
       @if (authservice.$IsAdmin|async) {
@@ -134,11 +138,9 @@
         <mat-icon>check_circle</mat-icon>
         Approuver
       </button>
-      <button mat-raised-button color="primary" (click)="deleteexamfinal(exam.id)">
-        <mat-icon>check_circle</mat-icon>
-        Delete Exam Final
-      </button>
+
       }
+
       }
       <input type="file" #ennonce (change)="SelectEnnonce($event)" style="display: none">
       <div class="pdf-container w-75 px-5 mx-auto">
