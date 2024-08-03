@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { environment } from '../../../environments/environment';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-lecture',
@@ -17,7 +17,6 @@ export class LectureComponent {
     private router: Router,
     private route: ActivatedRoute,
     private courseService: CourseService,
-    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -29,10 +28,25 @@ export class LectureComponent {
           .getVdUrlById(id)
           .subscribe((url: string | undefined) => {
             this.vdUrl = url;
-          });
-          console.error('videourl', this.vdUrl);
+          },
+          (error) =>{
+            console.error('Error fetching video URL:', error);
+            Swal.fire({
+              title: 'Error!',
+              text: 'Failed to load video URL. Please try again later.',
+              icon: 'error',
+              confirmButtonText: 'OK'
+            });
+          }
+        );
       } else {
         console.error('ID parameter is missing');
+        Swal.fire({
+          title: 'Error!',
+          text:'Lecture ID is missing from the URL.',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        })
       }
     });
   }
