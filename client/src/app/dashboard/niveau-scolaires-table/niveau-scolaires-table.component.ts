@@ -87,10 +87,38 @@ export class NiveauScolairesTableComponent implements OnInit {
   }
 
   delete(id: number): void {
-    this.niveauscolaires = this.niveauscolaires.filter(
-      (niveauscolaire) => niveauscolaire.id !== id
-    );
-    this.dataSource.data = this.niveauscolaires;
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.deleteniveauscolaire(id).subscribe(
+          (response) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Your file has been deleted.',
+              icon: 'success',
+            });
+            this.niveauscolaires = this.niveauscolaires.filter(
+              (niveauscolaire) => niveauscolaire.id !== id
+            );
+            this.dataSource.data = this.niveauscolaires;
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: error.error,
+              icon: 'error',
+            });
+          }
+        );
+      }
+    });
   }
 
   edit(niveauscolaire: any): void {

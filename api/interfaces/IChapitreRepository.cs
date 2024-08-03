@@ -19,5 +19,6 @@ namespace api.interfaces
         Task<Result<Chapitre>> UpdateChapitreSynthese(UpdateChapitreSyntheseDto updateChapitreSyntheseDto);
         Task<Result<Chapitre>> Approuver(int id);
         Task<Result<Chapitre>> Refuser(int id);
+        Task<bool> DeleteChapitre(int id);
     }
 }

@@ -21,6 +21,136 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './module.component.css',
 })
 export class ModuleComponent implements OnInit {
+  deleteexamfinal(id: number) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.deleteexamfinal(id).subscribe(
+          (response) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Your file has been deleted.',
+              icon: 'success',
+            });
+            this.exam = null;
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: error.error,
+              icon: 'error',
+            });
+          }
+        );
+      }
+    });
+  }
+  editrequiredmodule(module: any) {
+    Swal.fire({
+      title: 'Edit seuil Name',
+      input: 'text',
+      inputLabel: 'seuill',
+      inputValue: module.seuill,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      preConfirm: (newName) => {
+        if (!newName) {
+          Swal.showValidationMessage('Please enter a valid name');
+        }
+        return newName;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice
+          .editrequiredmodule(this.moduleId, module.id, result.value)
+          .subscribe(
+            (response) => {
+              module.seuill = response.seuill;
+              console.log(response);
+              this.modulessource.data = [...this.modules]; // Refresh the table data
+              Swal.fire('Saved!', 'Edit successfuly', 'success');
+            },
+            (error) => {}
+          );
+      }
+    });
+  }
+  deleterequiredmodule(id: number) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.deleterequiredmodule(this.moduleId, id).subscribe(
+          (response) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Your file has been deleted.',
+              icon: 'success',
+            });
+            this.modules = this.modules.filter(
+              (controle) => controle.id !== id
+            );
+            this.modulessource.data = [...this.modules];
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: error.error,
+              icon: 'error',
+            });
+          }
+        );
+      }
+    });
+  }
+  deletecontrole(id: number) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.deletecontrole(id).subscribe(
+          (response) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Your file has been deleted.',
+              icon: 'success',
+            });
+            this.controles = this.controles.filter(
+              (controle) => controle.id !== id
+            );
+            this.controlessource.data = [...this.controles];
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: error.error,
+              icon: 'error',
+            });
+          }
+        );
+      }
+    });
+  }
   refuser() {
     Swal.fire({
       title: 'Are you sure?',
@@ -76,12 +206,7 @@ export class ModuleComponent implements OnInit {
   controleForm: FormGroup;
   host = environment.apiUrl;
   exam: any;
-  edit(_t283: any) {
-    throw new Error('Method not implemented.');
-  }
-  delete(arg0: any) {
-    throw new Error('Method not implemented.');
-  }
+
   displayedColumns: string[] = ['id', 'number', 'nom', 'module', 'plus'];
   controlesColumns: string[] = ['id', 'nom', 'action', 'plus'];
   modulesColumns: string[] = [

@@ -13,7 +13,7 @@ import { CourseComponent } from './course.component';
 const routes: Routes = [
   {
     path: ':id',
-    component : CourseComponent,
+    component: CourseComponent,
     children: [
       {
         path: 'lecture/:lectureid',
@@ -42,7 +42,7 @@ const routes: Routes = [
       {
         path: 'schema/:pdfid',
         component: PdfViewerComponent,
-      }
+      },
     ],
   },
 ];

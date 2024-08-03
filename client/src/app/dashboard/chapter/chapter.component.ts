@@ -17,13 +17,41 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './chapter.component.css',
 })
 export class ChapterComponent implements OnInit {
+  delete() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardService.deletechapitre(this.chapterid).subscribe(
+          (response) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Your file has been deleted.',
+              icon: 'success',
+            });
+            window.location.href = `/dashboard/module/${this.chapitre.moduleId}`;
+          },
+          (error) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: error.error,
+              icon: 'error',
+            });
+          }
+        );
+      }
+    });
+  }
   chapterid!: number;
 
   host = environment.apiUrl;
   pdfSrc!: string;
-  /**
-   *
-   */
 
   constructor(
     private readonly dashboardService: DashboardService,
@@ -219,7 +247,7 @@ export class ChapterComponent implements OnInit {
         this.dashboardService.refuserchapitre(this.chapterid).subscribe(
           (response) => {
             console.log(response);
-            this.chapitre.status = response.status;
+            this.chapitre.statue = response.statue;
             Swal.fire({
               title: 'Refuser!',
               text: 'Your file has been Refuser.',
@@ -232,6 +260,69 @@ export class ChapterComponent implements OnInit {
     });
   }
   approuver() {
+    if (
+      this.chapitre.quiz.statue === 'Denied' ||
+      this.chapitre.quiz.statue === 'Pending'
+    ) {
+      Swal.fire(
+        'info',
+        'il faut accepter le quiz avant d`accepter le chapitre entier',
+        'info'
+      );
+    } else {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.dashboardService.approuverchapitre(this.chapterid).subscribe(
+            (response) => {
+              console.log(response);
+              this.chapitre.statue = response.statue;
+              Swal.fire({
+                title: 'Accepter!',
+                text: 'Your file has been Accepter.',
+                icon: 'success',
+              });
+            },
+            (error) => {}
+          );
+        }
+      });
+    }
+  }
+  refuserquiz() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes !',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardService.refuserquiz(this.chapitre.quiz.id).subscribe(
+          (response) => {
+            console.log(response);
+            this.chapitre.quiz.statue = response.statue;
+            Swal.fire({
+              title: 'Refuser!',
+              text: 'Your file has been Refuser.',
+              icon: 'success',
+            });
+          },
+          (error) => {}
+        );
+      }
+    });
+  }
+  approuverquiz() {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -242,10 +333,10 @@ export class ChapterComponent implements OnInit {
       confirmButtonText: 'Yes',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.dashboardService.approuverchapitre(this.chapterid).subscribe(
+        this.dashboardService.approuverquiz(this.chapitre.quiz.id).subscribe(
           (response) => {
             console.log(response);
-            this.chapitre.statue = response.statue;
+            this.chapitre.quiz.statue = response.statue;
             Swal.fire({
               title: 'Accepter!',
               text: 'Your file has been Accepter.',

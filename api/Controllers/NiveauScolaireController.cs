@@ -53,6 +53,12 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteNiveauScolaire(int id)
+        {
 
+            return Ok(await niveauScolaireRepository.DeleteNiveauScolaire(id));
+
+        }
     }
 }

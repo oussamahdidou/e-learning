@@ -17,7 +17,7 @@ namespace api.Controllers
     public class ModuleController : ControllerBase
     {
         private readonly IModuleRepository moduleRepository;
-         private readonly UserManager<AppUser> _manager;
+        private readonly UserManager<AppUser> _manager;
         public ModuleController(IModuleRepository moduleRepository, UserManager<AppUser> manager)
         {
             this.moduleRepository = moduleRepository;
@@ -29,7 +29,8 @@ namespace api.Controllers
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
-            if(user == null){
+            if (user == null)
+            {
                 return BadRequest();
             }
             // 5f584df6-2795-4a9b-9364-d57c912ef0d8
@@ -39,7 +40,7 @@ namespace api.Controllers
             {
                 return Ok(result.Value);
             }
-            return BadRequest(result.Error); 
+            return BadRequest(result.Error);
         }
         [HttpPost]
         public async Task<IActionResult> CreateModule([FromBody] CreateModuleDto createModuleDto)
@@ -61,18 +62,12 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
-        [HttpDelete]
-        public async Task<IActionResult> DeleteModule(int id){
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteModule(int id)
+        {
 
-          Result<Module> result = await moduleRepository.DeleteModule(id);
-          if (result.IsSuccess){
+            return Ok(await moduleRepository.DeleteModule(id));
 
-            return Ok(result.Value);
-          } 
-          else {
-
-            return BadRequest(result.Error);
-          }
         }
 
     }

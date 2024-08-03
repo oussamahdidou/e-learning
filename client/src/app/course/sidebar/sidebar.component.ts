@@ -1,4 +1,10 @@
-import { ChangeDetectorRef, Component, Input, OnInit, Renderer2 } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  Input,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { CourseService } from '../../services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Chapitre, Module } from '../../interfaces/dashboard';
@@ -24,13 +30,16 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id')!;
-    this.courseService.getCourseById(id).subscribe((module) => {
-      this.module = module;
-      this.calculateProgress();
-    }, (error) => {
-      this.errorHandlingService.handleError(error,'Error Fetching Module')
-      this.router.navigate(['/']);
-    });
+    this.courseService.getCourseById(id).subscribe(
+      (module) => {
+        this.module = module;
+        this.calculateProgress();
+      },
+      (error) => {
+        this.errorHandlingService.handleError(error, 'Error Fetching Module');
+        this.router.navigate(['/']);
+      }
+    );
   }
 
   calculateProgress() {
@@ -38,8 +47,9 @@ export class SidebarComponent implements OnInit {
       const completedChapters = this.module.chapitres.filter(
         (chapitre) => chapitre.statue === true
       ).length;
-      this.progress = parseFloat(((completedChapters / this.module.chapitres.length) * 100).toFixed(2));
-
+      this.progress = parseFloat(
+        ((completedChapters / this.module.chapitres.length) * 100).toFixed(2)
+      );
     }
   }
 
@@ -63,19 +73,24 @@ export class SidebarComponent implements OnInit {
     }
   }
   CheckChapter(chapite: Chapitre, event: Event) {
-    console.log("This is the module before checking ", this.module)
-    this.courseService.checkChapter(chapite.id).subscribe((state) => {
-      console.log(state);
-      if (state && this.module) {
-        const chapter = this.module.chapitres.find(c => c.id === chapite.id);
-        if (chapter) {
-          chapter.statue = true;
-          this.setActive(event);
-          this.calculateProgress();
+    console.log('This is the module before checking ', this.module);
+    this.courseService.checkChapter(chapite.id).subscribe(
+      (state) => {
+        console.log(state);
+        if (state && this.module) {
+          const chapter = this.module.chapitres.find(
+            (c) => c.id === chapite.id
+          );
+          if (chapter) {
+            chapter.statue = true;
+            this.setActive(event);
+            this.calculateProgress();
+          }
         }
+      },
+      (error) => {
+        this.errorHandlingService.handleError(error, 'Error checking chapitre');
       }
-    },(error) => {
-      this.errorHandlingService.handleError(error,'Error checking chapitre')
-    });
+    );
   }
 }

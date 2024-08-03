@@ -114,7 +114,7 @@ namespace api.Controllers
             return BadRequest(result.Error);
 
         }
-        [HttpPut("Refuser{id:int}")]
+        [HttpPut("Refuser/{id:int}")]
         public async Task<IActionResult> RefuserQuiz([FromRoute] int id)
         {
             Result<Quiz> result = await _quizRepo.Refuser(id);

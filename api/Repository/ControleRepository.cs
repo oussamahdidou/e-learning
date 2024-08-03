@@ -248,5 +248,21 @@ namespace api.Repository
                 return Result<Controle>.Failure(ex.Message);
             }
         }
+
+        public async Task<bool> DeleteControle(int id)
+        {
+            List<Chapitre> chapitres = await apiDbContext.chapitres.Where(x => x.ControleId == id).ToListAsync();
+            Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == id);
+            if (controle != null)
+            {
+                foreach (var chapitre in chapitres)
+                {
+                    chapitre.ControleId = null;
+                }
+                apiDbContext.controles.Remove(controle);
+                await apiDbContext.SaveChangesAsync(); return true;
+            }
+            return false;
+        }
     }
 }

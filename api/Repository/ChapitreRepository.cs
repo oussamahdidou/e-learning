@@ -75,6 +75,11 @@ namespace api.Repository
                         QuizId = createChapitreDto.QuizId,
 
                     };
+                    List<Chapitre> chapitres = await apiDbContext.chapitres.Where(x => x.ModuleId == createChapitreDto.ModuleId && x.ChapitreNum >= createChapitreDto.ChapitreNum).ToListAsync();
+                    foreach (var item in chapitres)
+                    {
+                        item.ChapitreNum++;
+                    }
                     await apiDbContext.chapitres.AddAsync(chapitre);
                     await apiDbContext.SaveChangesAsync();
                     return Result<Chapitre>.Success(chapitre);
@@ -89,9 +94,27 @@ namespace api.Repository
                 return Result<Chapitre>.Failure(ex.Message);
             }
 
-            /*_context.chapitres.Remove(chapitre);
-             await _context.SaveChangesAsync();
-             return Result.Success();*/
+
+        }
+
+        public async Task<bool> DeleteChapitre(int id)
+        {
+            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.CheckChapters).FirstOrDefaultAsync(x => x.Id == id);
+            if (chapitre == null)
+            {
+                return false;
+            }
+            apiDbContext.chapitres.Remove(chapitre);
+            await apiDbContext.SaveChangesAsync();
+            Controle? controle = await apiDbContext.controles.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Chapitres.Count() == 0);
+            if (controle == null)
+            {
+                return true;
+            }
+            apiDbContext.controles.Remove(controle);
+            await apiDbContext.SaveChangesAsync();
+            return true;
+
         }
 
         public async Task<Result<Chapitre>> GetChapitreById(int id)
@@ -122,7 +145,7 @@ namespace api.Repository
                 {
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
-                chapitre.Statue = ObjectStatus.Pending;
+                chapitre.Statue = ObjectStatus.Denied;
                 await apiDbContext.SaveChangesAsync();
                 return Result<Chapitre>.Success(chapitre);
             }

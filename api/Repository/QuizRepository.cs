@@ -194,16 +194,17 @@ namespace api.Repository
         {
             try
             {
+                Chapitre? chapitre = await _context.chapitres.FirstOrDefaultAsync(x => x.QuizId == id);
                 Quiz? quiz = await _context.quizzes
                 .Include(qr => qr.QuizResults)
                 .Include(q => q.Questions)
                 .ThenInclude(o => o.Options)
                 .FirstOrDefaultAsync(x => x.Id == id);
-                if (quiz == null)
+                if (quiz == null || chapitre == null)
                 {
                     return Result<QuizDto>.Failure($"quiz with id {id} not found. ");
                 }
-
+                chapitre.QuizId = null;
                 _context.Remove(quiz);
                 await _context.SaveChangesAsync();
 

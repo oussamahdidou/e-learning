@@ -138,7 +138,7 @@ namespace api.Controllers
             return BadRequest(result.Error);
 
         }
-        [HttpPut("Refuser{id:int}")]
+        [HttpPut("Refuser/{id:int}")]
         public async Task<IActionResult> RefuserControle([FromRoute] int id)
         {
             Result<Controle> result = await controleRepository.Refuser(id);
@@ -150,6 +150,10 @@ namespace api.Controllers
 
         }
 
-
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteControle([FromRoute] int id)
+        {
+            return Ok(await controleRepository.DeleteControle(id));
+        }
     }
 }

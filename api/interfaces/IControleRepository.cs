@@ -21,5 +21,6 @@ namespace api.interfaces
                 Task<Result<Controle>> GetDashboardControleById(int Id);
                 Task<Result<Controle>> Approuver(int id);
                 Task<Result<Controle>> Refuser(int id);
+                Task<bool> DeleteControle(int id);
         }
 }

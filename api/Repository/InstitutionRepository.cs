@@ -43,6 +43,60 @@ namespace api.Repository
             }
         }
 
+        public async Task<bool> DeleteInstitution(int institutionId)
+        {
+            try
+            {
+                var institution = await apiDbContext.institutions
+        .Include(i => i.NiveauScolaires)
+            .ThenInclude(ns => ns.Modules)
+                .ThenInclude(m => m.Chapitres)
+                    .ThenInclude(c => c.Quiz)
+                        .ThenInclude(q => q.Questions)
+                            .ThenInclude(q => q.Options)
+        .Include(i => i.NiveauScolaires)
+            .ThenInclude(ns => ns.Modules)
+                .ThenInclude(m => m.Chapitres)
+                    .ThenInclude(c => c.Quiz)
+                    .ThenInclude(q => q.QuizResults)
+        .Include(i => i.NiveauScolaires)
+            .ThenInclude(ns => ns.Modules)
+                .ThenInclude(m => m.TestNiveaus)
+        .Include(i => i.NiveauScolaires)
+            .ThenInclude(ns => ns.Modules)
+                .ThenInclude(m => m.ModuleRequirements)
+        .Include(i => i.NiveauScolaires)
+            .ThenInclude(ns => ns.Modules)
+                .ThenInclude(m => m.ModulesRequiredIn)
+        .Include(i => i.NiveauScolaires)
+            .ThenInclude(ns => ns.Modules)
+                .ThenInclude(m => m.ExamFinal)
+                .ThenInclude(m => m.ResultExams)
+        .Include(i => i.NiveauScolaires)
+            .ThenInclude(ns => ns.Modules)
+                .ThenInclude(m => m.Chapitres)
+                    .ThenInclude(c => c.Controle).ThenInclude(x => x.ResultControles)
+        .Include(i => i.NiveauScolaires)
+            .ThenInclude(ns => ns.Modules)
+                .ThenInclude(m => m.Chapitres)
+                    .ThenInclude(c => c.CheckChapters)
+        .FirstOrDefaultAsync(i => i.Id == institutionId);
+
+                if (institution != null)
+                {
+                    apiDbContext.institutions.Remove(institution);
+                    await apiDbContext.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (System.Exception)
+            {
+
+                return false;
+            }
+        }
+
         public async Task<Result<Institution>> GetInstitutionById(int id)
         {
             try
