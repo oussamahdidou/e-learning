@@ -13,6 +13,7 @@ using api.Dtos.UserCenter;
 using api.generique;
 using api.Dtos.Module;
 using Microsoft.AspNetCore.Authorization;
+using Org.BouncyCastle.Crypto.Modes;
 
 namespace api.Controllers
 {
@@ -23,12 +24,14 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly ICheckChapterRepository _checkchapter;
         private readonly IModuleRepository _module;
+        private readonly IUserCenterInterface _usercenter;
 
-        public UserCenterController(UserManager<AppUser> userManager , ICheckChapterRepository checkchapter , IModuleRepository module)
+        public UserCenterController(UserManager<AppUser> userManager , ICheckChapterRepository checkchapter , IModuleRepository module , IUserCenterInterface userCenter)
         {
             _module = module;
             _userManager = userManager;
             _checkchapter = checkchapter;
+            _usercenter = userCenter;
         }
         [HttpGet]
         [Authorize]
@@ -48,21 +51,29 @@ namespace api.Controllers
             foreach (int moduleId in moduleIds.ModuleIds)
             {
                 Result<Module> moduleResult = await _module.GetModuleInformationByID(moduleId);
-                if (moduleResult != null && moduleResult.IsSuccess)
-                {
-                    var module = moduleResult.Value;
-                    var checkCount = studentAllCheckedChapter.Value.Count(x => x.Chapitre.ModuleId == moduleId);
+                if (!moduleResult.IsSuccess) return BadRequest(moduleResult.Error);
+                Module module = moduleResult.Value;
+                int checkCount = studentAllCheckedChapter.Value.Count(x => x.Chapitre?.ModuleId == moduleId);
 
-                    modulesWithCheckCount.Add(new ModuleWithCheckCountDto
-                    {
-                        ModuleID = module.Id,
-                        Nom = module.Nom,
-                        NumberOfChapter = module.Chapitres.Count(),
-                        CheckCount = checkCount
-                    });
-                }
+                modulesWithCheckCount.Add(new ModuleWithCheckCountDto
+                {
+                    ModuleID = module.Id,
+                    Nom = module.Nom,
+                    NumberOfChapter = module.Chapitres.Count(),
+                    CheckCount = checkCount
+                });
             }
             return Ok(modulesWithCheckCount);
         } 
+        [HttpPut]
+        [Authorize]
+        public async Task<IActionResult>  ChangePassword([FromBody] ChangePasswordDto changePasswordDto ){
+            string username = User.GetUsername();
+            AppUser? user = await _userManager.FindByNameAsync(username);
+            if (user == null) return BadRequest();
+            Result<bool> result = await _usercenter.ChangePassword(user, changePasswordDto);
+            if (!result.IsSuccess) return Ok(result.Error);
+            return Ok(result.Value);
+        }
     }
 }

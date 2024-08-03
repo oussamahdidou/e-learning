@@ -4,10 +4,7 @@
     <mat-form-field appearance="fill">
       <mat-label>Institution</mat-label>
       <mat-select formControlName="institution">
-        <mat-option
-          *ngFor="let institution of institutions"
-          [value]="institution.id"
-        >
+        <mat-option *ngFor="let institution of institutions" [value]="institution.id">
           {{ institution.nom }}
         </mat-option>
       </mat-select>

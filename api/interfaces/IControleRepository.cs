@@ -9,10 +9,17 @@ using api.Model;
 
 namespace api.interfaces
 {
-    public interface IControleRepository
-    {
-        Task<Result<Controle>> CreateControle(CreateControleDto createControleDto);
+        public interface IControleRepository
+        {
+                Task<Result<Controle>> CreateControle(CreateControleDto createControleDto);
 
-        Task<Result<ControleDto>> GetControleById(int controleId);
-    }
+                Task<Result<ControleDto>> GetControleById(int controleId);
+                Task<Result<Controle>> UpdateControleEnnonce(UpdateControleEnnonceDto updateControleEnnonceDto);
+                Task<Result<Controle>> UpdateControleSolution(UpdateControleSolutionDto updateControleSolutionDto);
+                Task<Result<Controle>> UpdateControleName(UpdateControleNameDto updateControleNameDto);
+                Task<Result<List<Controle>>> GetControlesByModule(int Id);
+                Task<Result<Controle>> GetDashboardControleById(int Id);
+                Task<Result<Controle>> Approuver(int id);
+                Task<Result<Controle>> Refuser(int id);
+        }
 }

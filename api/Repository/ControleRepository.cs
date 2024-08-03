@@ -23,6 +23,28 @@ namespace api.Repository
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
         }
+
+        public async Task<Result<Controle>> Approuver(int id)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == id);
+                if (controle == null)
+                {
+                    return Result<Controle>.Failure("Controle not found");
+                }
+                controle.Status = ObjectStatus.Approuver;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Controle>.Success(controle);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Controle>.Failure(ex.Message);
+
+            }
+        }
+
         public async Task<Result<Controle>> CreateControle(CreateControleDto createControleDto)
         {
             try
@@ -37,7 +59,7 @@ namespace api.Repository
                         Ennonce = ennonceresult.Value,
                         Solution = solutionresult.Value,
                         Nom = createControleDto.Nom,
-                        Status = ObjectStatus.Pending,
+                        Status = createControleDto.Statue,
 
                     };
                     await apiDbContext.controles.AddAsync(controle);
@@ -68,18 +90,163 @@ namespace api.Repository
         {
             Controle? controle = await apiDbContext.controles.Include(c => c.Chapitres).FirstOrDefaultAsync(x => x.Id == controleId);
 
-            if(controle == null){
+            if (controle == null)
+            {
                 return Result<ControleDto>.Failure("Controle Not Found");
             }
 
-            ControleDto controleDto = new ControleDto{
+            ControleDto controleDto = new ControleDto
+            {
                 Id = controle.Id,
                 Ennonce = controle.Ennonce,
                 Solution = controle.Solution,
-                ChapitreNum = controle.Chapitres.Select(x => x.ChapitreNum).ToList()
+                ChapitreNum = controle.Chapitres.Select(x => x.ChapitreNum).ToList(),
+
             };
             return Result<ControleDto>.Success(controleDto);
         }
-        
+
+        public async Task<Result<Controle>> GetDashboardControleById(int Id)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == Id);
+                if (controle == null)
+                {
+                    return Result<Controle>.Failure("controle notfound");
+                }
+                return Result<Controle>.Success(controle);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Controle>.Failure(ex.Message);
+            }
+
+        }
+
+        public async Task<Result<List<Controle>>> GetControlesByModule(int Id)
+        {
+            try
+            {
+
+
+                List<Controle?> controles = await apiDbContext.chapitres
+                            .Where(ch => ch.ModuleId == Id)
+                            .Select(ch => ch.Controle)
+                            .Where(controle => controle != null)
+                            .Distinct()
+                            .ToListAsync();
+                return Result<List<Controle>>.Success(controles!.Cast<Controle>().ToList());
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<List<Controle>>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Controle>> Refuser(int id)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == id);
+                if (controle == null)
+                {
+                    return Result<Controle>.Failure("Controle not found");
+                }
+                controle.Status = ObjectStatus.Denied;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Controle>.Success(controle);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Controle>.Failure(ex.Message);
+
+            }
+        }
+
+        public async Task<Result<Controle>> UpdateControleEnnonce(UpdateControleEnnonceDto updateControleEnnonceDto)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == updateControleEnnonceDto.Id);
+
+                if (controle == null)
+                {
+                    return Result<Controle>.Failure("controle not found");
+                }
+                Result<string> resultUpload = await updateControleEnnonceDto.Ennonce.UploadControle(webHostEnvironment);
+                if (resultUpload.IsSuccess)
+                {
+                    Result<string> resultDelete = controle.Ennonce.DeleteFile();
+                    if (resultDelete.IsSuccess)
+                    {
+                        controle.Ennonce = resultUpload.Value;
+                        await apiDbContext.SaveChangesAsync();
+                        return Result<Controle>.Success(controle);
+                    }
+                    return Result<Controle>.Failure("error in file delete");
+                }
+                return Result<Controle>.Failure("error in file upload");
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Controle>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Controle>> UpdateControleName(UpdateControleNameDto updateControleNameDto)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == updateControleNameDto.Id);
+                if (controle == null)
+                {
+                    return Result<Controle>.Failure("controle not found");
+                }
+                controle.Nom = updateControleNameDto.Name;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Controle>.Success(controle);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Controle>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Controle>> UpdateControleSolution(UpdateControleSolutionDto updateControleSolutionDto)
+        {
+            try
+            {
+                Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == updateControleSolutionDto.Id);
+
+                if (controle == null)
+                {
+                    return Result<Controle>.Failure("controle not found");
+                }
+                Result<string> resultUpload = await updateControleSolutionDto.Solution.UploadControleSolution(webHostEnvironment);
+                if (resultUpload.IsSuccess)
+                {
+                    Result<string> resultDelete = controle.Solution.DeleteFile();
+                    if (resultDelete.IsSuccess)
+                    {
+                        controle.Solution = resultUpload.Value;
+                        await apiDbContext.SaveChangesAsync();
+                        return Result<Controle>.Success(controle);
+                    }
+                    return Result<Controle>.Failure("error in file delete");
+                }
+                return Result<Controle>.Failure("error in file upload");
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Controle>.Failure(ex.Message);
+            }
+        }
     }
 }

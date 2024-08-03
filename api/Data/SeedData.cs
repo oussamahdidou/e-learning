@@ -90,7 +90,7 @@ namespace api.Data
                 }
             }
         }
-        public static async Task Initialize(IApplicationBuilder applicationBuilder)
+        public static void Initialize(IApplicationBuilder applicationBuilder)
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {

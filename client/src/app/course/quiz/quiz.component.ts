@@ -2,53 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CourseService } from '../../services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Question, Quiz } from '../../interfaces/dashboard';
+import { ErrorHandlingService } from '../../services/error-handling.service';
 
-interface Option {
-  id: number;
-  nom: string;
-  truth: string;
-}
-
-interface Question {
-  id: number;
-  nom: string;
-  options: Option[];
-}
-
-interface Quiz {
-  id: number;
-  nom: string;
-  questions: Question[];
-}
-
-interface Chapitre {
-  id: number;
-  chapitreNum: number;
-  nom: string;
-  statue: boolean;
-  coursPdfPath: string | null;
-  videoPath: string | null;
-  synthese: string | null;
-  schema: string | null;
-  premium: boolean;
-  quizId: number;
-  quiz: Quiz;
-}
-
-interface Controle {
-  id: number;
-  nom: string;
-  ennonce: string;
-  solution: string;
-  chapitreNum: number[];
-}
-
-interface Module {
-  id: number;
-  nom: string;
-  chapitres: Chapitre[];
-  controles: Controle[];
-}
 @Component({
   selector: 'app-quiz',
   templateUrl: './quiz.component.html',
@@ -66,56 +22,102 @@ export class QuizComponent implements OnInit {
   isQuizAlreadyPassed: boolean = false;
   note: number = 0;
   isTest: boolean = false;
+  id: number = 0;
+  courseId: number = 0;
 
   constructor(
     private courseService: CourseService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private errorHandlingService: ErrorHandlingService
   ) {}
 
   ngOnInit(): void {
-    this.route.paramMap.subscribe((params) => {
-      const quizId = Number(params.get('quizid'));
-      const moduleId = Number(params.get('testniveauid'));
-      if (isNaN(quizId) && isNaN(moduleId)) {
-        console.error('Invalid ID');
-        return;
-      }
-      if(!isNaN(quizId)){
-        this.courseService.getQuizByID(quizId).subscribe(
-          (quiz: Quiz | undefined) => {
-            if (quiz) {
-              this.quiz = quiz;
-              this.getQuizResult(quizId, this.quiz.questions.length);
-            } else {
-              console.error('Quiz not found',quizId);
-            }
-          },
-          (error) => {
-            console.error('Error fetching quiz:', error);
-          }
-        );
-      }
-      if(!isNaN(moduleId)){
-        console.log("ID of module received")
-        this.courseService.getTestNiveau(moduleId).subscribe(
-          (quiz : Quiz | undefined) => {
-            if(quiz){
-              this.quiz = quiz;
-              this.quiz.id = moduleId;
-              this.isTest = true
-              this.getTestNiveauScore(moduleId,this.quiz.questions.length)
-            }
-            else{
-              console.log("Test Niveau Not found")
-            }
-          },
-          (error) =>{
-            console.error('An error occured while requestion testniveau', error)
-          }
-        )
-      }
+    this.route.parent?.params.subscribe((params) => {
+      this.courseId = params['id'];
     });
+    this.route.paramMap.subscribe(
+      (params) => {
+        const pathSegment = this.route.snapshot.url[0]?.path;
+        if (pathSegment === 'quiz') {
+          const quizId = Number(params.get('quizid'));
+          this.id = quizId;
+          if (!isNaN(quizId)) {
+            this.loadQuiz(quizId);
+          } else {
+            this.errorHandlingService.handleError(null, 'Invalid quiz ID');
+            this.router.navigate(['/']);
+          }
+        } else if (pathSegment === 'testniveau') {
+          const testNiveauId = Number(params.get('testniveauid'));
+          if (!isNaN(testNiveauId)) {
+            this.loadTestNiveau(testNiveauId);
+          } else {
+            this.errorHandlingService.handleError(
+              null,
+              'Invalid Test Niveau ID'
+            );
+            this.router.navigate(['/']);
+          }
+        } else {
+          this.errorHandlingService.handleError(
+            null,
+            'Invalid route: No valid quiz or testniveau path segment.'
+          );
+          this.router.navigate(['/']);
+        }
+      },
+      (error) => {
+        this.errorHandlingService.handleError(
+          error,
+          'Error during route parameter extraction'
+        );
+        this.router.navigate(['/']);
+      }
+    );
+  }
+
+  private loadQuiz(quizId: number): void {
+    this.courseService.getQuizByID(quizId).subscribe(
+      (quiz: Quiz | undefined) => {
+        if (quiz) {
+          this.quiz = quiz;
+          this.getQuizResult(quizId, this.quiz.questions.length);
+          console.log('Quiz loaded:', quiz);
+        } else {
+          this.errorHandlingService.handleError(null, 'Quiz Not found');
+          this.router.navigate(['/']);
+        }
+      },
+      (error) => {
+        this.errorHandlingService.handleError(error, 'Error fetching quiz');
+        this.router.navigate(['/']);
+      }
+    );
+  }
+
+  private loadTestNiveau(testNiveauId: number): void {
+    this.courseService.getTestNiveau(testNiveauId).subscribe(
+      (quiz: Quiz | undefined) => {
+        if (quiz) {
+          this.quiz = quiz;
+          this.quiz.id = testNiveauId;
+          this.isTest = true;
+          this.getTestNiveauScore(testNiveauId, this.quiz.questions.length);
+          console.log('Test Niveau loaded:', quiz);
+        } else {
+          this.errorHandlingService.handleError(null, 'Test Niveau not found');
+          this.router.navigate(['/']);
+        }
+      },
+      (error) => {
+        this.errorHandlingService.handleError(
+          error,
+          'Error fetching Test Niveau'
+        );
+        this.router.navigate(['/']);
+      }
+    );
   }
 
   get currentQuestion(): Question {
@@ -162,45 +164,54 @@ export class QuizComponent implements OnInit {
         this.quiz.questions.forEach((question) => {
           const selectedOptionId = this.selectedAnswers[question.id];
           const correctOption = question.options.find(
-            (option) => (option.truth = 'true')
+            (option) => option.truth === true
           );
 
           if (correctOption && correctOption.id === selectedOptionId) {
             note++;
           }
         });
-        if(this.isTest){
+
+        const resultMessage = `Votre note est :${note} / ${this.quiz.questions.length}`;
+        if (this.isTest) {
           this.courseService
-          .createTestNiveauScore(this.quiz.id, note)
-          .subscribe((res) =>{
-            Swal.fire({
-              title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
-              text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-              icon: 'success',
-            })
-          })
-        }
-        else{
+            .createTestNiveauScore(this.quiz.id, note)
+            .subscribe(
+              (res) => {
+                this.showResultMessage(resultMessage, res.note);
+              },
+              (error) => {
+                this.errorHandlingService.handleError(
+                  error,
+                  'An error occured while saving mark'
+                );
+              }
+            );
+        } else {
           if (this.isQuizAlreadyPassed) {
-            this.courseService
-              .updateQuizResult(this.quiz.id, note)
-              .subscribe((res) => {
-                Swal.fire({
-                  title: `Votre note est :${res.note} / ${this.quiz.questions.length}`,
-                  text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-                  icon: 'success',
-                });
-              });
+            this.courseService.updateQuizResult(this.quiz.id, note).subscribe(
+              (res) => {
+                this.showResultMessage(resultMessage, res.note);
+              },
+              (error) => {
+                this.errorHandlingService.handleError(
+                  error,
+                  'An error occured while updating'
+                );
+              }
+            );
           } else {
-            this.courseService
-              .createQuizResult(this.quiz.id, note)
-              .subscribe((state) => {
-                Swal.fire({
-                  title: `Votre note est :${note} / ${this.quiz.questions.length}`,
-                  text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
-                  icon: 'success',
-                });
-              });
+            this.courseService.createQuizResult(this.quiz.id, note).subscribe(
+              (state) => {
+                this.showResultMessage(resultMessage, note);
+              },
+              (error) => {
+                this.errorHandlingService.handleError(
+                  error,
+                  'An error occured while creating'
+                );
+              }
+            );
             console.log('your Note:', note);
           }
         }
@@ -208,11 +219,34 @@ export class QuizComponent implements OnInit {
     }
   }
 
+  private showResultMessage(title: string, note: number) {
+    Swal.fire({
+      title,
+      text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois cliquer sur ok`,
+      icon: 'success',
+      preConfirm: () => {
+        this.router.navigate([`/course/${this.courseId}/quiz/${this.id}`]);
+      },
+      footer:
+        '<button id="suivantButton" class="swal2-confirm swal2-styled">Suivant</button>',
+      didOpen: () => {
+        const suivantButton = document.getElementById('suivantButton');
+
+        if (suivantButton) {
+          suivantButton.addEventListener('click', () => {
+            this.suivantFunction();
+            Swal.close();
+          });
+        }
+      },
+    });
+  }
+
   getQuizResult(id: number, noteTotal: number) {
     this.courseService.getQuizResultById(id).subscribe((res) => {
       Swal.fire({
         title: `Votre note est :${res.note} / ${noteTotal}`,
-        text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois clicker sur ok`,
+        text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois cliquer sur ok`,
         icon: 'success',
       });
       this.note = res.note;
@@ -221,21 +255,55 @@ export class QuizComponent implements OnInit {
     });
   }
 
-  getTestNiveauScore(moduleId : number, noteTotal: number){
+  getTestNiveauScore(moduleId: number, noteTotal: number) {
     this.courseService.getTestNiveauScore(moduleId).subscribe(
       (res) => {
-        if(res != 0){
+        if (res != 0) {
           Swal.fire({
             title: `Votre note est :${res} / ${noteTotal}`,
-            text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois clicker sur ok`,
+            text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois cliquer sur ok`,
             icon: 'success',
           });
           this.note = res.note;
           this.isQuizAlreadyPassed = true;
           return this.note;
         }
-        return
+        return;
+      },
+      (error) => {
+        this.errorHandlingService.handleError(
+          error,
+          'Error During Fetching TestNiveau'
+        );
       }
-    )
+    );
+  }
+  suivantFunction() {
+    this.courseService.getChapterId(this.id).subscribe(
+      (chapterId) => {
+        if (chapterId != null) {
+          this.courseService.getControle(chapterId).subscribe((controleId) => {
+            if (controleId != null) {
+              this.router.navigate([
+                `/course/${this.courseId}/exam/${controleId}`,
+              ]);
+            } else {
+              this.courseService.isLastChapter(chapterId).subscribe((state) => {
+                if (state) {
+                  console.log('this is the last chapter');
+                } else {
+                  this.router.navigate([
+                    `/course/${this.courseId}/cour/${this.id + 1}`,
+                  ]);
+                }
+              });
+            }
+          });
+        }
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
 }

@@ -4,6 +4,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
 import { DashboardService } from '../../services/dashboard.service';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-modules-table',
@@ -26,7 +27,8 @@ export class ModulesTableComponent implements OnInit {
 
   constructor(
     private readonly dashboardservice: DashboardService,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    public authservice: AuthService
   ) {
     this.dataSource = new MatTableDataSource();
   }

@@ -20,11 +20,7 @@
           class="form-control" required />
       </div>
 
-      <div class="form-check mb-3">
-        <input type="checkbox" class="form-check-input" id="examFinal" formControlName="examFinal"
-          (change)="onExamFinalChange($event)" />
-        <label class="form-check-label" for="examFinal">Exam Final</label>
-      </div>
+
 
       <div formArrayName="chapitres" class="mb-3">
         <div *ngFor="let chapitre of chapitres.controls; let i = index" class="form-check">

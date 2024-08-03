@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Client;
 using Microsoft.AspNetCore.Authorization;
 using api.interfaces;
-using api.interfaces;
+
 using api.generique;
 
 namespace api.Controllers
@@ -33,6 +33,7 @@ namespace api.Controllers
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
+            if (user == null) return BadRequest();
             Result<List<CheckChapter>> result = await _check.GetStudentAllcheckChapters(user);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
@@ -41,11 +42,10 @@ namespace api.Controllers
         // [Authorize]
         public async Task<IActionResult> CreateCheckChapter([FromRoute] int id)
         {
-            // string username = User.GetUsername();
-            // AppUser? user = await _manager.FindByNameAsync(username);
-            // 5f584df6-2795-4a9b-9364-d57c912ef0d8
-            // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
-            Result<CheckChapter> result = await _check.CreateCheckChapter("0bcd548d-9341-4a51-9c3a-540a84ba67e9", id);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+            if (user == null) return BadRequest();
+            Result<CheckChapter> result = await _check.CreateCheckChapter(user.Id, id);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }
@@ -53,9 +53,10 @@ namespace api.Controllers
         // [Authorize]
         public async Task<IActionResult> DeleteCheckChapter(int chapterId)
         {
-            // string username = User.GetUsername();
-            // AppUser? user = await _manager.FindByNameAsync(username);
-            Result<bool> result = await _check.DeleteCheckChapter("5f584df6-2795-4a9b-9364-d57c912ef0d8", chapterId);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+            if (user == null) return BadRequest();
+            Result<bool> result = await _check.DeleteCheckChapter(user.Id, chapterId);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }

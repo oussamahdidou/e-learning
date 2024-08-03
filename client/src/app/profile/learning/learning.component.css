@@ -1,37 +1,47 @@
-.container{
+.container {
   /* border: 1px solid black ; */
 }
-.container h2{
+.container h2 {
   font: bold;
+  text-align: center;
+  margin-top: 30px;
+  color: #666666;
 }
-.module-title{
+.sort, .search{
+  margin-bottom: 15px;
+}
+
+.module-title {
   font-family: Arial, Helvetica, sans-serif;
   font: bold;
+  color: #666666;
 }
-div img{
-  height: 228px;
-  /* border: 2px solid green; */
+
+.module-card img {
+  width: 100%;
+  height: auto;
   margin: 0;
   padding: 0;
 }
-div h3{
+div h3 {
   padding: 0;
   margin: 0;
 }
-.progress-bar{
+.progress-bar {
   margin-top: 10px;
   color: white;
 }
-.module-card{
+.module-card {
   position: relative;
-  border: 2px solid #eeeded ;
-  box-shadow: 0 4px 8px rgba(98, 97, 97, 0.9);
+  /* border: 2px solid #eeeded; */
+  /* box-shadow: 0 4px 8px rgba(98, 97, 97, 0.9); */
   color: black;
-
+  margin-bottom: 15px;
+  padding: 10px;
 }
 .play-button {
   position: absolute;
-  top: 50%;
+  top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
   display: none;
@@ -45,27 +55,17 @@ div h3{
   font-size: 24px;
   cursor: pointer;
 }
-.module-card:hover{
-  background-color: #989797;
-  color: white;
-  cursor: pointer;
-  transition: 1s;
+.module-card:hover .module-img {
+  background-color: rgba(112, 113, 115, 0.5);
+  transition: background-color 1s;
 }
 .module-card:hover .play-button {
   display: block;
 }
-.module-grid{
-  /* border: 2px solid black; */
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 30px;
-  padding: 20px;
-  box-sizing: border-box;
+.bar {
+  height: 5px;
 }
-
-.module-card{
-  /* border: 2px solid black; */
-  height: 350px;
+.module {
+  width: 100%;
 }
-
 

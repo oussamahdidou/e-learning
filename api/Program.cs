@@ -125,11 +125,14 @@ builder.Services.Configure<SmtpSettings>(builder.Configuration.GetSection("SmtpS
 builder.Services.AddSingleton<IMailer, Mailer>();
 builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IControleRepository, ControleRepository>();
+builder.Services.AddScoped<IExamFinalRepository, ExamFinalRepository>();
+builder.Services.AddScoped<IUserCenterInterface, UserCenterRepository>();
+
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {
     await SeedData.SeedUsersAndRolesAsync(app);
-    await SeedData.Initialize(app);
+    SeedData.Initialize(app);
 
 }
 else
@@ -151,7 +154,7 @@ app.UseStaticFiles(new StaticFileOptions
         ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
     }
 });
-
+app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigin");
 app.UseAuthentication();

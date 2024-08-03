@@ -2,18 +2,45 @@ export interface Option {
   id: number;
   nom: string;
   truth: boolean;
-  questionId: number;
 }
+
 export interface Question {
   id: number;
   nom: string;
-  quizId: number;
   options: Option[];
 }
 
 export interface Quiz {
   id: number;
   nom: string;
-  statue: string;
   questions: Question[];
+}
+
+export interface Chapitre {
+  id: number;
+  chapitreNum: number;
+  nom: string;
+  statue: boolean;
+  coursPdfPath: string | null;
+  videoPath: string | null;
+  synthese: string | null;
+  schema: string | null;
+  premium: boolean;
+  quizId: number;
+  quiz: Quiz;
+}
+
+export interface Controle {
+  id: number;
+  nom: string;
+  ennonce: string;
+  solution: string;
+  chapitreNum: number[];
+}
+
+export interface Module {
+  id: number;
+  nom: string;
+  chapitres: Chapitre[];
+  controles: Controle[];
 }

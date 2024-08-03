@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from 'sweetalert2';
+import { DashboardService } from '../../services/dashboard.service';
 
 @Component({
   selector: 'app-approbation-table',
@@ -12,17 +13,11 @@ export class ApprobationTableComponent implements OnInit {
   displayedColumns: string[] = ['id', 'type', 'name', 'plus'];
   dataSource: MatTableDataSource<any>;
 
-  objects: any[] = [
-    { id: 1, type: 'controle', name: 'math' },
-    { id: 2, type: 'quiz', name: 'physics' },
-    { id: 3, type: 'chapitre', name: 'informatique' },
-    { id: 4, type: 'chapitre', name: 'finance ' },
-    { id: 5, type: 'controle', name: 'comptabilite' },
-  ];
+  objects: any[] = [];
 
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor() {
+  constructor(private readonly dashboardservice: DashboardService) {
     this.dataSource = new MatTableDataSource(this.objects);
     this.dataSource.sortingDataAccessor = (item, property) => {
       switch (property) {
@@ -32,10 +27,23 @@ export class ApprobationTableComponent implements OnInit {
     };
   }
 
-  ngOnInit(): void {}
-  ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
+  ngOnInit(): void {
+    this.dashboardservice.getobjectspourapprouver().subscribe(
+      (response) => {
+        console.log(response);
+        this.dataSource = new MatTableDataSource(response);
+        this.dataSource.sortingDataAccessor = (item, property) => {
+          switch (property) {
+            default:
+              return item[property];
+          }
+        };
+        this.dataSource.sort = this.sort;
+      },
+      (error) => {}
+    );
   }
+  ngAfterViewInit(): void {}
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();

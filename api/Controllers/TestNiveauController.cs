@@ -44,7 +44,10 @@ namespace api.Controllers
             if(username == null){
                 return BadRequest("User not found");
             }
-            AppUser appUser = await userManager.FindByNameAsync(username);
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+             if(appUser == null){
+                return BadRequest("User not found");
+            }
             TestNiveauResultDto testNiveauResultDto = new TestNiveauResultDto()
             {
                 ModuleId = moduleId,
@@ -66,7 +69,10 @@ namespace api.Controllers
             if(username == null){
                 return BadRequest("User not found");
             }
-            AppUser appUser = await userManager.FindByNameAsync(username);
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if(appUser == null){
+                return BadRequest("User not found");
+            }
             Result<double> result = await testNiveauRepository.GetTestNiveauScore(appUser.Id,moduleId);
             if (result.IsSuccess)
             {

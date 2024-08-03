@@ -5,6 +5,15 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ModuleRequirementsDialogComponent } from '../module-requirements-dialog/module-requirements-dialog.component';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-module',
@@ -12,6 +21,61 @@ import { DashboardService } from '../../services/dashboard.service';
   styleUrl: './module.component.css',
 })
 export class ModuleComponent implements OnInit {
+  refuser() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes !',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.refuserexam(this.moduleId).subscribe(
+          (response) => {
+            console.log(response);
+            this.exam.status = response.status;
+            Swal.fire({
+              title: 'Refuser!',
+              text: 'Your file has been Refuser.',
+              icon: 'success',
+            });
+          },
+          (error) => {}
+        );
+      }
+    });
+  }
+  approuver() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice.approuverexam(this.moduleId).subscribe(
+          (response) => {
+            console.log(response);
+            this.exam.status = response.status;
+            Swal.fire({
+              title: 'Accepter!',
+              text: 'Your file has been Accepter.',
+              icon: 'success',
+            });
+          },
+          (error) => {}
+        );
+      }
+    });
+  }
+  controleForm: FormGroup;
+  host = environment.apiUrl;
+  exam: any;
   edit(_t283: any) {
     throw new Error('Method not implemented.');
   }
@@ -19,6 +83,7 @@ export class ModuleComponent implements OnInit {
     throw new Error('Method not implemented.');
   }
   displayedColumns: string[] = ['id', 'number', 'nom', 'module', 'plus'];
+  controlesColumns: string[] = ['id', 'nom', 'action', 'plus'];
   modulesColumns: string[] = [
     'id',
     'nom',
@@ -33,20 +98,8 @@ export class ModuleComponent implements OnInit {
   controlessource: MatTableDataSource<any>;
   modulessource!: MatTableDataSource<any>;
 
-  chapters: any[] = [
-    { id: 1, number: 2, nom: 'chapter1', module: 'High School' },
-    { id: 2, number: 2, nom: 'chapter2', module: 'Middle School' },
-    { id: 3, number: 2, nom: 'chapter3', module: 'Elementary School' },
-    { id: 4, number: 2, nom: 'chapter4', module: 'High School' },
-    { id: 5, number: 2, nom: 'chapter5', module: 'Middle School' },
-  ];
-  controles: any[] = [
-    { id: 1, number: 2, nom: 'controle1', module: 'High School' },
-    { id: 2, number: 2, nom: 'controle2', module: 'Middle School' },
-    { id: 3, number: 2, nom: 'controle3', module: 'Elementary School' },
-    { id: 4, number: 2, nom: 'controle4', module: 'High School' },
-    { id: 5, number: 2, nom: 'controle5', module: 'Middle School' },
-  ];
+  chapters: any[] = [];
+  controles: any[] = [];
   modules: any[] = [];
   openDialog(): void {
     const dialogRef = this.dialog.open(ModuleRequirementsDialogComponent, {
@@ -87,11 +140,87 @@ export class ModuleComponent implements OnInit {
     });
   }
   moduleId: number = 0;
+  enonceFile: File | null = null;
+  solutionFile: File | null = null;
+  onFileChange(event: any, type: string) {
+    const file = event.target.files[0];
+    if (file && file.type === 'application/pdf') {
+      if (type === 'enonce') {
+        this.enonceFile = file;
+      } else if (type === 'solution') {
+        this.solutionFile = file;
+      }
+    } else {
+      Swal.fire({
+        title: 'Warning',
+        text: 'Veuillez sélectionner un fichier PDF',
+        icon: 'warning',
+      });
+    }
+  }
+  SelectSolution(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('File', file);
+      formData.append('Id', this.moduleId.toString());
+      this.dashboardservice.updateexamsolution(formData).subscribe(
+        (response) => {
+          this.exam.solution = response.solution;
+        },
+        (error) => {}
+      );
+    }
+  }
+  SelectEnnonce(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('File', file);
+      formData.append('Id', this.moduleId.toString());
+      this.dashboardservice.updateexamsolution(formData).subscribe(
+        (response) => {
+          this.exam.ennonce = response.ennonce;
+        },
+        (error) => {}
+      );
+    }
+  }
+  onSubmit() {
+    if (this.controleForm.valid) {
+      const formData = new FormData();
+      formData.append('Nom', this.controleForm.get('nomControle')?.value);
+      if (this.enonceFile) {
+        formData.append('Ennonce', this.enonceFile);
+      }
+      if (this.solutionFile) {
+        formData.append('Solution', this.solutionFile);
+      }
+      formData.append('ModuleId', this.moduleId.toString());
+
+      this.dashboardservice.createexam(formData).subscribe(
+        (response) => {
+          console.log(response);
+          this.exam = response;
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    }
+  }
   constructor(
+    private fb: FormBuilder,
     public dialog: MatDialog,
     private readonly route: ActivatedRoute,
-    private readonly dashboardservice: DashboardService
+    private readonly dashboardservice: DashboardService,
+    public authservice: AuthService
   ) {
+    this.controleForm = this.fb.group({
+      nomControle: ['', Validators.required],
+      enonce: [null],
+      solution: [null],
+    });
     this.chapitressource = new MatTableDataSource(this.chapters);
     this.chapitressource.sortingDataAccessor = (item, property) => {
       switch (property) {
@@ -109,12 +238,18 @@ export class ModuleComponent implements OnInit {
   }
   ngAfterViewInit(): void {
     this.chapitressource.sort = this.sort;
-    this.controlessource.sort = this.sort;
   }
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.moduleId = params['id'];
+      this.dashboardservice.getexambymodule(this.moduleId).subscribe(
+        (response) => {
+          this.exam = response;
+          console.log(response);
+        },
+        (error) => {}
+      );
       this.dashboardservice.getrequiredmodules(this.moduleId).subscribe(
         (response) => {
           this.modules = response;
@@ -145,6 +280,20 @@ export class ModuleComponent implements OnInit {
           },
           (error) => {}
         );
+      this.dashboardservice.getcontrolesbymodule(this.moduleId).subscribe(
+        (response) => {
+          this.controles = response;
+          this.controlessource = new MatTableDataSource(this.controles);
+          this.chapitressource.sortingDataAccessor = (item, property) => {
+            switch (property) {
+              default:
+                return item[property];
+            }
+          };
+          this.controlessource.sort = this.sort;
+        },
+        (error) => {}
+      );
     });
   }
 

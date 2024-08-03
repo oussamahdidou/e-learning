@@ -14,5 +14,7 @@ namespace api.interfaces
         Task<Result<QuizDto>> UpdateQuiz(int quizId, UpdateQuizDto updateQuizDto);
         Task<Result<QuizDto>> GetQuizById(int id);
         Task<Result<QuizDto>> DeleteQuiz(int id);
+        Task<Result<Quiz>> Approuver(int id);
+        Task<Result<Quiz>> Refuser(int id);
     }
 }

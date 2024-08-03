@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Checkbox List</h2>
+<mat-dialog-content>
+    <form [formGroup]="form">
+        <div *ngFor="let item of items">
+            <mat-checkbox [formControlName]="item.id.toString()" [checked]="item.checked">{{ item.name }}</mat-checkbox>
+        </div>
+        <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button (click)="onSubmit()">Submit</button>
+</mat-dialog-actions>

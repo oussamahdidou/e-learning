@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { environment } from '../../../environments/environment';
+import Swal from 'sweetalert2';
+import { ErrorHandlingService } from '../../services/error-handling.service';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -22,7 +24,8 @@ export class PdfViewerComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private courseService: CourseService
+    private courseService: CourseService,
+    private errorHandlingService: ErrorHandlingService
   ) {}
 
   ngOnInit(): void {
@@ -35,25 +38,36 @@ export class PdfViewerComponent {
         if (routePath?.includes('cour')) {
           this.courseService.getCourPdfUrlById(this.id).subscribe((url) => {
             this.pdfUrl = url;
-          });
+          }
+          , (error) => {
+            this.errorHandlingService.handleError(error,'Failed to load Cour. Please try again later. ')
+          }
+        );
         } else if (routePath?.includes('synthese')) {
           this.courseService.getSyntheseById(this.id).subscribe((url) => {
             if (url) {
               this.pdfUrl = url;
             }
-            console.log('synthese not found');
+            }
+            , (error) => {
+              this.errorHandlingService.handleError(error,'Failed to load Synthese. Please try again later. ')
           });
         } else if (routePath?.includes('exam')) {
           this.courseService.getControleById(this.id).subscribe((url) => {
             this.pdfUrl = url?.ennonce;
             this.exam = url;
-            this.isDevoirExists(this.id);
-          });
+            this.isDevoirExists(this.id);}
+            , (error) => {
+              console.error("error fetching exam", error);
+              this.errorHandlingService.handleError(error,'Failed to load Exam. Please try again later. ')
+            });
           this.isExam = true;
         } else if (routePath?.includes('schema')) {
           this.courseService.getSchemaById(this.id).subscribe((url) => {
-            this.pdfUrl = url;
-          });
+            this.pdfUrl = url;}
+            , (error) => {
+              this.errorHandlingService.handleError(error,'Failed to load Schema. Please try again later. ')
+            });
         } else {
           console.error('Unknown route type');
         }
@@ -72,7 +86,7 @@ export class PdfViewerComponent {
 
   uploadDevoir(): void {
     if (!this.selectedFile || this.exam.id === null) {
-      console.error('No file selected or no controle ID available');
+      this.errorHandlingService.handleError(null,'No file selected or no controle ID available')
       return;
     }
 
@@ -84,7 +98,7 @@ export class PdfViewerComponent {
         this.devoirExists = true;
       },
       (error) => {
-        console.error('Error uploading file:', error);
+        this.errorHandlingService.handleError(error,'Error uploading file')
       }
     );
   }

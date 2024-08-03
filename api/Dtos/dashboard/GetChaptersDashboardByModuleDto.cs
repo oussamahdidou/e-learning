@@ -9,8 +9,8 @@ namespace api.Dtos.dashboard
     {
         public int Id { get; set; }
         public int Number { get; set; }
-        public string Name { get; set; }
-        public string module { get; set; }
+        public required string Name { get; set; }
+        public required string module { get; set; }
 
     }
 }

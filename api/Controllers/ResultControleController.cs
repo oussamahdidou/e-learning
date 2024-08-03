@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using api.Mappers;
+using api.generique;
 
 namespace api.Controllers
 {
@@ -30,19 +31,19 @@ namespace api.Controllers
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id)  
         {
-            var username = User.GetUsername();
-            var user = await _manager.FindByNameAsync(username);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
 
             if (user == null)
                 return BadRequest("User not found.");
             // 5f584df6-2795-4a9b-9364-d57c912ef0d8
             // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
 
-            var result = await file.UploadControleReponse(_environment);
+            Result<string> result = await file.UploadControleReponse(_environment);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
-            var addResult = await _resultRepo.AddResult(user, id, result.Value); 
+            Result<ResultControle> addResult = await _resultRepo.AddResult(user, id, result.Value); 
             if (!addResult.IsSuccess)
                 return BadRequest(result.Error);
             return Ok(result.Value);
@@ -51,13 +52,13 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> GetStudentAllResults()
         {
-            var username = User.GetUsername();
-            var user = await _manager.FindByNameAsync(username);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
 
             if (user == null)
                 return BadRequest("User not found.");
 
-            var results = await _resultRepo.GetStudentAllResult(user);
+            Result<List<ResultControle>> results = await _resultRepo.GetStudentAllResult(user);
 
             if (!results.IsSuccess)
                 return BadRequest(results.Error);
@@ -68,13 +69,13 @@ namespace api.Controllers
         // [Authorize]
         public async Task<IActionResult> GetResultControleById(int controleId)
         {
-            var username = User.GetUsername();
-            var user = await _manager.FindByNameAsync(username);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
 
             if (user == null)
                 return BadRequest("User not found.");
 
-            var result = await _resultRepo.GetResultControleById(user, controleId);
+            Result<ResultControle> result = await _resultRepo.GetResultControleById(user, controleId);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
@@ -86,18 +87,18 @@ namespace api.Controllers
         [Authorize]
         public async Task<IActionResult> RemoveResult(int controleId)
         {
-            var username = User.GetUsername();
-            var user = await _manager.FindByNameAsync(username);
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
 
             if (user == null)
                 return BadRequest("User not found.");
 
-            var result = await _resultRepo.RemoveResult(user, controleId);
+            Result<ResultControle> result = await _resultRepo.RemoveResult(user, controleId);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
 
-            var filePath = Path.Combine(_environment.WebRootPath, result.Value.Reponse.TrimStart('/'));
+            string filePath = Path.Combine(_environment.WebRootPath, result.Value.Reponse.TrimStart('/'));
             if (System.IO.File.Exists(filePath))
             {
                 try

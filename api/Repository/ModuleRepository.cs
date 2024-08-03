@@ -14,12 +14,8 @@ using api.helpers;
 using api.interfaces;
 using api.Mappers;
 using api.Model;
-using api.Mappers;
-using api.interfaces;
+
 using Microsoft.EntityFrameworkCore;
-using api.Data;
-using api.generique;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace api.Repository
 {
@@ -51,7 +47,7 @@ namespace api.Repository
 
             }
         }
-         public async Task<Result<ModuleDto>> GetModuleById(int id, AppUser user)
+        public async Task<Result<ModuleDto>> GetModuleById(int id, AppUser user)
         {
             try
             {
@@ -68,7 +64,7 @@ namespace api.Repository
                         Id = x.Id,
                         Nom = x.Nom,
                         Chapitres = x.Chapitres
-                            .Where(c => c.Statue == ObjectStatus.Approuver) 
+                            .Where(c => c.Statue == ObjectStatus.Approuver)
                             .ToList()
                     })
                     .FirstOrDefaultAsync();
@@ -93,11 +89,12 @@ namespace api.Repository
                 return Result<ModuleDto>.Failure(ex.Message);
             }
         }
-        public async Task<Result<Module>> GetModuleInformationByID(int moduleId){
+        public async Task<Result<Module>> GetModuleInformationByID(int moduleId)
+        {
             Module? module = await apiDbContext.modules.FindAsync(moduleId);
             if (module == null) return Result<Module>.Failure("module not found");
             return Result<Module>.Success(module);
-        } 
+        }
         public async Task<Result<Module>> UpdateModule(UpdateModuleDto updateModuleDto)
         {
             try
@@ -118,21 +115,26 @@ namespace api.Repository
                 return Result<Module>.Failure($"{ex.Message}");
             }
         }
-        public async Task<Result<Module>>DeleteModule(int id){
-            try{
-            Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x=>x.Id==id);
-            if(module==null){
-                return Result<Module>.Failure("module n'existe pas");
+        public async Task<Result<Module>> DeleteModule(int id)
+        {
+            try
+            {
+                Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == id);
+                if (module == null)
+                {
+                    return Result<Module>.Failure("module n'existe pas");
+
+                }
+                apiDbContext.modules.Remove(module);
+                await apiDbContext.SaveChangesAsync();
+                return Result<Module>.Success(module);
 
             }
-             apiDbContext.modules.Remove(module);
-            await apiDbContext.SaveChangesAsync();
-            return Result<Module>.Success(module);
+            catch (System.Exception ex)
+            {
 
-        }
-        catch (System.Exception ex){
-
-            return Result<Module>.Failure($"{ex.Message}");
+                return Result<Module>.Failure($"{ex.Message}");
+            }
         }
     }
-    }}
+}

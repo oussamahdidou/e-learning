@@ -234,7 +234,22 @@ namespace api.extensions
                 return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
             }
         }
+        public static Result<string> DeleteFile(this string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return Result<string>.Failure("file path is null");
+            }
 
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+                return Result<string>.Success(filePath);
+
+            }
+            return Result<string>.Success(filePath);
+
+        }
 
     }
 }
