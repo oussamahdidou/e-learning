@@ -3,7 +3,13 @@ import { Injectable } from '@angular/core';
 import { catchError, map, Observable, of, retry, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
-import { Chapitre, Controle, Module } from '../interfaces/dashboard';
+import {
+  Chapitre,
+  Controle,
+  IsEligible,
+  Module,
+} from '../interfaces/dashboard';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -20,23 +26,24 @@ export class CourseService {
     'quiz',
   ];
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private readonly authservice: AuthService
+  ) {}
 
   getCourseById(id: number): Observable<Module | undefined> {
     console.log('Current Module:', this.module);
     console.log('Requested ID:', id);
     console.log('Module ID:', this.module?.id);
     console.log('ID Match:', this.module?.id === id);
-    const token = localStorage.getItem('token');
 
     // if (this.module?.id === id) {
     //   return of(this.module);
     // }
     return this.http
       .get<Module>(`${environment.apiUrl}/api/module/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
@@ -52,12 +59,9 @@ export class CourseService {
   }
 
   checkChapter(id: number): Observable<boolean> {
-    const token = localStorage.getItem('token');
     return this.http
       .get<any>(`${environment.apiUrl}/api/checkChapter/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
@@ -69,12 +73,9 @@ export class CourseService {
   }
 
   getQuizByID(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .get(`${environment.apiUrl}/api/Quiz/GetById/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         tap((response) => {
@@ -85,12 +86,9 @@ export class CourseService {
   }
 
   getVdUrlById(id: number): Observable<string | undefined> {
-    const token = localStorage.getItem('token');
     return this.http
       .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
@@ -101,12 +99,9 @@ export class CourseService {
   }
 
   getCourPdfUrlById(id: number): Observable<string | undefined> {
-    const token = localStorage.getItem('token');
     return this.http
       .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
@@ -117,12 +112,9 @@ export class CourseService {
   }
 
   getSyntheseById(id: number): Observable<string | undefined> {
-    const token = localStorage.getItem('token');
     return this.http
       .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
@@ -133,12 +125,9 @@ export class CourseService {
   }
 
   getControleById(controleId: number): Observable<Controle | undefined> {
-    const token = localStorage.getItem('token');
     return this.http
       .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
@@ -149,12 +138,9 @@ export class CourseService {
   }
 
   getSchemaById(id: number): Observable<string | undefined> {
-    const token = localStorage.getItem('token');
     return this.http
       .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
@@ -207,14 +193,12 @@ export class CourseService {
 
   createQuizResult(quizId: number, note: number): Observable<any> {
     const result = { quizId, note };
-    const token = localStorage.getItem('token');
+
     console.log('Object being sent to backend:', result);
 
     return this.http
       .post<any>(`${environment.apiUrl}/api/QuizResult/Create`, result, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         tap((response) => {
@@ -224,13 +208,10 @@ export class CourseService {
       );
   }
   uploadSolution(formData: FormData, id: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .post(`${environment.apiUrl}/api/ResultControle/${id}`, formData, {
         responseType: 'text',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         tap((response) => {
@@ -240,12 +221,9 @@ export class CourseService {
       );
   }
   isDevoirUploaded(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .get(`${environment.apiUrl}/api/ResultControle/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         tap((response) => {
@@ -255,12 +233,9 @@ export class CourseService {
       );
   }
   deleteDevoir(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .delete(`${environment.apiUrl}/api/ResultControle/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         tap((response) => {
@@ -270,12 +245,9 @@ export class CourseService {
       );
   }
   getQuizResultById(id: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .get(`${environment.apiUrl}/api/QuizResult/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         tap((response) => {
@@ -286,12 +258,9 @@ export class CourseService {
       );
   }
   updateQuizResult(quizId: number, note: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .get(`${environment.apiUrl}/api/QuizResult/${quizId}/${note}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         tap((response) => {
@@ -303,12 +272,9 @@ export class CourseService {
   }
 
   getTestNiveau(moduleId: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .get(`${environment.apiUrl}/api/TestNiveau/${moduleId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
       .pipe(
         tap((response) => {
@@ -320,15 +286,12 @@ export class CourseService {
   }
 
   createTestNiveauScore(moduleId: number, note: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .post<any>(
         `${environment.apiUrl}/api/TestNiveau/TestResult/${moduleId}/${note}`,
         {},
         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: this.authservice.headers,
         }
       )
       .pipe(
@@ -340,13 +303,25 @@ export class CourseService {
   }
 
   getTestNiveauScore(moduleId: number): Observable<any> {
-    const token = localStorage.getItem('token');
     return this.http
       .get<any>(`${environment.apiUrl}/api/TestNiveau/GetScore/${moduleId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: this.authservice.headers,
       })
+      .pipe(
+        tap((response) => {
+          console.log('Response from backen is : ', response);
+        }),
+        catchError(this.handleError)
+      );
+  }
+  isEligible(moduleId: number): Observable<IsEligible> {
+    return this.http
+      .get<any>(
+        `${environment.apiUrl}/api/ModuleRequirement/IsStudentEligibleForModule/${moduleId}`,
+        {
+          headers: this.authservice.headers,
+        }
+      )
       .pipe(
         tap((response) => {
           console.log('Response from backen is : ', response);

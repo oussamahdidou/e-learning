@@ -20,12 +20,34 @@ export class CourseComponent {
 
   ngOnInit() {
     const id = +this.route.snapshot.paramMap.get('id')!;
-    this.courseService.getCourseById(id).subscribe((module) => {
-      console.log(module);
-      this.module = module;
-    },(error) => {
-      this.errorHandlingService.handleError(error,'Error Fetching Module')
-      this.router.navigate(['/']);
+    this.courseService.isEligible(id).subscribe({
+      next: (data) => {
+        if (data.isEligible) {
+          console.log('dkhel');
+          this.courseService.getCourseById(id).subscribe(
+            (module) => {
+              console.log(module);
+              this.module = module;
+            },
+            (error) => {
+              this.errorHandlingService.handleError(
+                error,
+                'Error Fetching Module'
+              );
+              this.router.navigate(['/']);
+            }
+          );
+        } else {
+          this.errorHandlingService.handleError(
+            'your not elligible',
+            `you must have `
+          );
+          this.router.navigate(['/']);
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      },
     });
   }
 }

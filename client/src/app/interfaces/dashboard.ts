@@ -44,3 +44,14 @@ export interface Module {
   chapitres: Chapitre[];
   controles: Controle[];
 }
+export interface RequiredModule {
+  Id: number;
+  Name: string;
+  NiveauScolaire: string;
+  Institution: string;
+  Seuill: number;
+}
+export interface IsEligible {
+  isEligible: boolean;
+  modules: RequiredModule[];
+}
