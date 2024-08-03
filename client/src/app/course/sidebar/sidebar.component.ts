@@ -1,7 +1,8 @@
 import { ChangeDetectorRef, Component, Input, OnInit, Renderer2 } from '@angular/core';
 import { CourseService } from '../../services/course.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Chapitre, Module } from '../../interfaces/dashboard';
+import { ErrorHandlingService } from '../../services/error-handling.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,6 +18,8 @@ export class SidebarComponent implements OnInit {
     private courseService: CourseService,
     private renderer: Renderer2,
     private route: ActivatedRoute,
+    private errorHandlingService: ErrorHandlingService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -24,7 +27,9 @@ export class SidebarComponent implements OnInit {
     this.courseService.getCourseById(id).subscribe((module) => {
       this.module = module;
       this.calculateProgress();
-      console.log("Module ID from service:", this.module?.id);
+    }, (error) => {
+      this.errorHandlingService.handleError(error,'Error Fetching Module:')
+      this.router.navigate(['/']);
     });
   }
 
@@ -68,8 +73,6 @@ export class SidebarComponent implements OnInit {
           chapter.statue = true;
           this.setActive(event);
           this.calculateProgress();
-          console.log("This is the module after checking ", this.module)
-          console.log("This is the progress ", this.progress)
         }
       }
     });

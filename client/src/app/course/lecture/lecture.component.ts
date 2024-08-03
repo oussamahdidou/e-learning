@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
+import { ErrorHandlingService } from '../../services/error-handling.service';
 
 @Component({
   selector: 'app-lecture',
@@ -17,6 +18,7 @@ export class LectureComponent {
     private router: Router,
     private route: ActivatedRoute,
     private courseService: CourseService,
+    private errorHandlingService: ErrorHandlingService
   ) {}
 
   ngOnInit(): void {
@@ -30,23 +32,11 @@ export class LectureComponent {
             this.vdUrl = url;
           },
           (error) =>{
-            console.error('Error fetching video URL:', error);
-            Swal.fire({
-              title: 'Error!',
-              text: 'Failed to load video. Please try again later.',
-              icon: 'error',
-              confirmButtonText: 'OK'
-            });
+            this.errorHandlingService.handleError(error,'Failed to load video. Please try again later.')
           }
         );
       } else {
-        console.error('ID parameter is missing');
-        Swal.fire({
-          title: 'Error!',
-          text:'Lecture ID is missing from the URL.',
-          icon: 'error',
-          confirmButtonText: 'OK'
-        })
+        this.errorHandlingService.handleError(null,'ID parameter is missing')
       }
     });
   }
