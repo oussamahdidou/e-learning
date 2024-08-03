@@ -15,6 +15,6 @@ namespace api.interfaces
         Task<Result<ModuleRequirement>> CreateRequiredModule(CreateRequiredModuleDto createRequiredModuleDto);
         Task<Result<ModuleRequirement>> UpdateRequiredModule(CreateRequiredModuleDto createRequiredModuleDto);
         Task<Result<ModuleRequirement>> DeleteRequiredModule(int TargetModuleId, int RequiredModuleId);
-        Task<bool> IsStudentEligibleForModule(StudentEligibleDto studentEligibleDto);
+        Task<Result<IsEligibleDto>> IsStudentEligibleForModule(StudentEligibleDto studentEligibleDto);
     }
 }

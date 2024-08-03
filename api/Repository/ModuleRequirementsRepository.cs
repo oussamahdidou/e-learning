@@ -103,10 +103,12 @@ namespace api.Repository
             }
         }
 
-        public async Task<bool> IsStudentEligibleForModule(StudentEligibleDto studentEligibleDto)
+        public async Task<Result<IsEligibleDto>> IsStudentEligibleForModule(StudentEligibleDto studentEligibleDto)
         {
             try
             {
+                IsEligibleDto isEligibleDto = new IsEligibleDto();
+
                 Result<List<RequiredModulesDto>> result = await GetRequiredModules(studentEligibleDto.TargetModuleId);
 
                 if (result.IsSuccess)
@@ -121,17 +123,30 @@ namespace api.Repository
                         TestNiveau? testNiveau = testNiveaus.FirstOrDefault(tn => tn.ModuleId == requiredModulesDto.Id);
                         if (testNiveau == null || testNiveau.Note < requiredModulesDto.Seuill)
                         {
-                            return false;
+
+                            isEligibleDto.modules.Add(requiredModulesDto);
                         }
                     }
 
-                    return true;
+                    if (isEligibleDto.modules.Count() > 0)
+                    {
+                        isEligibleDto.IsEligible = false;
+                        return Result<IsEligibleDto>.Success(isEligibleDto);
+
+                    }
+
+                    isEligibleDto.IsEligible = true;
+                    return Result<IsEligibleDto>.Success(isEligibleDto);
+
                 }
-                return false;
+                isEligibleDto.IsEligible = false;
+                return Result<IsEligibleDto>.Success(isEligibleDto);
+
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+
+                return Result<IsEligibleDto>.Failure(ex.Message);
             }
 
         }

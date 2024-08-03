@@ -85,7 +85,12 @@ namespace api.Controllers
                 StudentId = userId,
                 TargetModuleId = moduleId,
             };
-            return Ok(await moduleRequirementsRepository.IsStudentEligibleForModule(studentEligibleDto));
+            Result<IsEligibleDto> result = await moduleRequirementsRepository.IsStudentEligibleForModule(studentEligibleDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
         }
     }
 }
