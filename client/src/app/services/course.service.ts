@@ -174,9 +174,6 @@ export class CourseService {
     const chapterNum = chapter ? chapter.chapitreNum : null;
     return of(chapterNum);
   }
-  getCourseId(): Observable<number | null> {
-    return of(this.module.id);
-  }
   getChapterId(id: number): Observable<number | null> {
     const chapter = this.module.chapitres.find(
       (chapter) => chapter.quiz.id === id
