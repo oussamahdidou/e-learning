@@ -20,7 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'dashboard',
-    canActivate:[AdminGuardService],
+    canActivate:[DashboardGuardService],
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
@@ -44,6 +44,7 @@ const routes: Routes = [
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
 import { AdminGuardService } from './services/admin-guard.service';
+import { DashboardGuardService } from './dashboard-guard.service';
 
 const routerOptions: ExtraOptions = {
   anchorScrolling: 'enabled', // Enable anchor scrolling
