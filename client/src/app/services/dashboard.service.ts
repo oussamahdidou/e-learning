@@ -366,4 +366,41 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
+  deleteinstitution(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/Institution/${id}`);
+  }
+  deleteniveauscolaire(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/NiveauScolaire/${id}`);
+  }
+  deletemodule(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/Module/${id}`);
+  }
+  deletechapitre(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/Chapitre/${id}`);
+  }
+  deleteexamfinal(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/ExamFinal/${id}`);
+  }
+  deletecontrole(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/Controle/${id}`);
+  }
+  deleterequiredmodule(
+    TargetModuleId: number,
+    RequiredModuleId: number
+  ): Observable<any> {
+    return this.http.delete(
+      `${environment.apiUrl}/api/ModuleRequirement/${TargetModuleId}/${RequiredModuleId}`
+    );
+  }
+  editrequiredmodule(
+    TargetModuleId: number,
+    RequiredModuleId: number,
+    seuill: number
+  ): Observable<any> {
+    return this.http.put(`${environment.apiUrl}/api/ModuleRequirement`, {
+      targetModuleId: TargetModuleId,
+      requiredModuleId: RequiredModuleId,
+      seuill: seuill,
+    });
+  }
 }

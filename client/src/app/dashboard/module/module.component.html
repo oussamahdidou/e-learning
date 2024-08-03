@@ -80,7 +80,7 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>action</th>
             <td mat-cell *matCellDef="let element">
               @if (authservice.$IsAdmin|async) {
-              <button mat-flat-button color="warn">
+              <button mat-flat-button color="warn" (click)="deletecontrole(element.id)">
                 Supprimer
               </button>
 
@@ -133,6 +133,10 @@
       <button mat-flat-button color="primary" (click)="approuver()">
         <mat-icon>check_circle</mat-icon>
         Approuver
+      </button>
+      <button mat-raised-button color="primary" (click)="deleteexamfinal(exam.id)">
+        <mat-icon>check_circle</mat-icon>
+        Delete Exam Final
       </button>
       }
       }
@@ -235,10 +239,10 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
             <td mat-cell *matCellDef="let element">
               @if (authservice.$IsAdmin|async) {
-              <button mat-flat-button color="warn" (click)="delete(element.id)">
+              <button mat-flat-button color="warn" (click)="deleterequiredmodule(element.id)">
                 Supprimer
               </button>
-              <button mat-flat-button color="accent" (click)="edit(element)">
+              <button mat-flat-button color="accent" (click)="editrequiredmodule(element)">
                 Modifier
               </button>}
               @else {

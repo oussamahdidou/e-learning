@@ -6,6 +6,7 @@
       <h4>{{chapitre.nom}} @if (authservice.$IsAdmin|async) { <button mat-button color="primary"
           (click)="modifierNom()">Modifier Chapitre Nom
         </button>
+        <button mat-button color="warn" (click)="delete()">Supprimer</button>
         @if (chapitre.statue==='Pending') {
         <button mat-flat-button color="primary" (click)="approuver()">
           <mat-icon>check_circle</mat-icon>
