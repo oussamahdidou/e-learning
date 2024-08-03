@@ -32,43 +32,49 @@ export class QuizComponent implements OnInit {
     private errorHandlingService: ErrorHandlingService
   ) {}
 
-
   ngOnInit(): void {
-
-    this.route.paramMap.subscribe((params) => {
-      this.courseId = Number(params.get('id'));
-      if (isNaN(this.courseId)) {
-        this.errorHandlingService.handleError(null, 'Invalid course ID');
-        this.router.navigate(['/']);
-        return;
-      }
-
-      const pathSegment = this.route.snapshot.url[0]?.path;
-      if (pathSegment === 'quiz') {
-        const quizId = Number(params.get('quizid'));
-        this.id = quizId;
-        if (!isNaN(quizId)) {
-          this.loadQuiz(quizId);
-        } else {
-          this.errorHandlingService.handleError(null, 'Invalid quiz ID');
-          this.router.navigate(['/']);
-        }
-      } else if (pathSegment === 'testniveau') {
-        const testNiveauId = Number(params.get('testniveauid'));
-        if (!isNaN(testNiveauId)) {
-          this.loadTestNiveau(testNiveauId);
-        } else {
-          this.errorHandlingService.handleError(null, 'Invalid Test Niveau ID');
-          this.router.navigate(['/']);
-        }
-      } else {
-        this.errorHandlingService.handleError(null, 'Invalid route: No valid quiz or testniveau path segment.');
-        this.router.navigate(['/']);
-      }
-    }, (error) => {
-      this.errorHandlingService.handleError(error, 'Error during route parameter extraction');
-      this.router.navigate(['/']);
+    this.route.parent?.params.subscribe((params) => {
+      this.courseId = params['id'];
     });
+    this.route.paramMap.subscribe(
+      (params) => {
+        const pathSegment = this.route.snapshot.url[0]?.path;
+        if (pathSegment === 'quiz') {
+          const quizId = Number(params.get('quizid'));
+          this.id = quizId;
+          if (!isNaN(quizId)) {
+            this.loadQuiz(quizId);
+          } else {
+            this.errorHandlingService.handleError(null, 'Invalid quiz ID');
+            this.router.navigate(['/']);
+          }
+        } else if (pathSegment === 'testniveau') {
+          const testNiveauId = Number(params.get('testniveauid'));
+          if (!isNaN(testNiveauId)) {
+            this.loadTestNiveau(testNiveauId);
+          } else {
+            this.errorHandlingService.handleError(
+              null,
+              'Invalid Test Niveau ID'
+            );
+            this.router.navigate(['/']);
+          }
+        } else {
+          this.errorHandlingService.handleError(
+            null,
+            'Invalid route: No valid quiz or testniveau path segment.'
+          );
+          this.router.navigate(['/']);
+        }
+      },
+      (error) => {
+        this.errorHandlingService.handleError(
+          error,
+          'Error during route parameter extraction'
+        );
+        this.router.navigate(['/']);
+      }
+    );
   }
 
   private loadQuiz(quizId: number): void {
@@ -79,12 +85,12 @@ export class QuizComponent implements OnInit {
           this.getQuizResult(quizId, this.quiz.questions.length);
           console.log('Quiz loaded:', quiz);
         } else {
-          this.errorHandlingService.handleError(null,'Quiz Not found')
+          this.errorHandlingService.handleError(null, 'Quiz Not found');
           this.router.navigate(['/']);
         }
       },
       (error) => {
-        this.errorHandlingService.handleError(error,'Error fetching quiz')
+        this.errorHandlingService.handleError(error, 'Error fetching quiz');
         this.router.navigate(['/']);
       }
     );
@@ -100,12 +106,15 @@ export class QuizComponent implements OnInit {
           this.getTestNiveauScore(testNiveauId, this.quiz.questions.length);
           console.log('Test Niveau loaded:', quiz);
         } else {
-          this.errorHandlingService.handleError(null,'Test Niveau not found')
+          this.errorHandlingService.handleError(null, 'Test Niveau not found');
           this.router.navigate(['/']);
         }
       },
       (error) => {
-        this.errorHandlingService.handleError(error,'Error fetching Test Niveau')
+        this.errorHandlingService.handleError(
+          error,
+          'Error fetching Test Niveau'
+        );
         this.router.navigate(['/']);
       }
     );
@@ -167,34 +176,42 @@ export class QuizComponent implements OnInit {
         if (this.isTest) {
           this.courseService
             .createTestNiveauScore(this.quiz.id, note)
-            .subscribe((res) => {
-              this.showResultMessage(resultMessage, res.note);
-            },
-          (error) => {
-            this.errorHandlingService.handleError(error,'An error occured while saving mark')
-
-          });
-        } else {
-          if (this.isQuizAlreadyPassed) {
-            this.courseService
-              .updateQuizResult(this.quiz.id, note)
-              .subscribe((res) => {
+            .subscribe(
+              (res) => {
                 this.showResultMessage(resultMessage, res.note);
               },
               (error) => {
-                this.errorHandlingService.handleError(error,'An error occured while updating')
-
-              });
+                this.errorHandlingService.handleError(
+                  error,
+                  'An error occured while saving mark'
+                );
+              }
+            );
+        } else {
+          if (this.isQuizAlreadyPassed) {
+            this.courseService.updateQuizResult(this.quiz.id, note).subscribe(
+              (res) => {
+                this.showResultMessage(resultMessage, res.note);
+              },
+              (error) => {
+                this.errorHandlingService.handleError(
+                  error,
+                  'An error occured while updating'
+                );
+              }
+            );
           } else {
-            this.courseService
-              .createQuizResult(this.quiz.id, note)
-              .subscribe((state) => {
+            this.courseService.createQuizResult(this.quiz.id, note).subscribe(
+              (state) => {
                 this.showResultMessage(resultMessage, note);
               },
               (error) => {
-                this.errorHandlingService.handleError(error,'An error occured while creating')
-
-              });
+                this.errorHandlingService.handleError(
+                  error,
+                  'An error occured while creating'
+                );
+              }
+            );
             console.log('your Note:', note);
           }
         }
@@ -239,38 +256,54 @@ export class QuizComponent implements OnInit {
   }
 
   getTestNiveauScore(moduleId: number, noteTotal: number) {
-    this.courseService.getTestNiveauScore(moduleId).subscribe((res) => {
-      if (res != 0) {
-        Swal.fire({
-          title: `Votre note est :${res} / ${noteTotal}`,
-          text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois cliquer sur ok`,
-          icon: 'success',
-        });
-        this.note = res.note;
-        this.isQuizAlreadyPassed = true;
-        return this.note;
+    this.courseService.getTestNiveauScore(moduleId).subscribe(
+      (res) => {
+        if (res != 0) {
+          Swal.fire({
+            title: `Votre note est :${res} / ${noteTotal}`,
+            text: `Vous avez deja passé ce Test de niveau si vous voulez passé ce quiz une autre fois cliquer sur ok`,
+            icon: 'success',
+          });
+          this.note = res.note;
+          this.isQuizAlreadyPassed = true;
+          return this.note;
+        }
+        return;
+      },
+      (error) => {
+        this.errorHandlingService.handleError(
+          error,
+          'Error During Fetching TestNiveau'
+        );
       }
-      return;
-    },
-    (error) => {
-      this.errorHandlingService.handleError(error, 'Error During Fetching TestNiveau')
-    });
+    );
   }
   suivantFunction() {
-    this.courseService.getChapterId(this.id).subscribe((chapterId) => {
-      if (chapterId != null) {
-        this.courseService.getControle(chapterId).subscribe((controleId) => {
-          if (controleId != null) {
-            this.router.navigate([
-              `/course/${this.courseId}/exam/${controleId}`,
-            ]);
-          } else {
-            this.router.navigate([
-              `/course/${this.courseId}/cour/${this.id + 1}`,
-            ]);
-          }
-        });
+    this.courseService.getChapterId(this.id).subscribe(
+      (chapterId) => {
+        if (chapterId != null) {
+          this.courseService.getControle(chapterId).subscribe((controleId) => {
+            if (controleId != null) {
+              this.router.navigate([
+                `/course/${this.courseId}/exam/${controleId}`,
+              ]);
+            } else {
+              this.courseService.isLastChapter(chapterId).subscribe((state) => {
+                if (state) {
+                  console.log('this is the last chapter');
+                } else {
+                  this.router.navigate([
+                    `/course/${this.courseId}/cour/${this.id + 1}`,
+                  ]);
+                }
+              });
+            }
+          });
+        }
+      },
+      (error) => {
+        console.log(error);
       }
-    });
+    );
   }
 }

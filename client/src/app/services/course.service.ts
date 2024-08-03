@@ -201,8 +201,7 @@ export class CourseService {
     const maxchapitreNum = Math.max(
       ...this.module.chapitres.map((chapitre) => chapitre.chapitreNum)
     );
-    const chapter = this.module.chapitres.find((chapter) => chapter.id === id);
-    if (chapter?.chapitreNum === maxchapitreNum) return of(true);
+    if (id === maxchapitreNum) return of(true);
     return of(false);
   }
 
