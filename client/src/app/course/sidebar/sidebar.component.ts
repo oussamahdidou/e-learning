@@ -28,7 +28,7 @@ export class SidebarComponent implements OnInit {
       this.module = module;
       this.calculateProgress();
     }, (error) => {
-      this.errorHandlingService.handleError(error,'Error Fetching Module:')
+      this.errorHandlingService.handleError(error,'Error Fetching Module')
       this.router.navigate(['/']);
     });
   }
@@ -65,7 +65,6 @@ export class SidebarComponent implements OnInit {
   CheckChapter(chapite: Chapitre, event: Event) {
     console.log("This is the module before checking ", this.module)
     this.courseService.checkChapter(chapite.id).subscribe((state) => {
-
       console.log(state);
       if (state && this.module) {
         const chapter = this.module.chapitres.find(c => c.id === chapite.id);
@@ -75,6 +74,8 @@ export class SidebarComponent implements OnInit {
           this.calculateProgress();
         }
       }
+    },(error) => {
+      this.errorHandlingService.handleError(error,'Error checking chapitre')
     });
   }
 }
