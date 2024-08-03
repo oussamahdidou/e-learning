@@ -33,7 +33,7 @@ export class LectureComponent {
             console.error('Error fetching video URL:', error);
             Swal.fire({
               title: 'Error!',
-              text: 'Failed to load video URL. Please try again later.',
+              text: 'Failed to load video. Please try again later.',
               icon: 'error',
               confirmButtonText: 'OK'
             });
