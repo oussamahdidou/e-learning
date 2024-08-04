@@ -329,4 +329,21 @@ export class CourseService {
         catchError(this.handleError)
       );
   }
+
+  getExamFinal(moduleId: number){
+    return this.http
+    .get<any>(`${environment.apiUrl}/api/ExamFinal/GetExamFinaleByModule/${moduleId}`)
+    .pipe(
+      tap((response) => {
+        console.log("retrieving exam final:", response);
+      }),
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 400) {
+          console.error("Error: Bad Request - Module doesn't exist.");
+          return throwError(() => new Error("The requested module does not exist."));
+        }
+        return throwError(() => new Error("An unknown error occurred."));
+      })
+    );
+  }
 }

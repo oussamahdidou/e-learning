@@ -43,6 +43,10 @@ const routes: Routes = [
         path: 'schema/:pdfid',
         component: PdfViewerComponent,
       },
+      {
+        path: 'ControleFinal/:pdfid',
+        component: PdfViewerComponent,
+      },
     ],
   },
 ];

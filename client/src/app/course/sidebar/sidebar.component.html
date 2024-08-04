@@ -114,6 +114,17 @@
       </div>
     </div>
   </div>
+  <div class="items" (click)="setActive($event)" *ngIf="examFinal">
+    <a
+    [routerLink]="['/course', module?.id, 'ControleFinal', module?.id]"
+      class="d-flex align-items-center w-100 text-decoration-none"
+    >
+      <span class="flex-grow-1">Exam Final</span>
+      <button mat-icon-button color="primary" aria-label="Quiz">
+        <mat-icon>quiz</mat-icon>
+      </button>
+    </a>
+  </div>
   <div class="items" (click)="setActive($event)">
     <a
       [routerLink]="['/course', module?.id, 'testniveau', module?.id]"
