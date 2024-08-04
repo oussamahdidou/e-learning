@@ -19,6 +19,7 @@ export class SidebarComponent implements OnInit {
   module: Module | undefined;
   progress: number = 0;
   private activeElement: HTMLElement | null = null;
+  examFinal: any;
 
   constructor(
     private courseService: CourseService,
@@ -34,10 +35,24 @@ export class SidebarComponent implements OnInit {
       (module) => {
         this.module = module;
         this.calculateProgress();
+        this.fetchExamFinal(id);
       },
       (error) => {
         this.errorHandlingService.handleError(error, 'Error Fetching Module');
         this.router.navigate(['/']);
+      }
+    );
+  }
+
+  fetchExamFinal(moduleId: any) {
+    const id: number = parseInt(moduleId)
+    this.courseService.getExamFinal(moduleId).subscribe(
+      (examFinal) => {
+        this.examFinal = examFinal;
+        console.log('Exam Final:', this.examFinal);
+      },
+      (error) => {
+          console.warn('No exam final found for this module.', error)
       }
     );
   }

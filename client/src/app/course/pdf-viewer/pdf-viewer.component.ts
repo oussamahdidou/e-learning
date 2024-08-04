@@ -58,7 +58,6 @@ export class PdfViewerComponent {
             this.exam = url;
             this.isDevoirExists(this.id);}
             , (error) => {
-              console.error("error fetching exam", error);
               this.errorHandlingService.handleError(error,'Failed to load Exam. Please try again later. ')
             });
           this.isExam = true;
@@ -68,7 +67,16 @@ export class PdfViewerComponent {
             , (error) => {
               this.errorHandlingService.handleError(error,'Failed to load Schema. Please try again later. ')
             });
-        } else {
+        }
+        else if (routePath?.includes('ControleFinal')){
+          this.courseService.getExamFinal(this.id).subscribe((url) => {
+            this.pdfUrl = url.ennonce;
+          }
+            , (error) => {
+              this.errorHandlingService.handleError(error,'Failed to load ExamFinal. Please try again later. ')
+            });
+        }
+        else {
           console.error('Unknown route type');
         }
       } else {
