@@ -4,6 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { AuthService } from './services/auth.service';
 import { AdminGuardService } from './services/admin-guard.service';
 import { DashboardGuardService } from './dashboard-guard.service';
+import { StudentGuardService } from './services/student-guard.service';
 const routes: Routes = [
   {
     path: '',
@@ -11,6 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'institutions',
+    canActivate: [StudentGuardService],
     loadChildren: () =>
       import('./institutions/institutions.module').then(
         (m) => m.InstitutionsModule
@@ -18,6 +20,7 @@ const routes: Routes = [
   },
   {
     path: 'course',
+    canActivate: [StudentGuardService],
     loadChildren: () =>
       import('./course/course.module').then((m) => m.CourseModule),
   },

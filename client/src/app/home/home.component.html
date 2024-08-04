@@ -7,7 +7,7 @@
       <p class="mx-4" [routerLink]="'/'" fragment="formation">Formations</p>
       <p class="mx-4" [routerLink]="'/'" fragment="tarif">Tarifs</p>
 
-      <p class="mx-4 login-button text-white px-3 py-2">Sign in</p>
+      <p class="mx-4 login-button text-white px-3 py-2" routerLink="auth/login">Sign in</p>
     </nav>
   </div>
 </div>
@@ -20,7 +20,7 @@
         Explorez, Engagez et Excellez avec Notre Plateforme d'Apprentissage en
         Ligne Complète</span>
       <br />
-      <button class="btn text-white mt-3" style="background-color: #407bff">
+      <button routerLink="/institutions" class="btn text-white mt-3" style="background-color: #407bff">
         Get Started
       </button>
     </div>
