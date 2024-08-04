@@ -1,14 +1,32 @@
-<div class="container-fluid ">
+<div class="container-fluid">
   <h3 class="text-center section-title my-5">Explore Nos Institutions</h3>
+  @if(data != null){
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+    <strong>Attention</strong>
+    @for (module of data.modules; track module.Name){
+    <p>
+      Vous devez avoir dans le module {{ module.Name }} le seuil
+      {{ module.Seuill }} situer dans l'institution
+      {{ module.Institution }} dans {{ module.NiveauScolaire }} dans l'inst
+    </p>
+    }
+  </div>
+  }
   <div class="row justify-content-center mx-auto container">
     @for (item of institutions; track $index) {
-    <div class="col-lg-3  px-2  ">
-      <div class="d-flex flex-column p-3 justify-content-start align-items-baseline item-container">
-        <img src="img\instutition.png" class="img-fluid">
-        <span class="item-description text-break my-3">{{item.nom}}</span>
-        <button mat-raised-button routerLink="/institutions/niveau-scolaire/{{item.id}}">Explore </button>
+    <div class="col-lg-3 px-2">
+      <div
+        class="d-flex flex-column p-3 justify-content-start align-items-baseline item-container"
+      >
+        <img src="img\instutition.png" class="img-fluid" />
+        <span class="item-description text-break my-3">{{ item.nom }}</span>
+        <button
+          mat-raised-button
+          routerLink="/institutions/niveau-scolaire/{{ item.id }}"
+        >
+          Explore
+        </button>
       </div>
-
     </div>
 
     }
