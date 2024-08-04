@@ -14,6 +14,7 @@ namespace api.interfaces
         Task<Result<ExamFinal>> UpdateExamFinalEnnonce(UpdateExamFinalDto updateExamFinalDto);
         Task<Result<ExamFinal>> UpdateExamFinalSolution(UpdateExamFinalDto updateExamFinalDto);
         Task<Result<ExamFinal>> GetExamFinaleByModule(int Id);
+        Task<Result<ExamFinal>> getExamFinalById(int examId);
         Task<Result<ExamFinal>> Refuser(int id);
         Task<Result<ExamFinal>> Approuver(int id);
         Task<bool> DeleteExam(int id);

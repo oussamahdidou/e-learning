@@ -98,10 +98,10 @@
       *ngFor="let controle of getControles(chapitre.chapitreNum)"
       (click)="setActive($event)"
     >
-      <div class="items">
+      <div class="items ">
         <a
           [routerLink]="['/course',module?.id,'exam', controle.id]"
-          class="d-flex align-items-center w-100 text-decoration-none"
+          class="d-flex align-items-center w-100 text-decoration-none "
         >
           <span class="flex-grow-1">Controle : {{ controle.nom }}</span>
           <button mat-icon-button color="primary" aria-label="Controle">
@@ -113,7 +113,7 @@
   </div>
   <div class="items" (click)="setActive($event)" *ngIf="examFinal">
     <a
-    [routerLink]="['/course', module?.id, 'ControleFinal', module?.id]"
+    [routerLink]="['/course', module?.id, 'ControleFinal', examFinal?.id]"
       class="d-flex align-items-center w-100 text-decoration-none"
     >
       <span class="flex-grow-1">Exam Final</span>

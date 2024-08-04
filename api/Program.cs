@@ -127,6 +127,7 @@ builder.Services.AddScoped<IDashboardRepository, DashboardRepository>();
 builder.Services.AddScoped<IControleRepository, ControleRepository>();
 builder.Services.AddScoped<IExamFinalRepository, ExamFinalRepository>();
 builder.Services.AddScoped<IUserCenterInterface, UserCenterRepository>();
+builder.Services.AddScoped<IResultExamRepository, ResultExamRepository>();
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")

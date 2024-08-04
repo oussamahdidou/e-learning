@@ -15,4 +15,4 @@ namespace api.interfaces
         Task<Result<ResultControle>> GetResultControleById(AppUser user, int controleId);
 
     }
-}
+} 

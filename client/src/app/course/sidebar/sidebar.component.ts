@@ -46,7 +46,7 @@ export class SidebarComponent implements OnInit {
 
   fetchExamFinal(moduleId: any) {
     const id: number = parseInt(moduleId)
-    this.courseService.getExamFinal(moduleId).subscribe(
+    this.courseService.getExamFinalByModuleId(moduleId).subscribe(
       (examFinal) => {
         this.examFinal = examFinal;
         console.log('Exam Final:', this.examFinal);

@@ -74,6 +74,16 @@ namespace api.Controllers
             }
             return Ok(result.Value);
         }
+        [HttpGet("GetExamFinaleById/{id:int}")]
+        public async Task<IActionResult> GetExamFinaleById([FromRoute] int id)
+        {
+            Result<ExamFinal> result = await examFinalRepository.getExamFinalById(id);
+            if (!result.IsSuccess)
+            {
+                return BadRequest(result.Error);
+            }
+            return Ok(result.Value);
+        }
         [HttpPut("UpdateExamEnnonce")]
         public async Task<IActionResult> UpdateExamFinaleEnnonce([FromForm] UpdateExamFinalDto updateExamFinalDto)
         {
