@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../services/course.service';
 import { Module } from '../interfaces/dashboard';
 import { ErrorHandlingService } from '../services/error-handling.service';
+import { SharedDataService } from '../services/shared-data.service';
 
 @Component({
   selector: 'app-course',
@@ -14,7 +15,8 @@ export class CourseComponent {
     private router: Router,
     private route: ActivatedRoute,
     private courseService: CourseService,
-    private errorHandlingService: ErrorHandlingService
+    private errorHandlingService: ErrorHandlingService,
+    private sharedDataService: SharedDataService
   ) {}
   module: Module | undefined;
 
@@ -38,11 +40,8 @@ export class CourseComponent {
             }
           );
         } else {
-          this.errorHandlingService.handleError(
-            'your not elligible',
-            `you must have `
-          );
-          this.router.navigate(['/']);
+          this.sharedDataService.setData(data);
+          this.router.navigate(['/institutions']);
         }
       },
       error: (err) => {

@@ -45,7 +45,6 @@
   background-color: #d7f1ed;
 }
 
-
 .checkbox-wrapper {
   display: flex;
   align-items: center;
@@ -73,4 +72,7 @@
 
 .checkbox span {
   font-size: 11px; /* Adjust size as needed */
+}
+.controle {
+  background-color: #f3f1f1;
 }
