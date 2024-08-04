@@ -1,6 +1,9 @@
 import { NgModule } from '@angular/core';
 import { ExtraOptions, RouterModule, Routes } from '@angular/router';
-
+import { HomeComponent } from './home/home.component';
+import { AuthService } from './services/auth.service';
+import { AdminGuardService } from './services/admin-guard.service';
+import { DashboardGuardService } from './dashboard-guard.service';
 const routes: Routes = [
   {
     path: '',
@@ -40,11 +43,6 @@ const routes: Routes = [
     redirectTo: '',
   },
 ];
-
-import { HomeComponent } from './home/home.component';
-import { AuthService } from './services/auth.service';
-import { AdminGuardService } from './services/admin-guard.service';
-import { DashboardGuardService } from './dashboard-guard.service';
 
 const routerOptions: ExtraOptions = {
   anchorScrolling: 'enabled', // Enable anchor scrolling
