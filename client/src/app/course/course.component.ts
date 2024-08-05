@@ -4,6 +4,7 @@ import { CourseService } from '../services/course.service';
 import { Module } from '../interfaces/dashboard';
 import { ErrorHandlingService } from '../services/error-handling.service';
 import { SharedDataService } from '../services/shared-data.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-course',
@@ -40,13 +41,30 @@ export class CourseComponent {
             }
           );
         } else {
-          this.sharedDataService.setData(data);
           this.router.navigate(['/institutions']);
+          this.showWarningModal(data.modules);
         }
       },
       error: (err) => {
         console.log(err);
       },
+    });
+  }
+  showWarningModal(modules: any[]): void {
+    const moduleLinks = modules
+      .map(
+        (module) =>
+          `<a href="/course/${module.id}/testniveau/${module.id}" style="color: blue; text-decoration: none;">
+        ${module.name} (seuill: ${module.seuill})
+      </a>`
+      )
+      .join('<br>');
+
+    Swal.fire({
+      icon: 'warning',
+      title: 'Access refusee',
+      html: `tu peux pas acceder a se module il faut que tu passe un test de niveau dans les modules suivants: <br> ${moduleLinks}`,
+      confirmButtonText: 'OK',
     });
   }
 }

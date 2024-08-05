@@ -84,11 +84,11 @@ export class AuthService {
 
   private redirectUser(role: string) {
     if (role === 'Admin') {
-      this.router.navigate(['/dashboard']);
+      window.location.href = `/dashboard`;
     } else if (role === 'Teacher') {
-      this.router.navigate(['/dashboard']);
+      window.location.href = `/dashboard`;
     } else if (role === 'Student') {
-      this.router.navigate(['/institutions']);
+      window.location.href = `/institutions`;
     }
   }
 
