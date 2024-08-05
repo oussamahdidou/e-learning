@@ -131,7 +131,7 @@ export class PdfViewerComponent {
 
   private uploadExamDevoir(formData: FormData) {
     this.courseService.uploadSolution(formData, this.exam.id).subscribe(
-      (response) => {
+      (res) => {
         this.devoirExists = true;
       },
       (error) => {
@@ -177,7 +177,6 @@ export class PdfViewerComponent {
     const formData = new FormData();
     formData.append('file', this.selectedFile);
 
-    // Depending on the type (exam or controlefinal), call the appropriate service method
     if (this.isExam) {
       this.uploadExamDevoir(formData);
     } else if (this.isControleFinal) {

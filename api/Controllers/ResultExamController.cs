@@ -48,8 +48,8 @@ namespace api.Controllers
             return Ok(result.Value);
         }
 
-        [HttpGet("{controleId}")]
-        public async Task<IActionResult> GetResultExamById(int examId)
+        [HttpGet("{examId}")]
+        public async Task<IActionResult> GetResultExamById([FromRoute]int examId)
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
@@ -65,9 +65,9 @@ namespace api.Controllers
 
             return Ok(result.Value.ToExamFinalDto());
         }
-        [HttpDelete("{controleId}")]
+        [HttpDelete("{examId}")]
         [Authorize]
-        public async Task<IActionResult> RemoveResult(int examId)
+        public async Task<IActionResult> RemoveResult([FromRoute]int examId)
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
