@@ -178,7 +178,7 @@ export class QuizComponent implements OnInit {
             .createTestNiveauScore(this.quiz.id, note)
             .subscribe(
               (res) => {
-                this.showResultMessage(resultMessage, res.note);
+                this.showtestResultMessage(resultMessage, res.note);
               },
               (error) => {
                 this.errorHandlingService.handleError(
@@ -241,7 +241,30 @@ export class QuizComponent implements OnInit {
       },
     });
   }
+  private showtestResultMessage(title: string, note: number) {
+    Swal.fire({
+      title,
+      text: `Vous avez deja passé ce quiz si vous voulez passé ce quiz une autre fois cliquer sur ok`,
+      icon: 'success',
+      preConfirm: () => {
+        this.router.navigate([
+          `/course/${this.courseId}/testniveau/${this.courseId}`,
+        ]);
+      },
+      footer:
+        '<button id="suivantButton" class="swal2-confirm swal2-styled">Suivant</button>',
+      didOpen: () => {
+        const suivantButton = document.getElementById('suivantButton');
 
+        if (suivantButton) {
+          suivantButton.addEventListener('click', () => {
+            this.suivantFunction();
+            Swal.close();
+          });
+        }
+      },
+    });
+  }
   getQuizResult(id: number, noteTotal: number) {
     this.courseService.getQuizResultById(id).subscribe((res) => {
       Swal.fire({

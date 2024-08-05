@@ -1,18 +1,21 @@
 <div class="container d-flex flex-column align-items-center">
-  <h2 class="mylearning">My Learning</h2>
-  <div class="d-flex justify-content-between align-items-center">
-    <div class="sort d-flex align-items-center">
-      <p class="mb-0 me-2">Sort By</p>
-      <select name="sortby" class="form-select me-3" style="width: auto">
-        <option value="name">name</option>
-      </select>
-    </div>
-    <div class="search d-flex align-items-center">
-      <input type="text" class="form-control input-search me-2" placeholder="Search" style="width: auto"
-        (input)="onInputChange($event)" #filtre />
-      <button class="btn btn-primary search-btn" (click)="filterResults(filtre.value)">
-        Search
-      </button>
+
+  <div class="d-flex justify-content-lg-between align-items-center py-5 container flex-wrap">
+    <h4 class="mylearning text-secondary">My Learning</h4>
+    <div class="d-flex align-items-center flex-wrap">
+      <div class="sort d-flex align-items-center">
+        <p class="mb-0 me-2">Sort By</p>
+        <select name="sortby" class="form-select me-3" style="width: auto">
+          <option value="name">name</option>
+        </select>
+      </div>
+      <div class="search d-flex align-items-center">
+        <input type="text" class="form-control input-search me-2" placeholder="Search" style="width: auto"
+          (input)="onInputChange($event)" #filtre />
+        <button class="btn btn-primary search-btn" (click)="filterResults(filtre.value)">
+          Search
+        </button>
+      </div>
     </div>
   </div>
   <div class="module row">
