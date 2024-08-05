@@ -367,29 +367,42 @@ api/Dashboard/GetObjectspourApprouver`,
     );
   }
   deleteinstitution(id: number): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/api/Institution/${id}`);
+    return this.http.delete(`${environment.apiUrl}/api/Institution/${id}`, {
+      headers: this.authservice.headers,
+    });
   }
   deleteniveauscolaire(id: number): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/api/NiveauScolaire/${id}`);
+    return this.http.delete(`${environment.apiUrl}/api/NiveauScolaire/${id}`, {
+      headers: this.authservice.headers,
+    });
   }
   deletemodule(id: number): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/api/Module/${id}`);
+    return this.http.delete(`${environment.apiUrl}/api/Module/${id}`, {
+      headers: this.authservice.headers,
+    });
   }
   deletechapitre(id: number): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/api/Chapitre/${id}`);
+    return this.http.delete(`${environment.apiUrl}/api/Chapitre/${id}`, {
+      headers: this.authservice.headers,
+    });
   }
   deleteexamfinal(id: number): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/api/ExamFinal/${id}`);
+    return this.http.delete(`${environment.apiUrl}/api/ExamFinal/${id}`, {
+      headers: this.authservice.headers,
+    });
   }
   deletecontrole(id: number): Observable<any> {
-    return this.http.delete(`${environment.apiUrl}/api/Controle/${id}`);
+    return this.http.delete(`${environment.apiUrl}/api/Controle/${id}`, {
+      headers: this.authservice.headers,
+    });
   }
   deleterequiredmodule(
     TargetModuleId: number,
     RequiredModuleId: number
   ): Observable<any> {
     return this.http.delete(
-      `${environment.apiUrl}/api/ModuleRequirement/${TargetModuleId}/${RequiredModuleId}`
+      `${environment.apiUrl}/api/ModuleRequirement/${TargetModuleId}/${RequiredModuleId}`,
+      { headers: this.authservice.headers }
     );
   }
   editrequiredmodule(
@@ -397,10 +410,14 @@ api/Dashboard/GetObjectspourApprouver`,
     RequiredModuleId: number,
     seuill: number
   ): Observable<any> {
-    return this.http.put(`${environment.apiUrl}/api/ModuleRequirement`, {
-      targetModuleId: TargetModuleId,
-      requiredModuleId: RequiredModuleId,
-      seuill: seuill,
-    });
+    return this.http.put(
+      `${environment.apiUrl}/api/ModuleRequirement`,
+      {
+        targetModuleId: TargetModuleId,
+        requiredModuleId: RequiredModuleId,
+        seuill: seuill,
+      },
+      { headers: this.authservice.headers }
+    );
   }
 }

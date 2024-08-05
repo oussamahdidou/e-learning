@@ -88,7 +88,7 @@ export class AuthService {
     } else if (role === 'Teacher') {
       this.router.navigate(['/dashboard']);
     } else if (role === 'Student') {
-      this.router.navigate(['/profile/mylearning']);
+      this.router.navigate(['/institutions']);
     }
   }
 

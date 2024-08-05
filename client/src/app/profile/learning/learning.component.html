@@ -8,59 +8,36 @@
       </select>
     </div>
     <div class="search d-flex align-items-center">
-      <input
-        type="text"
-        class="form-control input-search me-2"
-        placeholder="Search"
-        style="width: auto"
-        (input)="onInputChange($event)"
-        #filtre
-      />
-      <button
-        class="btn btn-primary search-btn"
-        (click)="filterResults(filtre.value)"
-      >
+      <input type="text" class="form-control input-search me-2" placeholder="Search" style="width: auto"
+        (input)="onInputChange($event)" #filtre />
+      <button class="btn btn-primary search-btn" (click)="filterResults(filtre.value)">
         Search
       </button>
     </div>
   </div>
   <div class="module row">
-    <div
-      class="col-12 col-sm-6 col-md-4 col-lg-3 module-card rounded mb-3"
-      *ngFor="let module of filteredModules"
-    >
-      <a
-        class="text-decoration-none"
-        [routerLink]="['/course', module.moduleID]"
-      >
-        <img src="img/Pricing plans-rafiki.png" class="module-img" alt="" />
-        <div class="module-details">
-          <h6 class="module-title">{{ module.nom | truncate : 22 }}</h6>
-          <p
-            class="progress-bar bg-primary rounded"
-            role="progressbar"
-            [style.width.%]="calculateProgress(module.moduleID)"
-            aria-valuenow="progress"
-            aria-valuemin="0"
-            aria-valuemax="100"
-          >
-            <span class="bar"></span>
-          </p>
-          <a
-            class="testniveau text-decoration-none text-reset"
-            [routerLink]="[
+    <div class="col-12 col-sm-6 col-md-4 col-lg-3  mb-3 align-items-center" *ngFor="let module of filteredModules">
+      <div class="module-card rounded">
+        <a class="text-decoration-none " [routerLink]="['/course', module.moduleID]">
+          <img src="img/Pricing plans-rafiki.png" class="module-img" alt="" />
+          <div class="module-details">
+            <p class="module-title">{{ module.nom }}</p>
+            <p class="progress-bar bg-primary  " role="progressbar" [style.width.%]="calculateProgress(module.moduleID)"
+              aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100">
+              <span class="bar"></span>
+            </p>
+            <a class="testniveau text-decoration-none text-reset" [routerLink]="[
               '/course',
               module.moduleID,
               'testniveau',
               module.moduleID
-            ]"
-            >Passer Test De niveau</a
-          >
-          <div class="play-button" [routerLink]="['/course', module.moduleID]">
-            <span>&#9658;</span>
+            ]">Passer Test De niveau</a>
+            <div class="play-button" [routerLink]="['/course', module.moduleID]">
+              <span>&#9658;</span>
+            </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </div>
   </div>
 </div>
