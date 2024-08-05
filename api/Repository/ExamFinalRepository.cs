@@ -22,6 +22,18 @@ namespace api.Repository
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
         }
+
+        public async Task<Result<ExamFinal>> getExamFinalById(int examId)
+        {
+            ExamFinal? examFinal = await apiDbContext.examFinals.FindAsync(examId);
+
+            if(examFinal == null)
+            {
+                return Result<ExamFinal>.Failure("Exam Not Found");
+            }
+
+            return Result<ExamFinal>.Success(examFinal);
+        }
         public async Task<Result<ExamFinal>> CreateExamFinal(CreateExamFinalDto createExamFinalDto)
         {
             Result<string> ennonceresult = await createExamFinalDto.Ennonce.UploadControle(webHostEnvironment);

@@ -116,7 +116,7 @@
       *ngFor="let controle of getControles(chapitre.chapitreNum)"
       [ngClass]="{ onit: part1 === 'exam' && part2 === controle.id }"
     >
-      <div class="items controle">
+      <div class="items">
         <a
           [routerLink]="['/course', module?.id, 'exam', controle.id]"
           class="d-flex align-items-center w-100 text-decoration-none"
@@ -131,11 +131,11 @@
   </div>
   <div
     class="items"
-    [ngClass]="{ onit: part1 === 'ControleFinal' && part2 === module?.id }"
+    [ngClass]="{ onit: part1 === 'ControleFinal' && part2 === examFinal?.id }"
     *ngIf="examFinal"
   >
     <a
-      [routerLink]="['/course', module?.id, 'ControleFinal', module?.id]"
+      [routerLink]="['/course', module?.id, 'ControleFinal', examFinal?.id]"
       class="d-flex align-items-center w-100 text-decoration-none"
     >
       <span class="flex-grow-1">Exam Final</span>

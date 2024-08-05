@@ -4,30 +4,31 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.extensions;
 using api.Extensions;
+using api.generique;
 using api.interfaces;
+using api.Mappers;
 using api.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
-using api.Mappers;
-using api.generique;
 
 namespace api.Controllers
 {
+
     [ApiController]
     [Route("api/[controller]")]
-    public class ResultControleController : ControllerBase
+    public class ResultExamController : ControllerBase
     {
         private readonly UserManager<AppUser> _manager;
-        private readonly IResultControleRepository _resultRepo;
+        private readonly IResultExamRepository _resultRepo;
         private readonly IWebHostEnvironment _environment;
-        public ResultControleController(UserManager<AppUser> manager, IResultControleRepository resultRepo, IWebHostEnvironment environment)
+        public ResultExamController(UserManager<AppUser> manager, IResultExamRepository resultRepo, IWebHostEnvironment environment)
         {
             _manager = manager;
             _resultRepo = resultRepo;
             _environment = environment;
         }
+
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id)  
         {
@@ -36,38 +37,19 @@ namespace api.Controllers
 
             if (user == null)
                 return BadRequest("User not found.");
-            // 5f584df6-2795-4a9b-9364-d57c912ef0d8
-            // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
 
             Result<string> result = await file.UploadControleReponse(_environment);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
-            Result<ResultControle> addResult = await _resultRepo.AddResult(user, id, result.Value); 
+            Result<ResultExam> addResult = await _resultRepo.AddResult(user, id, result.Value); 
             if (!addResult.IsSuccess)
                 return BadRequest(result.Error);
             return Ok(result.Value);
-        } 
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> GetStudentAllResults()
-        {
-            string username = User.GetUsername();
-            AppUser? user = await _manager.FindByNameAsync(username);
-
-            if (user == null)
-                return BadRequest("User not found.");
-
-            Result<List<ResultControle>> results = await _resultRepo.GetStudentAllResult(user);
-
-            if (!results.IsSuccess)
-                return BadRequest(results.Error);
-
-            return Ok(results.Value);
         }
-        [HttpGet("{controleId}")]
-        // [Authorize]
-        public async Task<IActionResult> GetResultControleById(int controleId)
+
+        [HttpGet("{examId}")]
+        public async Task<IActionResult> GetResultExamById([FromRoute]int examId)
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
@@ -75,17 +57,17 @@ namespace api.Controllers
             if (user == null)
                 return BadRequest("User not found.");
 
-            Result<ResultControle> result = await _resultRepo.GetResultControleById(user, controleId);
+            Result<ResultExam> result = await _resultRepo.GetResultExamById(user, examId);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
 
 
-            return Ok(result.Value.ToResultControleDto());
+            return Ok(result.Value.ToExamFinalDto());
         }
-        [HttpDelete("{controleId}")]
+        [HttpDelete("{examId}")]
         [Authorize]
-        public async Task<IActionResult> RemoveResult(int controleId)
+        public async Task<IActionResult> RemoveResult([FromRoute]int examId)
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
@@ -93,7 +75,7 @@ namespace api.Controllers
             if (user == null)
                 return BadRequest("User not found.");
 
-            Result<ResultControle> result = await _resultRepo.RemoveResult(user, controleId);
+            Result<ResultExam> result = await _resultRepo.RemoveResult(user, examId);
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
@@ -111,8 +93,7 @@ namespace api.Controllers
                 }
             }
 
-            return Ok(result.Value);
+            return Ok(result.Value.ToExamFinalDto());
         }
-
     }
 }

@@ -1,29 +1,29 @@
 <div class="container d-flex align-items-center flex-column">
   <div class="container d-flex align-items-center justify-content-between">
-    <h1>{{ isExam ? "Controle" : "lecture" }}</h1>
-    @if(devoirExists){
-    <button
-      class="mx-5 rounded-pill btn-devoir px-4 --bs-danger-border-subtle"
-      data-bs-toggle="modal"
-      data-bs-target="#devoirModal"
-      *ngIf="isExam"
-    >
-      - Annuler
-    </button>
-    }@else{
-    <button
-      class="mx-5 rounded-pill btn-devoir px-4"
-      data-bs-toggle="modal"
-      data-bs-target="#devoirModal"
-      *ngIf="isExam"
-    >
-      + Ajouter
-    </button>
-    }
+    <h1>{{ isExam ? 'Controle' : isControleFinal ? 'Controle Final' : 'Lecture' }}</h1>
+    <ng-container *ngIf="isExam || isControleFinal">
+      <button
+        class="mx-5 rounded-pill btn-devoir px-4 --bs-danger-border-subtle"
+        data-bs-toggle="modal"
+        data-bs-target="#devoirModal"
+        *ngIf="devoirExists"
+      >
+        - Annuler
+      </button>
+      <button
+        class="mx-5 rounded-pill btn-devoir px-4"
+        data-bs-toggle="modal"
+        data-bs-target="#devoirModal"
+        *ngIf="!devoirExists"
+      >
+        + Ajouter
+      </button>
+    </ng-container>
   </div>
+
   <div class="pdfcontainer">
     <pdf-viewer
-      src="{{ host }}{{ pdfUrl }}"
+      [src]="host + pdfUrl"
       [render-text]="true"
       [original-size]="false"
       class="pdfcour"
@@ -32,56 +32,57 @@
   </div>
 
   <!-- Modal -->
-  <div
-    class="modal fade"
-    id="devoirModal"
-    tabindex="-1"
-    aria-labelledby="devoirModalLabel"
-    aria-hidden="true"
-    *ngIf="isExam"
-  >
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content d-flex">
-        <div class="modal-header">
-          <h5 class="modal-title" id="devoirModalLabel">Votre Devoir</h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div
-          class="modal-body text-center d-flex align-items-center flex-column"
-        >
-          @if(devoirExists){
-          <a [href]="devoirePdfUrl" target="_blank">Votre devoir</a>
-          <button
-            class="modal-btn-ajouter rounded-pill mt-3 --bs-danger-border-subtle"
-            (click)="deleteDevoir()"
+  <ng-container *ngIf="isExam || isControleFinal">
+    <div
+      class="modal fade"
+      id="devoirModal"
+      tabindex="-1"
+      aria-labelledby="devoirModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content d-flex">
+          <div class="modal-header">
+            <h5 class="modal-title" id="devoirModalLabel">Votre Devoir</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div
+            class="modal-body text-center d-flex align-items-center flex-column"
           >
-            - Annuler Votre Devoir
-          </button>
-          }@else{
-          <input
-            [disabled]="devoirExists"
-            type="file"
-            (change)="onFileSelected($event)"
-            accept=".pdf"
-            id="fileInput"
-          />
-          <button
-            class="modal-btn-ajouter rounded-pill mt-3"
-            (click)="uploadDevoir()"
-          >
-            + Ajouter votre devoir
-          </button>
-          }
-          <button class="modal-btn-terminer rounded-pill mt-3">
-            Marquer Comme Terminer
-          </button>
+            <ng-container *ngIf="devoirExists; else noDevoir">
+              <a [href]="devoirePdfUrl" target="_blank">Votre devoir</a>
+              <button
+                class="modal-btn-ajouter rounded-pill mt-3 --bs-danger-border-subtle"
+                (click)="deleteDevoir()"
+              >
+                - Annuler Votre Devoir
+              </button>
+            </ng-container>
+            <ng-template #noDevoir>
+              <input
+                type="file"
+                (change)="onFileSelected($event)"
+                accept=".pdf"
+                id="fileInput"
+              />
+              <button
+                class="modal-btn-ajouter rounded-pill mt-3"
+                (click)="uploadDevoir()"
+              >
+                + Ajouter votre devoir
+              </button>
+            </ng-template>
+            <button class="modal-btn-terminer rounded-pill mt-3">
+              Marquer Comme Terminer
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>
