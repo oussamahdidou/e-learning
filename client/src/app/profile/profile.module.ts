@@ -11,21 +11,27 @@ import { PersonelinfoComponent } from './personelinfo/personelinfo.component';
 const routes: Routes = [
   {
     path: '',
-    component:ProfileComponent,
+    component: ProfileComponent,
     children: [
       {
         path: 'mylearning',
         component: LearningComponent,
       },
       {
-        path:'info',
-        component:PersonelinfoComponent
-      }
+        path: 'info',
+        component: PersonelinfoComponent,
+      },
     ],
   },
 ];
 @NgModule({
-  declarations: [LearningComponent, ProfileComponent, NavbarComponent, PersonelinfoComponent],
-  imports: [CommonModule, RouterModule.forChild(routes), TruncatePipe , MatIcon],
+  declarations: [
+    LearningComponent,
+    ProfileComponent,
+    NavbarComponent,
+    PersonelinfoComponent,
+  ],
+  imports: [CommonModule, RouterModule.forChild(routes), TruncatePipe, MatIcon],
+  exports: [NavbarComponent],
 })
 export class ProfileModule {}

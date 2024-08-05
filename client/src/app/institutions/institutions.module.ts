@@ -5,10 +5,20 @@ import { InstitutionsComponent } from './institutions/institutions.component';
 import { NiveauScolairesComponent } from './niveauscolaires/niveauscolaires.component';
 import { ModulesComponent } from './modules/modules.component';
 import { MatButtonModule } from '@angular/material/button';
+import { ProfileModule } from '../profile/profile.module';
+import { InstitutionService } from '../services/institution.service';
+import { LearningComponent } from '../profile/learning/learning.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { MatIconModule } from '@angular/material/icon';
 const routes: Routes = [
   {
     path: '',
     children: [
+      {
+        path: '',
+        component: InstitutionsComponent,
+        title: 'institutions',
+      },
       {
         path: 'niveau-scolaire/:id',
         component: NiveauScolairesComponent,
@@ -19,11 +29,6 @@ const routes: Routes = [
         component: ModulesComponent,
         title: 'module',
       },
-      {
-        path: '',
-        component: InstitutionsComponent,
-        title: 'institutions',
-      },
     ],
   },
 ];
@@ -33,8 +38,15 @@ const routes: Routes = [
     InstitutionsComponent,
     NiveauScolairesComponent,
     ModulesComponent,
+    NavbarComponent,
   ],
-  imports: [CommonModule, RouterModule.forChild(routes), MatButtonModule],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    MatButtonModule,
+    MatIconModule,
+  ],
+  providers: [InstitutionService],
   exports: [InstitutionsComponent, NiveauScolairesComponent, ModulesComponent],
 })
 export class InstitutionsModule {}

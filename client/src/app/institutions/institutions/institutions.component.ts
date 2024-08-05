@@ -31,6 +31,7 @@ export class InstitutionsComponent implements OnInit {
     this.institutionService.getInstitutions().subscribe(
       (data) => {
         this.institutions = data;
+        console.log(data);
       },
       (error) => {
         console.error('Erreur lors du chargement des institutions', error);
