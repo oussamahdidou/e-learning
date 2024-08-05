@@ -26,7 +26,7 @@ namespace api.Controllers
         private readonly IModuleRepository _module;
         private readonly IUserCenterInterface _usercenter;
 
-        public UserCenterController(UserManager<AppUser> userManager , ICheckChapterRepository checkchapter , IModuleRepository module , IUserCenterInterface userCenter)
+        public UserCenterController(UserManager<AppUser> userManager, ICheckChapterRepository checkchapter, IModuleRepository module, IUserCenterInterface userCenter)
         {
             _module = module;
             _userManager = userManager;
@@ -35,16 +35,21 @@ namespace api.Controllers
         }
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult>  GetAllStudentCheckChapter(){
+        public async Task<IActionResult> GetAllStudentCheckChapter()
+        {
             string username = User.GetUsername();
             AppUser? student = await _userManager.FindByNameAsync(username);
             if (student == null) return BadRequest();
             Result<List<CheckChapter>> studentAllCheckedChapter = await _checkchapter.GetStudentAllcheckChapters(student);
-            if(!studentAllCheckedChapter.IsSuccess)
+            if (!studentAllCheckedChapter.IsSuccess)
             {
                 return BadRequest(studentAllCheckedChapter.Error);
             }
-            
+            if (studentAllCheckedChapter.Value.Count() == 0)
+            {
+                return Ok(new List<ModuleWithCheckCountDto>());
+
+            }
             CheckChapterDto moduleIds = studentAllCheckedChapter.Value.ToCheckChapterDto();
             List<ModuleWithCheckCountDto> modulesWithCheckCount = new List<ModuleWithCheckCountDto>();
 
@@ -64,10 +69,11 @@ namespace api.Controllers
                 });
             }
             return Ok(modulesWithCheckCount);
-        } 
+        }
         [HttpPut]
         [Authorize]
-        public async Task<IActionResult>  ChangePassword([FromBody] ChangePasswordDto changePasswordDto ){
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordDto changePasswordDto)
+        {
             string username = User.GetUsername();
             AppUser? user = await _userManager.FindByNameAsync(username);
             if (user == null) return BadRequest();
