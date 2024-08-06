@@ -114,6 +114,7 @@
 
     <div
       *ngFor="let controle of getControles(chapitre.chapitreNum)"
+      class="controle"
       [ngClass]="{ onit: part1 === 'exam' && part2 === controle.id }"
     >
       <div class="items">
@@ -130,7 +131,7 @@
     </div>
   </div>
   <div
-    class="items"
+    class="items controle"
     [ngClass]="{ onit: part1 === 'ControleFinal' && part2 === examFinal?.id }"
     *ngIf="examFinal"
   >
