@@ -258,7 +258,7 @@ export class QuizComponent implements OnInit {
 
         if (suivantButton) {
           suivantButton.addEventListener('click', () => {
-            this.suivantFunction();
+            this.router.navigate([`/course/${this.courseId}`]);
             Swal.close();
           });
         }
