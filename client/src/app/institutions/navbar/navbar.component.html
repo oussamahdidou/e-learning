@@ -7,10 +7,9 @@
                     <mat-icon class="account">perm_identity</mat-icon>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                    <li><a class="dropdown-item" [routerLink]="['/profile/info']">Profile</a></li>
                     <li><a class="dropdown-item" [routerLink]="['/profile/mylearning']">My Learning</a></li>
-                    <li><a class="dropdown-item" href="#">Contact Us</a></li>
-                    <li><a class="dropdown-item" href="#">About</a></li>
+                    <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+                    <li><a class="dropdown-item" href="auth/reset-password">Reset Password</a></li>
                 </ul>
             </li>
         </ul>
