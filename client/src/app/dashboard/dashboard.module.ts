@@ -43,6 +43,7 @@ import {
 
 import { AdminGuardService } from '../services/admin-guard.service';
 import { DashboardGuardService } from '../dashboard-guard.service';
+import { NavbarComponent } from './navbar/navbar.component';
 const routes: Routes = [
   {
     path: '',
@@ -123,6 +124,7 @@ const routes: Routes = [
     ControleComponent,
     UpdateControleChaptersDialogComponent,
     DashboardtableComponent,
+    NavbarComponent,
   ],
   imports: [
     CommonModule,
