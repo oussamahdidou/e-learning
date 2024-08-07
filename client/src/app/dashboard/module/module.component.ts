@@ -78,7 +78,9 @@ export class ModuleComponent implements OnInit {
               this.modulessource.data = [...this.modules]; // Refresh the table data
               Swal.fire('Saved!', 'Edit successfuly', 'success');
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });
@@ -172,7 +174,9 @@ export class ModuleComponent implements OnInit {
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });
@@ -198,7 +202,9 @@ export class ModuleComponent implements OnInit {
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });
@@ -256,10 +262,14 @@ export class ModuleComponent implements OnInit {
                   };
                   this.modulessource.sort = this.sort;
                 },
-                (error) => {}
+                (error) => {
+                  Swal.fire(`error`, `${error.error}`, `error`);
+                }
               );
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });
@@ -293,7 +303,9 @@ export class ModuleComponent implements OnInit {
         (response) => {
           this.exam.solution = response.solution;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     }
   }
@@ -307,7 +319,9 @@ export class ModuleComponent implements OnInit {
         (response) => {
           this.exam.ennonce = response.ennonce;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     }
   }
@@ -373,7 +387,9 @@ export class ModuleComponent implements OnInit {
           this.exam = response;
           console.log(response);
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
       this.dashboardservice.getrequiredmodules(this.moduleId).subscribe(
         (response) => {
@@ -387,7 +403,9 @@ export class ModuleComponent implements OnInit {
           };
           this.modulessource.sort = this.sort;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
       this.dashboardservice
         .GetDashboardChaptersByModule(this.moduleId)
@@ -403,7 +421,9 @@ export class ModuleComponent implements OnInit {
             };
             this.chapitressource.sort = this.sort;
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       this.dashboardservice.getcontrolesbymodule(this.moduleId).subscribe(
         (response) => {
@@ -417,7 +437,9 @@ export class ModuleComponent implements OnInit {
           };
           this.controlessource.sort = this.sort;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     });
   }

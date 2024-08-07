@@ -69,7 +69,9 @@ export class ChapterComponent implements OnInit {
           this.chapitre = reponse;
           this.quiz = this.chapitre.quiz;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     });
   }
@@ -138,9 +140,11 @@ export class ChapterComponent implements OnInit {
       .updatequiz(this.quiz.id, this.transformQuizObject(this.quiz))
       .subscribe(
         (response) => {
-          console.log(response);
+          Swal.fire(`succes`, `quiz updated successfuly`, `success`);
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
   }
   SelectSynthese(event: any) {
@@ -153,7 +157,9 @@ export class ChapterComponent implements OnInit {
         (response) => {
           this.chapitre.synthese = response.synthese;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     }
   }
@@ -167,7 +173,9 @@ export class ChapterComponent implements OnInit {
         (response) => {
           this.chapitre.schema = response.schema;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     }
   }
@@ -181,7 +189,9 @@ export class ChapterComponent implements OnInit {
         (response) => {
           this.chapitre.videoPath = response.videoPath;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     }
   }
@@ -195,7 +205,9 @@ export class ChapterComponent implements OnInit {
         (response) => {
           this.chapitre.coursPdfPath = response.coursPdfPath;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     }
   }
@@ -228,7 +240,9 @@ export class ChapterComponent implements OnInit {
                 'success'
               );
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });
@@ -254,7 +268,9 @@ export class ChapterComponent implements OnInit {
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });
@@ -290,7 +306,9 @@ export class ChapterComponent implements OnInit {
                 icon: 'success',
               });
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
         }
       });
@@ -317,7 +335,9 @@ export class ChapterComponent implements OnInit {
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });
@@ -343,7 +363,9 @@ export class ChapterComponent implements OnInit {
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });

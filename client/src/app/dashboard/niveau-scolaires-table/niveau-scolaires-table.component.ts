@@ -43,7 +43,9 @@ export class NiveauScolairesTableComponent implements OnInit {
           };
           this.dataSource.sort = this.sort;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     });
   }
@@ -76,7 +78,9 @@ export class NiveauScolairesTableComponent implements OnInit {
                 'success'
               );
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });
@@ -151,7 +155,9 @@ export class NiveauScolairesTableComponent implements OnInit {
                 'success'
               );
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });
