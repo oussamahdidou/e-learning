@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "9aad7b51-7548-4694-9d9e-278d1042ee95",
+                            Id = "0eab849a-c59a-4c43-a4bb-44b4a2eb774b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ea519fa3-1b42-4a49-852e-129af36fa0e0",
+                            Id = "29e35d00-88bf-4ac3-b452-32cb80a72656",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "4c3e6bb9-71be-4ca3-90a8-03cd760f5927",
+                            Id = "f66f5274-4aaa-474d-8565-1fac10801ddc",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -405,8 +405,19 @@ namespace api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CourseProgram")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("ExamFinalId")
                         .HasColumnType("int");
+
+                    b.Property<string>("ModuleImg")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("NiveauScolaireId")
                         .HasColumnType("int");

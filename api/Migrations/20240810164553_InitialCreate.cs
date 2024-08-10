@@ -341,6 +341,9 @@ namespace api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ModuleImg = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CourseProgram = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     NiveauScolaireId = table.Column<int>(type: "int", nullable: false),
                     ExamFinalId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -499,9 +502,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4c3e6bb9-71be-4ca3-90a8-03cd760f5927", null, "Student", "STUDENT" },
-                    { "9aad7b51-7548-4694-9d9e-278d1042ee95", null, "Admin", "ADMIN" },
-                    { "ea519fa3-1b42-4a49-852e-129af36fa0e0", null, "Teacher", "TEACHER" }
+                    { "0eab849a-c59a-4c43-a4bb-44b4a2eb774b", null, "Admin", "ADMIN" },
+                    { "29e35d00-88bf-4ac3-b452-32cb80a72656", null, "Teacher", "TEACHER" },
+                    { "f66f5274-4aaa-474d-8565-1fac10801ddc", null, "Student", "STUDENT" }
                 });
 
             migrationBuilder.CreateIndex(
