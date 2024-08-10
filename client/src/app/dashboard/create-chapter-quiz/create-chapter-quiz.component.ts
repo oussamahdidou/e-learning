@@ -3,6 +3,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Quiz } from '../../interfaces/dashboard';
 import { ActivatedRoute } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-create-chapter-quiz',
@@ -137,11 +138,13 @@ export class CreateChapterQuizComponent {
                 window.location.href = `/dashboard/module/${this.moduleId}`;
               },
               (error) => {
+                Swal.fire(`error`, `${error.error}`, `error`);
                 console.error('Error response:', error);
               }
             );
           },
           (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
             console.error('Quiz creation error:', error);
           }
         );

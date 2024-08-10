@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    partial class apiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240810164553_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "343c2f24-d7b8-4e05-b0d8-561720b67825",
+                            Id = "0eab849a-c59a-4c43-a4bb-44b4a2eb774b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "8443ea9f-5c7b-45a1-8f55-2657e40f7ed5",
+                            Id = "29e35d00-88bf-4ac3-b452-32cb80a72656",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "c93e5e2e-3039-4da6-8f76-1fe4e06cc602",
+                            Id = "f66f5274-4aaa-474d-8565-1fac10801ddc",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });

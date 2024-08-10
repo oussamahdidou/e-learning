@@ -91,7 +91,7 @@ namespace api.Repository
         }
         public async Task<Result<Module>> GetModuleInformationByID(int moduleId)
         {
-            Module? module = await apiDbContext.modules.FindAsync(moduleId);
+            Module? module = await apiDbContext.modules.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Id == moduleId);
             if (module == null) return Result<Module>.Failure("module not found");
             return Result<Module>.Success(module);
         }

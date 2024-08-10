@@ -7,7 +7,8 @@
   margin-top: 30px;
   color: #666666;
 }
-.sort, .search{
+.sort,
+.search {
   margin-bottom: 15px;
 }
 
@@ -20,6 +21,7 @@
 .module-card img {
   width: 100%;
   height: auto;
+
   margin: 0;
   padding: 0;
 }
@@ -38,6 +40,8 @@ div h3 {
   color: black;
   margin-bottom: 15px;
   padding: 10px;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+  min-height: 350px;
 }
 .play-button {
   position: absolute;
@@ -68,4 +72,3 @@ div h3 {
 .module {
   width: 100%;
 }
-

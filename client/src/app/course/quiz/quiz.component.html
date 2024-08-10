@@ -12,35 +12,22 @@
     </div>
     <ng-container *ngFor="let option of currentQuestion.options">
       <label class="reponse d-flex border">
-        <input
-          class="check"
-          type="radio"
-          [name]="'question' + currentQuestion.id"
-          [value]="option.id"
-          [checked]="selectedAnswers[currentQuestion.id] === option.id"
-          (change)="selectAnswer(option.id)"
-        />
+        <input class="check" type="radio" [name]="'question' + currentQuestion.id" [value]="option.id"
+          [checked]="selectedAnswers[currentQuestion.id] === option.id" (change)="selectAnswer(option.id)" />
         <span>{{ option.nom }}</span>
       </label>
     </ng-container>
     <div class="btns">
-      <button
-        class="btn mx-5 rounded-pill"
-        (click)="previousQuestion()"
-        [disabled]="currentQuestionIndex === 0"
-      >
+      <button class="btn mx-5 rounded-pill" (click)="previousQuestion()" [disabled]="currentQuestionIndex === 0">
         Previous
       </button>
-      <button
-        class="btn mx-5 rounded-pill"
-        (click)="
+      <button class="btn mx-5 rounded-pill" (click)="
           currentQuestionIndex === quiz.questions.length - 1
             ? finishQuiz()
             : nextQuestion()
-        "
-      >
+        ">
         {{
-          currentQuestionIndex === quiz.questions.length - 1 ? "Finish" : "Next"
+        currentQuestionIndex === quiz.questions.length - 1 ? "Finish" : "Next"
         }}
       </button>
     </div>
@@ -49,4 +36,3 @@
     </div>
   </div>
 </div>
-

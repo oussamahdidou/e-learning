@@ -49,7 +49,9 @@ export class ModulesTableComponent implements OnInit {
           };
           this.dataSource.sort = this.sort;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     });
   }
@@ -78,7 +80,9 @@ export class ModulesTableComponent implements OnInit {
               this.dataSource.data = [...this.modules];
               Swal.fire('Added!', 'New module has been added.', 'success');
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });
@@ -145,7 +149,9 @@ export class ModulesTableComponent implements OnInit {
             this.dataSource.data = [...this.modules]; // Refresh the table data
             Swal.fire('Saved!', 'module name has been updated.', 'success');
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });

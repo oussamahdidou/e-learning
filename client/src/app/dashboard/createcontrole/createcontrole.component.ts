@@ -56,7 +56,9 @@ export class CreatecontroleComponent implements OnInit {
             console.log(reponse);
             this.addChapitreCheckboxes();
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
     });
   }
@@ -111,6 +113,7 @@ export class CreatecontroleComponent implements OnInit {
           window.location.href = `/dashboard/module/${this.moduleId}`;
         },
         (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
           console.log(error);
         }
       );

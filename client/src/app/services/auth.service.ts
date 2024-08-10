@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { environment } from '../../environments/environment';
-import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
-import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -16,10 +16,13 @@ export class AuthService {
   $IsAdmin = this._$IsAdmin.asObservable();
   private _$IsTeacher = new BehaviorSubject(false);
   $IsTeacher = this._$IsTeacher.asObservable();
+  private _$IsStudent = new BehaviorSubject(false);
+  $IsStudent = this._$IsStudent.asObservable();
   jwt: string = '';
   token: any;
   headers: any | undefined;
-  constructor(private http: HttpClient , private _router: Router) {
+
+  constructor(private http: HttpClient, private router: Router) {
     if (
       localStorage.getItem('token') &&
       !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))
@@ -28,32 +31,25 @@ export class AuthService {
       this.jwt = localStorage.getItem('token') || '';
       this.token = this.getUser(this.jwt);
       console.log(this.token);
-      if (this.token && this.token.role === 'Admin') {
-        this._$IsAdmin.next(true);
-        this._$IsTeacher.next(false);
-      } else if (this.token && this.token.role === 'Teacher') {
-        this._$IsTeacher.next(true);
-        this._$IsAdmin.next(false);
-      }
+      this.updateRoleStates(this.token.role);
       this.headers = new HttpHeaders().set(
         'Authorization',
         'Bearer ' + this.jwt
       );
     } else {
-      this._$isLoggedin.next(false);
-      this._$IsTeacher.next(false);
-      this._$IsAdmin.next(false);
+      this.resetRoleStates();
     }
   }
+
   getUser(token: string) {
     return this.jwtHelper.decodeToken(token);
   }
-  
+
   logout() {
     localStorage.removeItem('token');
-    this._$isLoggedin.next(false);
-    this._$IsAdmin.next(false);
+    this.resetRoleStates();
   }
+
   login(username: string, password: string): Observable<any> {
     return this.http
       .post(`${environment.apiUrl}/api/Account/Login`, { username, password })
@@ -62,13 +58,9 @@ export class AuthService {
           (response) => {
             localStorage.setItem('token', response['token']);
             this._$isLoggedin.next(true);
-            if (this.getUser(response['token']).role === 'Admin') {
-              this._$IsAdmin.next(true);
-              this._$IsTeacher.next(false);
-            } else if (this.getUser(response['token']).role === 'Teacher') {
-              this._$IsTeacher.next(true);
-              this._$IsAdmin.next(false);
-            }
+            const userRole = this.getUser(response['token']).role;
+            this.updateRoleStates(userRole);
+            this.redirectUser(userRole);
           },
           (error) => {
             console.log(error);
@@ -76,6 +68,30 @@ export class AuthService {
         )
       );
   }
+
+  private updateRoleStates(role: string) {
+    this._$IsAdmin.next(role === 'Admin');
+    this._$IsTeacher.next(role === 'Teacher');
+    this._$IsStudent.next(role === 'Student');
+  }
+
+  private resetRoleStates() {
+    this._$isLoggedin.next(false);
+    this._$IsAdmin.next(false);
+    this._$IsTeacher.next(false);
+    this._$IsStudent.next(false);
+  }
+
+  private redirectUser(role: string) {
+    if (role === 'Admin') {
+      window.location.href = `/dashboard`;
+    } else if (role === 'Teacher') {
+      window.location.href = `/dashboard`;
+    } else if (role === 'Student') {
+      window.location.href = `/institutions`;
+    }
+  }
+
   registeruser(
     userName: string,
     email: string,
@@ -113,6 +129,7 @@ export class AuthService {
         )
       );
   }
+
   resetPassword(
     password: string,
     confirmpassword: string,
@@ -135,6 +152,7 @@ export class AuthService {
         )
       );
   }
+
   verifyEmail(email: string, token: string): Observable<any> {
     const params = new HttpParams().set('email', email).set('token', token);
     return this.http

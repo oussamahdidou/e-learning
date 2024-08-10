@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -7,12 +7,8 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './navbar.component.css',
 })
 export class NavbarComponent {
-  /**
-   *
-   */
   constructor(private readonly authservice: AuthService) {}
   logout() {
     this.authservice.logout();
-    window.location.href = `/`;
   }
 }

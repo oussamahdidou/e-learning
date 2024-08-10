@@ -42,7 +42,11 @@
                   Plus
                 </button>
               </div>
-
+              <div *ngSwitchCase="'Exam'">
+                <button routerLink="/dashboard/module/{{ element.id }}" mat-raised-button color="primary">
+                  Plus
+                </button>
+              </div>
             </ng-container>
 
           </td>

@@ -23,7 +23,9 @@ export class ControleComponent implements OnInit {
         (response) => {
           this.controle.solution = response.solution;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     }
   }
@@ -37,7 +39,9 @@ export class ControleComponent implements OnInit {
         (response) => {
           this.controle.ennonce = response.ennonce;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     }
   }
@@ -70,7 +74,9 @@ export class ControleComponent implements OnInit {
                 'success'
               );
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });
@@ -93,7 +99,9 @@ export class ControleComponent implements OnInit {
           console.log(response);
           this.controle = response;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     });
   }
@@ -114,7 +122,9 @@ export class ControleComponent implements OnInit {
             (response) => {
               console.log(response);
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });
@@ -140,7 +150,9 @@ export class ControleComponent implements OnInit {
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });
@@ -166,7 +178,9 @@ export class ControleComponent implements OnInit {
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });

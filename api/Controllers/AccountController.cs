@@ -42,8 +42,8 @@ namespace api.Controllers
                 return NotFound("invalid username");
 
 
-            // if (!await userManager.IsEmailConfirmedAsync(user))
-            //     return Unauthorized("email is not confirmed");
+            if (!await userManager.IsEmailConfirmedAsync(user))
+                return Unauthorized("email is not confirmed");
 
 
             var userconnected = await signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);

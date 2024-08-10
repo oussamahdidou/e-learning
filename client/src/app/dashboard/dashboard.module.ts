@@ -40,21 +40,69 @@ import {
   provideCharts,
   withDefaultRegisterables,
 } from 'ng2-charts';
+
+import { AdminGuardService } from '../services/admin-guard.service';
+import { DashboardGuardService } from '../dashboard-guard.service';
+import { NavbarComponent } from './navbar/navbar.component';
 const routes: Routes = [
   {
     path: '',
     children: [
-      { path: 'institutionstable', component: InstitutionsTableComponent },
-      { path: 'niveautable/:id', component: NiveauScolairesTableComponent },
-      { path: 'moduletable/:id', component: ModulesTableComponent },
-      { path: 'teacherstable', component: TeachersComponent },
-      { path: 'approbtionstable', component: ApprobationTableComponent },
-      { path: 'createcontrole/:id', component: CreatecontroleComponent },
-      { path: 'chapter/:id', component: ChapterComponent },
-      { path: 'createchapter/:id', component: CreateChapterQuizComponent },
-      { path: 'module/:id', component: ModuleComponent },
-      { path: 'controle/:id', component: ControleComponent },
-      { path: '', component: DashboardtableComponent },
+      {
+        path: 'institutionstable',
+        canActivate: [DashboardGuardService],
+        component: InstitutionsTableComponent,
+      },
+      {
+        path: 'niveautable/:id',
+        canActivate: [DashboardGuardService],
+        component: NiveauScolairesTableComponent,
+      },
+      {
+        path: 'moduletable/:id',
+        canActivate: [DashboardGuardService],
+        component: ModulesTableComponent,
+      },
+      {
+        path: 'teacherstable',
+        canActivate: [AdminGuardService],
+        component: TeachersComponent,
+      },
+      {
+        path: 'approbtionstable',
+        canActivate: [AdminGuardService],
+        component: ApprobationTableComponent,
+      },
+      {
+        path: 'createcontrole/:id',
+        canActivate: [DashboardGuardService],
+        component: CreatecontroleComponent,
+      },
+      {
+        path: 'chapter/:id',
+        canActivate: [DashboardGuardService],
+        component: ChapterComponent,
+      },
+      {
+        path: 'createchapter/:id',
+        canActivate: [DashboardGuardService],
+        component: CreateChapterQuizComponent,
+      },
+      {
+        path: 'module/:id',
+        canActivate: [DashboardGuardService],
+        component: ModuleComponent,
+      },
+      {
+        path: 'controle/:id',
+        canActivate: [DashboardGuardService],
+        component: ControleComponent,
+      },
+      {
+        path: '',
+        canActivate: [DashboardGuardService],
+        component: DashboardtableComponent,
+      },
     ],
   },
 ];
@@ -76,6 +124,7 @@ const routes: Routes = [
     ControleComponent,
     UpdateControleChaptersDialogComponent,
     DashboardtableComponent,
+    NavbarComponent,
   ],
   imports: [
     CommonModule,
