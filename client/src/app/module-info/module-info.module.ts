@@ -5,6 +5,9 @@ import { HeaderComponent } from './header/header.component';
 import { RouterModule, Routes } from '@angular/router';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ProgramComponent } from './program/program.component';
+import { ProgramPdfComponent } from './program-pdf/program-pdf.component';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { TruncatePipe } from '../pipes/truncate.pipe';
 
 const routes: Routes = [
   {
@@ -14,7 +17,18 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [ModuleInfoComponent, HeaderComponent, InfoCardComponent, ProgramComponent],
-  imports: [CommonModule, RouterModule.forChild(routes)],
+  declarations: [
+    ModuleInfoComponent,
+    HeaderComponent,
+    InfoCardComponent,
+    ProgramComponent,
+    ProgramPdfComponent,
+  ],
+  imports: [
+    CommonModule,
+    RouterModule.forChild(routes),
+    PdfViewerModule,
+    TruncatePipe,
+  ],
 })
 export class ModuleInfoModule {}

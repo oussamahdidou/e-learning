@@ -10,6 +10,7 @@ using api.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using api.Dtos.UserCenter;
 namespace api.Controllers
 {
     [ApiController]
@@ -41,6 +42,33 @@ namespace api.Controllers
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
+        }
+        [HttpGet("moduleInfo/{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> GetModuleInformationById([FromRoute] int id)
+        {
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            Result<Module> module = await moduleRepository.GetModuleInformationByID(id);
+
+            ModuleWithCheckCountDto moduleInfo = new ModuleWithCheckCountDto
+            {
+                ModuleID = module.Value.Id,
+                Nom = module.Value.Nom,
+                NumberOfChapter = module.Value.Chapitres.Count(),
+                ModuleImg = module.Value.ModuleImg,
+                ModuleProgram = module.Value.CourseProgram,
+                ModuleDescription = module.Value.Description,
+            };
+            if (module.IsSuccess)
+            {
+                return Ok(moduleInfo);
+            }
+            return BadRequest(module.Error);
         }
         [HttpPost]
         public async Task<IActionResult> CreateModule([FromBody] CreateModuleDto createModuleDto)
