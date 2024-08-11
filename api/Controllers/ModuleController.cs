@@ -33,8 +33,7 @@ namespace api.Controllers
             {
                 return BadRequest();
             }
-            // 5f584df6-2795-4a9b-9364-d57c912ef0d8
-            // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
+
             Result<ModuleDto> result = await moduleRepository.GetModuleById(id, user);
             if (result.IsSuccess)
             {
@@ -69,6 +68,35 @@ namespace api.Controllers
             return Ok(await moduleRepository.DeleteModule(id));
 
         }
-
+        [HttpPut("UpdateModuleImage")]
+        public async Task<IActionResult> UpdateModuleImage([FromForm] UpdateModuleImageDto updateModuleImageDto)
+        {
+            Result<Module> result = await moduleRepository.UpdateModuleImage(updateModuleImageDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateModuleProgram")]
+        public async Task<IActionResult> UpdateModuleProgram([FromForm] UpdateModuleProgramDto updateModuleProgramDto)
+        {
+            Result<Module> result = await moduleRepository.UpdateModuleProgram(updateModuleProgramDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateModuleDescription")]
+        public async Task<IActionResult> UpdateModuleDescription([FromBody] UpdateModuleDescriptionDto updateModuleDescriptionDto)
+        {
+            Result<Module> result = await moduleRepository.UpdateModuleDescription(updateModuleDescriptionDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }
