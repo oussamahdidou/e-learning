@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AddExamFinalIdToModule : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -499,9 +499,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4c3e6bb9-71be-4ca3-90a8-03cd760f5927", null, "Student", "STUDENT" },
-                    { "9aad7b51-7548-4694-9d9e-278d1042ee95", null, "Admin", "ADMIN" },
-                    { "ea519fa3-1b42-4a49-852e-129af36fa0e0", null, "Teacher", "TEACHER" }
+                    { "3d1e37c7-5e3f-4667-b3ef-11da6efe3676", null, "Teacher", "TEACHER" },
+                    { "91a4512e-541e-4e68-a758-fd7b46271229", null, "Student", "STUDENT" },
+                    { "c082a3bd-b07d-4ff9-9b3d-597d8cf8944c", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
