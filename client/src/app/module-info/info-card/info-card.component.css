@@ -1,0 +1,16 @@
+.ligne {
+  height: 2px;
+  background-color: rgb(232, 228, 228);
+  margin-bottom: 10px;
+}
+.module {
+  font-weight: bold;
+}
+.info-card {
+  width: 24rem;
+  box-shadow: 0px 0px 65px 0px rgba(0, 0, 0, 0.3);
+  margin-top: -388px;
+  z-index: 1;
+  position: sticky;
+  top: 100px;
+}
