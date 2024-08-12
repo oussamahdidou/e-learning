@@ -13,7 +13,6 @@ import { SharedDataService } from '../../services/shared-data.service';
 })
 export class LectureComponent {
   @Input() vdUrl: string | undefined;
-  host = environment.apiUrl;
 
   constructor(
     private router: Router,

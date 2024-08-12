@@ -18,8 +18,7 @@ export class PdfViewerComponent {
   isFirstCour: number = 1;
   isLastControle: number = 1;
   selectedFile: File | null = null;
-  host = environment.apiUrl;
-  devoirePdfUrl: string = this.host;
+  devoirePdfUrl: string = "";
   devoirExists: boolean = false;
   id: number = 0;
 
@@ -145,7 +144,7 @@ export class PdfViewerComponent {
   // Methods for Exam
   private isDevoirExists(id: number) {
     this.courseService.isDevoirUploaded(id).subscribe((res) => {
-      this.devoirePdfUrl = this.devoirePdfUrl + res.reponse;
+      this.devoirePdfUrl = res.reponse;
       this.devoirExists = true;
       console.log(this.devoirePdfUrl);
     });
@@ -165,7 +164,7 @@ export class PdfViewerComponent {
   // Methods for ControleFinal
   private idControleFinalExists(id: number) {
     this.courseService.idControlFinalExists(id).subscribe((res) => {
-      this.devoirePdfUrl = this.devoirePdfUrl + res.reponse;
+      this.devoirePdfUrl = res.reponse;
       this.devoirExists = true;
       console.log(this.devoirePdfUrl);
     });
