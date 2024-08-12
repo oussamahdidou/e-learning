@@ -22,11 +22,13 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _manager;
         private readonly IResultControleRepository _resultRepo;
         private readonly IWebHostEnvironment _environment;
-        public ResultControleController(UserManager<AppUser> manager, IResultControleRepository resultRepo, IWebHostEnvironment environment)
+        private readonly IBlobStorageService _blobStorageService;
+        public ResultControleController(UserManager<AppUser> manager, IResultControleRepository resultRepo, IWebHostEnvironment environment , IBlobStorageService blobStorageService)
         {
             _manager = manager;
             _resultRepo = resultRepo;
             _environment = environment;
+            _blobStorageService = blobStorageService;
         }
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id)  
@@ -39,14 +41,13 @@ namespace api.Controllers
             // 5f584df6-2795-4a9b-9364-d57c912ef0d8
             // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
 
-            Result<string> result = await file.UploadControleReponse(_environment);
+            string ControleResultContainer = "controle-result-container";
+            var ControleResultUrl = await _blobStorageService.UploadFileAsync(file.OpenReadStream(), ControleResultContainer, file.FileName);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
-            Result<ResultControle> addResult = await _resultRepo.AddResult(user, id, result.Value); 
+            Result<ResultControle> addResult = await _resultRepo.AddResult(user, id, ControleResultUrl); 
             if (!addResult.IsSuccess)
-                return BadRequest(result.Error);
-            return Ok(result.Value);
+                return BadRequest(addResult.Error);
+            return Ok(addResult.Value);
         } 
         [HttpGet]
         [Authorize]
