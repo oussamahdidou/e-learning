@@ -9,6 +9,7 @@ using api.Dtos.Module;
 using api.Dtos.Option;
 using api.Dtos.Question;
 using api.Dtos.Quiz;
+using api.extensions;
 using api.generique;
 using api.helpers;
 using api.interfaces;
@@ -22,9 +23,11 @@ namespace api.Repository
     public class ModuleRepository : IModuleRepository
     {
         private readonly apiDbContext apiDbContext;
-        public ModuleRepository(apiDbContext apiDbContext)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public ModuleRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
         {
             this.apiDbContext = apiDbContext;
+            this.webHostEnvironment = webHostEnvironment;
         }
         public async Task<Result<Module>> CreateModule(CreateModuleDto createModuleDto)
         {
@@ -152,5 +155,75 @@ namespace api.Repository
             }
         }
 
+        public async Task<Result<Module>> UpdateModuleImage(UpdateModuleImageDto updateModuleImageDto)
+        {
+            try
+            {
+                Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == updateModuleImageDto.ModuleId);
+                if (module == null)
+                {
+                    return Result<Module>.Failure("module not found");
+                }
+                Result<string> result = await updateModuleImageDto.ImageFile.UploadImage(webHostEnvironment);
+                if (!result.IsSuccess)
+                {
+                    return Result<Module>.Failure(result.Error);
+                }
+                module.ModuleImg = result.Value;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Module>.Success(module);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Module>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Module>> UpdateModuleProgram(UpdateModuleProgramDto updateModuleProgramDto)
+        {
+            try
+            {
+                Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == updateModuleProgramDto.ModuleId);
+                if (module == null)
+                {
+                    return Result<Module>.Failure("module not found");
+                }
+                Result<string> result = await updateModuleProgramDto.ProgramFile.UploadProgram(webHostEnvironment);
+                if (!result.IsSuccess)
+                {
+                    return Result<Module>.Failure(result.Error);
+                }
+                module.CourseProgram = result.Value;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Module>.Success(module);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Module>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Module>> UpdateModuleDescription(UpdateModuleDescriptionDto updateModuleDescriptionDto)
+        {
+            try
+            {
+                Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == updateModuleDescriptionDto.ModuleId);
+                if (module == null)
+                {
+                    return Result<Module>.Failure("module not found");
+                }
+
+                module.Description = updateModuleDescriptionDto.Description;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Module>.Success(module);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Module>.Failure(ex.Message);
+            }
+        }
     }
 }

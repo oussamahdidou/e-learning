@@ -234,6 +234,71 @@ namespace api.extensions
                 return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
             }
         }
+
+        public static async Task<Result<string>> UploadImage(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        {
+
+            if (webHostEnvironment == null)
+            {
+
+                return Result<string>.Failure("web host envirenement error");
+            }
+
+            try
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "image");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(fileStream);
+                }
+
+                return Result<string>.Success("/controlereponse/" + uniqueFileName);
+            }
+            catch (Exception ex)
+            {
+
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
+            }
+        }
+
+        public static async Task<Result<string>> UploadProgram(this IFormFile formFile, IWebHostEnvironment webHostEnvironment)
+        {
+
+            if (webHostEnvironment == null)
+            {
+
+                return Result<string>.Failure("web host envirenement error");
+            }
+
+            try
+            {
+                string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "program");
+                if (!Directory.Exists(uploadsFolder))
+                    Directory.CreateDirectory(uploadsFolder);
+
+                string uniqueFileName = Guid.NewGuid().ToString() + "_" + formFile.FileName;
+                string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await formFile.CopyToAsync(fileStream);
+                }
+
+                return Result<string>.Success("/controlereponse/" + uniqueFileName);
+            }
+            catch (Exception ex)
+            {
+
+                return Result<string>.Failure($"UploadImage Exception: {ex.Message}");
+            }
+        }
+
         public static Result<string> DeleteFile(this string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
