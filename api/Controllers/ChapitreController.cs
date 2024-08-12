@@ -37,7 +37,7 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
-        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")] 
         [HttpPost]
         public async Task<IActionResult> CreateChapitre([FromForm] CreateChapitreDto createChapitreDto)
         {
@@ -57,7 +57,7 @@ namespace api.Controllers
                 if (!result.IsSuccess)
                 {
                     return BadRequest(result.Error);
-                }
+                } 
                 return Ok(result.Value);
             }
             else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
