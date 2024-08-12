@@ -420,4 +420,45 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
+  getmoduleinfo(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Module/GetModuleinfo/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updatemoduleimage(form: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Module/UpdateModuleImage`,
+      form,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updatemoduleprogram(form: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Module/UpdateModuleProgram`,
+      form,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updatemoduledescription(
+    moduleid: number,
+    description: string
+  ): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Module/UpdateModuleDescription`,
+      {
+        moduleId: moduleid,
+        description: description,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

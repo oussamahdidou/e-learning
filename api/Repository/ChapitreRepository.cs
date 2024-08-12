@@ -21,7 +21,7 @@ namespace api.Repository
         private readonly IWebHostEnvironment webHostEnvironment;
 
         private readonly IBlobStorageService _blobStorageService;
-        public ChapitreRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment,IBlobStorageService blobStorageService)
+        public ChapitreRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment, IBlobStorageService blobStorageService)
         {
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
@@ -167,7 +167,7 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                var containerName = "pdf-container"; 
+                var containerName = "pdf-container";
                 var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
 
                 if (!string.IsNullOrEmpty(chapitre.CoursPdfPath))
@@ -200,7 +200,7 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                var containerName = "schema-container"; 
+                var containerName = "schema-container";
                 var newSchemaUrl = await _blobStorageService.UploadFileAsync(updateChapitreSchemaDto.File.OpenReadStream(), containerName, updateChapitreSchemaDto.File.FileName);
 
                 if (!string.IsNullOrEmpty(chapitre.Schema))
@@ -266,12 +266,12 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                var containerName = "video-container"; 
+                var containerName = "video-container";
                 var newVideoUrl = await _blobStorageService.UploadFileAsync(updateChapitreVideoDto.File.OpenReadStream(), containerName, updateChapitreVideoDto.File.FileName);
 
                 if (!string.IsNullOrEmpty(chapitre.VideoPath))
                 {
-                    
+
                     var oldVideoFileName = new Uri(chapitre.VideoPath).Segments.Last();
                     var deleteResult = await _blobStorageService.DeleteFileAsync(containerName, oldVideoFileName);
                     if (!deleteResult)

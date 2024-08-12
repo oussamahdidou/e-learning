@@ -9,6 +9,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  NgForm,
   Validators,
 } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -21,6 +22,57 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './module.component.css',
 })
 export class ModuleComponent implements OnInit {
+  SelectProgram(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('ProgramFile', file);
+      formData.append('ModuleId', this.moduleId.toString());
+      this.dashboardservice.updatemoduleprogram(formData).subscribe(
+        (response) => {
+          this.moduleinfo.courseProgram = response.courseProgram;
+        },
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
+      );
+    }
+  }
+  SelectImage(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('ImageFile', file);
+      formData.append('ModuleId', this.moduleId.toString());
+      this.dashboardservice.updatemoduleimage(formData).subscribe(
+        (response) => {
+          this.moduleinfo.moduleImg = response.moduleImg;
+        },
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
+      );
+    }
+  }
+  updatedescription(form: any) {
+    if (form.valid) {
+      this.dashboardservice
+        .updatemoduledescription(this.moduleId, this.moduleinfo.description)
+        .subscribe(
+          (response) => {
+            this.moduleinfo.description = response.description;
+            this.descriptionfield = true;
+          },
+          (error) => {
+            Swal.fire('error', error.error, 'error');
+          }
+        );
+    } else {
+      Swal.fire('error', 'Form is invalid!', 'error');
+    }
+  }
+  descriptionfield: boolean = true;
+  description: string = '';
   deleteexamfinal(id: number) {
     Swal.fire({
       title: 'Are you sure?',
@@ -228,7 +280,7 @@ export class ModuleComponent implements OnInit {
   chapitressource: MatTableDataSource<any>;
   controlessource: MatTableDataSource<any>;
   modulessource!: MatTableDataSource<any>;
-
+  moduleinfo: any;
   chapters: any[] = [];
   controles: any[] = [];
   modules: any[] = [];
@@ -387,9 +439,7 @@ export class ModuleComponent implements OnInit {
           this.exam = response;
           console.log(response);
         },
-        (error) => {
-          Swal.fire(`error`, `${error.error}`, `error`);
-        }
+        (error) => {}
       );
       this.dashboardservice.getrequiredmodules(this.moduleId).subscribe(
         (response) => {
@@ -440,6 +490,13 @@ export class ModuleComponent implements OnInit {
         (error) => {
           Swal.fire(`error`, `${error.error}`, `error`);
         }
+      );
+      this.dashboardservice.getmoduleinfo(this.moduleId).subscribe(
+        (response) => {
+          this.moduleinfo = response;
+          this.description = this.moduleinfo.description;
+        },
+        (error) => {}
       );
     });
   }

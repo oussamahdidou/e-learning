@@ -17,17 +17,19 @@ namespace api.Repository
     {
         private readonly apiDbContext apiDbContext;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ExamFinalRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
+        private readonly IBlobStorageService blobStorageService;
+        public ExamFinalRepository(IBlobStorageService blobStorageService, apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
         {
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
+            this.blobStorageService = blobStorageService;
         }
 
         public async Task<Result<ExamFinal>> getExamFinalById(int examId)
         {
             ExamFinal? examFinal = await apiDbContext.examFinals.FindAsync(examId);
 
-            if(examFinal == null)
+            if (examFinal == null)
             {
                 return Result<ExamFinal>.Failure("Exam Not Found");
             }
@@ -36,32 +38,31 @@ namespace api.Repository
         }
         public async Task<Result<ExamFinal>> CreateExamFinal(CreateExamFinalDto createExamFinalDto)
         {
-            Result<string> ennonceresult = await createExamFinalDto.Ennonce.UploadControle(webHostEnvironment);
-            Result<string> solutionresult = await createExamFinalDto.Solution.UploadControleSolution(webHostEnvironment);
-            if (ennonceresult.IsSuccess && solutionresult.IsSuccess)
+            var examContainer = "controle-container";
+            string enonceUrl = await blobStorageService.UploadFileAsync(createExamFinalDto.Ennonce.OpenReadStream(), examContainer, createExamFinalDto.Ennonce.FileName);
+            string solutionUrl = await blobStorageService.UploadFileAsync(createExamFinalDto.Solution.OpenReadStream(), examContainer, createExamFinalDto.Solution.FileName);
+
+            ExamFinal examFinal = new ExamFinal()
             {
-                ExamFinal examFinal = new ExamFinal()
-                {
 
-                    Nom = createExamFinalDto.Nom,
-                    Ennonce = ennonceresult.Value,
-                    Solution = solutionresult.Value,
-                    Status = createExamFinalDto.Status,
+                Nom = createExamFinalDto.Nom,
+                Ennonce = enonceUrl,
+                Solution = solutionUrl,
+                Status = createExamFinalDto.Status,
 
-                };
-                await apiDbContext.AddAsync(examFinal);
-                await apiDbContext.SaveChangesAsync();
-                Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == createExamFinalDto.ModuleId);
-                if (module == null)
-                {
-                    return Result<ExamFinal>.Failure("modulenotfound");
-                }
-                module.ExamFinalId = examFinal.Id;
-                await apiDbContext.SaveChangesAsync();
-                return Result<ExamFinal>.Success(examFinal);
-
+            };
+            await apiDbContext.AddAsync(examFinal);
+            await apiDbContext.SaveChangesAsync();
+            Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == createExamFinalDto.ModuleId);
+            if (module == null)
+            {
+                return Result<ExamFinal>.Failure("modulenotfound");
             }
-            return Result<ExamFinal>.Failure("error in files upload");
+            module.ExamFinalId = examFinal.Id;
+            await apiDbContext.SaveChangesAsync();
+            return Result<ExamFinal>.Success(examFinal);
+
+
 
         }
         public async Task<Result<ExamFinal>> GetExamFinaleByModule(int Id)
@@ -88,19 +89,17 @@ namespace api.Repository
                     return Result<ExamFinal>.Failure("exam don`t exist");
 
                 }
-                Result<string> resultUpload = await updateExamFinalDto.File.UploadControle(webHostEnvironment);
-                if (resultUpload.IsSuccess)
-                {
-                    Result<string> resultDelete = examFinal.Ennonce.DeleteFile();
-                    if (resultDelete.IsSuccess)
-                    {
-                        examFinal.Ennonce = resultUpload.Value;
-                        await apiDbContext.SaveChangesAsync();
-                        return Result<ExamFinal>.Success(examFinal);
-                    }
-                    return Result<ExamFinal>.Failure("error in file delete");
-                }
-                return Result<ExamFinal>.Failure("error in file upload");
+                var examContainer = "controle-container";
+                string enonceUrl = await blobStorageService.UploadFileAsync(updateExamFinalDto.File.OpenReadStream(), examContainer, updateExamFinalDto.File.FileName);
+
+                await blobStorageService.DeleteFileAsync(examContainer, new Uri(examFinal.Ennonce).Segments.Last());
+
+                examFinal.Ennonce = enonceUrl;
+                await apiDbContext.SaveChangesAsync();
+                return Result<ExamFinal>.Success(examFinal);
+
+
+
             }
             catch (System.Exception ex)
             {
@@ -118,19 +117,17 @@ namespace api.Repository
                     return Result<ExamFinal>.Failure("exam don`t exist");
 
                 }
-                Result<string> resultUpload = await updateExamFinalDto.File.UploadControleSolution(webHostEnvironment);
-                if (resultUpload.IsSuccess)
-                {
-                    Result<string> resultDelete = examFinal.Solution.DeleteFile();
-                    if (resultDelete.IsSuccess)
-                    {
-                        examFinal.Solution = resultUpload.Value;
-                        await apiDbContext.SaveChangesAsync();
-                        return Result<ExamFinal>.Success(examFinal);
-                    }
-                    return Result<ExamFinal>.Failure("error in file delete");
-                }
-                return Result<ExamFinal>.Failure("error in file upload");
+                var examContainer = "controle-container";
+                string solutionUrl = await blobStorageService.UploadFileAsync(updateExamFinalDto.File.OpenReadStream(), examContainer, updateExamFinalDto.File.FileName);
+
+                await blobStorageService.DeleteFileAsync(examContainer, new Uri(examFinal.Solution).Segments.Last());
+
+                examFinal.Solution = solutionUrl;
+                await apiDbContext.SaveChangesAsync();
+                return Result<ExamFinal>.Success(examFinal);
+
+
+
             }
             catch (System.Exception ex)
             {
