@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 using Microsoft.Extensions.DependencyInjection;
+using Azure.Storage.Blobs;
 
 
 
@@ -132,6 +133,8 @@ builder.Services.AddScoped<IControleRepository, ControleRepository>();
 builder.Services.AddScoped<IExamFinalRepository, ExamFinalRepository>();
 builder.Services.AddScoped<IUserCenterInterface, UserCenterRepository>();
 builder.Services.AddScoped<IResultExamRepository, ResultExamRepository>();
+builder.Services.AddScoped<IBlobStorageService,BlobStorageService>();
+builder.Services.AddSingleton( x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
