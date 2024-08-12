@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CourseService } from '../../services/course.service';
 import { environment } from '../../../environments/environment';
 import { ErrorHandlingService } from '../../services/error-handling.service';
+import { SharedDataService } from '../../services/shared-data.service';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -26,7 +27,8 @@ export class PdfViewerComponent {
     private router: Router,
     private route: ActivatedRoute,
     private courseService: CourseService,
-    private errorHandlingService: ErrorHandlingService
+    private errorHandlingService: ErrorHandlingService,
+    private shared: SharedDataService
   ) {}
 
   ngOnInit(): void {
@@ -38,16 +40,21 @@ export class PdfViewerComponent {
 
         if (routePath?.includes('cour')) {
           this.loadCourPdf();
+          this.shared.setActiveDiv(`cour/${this.id}`);
         } else if (routePath?.includes('synthese')) {
           this.loadSynthesePdf();
+          this.shared.setActiveDiv(`synthese/${this.id}`);
         } else if (routePath?.includes('exam')) {
           this.loadExamPdf();
           this.isExam = true;
+          this.shared.setActiveDiv(`exam/${this.id}`);
         } else if (routePath?.includes('schema')) {
           this.loadSchemaPdf();
+          this.shared.setActiveDiv(`schema/${this.id}`);
         } else if (routePath?.includes('ControleFinal')) {
           this.loadControleFinalPdf();
           this.isControleFinal = true;
+          this.shared.setActiveDiv(`ControleFinal/${this.id}`);
         } else {
           console.error('Unknown route type');
         }
@@ -64,7 +71,10 @@ export class PdfViewerComponent {
         this.pdfUrl = url;
       },
       (error) => {
-        this.errorHandlingService.handleError(error, 'Failed to load Cour. Please try again later.');
+        this.errorHandlingService.handleError(
+          error,
+          'Failed to load Cour. Please try again later.'
+        );
       }
     );
   }
@@ -77,7 +87,10 @@ export class PdfViewerComponent {
         }
       },
       (error) => {
-        this.errorHandlingService.handleError(error, 'Failed to load Synthese. Please try again later.');
+        this.errorHandlingService.handleError(
+          error,
+          'Failed to load Synthese. Please try again later.'
+        );
       }
     );
   }
@@ -89,7 +102,10 @@ export class PdfViewerComponent {
         }
       },
       (error) => {
-        this.errorHandlingService.handleError(error, 'Failed to load Schema. Please try again later.');
+        this.errorHandlingService.handleError(
+          error,
+          'Failed to load Schema. Please try again later.'
+        );
       }
     );
   }
@@ -102,7 +118,10 @@ export class PdfViewerComponent {
         this.isDevoirExists(this.id);
       },
       (error) => {
-        this.errorHandlingService.handleError(error, 'Failed to load Exam. Please try again later.');
+        this.errorHandlingService.handleError(
+          error,
+          'Failed to load Exam. Please try again later.'
+        );
       }
     );
   }
@@ -115,7 +134,10 @@ export class PdfViewerComponent {
         this.idControleFinalExists(this.id);
       },
       (error) => {
-        this.errorHandlingService.handleError(error, 'Failed to load ControleFinal. Please try again later.');
+        this.errorHandlingService.handleError(
+          error,
+          'Failed to load ControleFinal. Please try again later.'
+        );
       }
     );
   }
@@ -155,7 +177,10 @@ export class PdfViewerComponent {
         this.devoirExists = true;
       },
       (error) => {
-        this.errorHandlingService.handleError(error, 'Error uploading ControleFinal file');
+        this.errorHandlingService.handleError(
+          error,
+          'Error uploading ControleFinal file'
+        );
       }
     );
   }
@@ -170,7 +195,10 @@ export class PdfViewerComponent {
 
   uploadDevoir(): void {
     if (!this.selectedFile || this.exam.id === null) {
-      this.errorHandlingService.handleError(null, 'No file selected or no controle ID available');
+      this.errorHandlingService.handleError(
+        null,
+        'No file selected or no controle ID available'
+      );
       return;
     }
 

@@ -1,0 +1,35 @@
+<div class="card info-card">
+  <img [src]="data.moduleImg" class="card-img-top img" alt="moduleimg" />
+  <div style="padding: 2rem">
+    <div class="d-flex justify-content-between item">
+      <div class="d-flex">
+        <img
+          src="./img/icons8-read-24.png"
+          style="width: 24px; height: 24px"
+          alt=""
+        />
+        <p class="module">Module</p>
+      </div>
+      <p>{{ data.nom | truncate : 17 }}</p>
+    </div>
+    <div class="ligne"></div>
+    <div class="d-flex justify-content-between item">
+      <div class="d-flex">
+        <img
+          src="./img/icons8-read-64.png"
+          style="width: 24px; height: 24px"
+          alt=""
+        />
+        <p class="module">Chapitres</p>
+      </div>
+      <p class="card-title">{{ data.numberOfChapter }} Chapitre</p>
+    </div>
+    <div class="ligne"></div>
+    <a
+      [routerLink]="['/course', data.Id]"
+      class="btn btn-primary"
+      style="width: 100%; margin-top: 15px"
+      >Continue</a
+    >
+  </div>
+</div>

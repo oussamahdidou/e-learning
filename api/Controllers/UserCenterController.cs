@@ -65,6 +65,7 @@ namespace api.Controllers
                     ModuleID = module.Id,
                     Nom = module.Nom,
                     NumberOfChapter = module.Chapitres.Count(),
+                    ModuleImg = module.ModuleImg,
                     CheckCount = checkCount
                 });
             }

@@ -39,13 +39,13 @@ namespace api.Controllers
             return Ok(result.Value);
         }
         [HttpGet("{id:int}")]
-        // [Authorize]
+        [Authorize]
         public async Task<IActionResult> CreateCheckChapter([FromRoute] int id)
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
             if (user == null) return BadRequest();
-            Result<CheckChapter> result = await _check.CreateCheckChapter(user.Id, id);
+            Result<CheckChapter> result = await _check.CreateCheckChapter(user, id);
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }

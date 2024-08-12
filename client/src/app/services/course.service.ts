@@ -8,6 +8,7 @@ import {
   Controle,
   IsEligible,
   Module,
+  moduleInfo,
 } from '../interfaces/dashboard';
 import { AuthService } from './auth.service';
 
@@ -48,6 +49,18 @@ export class CourseService {
       .pipe(
         map((data) => {
           this.module = data;
+          return data;
+        }),
+        catchError(this.handleError)
+      );
+  }
+  getCourseInformationById(id: number): Observable<moduleInfo> {
+    return this.http
+      .get<moduleInfo>(`${environment.apiUrl}/api/module/moduleInfo/${id}`, {
+        headers: this.authservice.headers,
+      })
+      .pipe(
+        map((data) => {
           return data;
         }),
         catchError(this.handleError)
@@ -208,8 +221,6 @@ export class CourseService {
       );
   }
 
-
-
   getQuizResultById(id: number): Observable<any> {
     return this.http
       .get(`${environment.apiUrl}/api/QuizResult/${id}`, {
@@ -296,36 +307,44 @@ export class CourseService {
       );
   }
 
-  getExamFinalByModuleId(moduleId: number){
+  getExamFinalByModuleId(moduleId: number) {
     return this.http
-    .get<any>(`${environment.apiUrl}/api/ExamFinal/GetExamFinaleByModule/${moduleId}`)
-    .pipe(
-      tap((response) => {
-        console.log("retrieving exam final:", response);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 400) {
-          console.error("Error: Bad Request - Module doesn't exist.");
-          return throwError(() => new Error("The requested module does not exist."));
-        }
-        return throwError(() => new Error("An unknown error occurred."));
-      })
-    );
+      .get<any>(
+        `${environment.apiUrl}/api/ExamFinal/GetExamFinaleByModule/${moduleId}`
+      )
+      .pipe(
+        tap((response) => {
+          console.log('retrieving exam final:', response);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 400) {
+            console.error("Error: Bad Request - Module doesn't exist.");
+            return throwError(
+              () => new Error('The requested module does not exist.')
+            );
+          }
+          return throwError(() => new Error('An unknown error occurred.'));
+        })
+      );
   }
-  getExamFinalById(examId: number){
+  getExamFinalById(examId: number) {
     return this.http
-    .get<any>(`${environment.apiUrl}/api/ExamFinal/GetExamFinaleById/${examId}`)
-    .pipe(
-      tap((response) => {
-        console.log("retrieving exam final:", response);
-      }),
-      catchError((error: HttpErrorResponse) => {
-        if (error.status === 400) {
-          return throwError(() => new Error("The requested module does not exist."));
-        }
-        return throwError(() => new Error("An unknown error occurred."));
-      })
-    );
+      .get<any>(
+        `${environment.apiUrl}/api/ExamFinal/GetExamFinaleById/${examId}`
+      )
+      .pipe(
+        tap((response) => {
+          console.log('retrieving exam final:', response);
+        }),
+        catchError((error: HttpErrorResponse) => {
+          if (error.status === 400) {
+            return throwError(
+              () => new Error('The requested module does not exist.')
+            );
+          }
+          return throwError(() => new Error('An unknown error occurred.'));
+        })
+      );
   }
   isDevoirUploaded(id: number): Observable<any> {
     return this.http
@@ -339,7 +358,7 @@ export class CourseService {
         catchError(this.handleError)
       );
   }
-  idControlFinalExists(examId : any) : Observable<any>{
+  idControlFinalExists(examId: any): Observable<any> {
     return this.http
       .get(`${environment.apiUrl}/api/ResultExam/${examId}`, {
         headers: this.authservice.headers,
@@ -364,18 +383,18 @@ export class CourseService {
         catchError(this.handleError)
       );
   }
-  uploadFinalSolution(formData: FormData,examId : any) : Observable<any>{
+  uploadFinalSolution(formData: FormData, examId: any): Observable<any> {
     return this.http
-    .post(`${environment.apiUrl}/api/ResultExam/${examId}`, formData, {
-      responseType: 'text',
-      headers: this.authservice.headers,
-    })
-    .pipe(
-      tap((response) => {
-        console.log('Response from backend:', response);
-      }),
-      catchError(this.handleError)
-    );
+      .post(`${environment.apiUrl}/api/ResultExam/${examId}`, formData, {
+        responseType: 'text',
+        headers: this.authservice.headers,
+      })
+      .pipe(
+        tap((response) => {
+          console.log('Response from backend:', response);
+        }),
+        catchError(this.handleError)
+      );
   }
   deleteDevoir(id: number): Observable<any> {
     return this.http
@@ -389,16 +408,16 @@ export class CourseService {
         catchError(this.handleError)
       );
   }
-  deleteFinalDevoir(examId : any) : Observable<any>{
+  deleteFinalDevoir(examId: any): Observable<any> {
     return this.http
-    .delete(`${environment.apiUrl}/api/ResultExam/${examId}`, {
-      headers: this.authservice.headers,
-    })
-    .pipe(
-      tap((response) => {
-        return true;
-      }),
-      catchError(this.handleError)
-    );
+      .delete(`${environment.apiUrl}/api/ResultExam/${examId}`, {
+        headers: this.authservice.headers,
+      })
+      .pipe(
+        tap((response) => {
+          return true;
+        }),
+        catchError(this.handleError)
+      );
   }
 }
