@@ -58,9 +58,12 @@ builder.Services.AddSwaggerGen(option =>
 });
 builder.Services.AddDbContext<apiDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlServerOptions =>
+    {
+        sqlServerOptions.CommandTimeout(300); 
+    });
 });
+
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;

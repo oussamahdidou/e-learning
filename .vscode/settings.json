@@ -1,1 +1,4 @@
-{}
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/176caa98-7dc7-45c9-b200-c14f7a3d149b/resourceGroups/elearning/providers/Microsoft.Web/sites/elearningwebclient",
+    "appService.deploySubpath": "client"
+}
