@@ -18,10 +18,13 @@ namespace api.Repository
     {
         private readonly apiDbContext apiDbContext;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ControleRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
+
+        private readonly IBlobStorageService _blobStorageService;
+        public ControleRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment,IBlobStorageService blobStorageService)
         {
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
+            _blobStorageService = blobStorageService;
         }
 
         public async Task<Result<Controle>> Approuver(int id)
@@ -49,15 +52,17 @@ namespace api.Repository
         {
             try
             {
-                Result<string> ennonceresult = await createControleDto.Ennonce.UploadControle(webHostEnvironment);
+                var controleContainer = "controle-container";
+                string enonceUrl = await _blobStorageService.UploadFileAsync(createControleDto.Ennonce.OpenReadStream(), controleContainer, createControleDto.Ennonce.FileName);
+                string solutionleUrl = await _blobStorageService.UploadFileAsync(createControleDto.Solution.OpenReadStream(), controleContainer, createControleDto.Solution.FileName);
+
+               
                 Result<string> solutionresult = await createControleDto.Solution.UploadControleSolution(webHostEnvironment);
 
-                if (ennonceresult.IsSuccess && solutionresult.IsSuccess)
-                {
                     Controle controle = new Controle()
                     {
-                        Ennonce = ennonceresult.Value,
-                        Solution = solutionresult.Value,
+                        Ennonce = enonceUrl,
+                        Solution = solutionleUrl,
                         Nom = createControleDto.Nom,
                         Status = createControleDto.Statue,
 
@@ -74,8 +79,7 @@ namespace api.Repository
                     }
                     await apiDbContext.SaveChangesAsync();
                     return Result<Controle>.Success(controle);
-                }
-                return Result<Controle>.Failure("error in files upload");
+       
             }
             catch (System.Exception ex)
             {
