@@ -22,11 +22,14 @@ namespace api.Controllers
         private readonly UserManager<AppUser> _manager;
         private readonly IResultControleRepository _resultRepo;
         private readonly IWebHostEnvironment _environment;
-        public ResultControleController(UserManager<AppUser> manager, IResultControleRepository resultRepo, IWebHostEnvironment environment)
+        private readonly IBlobStorageService _blobStorageService;
+        private string ControleResultContainer = "controle-result-container";
+        public ResultControleController(UserManager<AppUser> manager, IResultControleRepository resultRepo, IWebHostEnvironment environment , IBlobStorageService blobStorageService)
         {
             _manager = manager;
             _resultRepo = resultRepo;
             _environment = environment;
+            _blobStorageService = blobStorageService;
         }
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id)  
@@ -39,14 +42,16 @@ namespace api.Controllers
             // 5f584df6-2795-4a9b-9364-d57c912ef0d8
             // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
 
-            Result<string> result = await file.UploadControleReponse(_environment);
+            
+            var ControleResultUrl = await _blobStorageService.UploadFileAsync(file.OpenReadStream(), ControleResultContainer, file.FileName);
 
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
-            Result<ResultControle> addResult = await _resultRepo.AddResult(user, id, result.Value); 
+            Result<ResultControle> addResult = await _resultRepo.AddResult(user, id, ControleResultUrl); 
             if (!addResult.IsSuccess)
-                return BadRequest(result.Error);
-            return Ok(result.Value);
+                return BadRequest(addResult.Error);
+            
+            string ControleResultSasUrl = _blobStorageService.GenerateSasToken(ControleResultContainer, Path.GetFileName(new Uri(ControleResultUrl).LocalPath), TimeSpan.FromMinutes(2));
+            addResult.Value.Reponse = ControleResultSasUrl;
+            return Ok(addResult.Value.Reponse);
         } 
         [HttpGet]
         [Authorize]
@@ -79,40 +84,39 @@ namespace api.Controllers
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
-
+            string ControleResultSasUrl = _blobStorageService.GenerateSasToken(ControleResultContainer, Path.GetFileName(new Uri(result.Value.Reponse).LocalPath), TimeSpan.FromMinutes(2));
+            result.Value.Reponse = ControleResultSasUrl;
 
             return Ok(result.Value.ToResultControleDto());
         }
         [HttpDelete("{controleId}")]
         [Authorize]
         public async Task<IActionResult> RemoveResult(int controleId)
-        {
-            string username = User.GetUsername();
-            AppUser? user = await _manager.FindByNameAsync(username);
-
-            if (user == null)
-                return BadRequest("User not found.");
-
-            Result<ResultControle> result = await _resultRepo.RemoveResult(user, controleId);
-
-            if (!result.IsSuccess)
-                return BadRequest(result.Error);
-
-            string filePath = Path.Combine(_environment.WebRootPath, result.Value.Reponse.TrimStart('/'));
-            if (System.IO.File.Exists(filePath))
-            {
-                try
                 {
-                    System.IO.File.Delete(filePath);
-                }
-                catch (Exception ex)
-                {
-                    return BadRequest($"File deletion failed: {ex.Message}");
+                    string username = User.GetUsername();
+                    AppUser? user = await _manager.FindByNameAsync(username);
+
+                    if (user == null)
+                        return BadRequest("User not found.");
+
+                    Result<ResultControle> result = await _resultRepo.RemoveResult(user, controleId);
+
+                    if (!result.IsSuccess)
+                        return BadRequest(result.Error);
+
+                    if (!string.IsNullOrEmpty(result.Value.Reponse))
+                        {
+                            string ControleResultContainer = "controle-result-container";
+                            var oldControleResultFileName = Path.GetFileName(new Uri(result.Value.Reponse).LocalPath);
+
+                            var deleteResult = await _blobStorageService.DeleteFileAsync(ControleResultContainer, oldControleResultFileName);
+                            if (!deleteResult)
+                            {
+                                return BadRequest();
+                            }
+                        }
+
+                    return Ok(result.Value);
                 }
             }
-
-            return Ok(result.Value);
-        }
-
-    }
 }
