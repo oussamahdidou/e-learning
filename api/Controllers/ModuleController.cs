@@ -126,5 +126,15 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpGet("GetModuleinfo/{id:int}")]
+        public async Task<IActionResult> GetModuleinfo([FromRoute] int id)
+        {
+            Result<Module> result = await moduleRepository.GetModuleInfo(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }
