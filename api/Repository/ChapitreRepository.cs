@@ -139,10 +139,10 @@ namespace api.Repository
                 }
 
                 // Generate SAS URL
-                string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(chapitre.Synthese), TimeSpan.FromMinutes(5));
-                string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(5));
-                string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(chapitre.CoursPdfPath), TimeSpan.FromMinutes(5));
-                string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(chapitre.VideoPath), TimeSpan.FromMinutes(5));
+                string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(new Uri(chapitre.Synthese).LocalPath), TimeSpan.FromMinutes(5));
+                string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(new Uri(chapitre.Schema).LocalPath), TimeSpan.FromMinutes(5));
+                string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath), TimeSpan.FromMinutes(5));
+                string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath), TimeSpan.FromMinutes(5));
 
                 // Update URLs with the SAS url that will contain the token
                 chapitre.Synthese = syntheseSasUrl;
@@ -193,11 +193,11 @@ namespace api.Repository
 
                 if (!string.IsNullOrEmpty(chapitre.CoursPdfPath))
                 {
-                    var oldPdfFileName = new Uri(chapitre.CoursPdfPath).Segments.Last();
+                    var oldPdfFileName = Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath);
                     var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldPdfFileName);
                     if (!deleteResult)
                     {
-                        return Result<Chapitre>.Failure("Failed to delete old PDF file");
+                        return Result<Chapitre>.Failure("Failed to delete old PDF file"+ oldPdfFileName);
                     }
                 }
 
@@ -233,16 +233,16 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                var containerName = "schema-container";
-                var newSchemaUrl = await _blobStorageService.UploadFileAsync(updateChapitreSchemaDto.File.OpenReadStream(), containerName, updateChapitreSchemaDto.File.FileName);
+                
+                var newSchemaUrl = await _blobStorageService.UploadFileAsync(updateChapitreSchemaDto.File.OpenReadStream(), schemaContainer, updateChapitreSchemaDto.File.FileName);
 
                 if (!string.IsNullOrEmpty(chapitre.Schema))
                 {
-                    var oldSchemaFileName = new Uri(chapitre.Schema).Segments.Last();
+                    var oldSchemaFileName = Path.GetFileName(new Uri(chapitre.Schema).LocalPath);
                     var deleteResult = await _blobStorageService.DeleteFileAsync(schemaContainer, oldSchemaFileName);
                     if (!deleteResult)
                     {
-                        return Result<Chapitre>.Failure("Failed to delete old schema file");
+                        return Result<Chapitre>.Failure("Failed to delete old schema file" + chapitre.Schema);
                     }
                 }
 
@@ -282,7 +282,7 @@ namespace api.Repository
 
                 if (!string.IsNullOrEmpty(chapitre.Synthese))
                 {
-                    var oldSyntheseFileName = new Uri(chapitre.Synthese).Segments.Last();
+                    var oldSyntheseFileName = Path.GetFileName(new Uri(chapitre.Synthese).LocalPath);
                     var deleteResult = await _blobStorageService.DeleteFileAsync(syntheseContainer, oldSyntheseFileName);
                     if (!deleteResult)
                     {
@@ -328,7 +328,7 @@ namespace api.Repository
                 if (!string.IsNullOrEmpty(chapitre.VideoPath))
                 {
 
-                    var oldVideoFileName = new Uri(chapitre.VideoPath).Segments.Last();
+                    var oldVideoFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
                     var deleteResult = await _blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
                     if (!deleteResult)
                     {
