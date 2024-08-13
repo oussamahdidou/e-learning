@@ -155,7 +155,7 @@ export class PdfViewerComponent {
     this.courseService.uploadSolution(formData, this.exam.id).subscribe(
       (res) => {
         this.devoirExists = true;
-        var path = res.split;
+        this.devoirePdfUrl = res;
       },
       (error) => {
         this.errorHandlingService.handleError(error, 'Error uploading file');

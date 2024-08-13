@@ -93,7 +93,6 @@ export class CreateChapterQuizComponent {
     });
     return quizData;
   }
-
   onSubmit() {
     if (this.chapterFormGroup.valid && this.quizFormGroup.valid) {
       const formData = new FormData();
@@ -123,6 +122,16 @@ export class CreateChapterQuizComponent {
       formData.append('ModuleId', this.moduleId.toString());
       console.log(JSON.stringify(quizData.questions));
 
+      // Show loading modal
+      Swal.fire({
+        title: 'Processing...',
+        text: 'Please wait while we process your request.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardservice
         .createquiz({
           nom: quizData.quizName,
@@ -130,21 +139,26 @@ export class CreateChapterQuizComponent {
           questions: quizData.questions,
         })
         .subscribe(
-          (reponse) => {
-            formData.append('QuizId', reponse.id.toString());
+          (response) => {
+            formData.append('QuizId', response.id.toString());
             this.dashboardservice.createchapter(formData).subscribe(
               (response) => {
-                console.log(response);
-                window.location.href = `/dashboard/module/${this.moduleId}`;
+                Swal.fire({
+                  title: 'Success!',
+                  text: 'Chapter created successfully.',
+                  icon: 'success',
+                }).then(() => {
+                  window.location.href = `/dashboard/module/${this.moduleId}`;
+                });
               },
               (error) => {
-                Swal.fire(`error`, `${error.error}`, `error`);
+                Swal.fire('Error', `${error.error}`, 'error');
                 console.error('Error response:', error);
               }
             );
           },
           (error) => {
-            Swal.fire(`error`, `${error.error}`, `error`);
+            Swal.fire('Error', `${error.error}`, 'error');
             console.error('Quiz creation error:', error);
           }
         );

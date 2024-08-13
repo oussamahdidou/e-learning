@@ -121,7 +121,7 @@ namespace api.Data
                     Chapitres = new List<Chapitre>
                     {
                         new Chapitre {
-                        ChapitreNum = 1, Nom = "Les Fondamentaux de la Communication", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf",
+                        ChapitreNum = 1, Nom = "Les Fondamentaux de la Communication", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf",
                         Quiz=new Quiz()
     {
         Nom = "Les Fondamentaux de la Communication",
@@ -241,7 +241,7 @@ namespace api.Data
         }
     } },
                         new Chapitre {
-                            ChapitreNum = 2, Nom = "Techniques de Rédaction Professionnelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf"
+                            ChapitreNum = 2, Nom = "Techniques de Rédaction Professionnelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf"
                         ,
                         Quiz=  new Quiz()
     {
@@ -458,7 +458,7 @@ namespace api.Data
                 }
             }
         }
-    },  ChapitreNum = 3, Nom = "Communication Interpersonnelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    },  ChapitreNum = 3, Nom = "Communication Interpersonnelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz =new Quiz()
     {
         Nom = "Pratique de la Communication Orale",
@@ -567,7 +567,7 @@ namespace api.Data
             }
         }
     }
-    , ChapitreNum = 4, Nom = "Pratique de la Communication Orale", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+    , ChapitreNum = 4, Nom = "Pratique de la Communication Orale", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" }
                     }
                 },
                 new Module
@@ -682,7 +682,7 @@ namespace api.Data
                 }
             }
         }
-    } , ChapitreNum = 1, Nom = "Concepts de Base du Management", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    } , ChapitreNum = 1, Nom = "Concepts de Base du Management", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz=  new Quiz()
     {
         Nom = "Théories du Leadership",
@@ -790,7 +790,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 2, Nom = "Théories du Leadership", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 2, Nom = "Théories du Leadership", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz=  new Quiz(){
         Nom = "Gestion des Équipes",
         Statue = ObjectStatus.Approuver,
@@ -897,7 +897,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 3, Nom = "Gestion des Équipes", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 3, Nom = "Gestion des Équipes", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz=  new Quiz(){
         Nom = "Processus Décisionnels en Management",
         Statue = ObjectStatus.Approuver,
@@ -1004,7 +1004,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 4, Nom = "Processus Décisionnels en Management", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+    }, ChapitreNum = 4, Nom = "Processus Décisionnels en Management", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" }
                     }
                 },
                 new Module
@@ -1119,7 +1119,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 1, Nom = "Statistiques Descriptives", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 1, Nom = "Statistiques Descriptives", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz= new Quiz()
     {
         Nom = "Analyse de Régression",
@@ -1227,7 +1227,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 2, Nom = "Analyse de Régression", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 2, Nom = "Analyse de Régression", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz=  new Quiz()
     {
         Nom = "Probabilités et Distributions",
@@ -1335,7 +1335,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 3, Nom = "Probabilités et Distributions", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 3, Nom = "Probabilités et Distributions", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz= new Quiz()
     {
         Nom = "Méthodes de Collecte de Données",
@@ -1443,7 +1443,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 4, Nom = "Méthodes de Collecte de Données", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+    }, ChapitreNum = 4, Nom = "Méthodes de Collecte de Données", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" }
                     }
                 },
                 new Module
@@ -1568,7 +1568,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 1, Nom = "Structure Organisationnelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 1, Nom = "Structure Organisationnelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz = new Quiz(){
         Nom = "Culture d'Entreprise",
         Statue = ObjectStatus.Approuver,
@@ -1675,7 +1675,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 2, Nom = "Culture d'Entreprise", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 2, Nom = "Culture d'Entreprise", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz = new Quiz(){
         Nom = "Analyse du Cycle de Vie des Organisations",
         Statue = ObjectStatus.Approuver,
@@ -1782,7 +1782,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 3, Nom = "Analyse du Cycle de Vie des Organisations", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 3, Nom = "Analyse du Cycle de Vie des Organisations", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz = new Quiz(){
         Nom = "Responsabilité Sociale des Entreprises",
         Statue = ObjectStatus.Approuver,
@@ -1889,7 +1889,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 4, Nom = "Responsabilité Sociale des Entreprises", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+    }, ChapitreNum = 4, Nom = "Responsabilité Sociale des Entreprises", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" }
                     }
                 }
             }
@@ -2011,7 +2011,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 1, Nom = "Communication Écrite Avancée", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 1, Nom = "Communication Écrite Avancée", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz(){
         Nom = "Stratégies de Communication Internationale",
         Statue = ObjectStatus.Approuver,
@@ -2118,7 +2118,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 2, Nom = "Stratégies de Communication Internationale", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 2, Nom = "Stratégies de Communication Internationale", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Techniques de Présentation",
@@ -2225,7 +2225,7 @@ namespace api.Data
                     new Option { Nom = "Pour découvrir des points à éviter pendant la présentation", Truth = false }
                 }
             }
-        }}, ChapitreNum = 3, Nom = "Techniques de Présentation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+        }}, ChapitreNum = 3, Nom = "Techniques de Présentation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Analyse des Médias",
@@ -2333,7 +2333,7 @@ namespace api.Data
                 }
             }
         }
-    },ChapitreNum = 4, Nom = "Analyse des Médias", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+    },ChapitreNum = 4, Nom = "Analyse des Médias", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" }
                     }
                 },
                 new Module
@@ -2448,7 +2448,7 @@ namespace api.Data
                 }
             }
         }
-    },ChapitreNum = 1, Nom = "Théories de l'Organisation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    },ChapitreNum = 1, Nom = "Théories de l'Organisation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz = new Quiz()
     {
         Nom = "Gestion des Ressources Humaines",
@@ -2556,7 +2556,7 @@ namespace api.Data
                 }
             }
         }
-    },ChapitreNum = 2, Nom = "Gestion des Ressources Humaines", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    },ChapitreNum = 2, Nom = "Gestion des Ressources Humaines", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Management Stratégique",
@@ -2664,7 +2664,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 3, Nom = "Management Stratégique", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 3, Nom = "Management Stratégique", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Gestion de la Performance",
@@ -2772,7 +2772,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 4, Nom = "Gestion de la Performance", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+    }, ChapitreNum = 4, Nom = "Gestion de la Performance", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" }
                     }
                 },
                 new Module
@@ -2887,7 +2887,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 1, Nom = "Statistiques Inférentielles", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 1, Nom = "Statistiques Inférentielles", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Analyse Multivariée",
@@ -2995,7 +2995,7 @@ namespace api.Data
                 }
             }
         }
-    },ChapitreNum = 2, Nom = "Analyse Multivariée", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    },ChapitreNum = 2, Nom = "Analyse Multivariée", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Optimisation et Recherche Opérationnelle",
@@ -3103,7 +3103,7 @@ namespace api.Data
                 }
             }
         }
-    },ChapitreNum = 3, Nom = "Optimisation et Recherche Opérationnelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    },ChapitreNum = 3, Nom = "Optimisation et Recherche Opérationnelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Méthodes Quantitatives en Finance",
@@ -3211,7 +3211,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 4, Nom = "Méthodes Quantitatives en Finance", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+    }, ChapitreNum = 4, Nom = "Méthodes Quantitatives en Finance", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" }
                     }
                 },
                 new Module
@@ -3326,7 +3326,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 1, Nom = "Économie de l'Entreprise", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 1, Nom = "Économie de l'Entreprise", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Environnement Juridique des Affaires",
@@ -3434,7 +3434,7 @@ namespace api.Data
                 }
             }
         }
-    }, ChapitreNum = 2, Nom = "Environnement Juridique des Affaires", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }, ChapitreNum = 2, Nom = "Environnement Juridique des Affaires", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf", Synthese = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Gestion de l'Innovation",
@@ -3542,7 +3542,7 @@ namespace api.Data
                 }
             }
         }
-    },ChapitreNum = 3, Nom = "Gestion de l'Innovation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    },ChapitreNum = 3, Nom = "Gestion de l'Innovation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                         new Chapitre {Quiz  = new Quiz()
     {
         Nom = "Environnement Écologique et Développement Durable",
@@ -3650,7 +3650,7 @@ namespace api.Data
                 }
             }
         }
-    },ChapitreNum = 4, Nom = "Environnement Écologique et Développement Durable", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+    },ChapitreNum = 4, Nom = "Environnement Écologique et Développement Durable", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
                     }
                 }
             }
@@ -3762,7 +3762,7 @@ namespace api.Data
             }
         }
     }
-}, ChapitreNum = 1, Nom = "Communication Interculturelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+}, ChapitreNum = 1, Nom = "Communication Interculturelle", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Communication Numérique et Réseaux Sociaux",
@@ -3870,7 +3870,7 @@ namespace api.Data
             }
         }
     }
-},ChapitreNum = 2, Nom = "Communication Numérique et Réseaux Sociaux", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+},ChapitreNum = 2, Nom = "Communication Numérique et Réseaux Sociaux", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Techniques de Négociation",
@@ -3978,7 +3978,7 @@ namespace api.Data
             }
         }
     }
-},ChapitreNum = 3, Nom = "Techniques de Négociation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+},ChapitreNum = 3, Nom = "Techniques de Négociation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Rédaction de Contenus Professionnels",
@@ -4086,7 +4086,7 @@ namespace api.Data
             }
         }
     }
-}, ChapitreNum = 4, Nom = "Rédaction de Contenus Professionnels", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+}, ChapitreNum = 4, Nom = "Rédaction de Contenus Professionnels", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
                 }
             },
             new Module
@@ -4200,7 +4200,7 @@ namespace api.Data
                 new Option { Nom = "Gérer directement la production de biens et services", Truth = false }
             }
         }
-    }}, ChapitreNum = 1, Nom = "Concepts Fondamentaux de l'Économie", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+    }}, ChapitreNum = 1, Nom = "Concepts Fondamentaux de l'Économie", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Analyse Microéconomique",
@@ -4308,7 +4308,7 @@ namespace api.Data
             }
         }
     }
-}, ChapitreNum = 2, Nom = "Analyse Microéconomique", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+}, ChapitreNum = 2, Nom = "Analyse Microéconomique", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Analyse Macroeconomique",
@@ -4416,7 +4416,7 @@ namespace api.Data
             }
         }
     }
-}, ChapitreNum = 3, Nom = "Analyse Macroeconomique", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+}, ChapitreNum = 3, Nom = "Analyse Macroeconomique", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Politiques Économiques et Régulation",
@@ -4524,7 +4524,7 @@ namespace api.Data
             }
         }
                         }
-                    },                    ChapitreNum = 4, Nom = "Politiques Économiques et Régulation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+                    },                    ChapitreNum = 4, Nom = "Politiques Économiques et Régulation", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
                 }
             },
             new Module
@@ -4639,7 +4639,7 @@ namespace api.Data
             }
         }
     }
-},ChapitreNum = 1, Nom = "Gestion du Changement Organisationnel", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+},ChapitreNum = 1, Nom = "Gestion du Changement Organisationnel", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Management de Projet",
@@ -4747,7 +4747,7 @@ namespace api.Data
             }
         }
     }
-},ChapitreNum = 2, Nom = "Management de Projet", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+},ChapitreNum = 2, Nom = "Management de Projet", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Gestion des Conflits et Négociations",
@@ -4865,7 +4865,7 @@ namespace api.Data
             }
         }
     }
-}, ChapitreNum = 3, Nom = "Gestion des Conflits et Négociations", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+}, ChapitreNum = 3, Nom = "Gestion des Conflits et Négociations", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Approches Modernes du Leadership",
@@ -4973,7 +4973,7 @@ namespace api.Data
             }
         }
     }
-}, ChapitreNum = 4, Nom = "Approches Modernes du Leadership", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+}, ChapitreNum = 4, Nom = "Approches Modernes du Leadership", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
                 }
             },
             new Module
@@ -5088,7 +5088,7 @@ namespace api.Data
             }
         }
     }
-},ChapitreNum = 1, Nom = "Introduction à l'Analyse de Données", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+},ChapitreNum = 1, Nom = "Introduction à l'Analyse de Données", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Algèbre Linéaire et Applications",
@@ -5196,7 +5196,7 @@ namespace api.Data
             }
         }
     }
-}, ChapitreNum = 2, Nom = "Algèbre Linéaire et Applications", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+}, ChapitreNum = 2, Nom = "Algèbre Linéaire et Applications", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Méthodes de Prédiction et de Prévision",
@@ -5304,7 +5304,7 @@ namespace api.Data
             }
         }
     }
-},ChapitreNum = 3, Nom = "Méthodes de Prédiction et de Prévision", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
+},ChapitreNum = 3, Nom = "Méthodes de Prédiction et de Prévision", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" },
                     new Chapitre {Quiz  = new Quiz()
 {
     Nom = "Techniques de Modélisation Statistique",
@@ -5412,7 +5412,7 @@ namespace api.Data
             }
         }
     }
-}, ChapitreNum = 4, Nom = "Techniques de Modélisation Statistique", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "/video/0f4c864f-bb6a-49ed-bc40-7a9088161219_University Promo Video Template (Editable).mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
+}, ChapitreNum = 4, Nom = "Techniques de Modélisation Statistique", Premium = true, Statue = ObjectStatus.Approuver, VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4", CoursPdfPath = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Schema = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf", Synthese = "/controle/02dca4f8-fa80-4319-9c71-dc201d0bab6a_6df57240-a274-4909-9112-855996c47734_Apercu_generale.pdf" }
                 }
             }
         }

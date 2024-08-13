@@ -47,7 +47,10 @@ namespace api.Controllers
             Result<ResultControle> addResult = await _resultRepo.AddResult(user, id, ControleResultUrl); 
             if (!addResult.IsSuccess)
                 return BadRequest(addResult.Error);
-            return Ok(addResult.Value);
+            
+            string ControleResultSasUrl = _blobStorageService.GenerateSasToken(ControleResultContainer, Path.GetFileName(ControleResultUrl), TimeSpan.FromMinutes(2));
+            addResult.Value.Reponse = ControleResultSasUrl;
+            return Ok(addResult.Value.Reponse);
         } 
         [HttpGet]
         [Authorize]
@@ -102,12 +105,13 @@ namespace api.Controllers
             if (!string.IsNullOrEmpty(result.Value.Reponse))
                 {
                     string ControleResultContainer = "controle-result-container";
-                    var oldSyntheseFileName = new Uri(result.Value.Reponse).Segments.Last();
-                    var deleteResult = await _blobStorageService.DeleteFileAsync(containerName, oldSyntheseFileName);
-                    if (!deleteResult)
-                    {
-                        return Result<Chapitre>.Failure("Failed to delete old synthese file");
-                    }
+                    var oldControleResultFileName = new Uri(result.Value.Reponse).Segments.Last();
+                    Console.Write(oldControleResultFileName);
+                try
+                {
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(ControleResultContainer, oldControleResultFileName);
+                }
+                catch (Exception ex) { BadRequest(ex.Message); }
                 }
 
             return Ok(result.Value);

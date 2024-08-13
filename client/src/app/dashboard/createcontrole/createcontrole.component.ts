@@ -107,16 +107,34 @@ export class CreatecontroleComponent implements OnInit {
       chapitresSelected.forEach((chapter: number) => {
         formData.append('Chapters', chapter.toString());
       });
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Processing...',
+        text: 'Please wait while we process your request.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardservice.CreateControle(formData).subscribe(
         (response) => {
           console.log(response);
-          window.location.href = `/dashboard/module/${this.moduleId}`;
+          Swal.fire({
+            title: 'Success!',
+            text: 'The controle has been created successfully.',
+            icon: 'success',
+          }).then(() => {
+            window.location.href = `/dashboard/module/${this.moduleId}`;
+          });
         },
         (error) => {
-          Swal.fire(`error`, `${error.error}`, `error`);
+          Swal.fire('Error', `${error.error}`, 'error');
           console.log(error);
         }
       );
+
       formData.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });

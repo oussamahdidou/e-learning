@@ -15,6 +15,11 @@ namespace api.interfaces
         Task<Result<Module>> UpdateModule(UpdateModuleDto updateModuleDto);
         Task<bool> DeleteModule(int moduleId);
         Task<Result<Module>> GetModuleInformationByID(int moduleId);
+        Task<Result<Module>> UpdateModuleImage(UpdateModuleImageDto updateModuleImageDto);
+        Task<Result<Module>> UpdateModuleProgram(UpdateModuleProgramDto updateModuleProgramDto);
+        Task<Result<Module>> UpdateModuleDescription(UpdateModuleDescriptionDto updateModuleDescriptionDto);
+        Task<Result<Module>> GetModuleInfo(int Id);
+
 
     }
 }
