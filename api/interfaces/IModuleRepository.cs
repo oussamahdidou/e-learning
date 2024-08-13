@@ -18,6 +18,7 @@ namespace api.interfaces
         Task<Result<Module>> UpdateModuleImage(UpdateModuleImageDto updateModuleImageDto);
         Task<Result<Module>> UpdateModuleProgram(UpdateModuleProgramDto updateModuleProgramDto);
         Task<Result<Module>> UpdateModuleDescription(UpdateModuleDescriptionDto updateModuleDescriptionDto);
+        Task<Result<Module>> GetModuleInfo(int Id);
 
 
     }

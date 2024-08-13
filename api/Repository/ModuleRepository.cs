@@ -17,6 +17,7 @@ using api.Mappers;
 using api.Model;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace api.Repository
 {
@@ -24,10 +25,12 @@ namespace api.Repository
     {
         private readonly apiDbContext apiDbContext;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ModuleRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
+        private readonly IBlobStorageService blobStorageService;
+        public ModuleRepository(IBlobStorageService blobStorageService, apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
         {
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
+            this.blobStorageService = blobStorageService;
         }
         public async Task<Result<Module>> CreateModule(CreateModuleDto createModuleDto)
         {
@@ -164,12 +167,13 @@ namespace api.Repository
                 {
                     return Result<Module>.Failure("module not found");
                 }
-                Result<string> result = await updateModuleImageDto.ImageFile.UploadImage(webHostEnvironment);
-                if (!result.IsSuccess)
-                {
-                    return Result<Module>.Failure(result.Error);
-                }
-                module.ModuleImg = result.Value;
+                var imageContainer = "image-container";
+                string imageUrl = await blobStorageService.UploadFileAsync(updateModuleImageDto.ImageFile.OpenReadStream(), imageContainer, updateModuleImageDto.ImageFile.FileName);
+
+                await blobStorageService.DeleteFileAsync(imageContainer, new Uri(module.ModuleImg).Segments.Last());
+
+
+                module.ModuleImg = imageUrl;
                 await apiDbContext.SaveChangesAsync();
                 return Result<Module>.Success(module);
             }
@@ -189,12 +193,16 @@ namespace api.Repository
                 {
                     return Result<Module>.Failure("module not found");
                 }
-                Result<string> result = await updateModuleProgramDto.ProgramFile.UploadProgram(webHostEnvironment);
-                if (!result.IsSuccess)
+                var programContainer = "program-container";
+                string programUrl = await blobStorageService.UploadFileAsync(updateModuleProgramDto.ProgramFile.OpenReadStream(), programContainer, updateModuleProgramDto.ProgramFile.FileName);
+                if (!module.CourseProgram.IsNullOrEmpty())
                 {
-                    return Result<Module>.Failure(result.Error);
+
+                    await blobStorageService.DeleteFileAsync(programContainer, new Uri(module.CourseProgram).Segments.Last());
+
                 }
-                module.CourseProgram = result.Value;
+
+                module.CourseProgram = programUrl;
                 await apiDbContext.SaveChangesAsync();
                 return Result<Module>.Success(module);
             }
@@ -224,6 +232,16 @@ namespace api.Repository
 
                 return Result<Module>.Failure(ex.Message);
             }
+        }
+
+        public async Task<Result<Module>> GetModuleInfo(int Id)
+        {
+            Module? module = await apiDbContext.modules.FirstOrDefaultAsync(x => x.Id == Id);
+            if (module == null)
+            {
+                return Result<Module>.Failure("module notfound");
+            }
+            return Result<Module>.Success(module);
         }
     }
 }

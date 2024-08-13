@@ -1,6 +1,100 @@
 <app-sidenav></app-sidenav>
 <div class="module-container">
   <mat-horizontal-stepper [linear]="false" #stepper class="pt-5 px-3">
+    @if (moduleinfo) {
+    <mat-step>
+      <ng-template matStepLabel> Module Overview </ng-template>
+      <h4>
+        {{ moduleinfo.nom }}
+        @if (authservice.$IsAdmin|async) { @if (moduleinfo &&
+        !moduleinfo.courseProgram){
+        <button (click)="program.click()" mat-raised-button>
+          ajouter programme
+        </button>
+        } }
+        <input
+          type="file"
+          #program
+          accept="application/pdf"
+          (change)="SelectProgram($event)"
+          style="display: none"
+        />
+      </h4>
+
+      <div class="row justify-content-center align-items-center">
+        <div class="col-lg-6 px-3">
+          <div class="moduleinfo-item">
+            @if (authservice.$IsAdmin|async) {
+            <button (click)="image.click()" mat-raised-button>
+              modifier image
+            </button>
+            }
+            <input
+              type="file"
+              #image
+              accept="image/*"
+              (change)="SelectImage($event)"
+              style="display: none"
+            />
+            <img [src]="moduleinfo.moduleImg" class="module-img" alt="" />
+          </div>
+        </div>
+        <div class="col-lg-6 px-3">
+          <div class="moduleinfo-item">
+            @if (descriptionfield) {
+            <p>{{ description }}</p>
+            @if (authservice.$IsAdmin|async) {
+            <button
+              (click)="descriptionfield = !descriptionfield"
+              mat-raised-button
+            >
+              modifier description</button
+            >} } @else { @if (authservice.$IsAdmin|async) {
+            <form
+              #moduleForm="ngForm"
+              (ngSubmit)="updatedescription(moduleForm)"
+            >
+              <textarea
+                class="p-4 rounded"
+                name="description"
+                id="description"
+                [(ngModel)]="moduleinfo.description"
+                required
+              ></textarea>
+              <button mat-raised-button type="submit">Submit</button>
+              <button
+                type="button"
+                (click)="descriptionfield = !descriptionfield"
+                mat-raised-button
+              >
+                cancel
+              </button>
+            </form>
+            } }
+          </div>
+        </div>
+      </div>
+    </mat-step>
+    @if (moduleinfo && moduleinfo.courseProgram) {
+    <mat-step>
+      <ng-template matStepLabel>Module Programme</ng-template>
+      <h4>
+        Module Programme
+        <button (click)="program.click()" mat-raised-button>
+          modifier programme
+        </button>
+        <div class="pdf-container w-75 px-5 mx-auto">
+          <pdf-viewer
+            src="{{ moduleinfo.courseProgram }}"
+            [render-text]="true"
+            [original-size]="false"
+            style="width: 100%; height: 700px"
+          >
+          </pdf-viewer>
+        </div>
+      </h4>
+    </mat-step>
+    } }
     <mat-step>
       <ng-template matStepLabel> Chaptitres Table </ng-template>
       <h4>Chaptitres Table</h4>
@@ -69,7 +163,6 @@
         </table>
       </div>
     </mat-step>
-
     <mat-step>
       <ng-template matStepLabel> Controles Table </ng-template>
       <h4>Controles Table</h4>
@@ -191,7 +284,7 @@
       />
       <div class="pdf-container w-75 px-5 mx-auto">
         <pdf-viewer
-          src="{{ host }}{{ exam.ennonce }}"
+          src="{{ exam.ennonce }}"
           [render-text]="true"
           [original-size]="false"
           style="width: 100%; height: 700px"
@@ -218,7 +311,7 @@
       />
       <div class="pdf-container w-75 px-5 mx-auto">
         <pdf-viewer
-          src="{{ host }}{{ exam.solution }}"
+          src="{{ exam.solution }}"
           [render-text]="true"
           [original-size]="false"
           style="width: 100%; height: 700px"

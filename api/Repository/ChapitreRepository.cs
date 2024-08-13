@@ -24,7 +24,7 @@ namespace api.Repository
         private string schemaContainer = "schema-container";
         private string syntheseContainer = "synthese-container";
         private readonly IBlobStorageService _blobStorageService;
-        public ChapitreRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment,IBlobStorageService blobStorageService)
+        public ChapitreRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment, IBlobStorageService blobStorageService)
         {
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
@@ -188,7 +188,8 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), pdfContainer, updateChapitrePdfDto.File.FileName);
+                var containerName = "pdf-container";
+                var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
 
                 if (!string.IsNullOrEmpty(chapitre.CoursPdfPath))
                 {
@@ -202,7 +203,7 @@ namespace api.Repository
 
                 chapitre.CoursPdfPath = newPdfUrl;
                 await apiDbContext.SaveChangesAsync();
-                
+
                 // Generate SAS URL
                 string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(chapitre.Synthese), TimeSpan.FromMinutes(5));
                 string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(5));
@@ -232,7 +233,8 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                var newSchemaUrl = await _blobStorageService.UploadFileAsync(updateChapitreSchemaDto.File.OpenReadStream(), schemaContainer, updateChapitreSchemaDto.File.FileName);
+                var containerName = "schema-container";
+                var newSchemaUrl = await _blobStorageService.UploadFileAsync(updateChapitreSchemaDto.File.OpenReadStream(), containerName, updateChapitreSchemaDto.File.FileName);
 
                 if (!string.IsNullOrEmpty(chapitre.Schema))
                 {
@@ -246,7 +248,7 @@ namespace api.Repository
 
                 chapitre.Schema = newSchemaUrl;
                 await apiDbContext.SaveChangesAsync();
-                
+
                 // Generate SAS URL
                 string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(chapitre.Synthese), TimeSpan.FromMinutes(5));
                 string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(5));
@@ -320,12 +322,12 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-               
-                var newVideoUrl = await _blobStorageService.UploadFileAsync(updateChapitreVideoDto.File.OpenReadStream(), videoContainer, updateChapitreVideoDto.File.FileName);
+                var containerName = "video-container";
+                var newVideoUrl = await _blobStorageService.UploadFileAsync(updateChapitreVideoDto.File.OpenReadStream(), containerName, updateChapitreVideoDto.File.FileName);
 
                 if (!string.IsNullOrEmpty(chapitre.VideoPath))
                 {
-                    
+
                     var oldVideoFileName = new Uri(chapitre.VideoPath).Segments.Last();
                     var deleteResult = await _blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
                     if (!deleteResult)

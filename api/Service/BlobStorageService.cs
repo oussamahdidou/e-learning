@@ -20,7 +20,7 @@ public class BlobStorageService : IBlobStorageService
     {
         var containerClient = _blobServiceClient.GetBlobContainerClient(containerName);
         await containerClient.CreateIfNotExistsAsync();
-        var blobClient = containerClient.GetBlobClient(fileName);
+        var blobClient = containerClient.GetBlobClient(Guid.NewGuid().ToString() + "_" + fileName);
         await blobClient.UploadAsync(fileStream, true);
         return blobClient.Uri.ToString();
     }

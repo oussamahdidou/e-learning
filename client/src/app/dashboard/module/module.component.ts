@@ -9,6 +9,7 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
+  NgForm,
   Validators,
 } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -21,6 +22,114 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './module.component.css',
 })
 export class ModuleComponent implements OnInit {
+  SelectProgram(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('ProgramFile', file);
+      formData.append('ModuleId', this.moduleId.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while we upload your file.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      this.dashboardservice.updatemoduleprogram(formData).subscribe(
+        (response) => {
+          Swal.close(); // Close the loading modal
+          this.moduleinfo.courseProgram = response.courseProgram;
+          Swal.fire({
+            title: 'Success!',
+            text: 'File uploaded successfully.',
+            icon: 'success',
+          });
+        },
+        (error) => {
+          Swal.close(); // Close the loading modal
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
+      );
+    }
+  }
+
+  SelectImage(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('ImageFile', file);
+      formData.append('ModuleId', this.moduleId.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while we upload your image.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      this.dashboardservice.updatemoduleimage(formData).subscribe(
+        (response) => {
+          Swal.close(); // Close the loading modal
+          this.moduleinfo.moduleImg = response.moduleImg;
+          Swal.fire({
+            title: 'Success!',
+            text: 'Image uploaded successfully.',
+            icon: 'success',
+          });
+        },
+        (error) => {
+          Swal.close(); // Close the loading modal
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
+      );
+    }
+  }
+
+  updatedescription(form: any) {
+    if (form.valid) {
+      // Show loading modal
+      Swal.fire({
+        title: 'Updating...',
+        text: 'Please wait while we update the description.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      this.dashboardservice
+        .updatemoduledescription(this.moduleId, this.moduleinfo.description)
+        .subscribe(
+          (response) => {
+            Swal.close(); // Close the loading modal
+            this.moduleinfo.description = response.description;
+            this.description = response.description;
+            this.descriptionfield = true;
+            Swal.fire({
+              title: 'Success!',
+              text: 'Description updated successfully.',
+              icon: 'success',
+            });
+          },
+          (error) => {
+            Swal.close(); // Close the loading modal
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+    } else {
+      Swal.fire('Error', 'Form is invalid!', 'error');
+    }
+  }
+
+  descriptionfield: boolean = true;
+  description: string = '';
   deleteexamfinal(id: number) {
     Swal.fire({
       title: 'Are you sure?',
@@ -32,8 +141,19 @@ export class ModuleComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while we process your request.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardservice.deleteexamfinal(id).subscribe(
           (response) => {
+            Swal.close(); // Close the loading modal
             Swal.fire({
               title: 'Deleted!',
               text: 'Your file has been deleted.',
@@ -42,8 +162,9 @@ export class ModuleComponent implements OnInit {
             this.exam = null;
           },
           (error) => {
+            Swal.close(); // Close the loading modal
             Swal.fire({
-              title: 'Deleted!',
+              title: 'Error',
               text: error.error,
               icon: 'error',
             });
@@ -52,6 +173,7 @@ export class ModuleComponent implements OnInit {
       }
     });
   }
+
   editrequiredmodule(module: any) {
     Swal.fire({
       title: 'Edit seuil Name',
@@ -130,8 +252,19 @@ export class ModuleComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while we process your request.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardservice.deletecontrole(id).subscribe(
           (response) => {
+            Swal.close(); // Close the loading modal
             Swal.fire({
               title: 'Deleted!',
               text: 'Your file has been deleted.',
@@ -143,8 +276,9 @@ export class ModuleComponent implements OnInit {
             this.controlessource.data = [...this.controles];
           },
           (error) => {
+            Swal.close(); // Close the loading modal
             Swal.fire({
-              title: 'Deleted!',
+              title: 'Error',
               text: error.error,
               icon: 'error',
             });
@@ -153,6 +287,7 @@ export class ModuleComponent implements OnInit {
       }
     });
   }
+
   refuser() {
     Swal.fire({
       title: 'Are you sure?',
@@ -161,26 +296,42 @@ export class ModuleComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes !',
+      confirmButtonText: 'Yes, refuse it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while we process your request.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardservice.refuserexam(this.moduleId).subscribe(
           (response) => {
-            console.log(response);
+            Swal.close(); // Close the loading modal
             this.exam.status = response.status;
             Swal.fire({
-              title: 'Refuser!',
-              text: 'Your file has been Refuser.',
+              title: 'Refused!',
+              text: 'The exam has been refused.',
               icon: 'success',
             });
           },
           (error) => {
-            Swal.fire(`error`, `${error.error}`, `error`);
+            Swal.close(); // Close the loading modal
+            Swal.fire({
+              title: 'Error',
+              text: error.error,
+              icon: 'error',
+            });
           }
         );
       }
     });
   }
+
   approuver() {
     Swal.fire({
       title: 'Are you sure?',
@@ -189,26 +340,42 @@ export class ModuleComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes',
+      confirmButtonText: 'Yes, approve it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while we process your request.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardservice.approuverexam(this.moduleId).subscribe(
           (response) => {
-            console.log(response);
+            Swal.close(); // Close the loading modal
             this.exam.status = response.status;
             Swal.fire({
-              title: 'Accepter!',
-              text: 'Your file has been Accepter.',
+              title: 'Approved!',
+              text: 'The exam has been approved.',
               icon: 'success',
             });
           },
           (error) => {
-            Swal.fire(`error`, `${error.error}`, `error`);
+            Swal.close(); // Close the loading modal
+            Swal.fire({
+              title: 'Error',
+              text: error.error,
+              icon: 'error',
+            });
           }
         );
       }
     });
   }
+
   controleForm: FormGroup;
   host = environment.apiUrl;
   exam: any;
@@ -228,7 +395,7 @@ export class ModuleComponent implements OnInit {
   chapitressource: MatTableDataSource<any>;
   controlessource: MatTableDataSource<any>;
   modulessource!: MatTableDataSource<any>;
-
+  moduleinfo: any;
   chapters: any[] = [];
   controles: any[] = [];
   modules: any[] = [];
@@ -299,32 +466,78 @@ export class ModuleComponent implements OnInit {
       const formData = new FormData();
       formData.append('File', file);
       formData.append('Id', this.moduleId.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while we upload your file.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardservice.updateexamsolution(formData).subscribe(
         (response) => {
+          Swal.close(); // Close the loading modal
           this.exam.solution = response.solution;
+          Swal.fire({
+            title: 'Uploaded!',
+            text: 'The solution file has been successfully uploaded.',
+            icon: 'success',
+          });
         },
         (error) => {
-          Swal.fire(`error`, `${error.error}`, `error`);
+          Swal.close(); // Close the loading modal
+          Swal.fire({
+            title: 'Error',
+            text: error.error,
+            icon: 'error',
+          });
         }
       );
     }
   }
+
   SelectEnnonce(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
       formData.append('File', file);
       formData.append('Id', this.moduleId.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while we upload your file.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardservice.updateexamsolution(formData).subscribe(
         (response) => {
+          Swal.close(); // Close the loading modal
           this.exam.ennonce = response.ennonce;
+          Swal.fire({
+            title: 'Uploaded!',
+            text: 'The announcement file has been successfully uploaded.',
+            icon: 'success',
+          });
         },
         (error) => {
-          Swal.fire(`error`, `${error.error}`, `error`);
+          Swal.close(); // Close the loading modal
+          Swal.fire({
+            title: 'Error',
+            text: error.error,
+            icon: 'error',
+          });
         }
       );
     }
   }
+
   onSubmit() {
     if (this.controleForm.valid) {
       const formData = new FormData();
@@ -337,17 +550,46 @@ export class ModuleComponent implements OnInit {
       }
       formData.append('ModuleId', this.moduleId.toString());
 
+      // Show loading modal
+      Swal.fire({
+        title: 'Submitting...',
+        text: 'Please wait while we process your request.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardservice.createexam(formData).subscribe(
         (response) => {
+          Swal.close(); // Close the loading modal
           console.log(response);
           this.exam = response;
+          Swal.fire({
+            title: 'Success!',
+            text: 'The exam has been successfully created.',
+            icon: 'success',
+          });
         },
         (error) => {
-          console.log(error);
+          Swal.close(); // Close the loading modal
+          console.error(error);
+          Swal.fire({
+            title: 'Error',
+            text: error.error,
+            icon: 'error',
+          });
         }
       );
+    } else {
+      Swal.fire({
+        title: 'Invalid Form',
+        text: 'Please correct the errors in the form before submitting.',
+        icon: 'warning',
+      });
     }
   }
+
   constructor(
     private fb: FormBuilder,
     public dialog: MatDialog,
@@ -387,9 +629,7 @@ export class ModuleComponent implements OnInit {
           this.exam = response;
           console.log(response);
         },
-        (error) => {
-          Swal.fire(`error`, `${error.error}`, `error`);
-        }
+        (error) => {}
       );
       this.dashboardservice.getrequiredmodules(this.moduleId).subscribe(
         (response) => {
@@ -440,6 +680,13 @@ export class ModuleComponent implements OnInit {
         (error) => {
           Swal.fire(`error`, `${error.error}`, `error`);
         }
+      );
+      this.dashboardservice.getmoduleinfo(this.moduleId).subscribe(
+        (response) => {
+          this.moduleinfo = response;
+          this.description = this.moduleinfo.description;
+        },
+        (error) => {}
       );
     });
   }
