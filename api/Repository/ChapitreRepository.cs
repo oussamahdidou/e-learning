@@ -344,8 +344,6 @@ namespace api.Repository
                 string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(2));
                 string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(chapitre.CoursPdfPath), TimeSpan.FromMinutes(2));
                 string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(chapitre.VideoPath), TimeSpan.FromMinutes(2));
-
-                // Update URLs with the SAS url that will contain the token
                 chapitre.Synthese = syntheseSasUrl;
                 chapitre.Schema = schemaSasUrl;
                 chapitre.CoursPdfPath = coursPdfSasUrl;
