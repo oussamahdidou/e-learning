@@ -99,18 +99,16 @@ namespace api.Controllers
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
 
-            string filePath = Path.Combine(_environment.WebRootPath, result.Value.Reponse.TrimStart('/'));
-            if (System.IO.File.Exists(filePath))
-            {
-                try
+            if (!string.IsNullOrEmpty(result.Value.Reponse))
                 {
-                    System.IO.File.Delete(filePath);
+                    string ControleResultContainer = "controle-result-container";
+                    var oldSyntheseFileName = new Uri(result.Value.Reponse).Segments.Last();
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(containerName, oldSyntheseFileName);
+                    if (!deleteResult)
+                    {
+                        return Result<Chapitre>.Failure("Failed to delete old synthese file");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    return BadRequest($"File deletion failed: {ex.Message}");
-                }
-            }
 
             return Ok(result.Value);
         }
