@@ -19,35 +19,69 @@ export class ControleComponent implements OnInit {
       const formData = new FormData();
       formData.append('Solution', file);
       formData.append('Id', this.controleid.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the solution is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardservice.updatecontroleSolution(formData).subscribe(
         (response) => {
           this.controle.solution = response.solution;
+          Swal.fire({
+            title: 'Uploaded!',
+            text: 'The solution has been uploaded successfully.',
+            icon: 'success',
+          });
         },
         (error) => {
-          Swal.fire(`error`, `${error.error}`, `error`);
+          Swal.fire('Error', `${error.error}`, 'error');
         }
       );
     }
   }
+
   SelectEnnonce(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
       formData.append('Ennonce', file);
       formData.append('Id', this.controleid.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the announcement is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardservice.updatecontroleEnnonce(formData).subscribe(
         (response) => {
           this.controle.ennonce = response.ennonce;
+          Swal.fire({
+            title: 'Uploaded!',
+            text: 'The announcement has been uploaded successfully.',
+            icon: 'success',
+          });
         },
         (error) => {
-          Swal.fire(`error`, `${error.error}`, `error`);
+          Swal.fire('Error', `${error.error}`, 'error');
         }
       );
     }
   }
+
   modifierNom() {
     Swal.fire({
-      title: 'Edit Controle  Name',
+      title: 'Edit Controle Name',
       input: 'text',
       inputLabel: 'Controle Name',
       inputValue: this.controle.nom,
@@ -62,20 +96,29 @@ export class ControleComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardservice
           .updateinstitution(result.value, this.controleid)
           .subscribe(
             (response) => {
               this.controle.nom = response.nom;
-              console.log(response);
-              Swal.fire(
-                'Saved!',
-                'Institution name has been updated.',
-                'success'
-              );
+              Swal.fire({
+                title: 'Saved!',
+                text: 'Institution name has been updated.',
+                icon: 'success',
+              });
             },
             (error) => {
-              Swal.fire(`error`, `${error.error}`, `error`);
+              Swal.fire('Error', `${error.error}`, 'error');
             }
           );
       }
@@ -83,7 +126,6 @@ export class ControleComponent implements OnInit {
   }
 
   controleid: number = 0;
-  host = environment.apiUrl;
   controle: any;
   constructor(
     public dialog: MatDialog,
@@ -116,19 +158,35 @@ export class ControleComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed', result);
       if (result) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while the chapters are being updated.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardservice
           .updatecontrolechapitres(result, this.controleid)
           .subscribe(
             (response) => {
               console.log(response);
+              Swal.fire({
+                title: 'Updated!',
+                text: 'The chapters have been updated successfully.',
+                icon: 'success',
+              });
             },
             (error) => {
-              Swal.fire(`error`, `${error.error}`, `error`);
+              Swal.fire('Error', `${error.error}`, 'error');
             }
           );
       }
     });
   }
+
   refuser() {
     Swal.fire({
       title: 'Are you sure?',
@@ -137,26 +195,36 @@ export class ControleComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes !',
+      confirmButtonText: 'Yes!',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while we process your request.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardservice.refusercontrole(this.controleid).subscribe(
           (response) => {
-            console.log(response);
             this.controle.status = response.status;
             Swal.fire({
-              title: 'Refuser!',
-              text: 'Your file has been Refuser.',
+              title: 'Rejected!',
+              text: 'The file has been rejected.',
               icon: 'success',
             });
           },
           (error) => {
-            Swal.fire(`error`, `${error.error}`, `error`);
+            Swal.fire('Error', `${error.error}`, 'error');
           }
         );
       }
     });
   }
+
   approuver() {
     Swal.fire({
       title: 'Are you sure?',
@@ -168,18 +236,27 @@ export class ControleComponent implements OnInit {
       confirmButtonText: 'Yes',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while we process your request.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardservice.approuvercontrole(this.controleid).subscribe(
           (response) => {
-            console.log(response);
             this.controle.status = response.status;
             Swal.fire({
-              title: 'Accepter!',
-              text: 'Your file has been Accepter.',
+              title: 'Accepted!',
+              text: 'Your file has been accepted.',
               icon: 'success',
             });
           },
           (error) => {
-            Swal.fire(`error`, `${error.error}`, `error`);
+            Swal.fire('Error', `${error.error}`, 'error');
           }
         );
       }
