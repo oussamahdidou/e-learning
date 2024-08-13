@@ -105,13 +105,13 @@ namespace api.Controllers
             if (!string.IsNullOrEmpty(result.Value.Reponse))
                 {
                     string ControleResultContainer = "controle-result-container";
-                    var oldControleResultFileName = new Uri(result.Value.Reponse).Segments.Last();
-                    Console.Write(oldControleResultFileName);
-                try
-                {
+                    var oldControleResultFileName = Path.GetFileName(new Uri(result.Value.Reponse).LocalPath);
+
                     var deleteResult = await _blobStorageService.DeleteFileAsync(ControleResultContainer, oldControleResultFileName);
-                }
-                catch (Exception ex) { BadRequest(ex.Message); }
+                    if (!deleteResult)
+                    {
+                        return BadRequest();
+                    }
                 }
 
             return Ok(result.Value);
