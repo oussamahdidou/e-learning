@@ -11,6 +11,7 @@ import {
   moduleInfo,
 } from '../interfaces/dashboard';
 import { AuthService } from './auth.service';
+import { SharedDataService } from './shared-data.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +31,8 @@ export class CourseService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private readonly authservice: AuthService
+    private readonly authservice: AuthService,
+    private shared: SharedDataService
   ) {}
 
   getCourseById(id: number): Observable<Module | undefined> {
@@ -378,7 +380,8 @@ export class CourseService {
       })
       .pipe(
         tap((response) => {
-          console.log('Response from backend:', response);
+          console.log(response.split('"reponse":'));
+          // this.shared.setDevoir(response.reponse)
         }),
         catchError(this.handleError)
       );

@@ -18,9 +18,10 @@ export class PdfViewerComponent {
   isFirstCour: number = 1;
   isLastControle: number = 1;
   selectedFile: File | null = null;
-  devoirePdfUrl: string = "";
+  devoirePdfUrl: string = '';
   devoirExists: boolean = false;
   id: number = 0;
+  res: any;
 
   constructor(
     private router: Router,
@@ -154,11 +155,13 @@ export class PdfViewerComponent {
     this.courseService.uploadSolution(formData, this.exam.id).subscribe(
       (res) => {
         this.devoirExists = true;
+        this.devoirePdfUrl = res;
       },
       (error) => {
         this.errorHandlingService.handleError(error, 'Error uploading file');
       }
     );
+    this.devoirePdfUrl = this.res.reponse;
   }
 
   // Methods for ControleFinal
@@ -174,6 +177,8 @@ export class PdfViewerComponent {
     this.courseService.uploadFinalSolution(formData, this.exam.id).subscribe(
       (response) => {
         this.devoirExists = true;
+        console.log(response.reponse);
+        // this.devoirePdfUrl = response.reponse;
       },
       (error) => {
         this.errorHandlingService.handleError(
@@ -215,10 +220,12 @@ export class PdfViewerComponent {
     if (this.isExam) {
       this.courseService.deleteDevoir(this.id).subscribe((res) => {
         this.devoirExists = false;
+        this.devoirePdfUrl = '';
       });
     } else if (this.isControleFinal) {
       this.courseService.deleteFinalDevoir(this.id).subscribe((res) => {
         this.devoirExists = false;
+        this.devoirePdfUrl = '';
       });
     }
   }

@@ -11,6 +11,9 @@ export class SharedDataService {
   private activeDivSubject = new BehaviorSubject<string>('');
   activeDiv$ = this.activeDivSubject.asObservable();
 
+  private devoirPdfUrl = new BehaviorSubject<string>('');
+  devoir$ = this.devoirPdfUrl.asObservable();
+
   setData(data: any) {
     this.dataSubject.next(data);
   }
@@ -22,5 +25,11 @@ export class SharedDataService {
   }
   resetActiveDiv(route: string) {
     this.activeDivSubject.next('');
+  }
+  setDevoir(data: any) {
+    this.devoirPdfUrl.next(data);
+  }
+  resetDevoir() {
+    this.devoirPdfUrl.next('');
   }
 }
