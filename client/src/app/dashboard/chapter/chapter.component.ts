@@ -280,6 +280,7 @@ export class ChapterComponent implements OnInit {
         (response) => {
           // Close the loading modal and show success message
           Swal.fire('Success', 'PDF uploaded successfully', 'success');
+          console.log("and this is the response ",response)
           this.chapitre.coursPdfPath = response.coursPdfPath;
         },
         (error) => {

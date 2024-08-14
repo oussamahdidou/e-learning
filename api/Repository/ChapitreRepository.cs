@@ -31,6 +31,16 @@ namespace api.Repository
             _blobStorageService = blobStorageService;
         }
 
+        private Chapitre GenerateSasUrls(Chapitre chapitre)
+        {
+            chapitre.Synthese = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(new Uri(chapitre.Synthese).LocalPath), TimeSpan.FromMinutes(5));
+            chapitre.Schema = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(new Uri(chapitre.Schema).LocalPath), TimeSpan.FromMinutes(5));
+            chapitre.CoursPdfPath = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath), TimeSpan.FromMinutes(5));
+            chapitre.VideoPath = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath), TimeSpan.FromMinutes(5));
+
+            return chapitre;
+        }
+
         public async Task<Result<Chapitre>> Approuver(int id)
         {
             try
@@ -42,7 +52,7 @@ namespace api.Repository
                 }
                 chapitre.Statue = ObjectStatus.Approuver;
                 await apiDbContext.SaveChangesAsync();
-                return Result<Chapitre>.Success(chapitre);
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
             catch (System.Exception ex)
             {
@@ -88,18 +98,7 @@ namespace api.Repository
                 await apiDbContext.chapitres.AddAsync(chapitre);
                 await apiDbContext.SaveChangesAsync();
 
-                // Generate SAS URL
-                string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(chapitre.Synthese), TimeSpan.FromMinutes(5));
-                string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(5));
-                string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(chapitre.CoursPdfPath), TimeSpan.FromMinutes(5));
-                string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(chapitre.VideoPath), TimeSpan.FromMinutes(5));
-
-                // Update URLs with the SAS url that will contain the token
-                chapitre.Synthese = syntheseSasUrl;
-                chapitre.Schema = schemaSasUrl;
-                chapitre.CoursPdfPath = coursPdfSasUrl;
-                chapitre.VideoPath = videoSasUrl;
-                return Result<Chapitre>.Success(chapitre);
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
             catch (Exception ex)
             {
@@ -138,19 +137,7 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                // Generate SAS URL
-                string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(new Uri(chapitre.Synthese).LocalPath), TimeSpan.FromMinutes(5));
-                string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(new Uri(chapitre.Schema).LocalPath), TimeSpan.FromMinutes(5));
-                string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath), TimeSpan.FromMinutes(5));
-                string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath), TimeSpan.FromMinutes(5));
-
-                // Update URLs with the SAS url that will contain the token
-                chapitre.Synthese = syntheseSasUrl;
-                chapitre.Schema = schemaSasUrl;
-                chapitre.CoursPdfPath = coursPdfSasUrl;
-                chapitre.VideoPath = videoSasUrl;
-
-                return Result<Chapitre>.Success(chapitre);
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
             catch (Exception ex)
             {
@@ -204,18 +191,7 @@ namespace api.Repository
                 chapitre.CoursPdfPath = newPdfUrl;
                 await apiDbContext.SaveChangesAsync();
 
-                // Generate SAS URL
-                string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(chapitre.Synthese), TimeSpan.FromMinutes(5));
-                string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(5));
-                string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(chapitre.CoursPdfPath), TimeSpan.FromMinutes(5));
-                string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(chapitre.VideoPath), TimeSpan.FromMinutes(5));
-
-                // Update URLs with the SAS url that will contain the token
-                chapitre.Synthese = syntheseSasUrl;
-                chapitre.Schema = schemaSasUrl;
-                chapitre.CoursPdfPath = coursPdfSasUrl;
-                chapitre.VideoPath = videoSasUrl;
-                return Result<Chapitre>.Success(chapitre);
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
             catch (Exception ex)
             {
@@ -249,18 +225,7 @@ namespace api.Repository
                 chapitre.Schema = newSchemaUrl;
                 await apiDbContext.SaveChangesAsync();
 
-                // Generate SAS URL
-                string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(chapitre.Synthese), TimeSpan.FromMinutes(5));
-                string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(5));
-                string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(chapitre.CoursPdfPath), TimeSpan.FromMinutes(5));
-                string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(chapitre.VideoPath), TimeSpan.FromMinutes(5));
-
-                // Update URLs with the SAS url that will contain the token
-                chapitre.Synthese = syntheseSasUrl;
-                chapitre.Schema = schemaSasUrl;
-                chapitre.CoursPdfPath = coursPdfSasUrl;
-                chapitre.VideoPath = videoSasUrl;
-                return Result<Chapitre>.Success(chapitre);
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
             catch (Exception ex)
             {
@@ -293,18 +258,7 @@ namespace api.Repository
                 chapitre.Synthese = newSyntheseUrl;
                 await apiDbContext.SaveChangesAsync();
 
-                // Generate SAS URL
-                string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(chapitre.Synthese), TimeSpan.FromMinutes(5));
-                string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(5));
-                string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(chapitre.CoursPdfPath), TimeSpan.FromMinutes(5));
-                string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(chapitre.VideoPath), TimeSpan.FromMinutes(5));
-
-                // Update URLs with the SAS url that will contain the token
-                chapitre.Synthese = syntheseSasUrl;
-                chapitre.Schema = schemaSasUrl;
-                chapitre.CoursPdfPath = coursPdfSasUrl;
-                chapitre.VideoPath = videoSasUrl;
-                return Result<Chapitre>.Success(chapitre);
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
             catch (Exception ex)
             {
@@ -339,18 +293,7 @@ namespace api.Repository
                 chapitre.VideoPath = newVideoUrl;
                 await apiDbContext.SaveChangesAsync();
 
-                // Generate SAS URL
-                string syntheseSasUrl = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(chapitre.Synthese), TimeSpan.FromMinutes(5));
-                string schemaSasUrl = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(chapitre.Schema), TimeSpan.FromMinutes(5));
-                string coursPdfSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(chapitre.CoursPdfPath), TimeSpan.FromMinutes(5));
-                string videoSasUrl = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(chapitre.VideoPath), TimeSpan.FromMinutes(5));
-
-                // Update URLs with the SAS url that will contain the token
-                chapitre.Synthese = syntheseSasUrl;
-                chapitre.Schema = schemaSasUrl;
-                chapitre.CoursPdfPath = coursPdfSasUrl;
-                chapitre.VideoPath = videoSasUrl;
-                return Result<Chapitre>.Success(chapitre);
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
             catch (Exception ex)
             {
