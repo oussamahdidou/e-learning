@@ -258,6 +258,15 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
+  updatechapitrenom(value: any, chapterid: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateChapterName`,
+      {
+        id: chapterid,
+        nom: value,
+      }
+    );
+  }
   approuverchapitre(id: number): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/api/Chapitre/Approuver/${id}`,
