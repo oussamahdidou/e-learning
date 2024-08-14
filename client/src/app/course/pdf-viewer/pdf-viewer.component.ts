@@ -178,7 +178,7 @@ export class PdfViewerComponent {
       (response) => {
         this.devoirExists = true;
         console.log(response.reponse);
-        // this.devoirePdfUrl = response.reponse;
+        this.devoirePdfUrl = response.reponse;
       },
       (error) => {
         this.errorHandlingService.handleError(
