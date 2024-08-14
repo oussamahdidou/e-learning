@@ -92,31 +92,30 @@ namespace api.Controllers
         [HttpDelete("{controleId}")]
         [Authorize]
         public async Task<IActionResult> RemoveResult(int controleId)
+        {
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+
+            if (user == null)
+                return BadRequest("User not found.");
+
+            Result<ResultControle> result = await _resultRepo.RemoveResult(user, controleId);
+
+            if (!result.IsSuccess)
+                return BadRequest(result.Error);
+
+            if (!string.IsNullOrEmpty(result.Value.Reponse))
                 {
-                    string username = User.GetUsername();
-                    AppUser? user = await _manager.FindByNameAsync(username);
+                    string ControleResultContainer = "controle-result-container";
+                    var oldControleResultFileName = Path.GetFileName(new Uri(result.Value.Reponse).LocalPath);
 
-                    if (user == null)
-                        return BadRequest("User not found.");
-
-                    Result<ResultControle> result = await _resultRepo.RemoveResult(user, controleId);
-
-                    if (!result.IsSuccess)
-                        return BadRequest(result.Error);
-
-                    if (!string.IsNullOrEmpty(result.Value.Reponse))
-                        {
-                            string ControleResultContainer = "controle-result-container";
-                            var oldControleResultFileName = Path.GetFileName(new Uri(result.Value.Reponse).LocalPath);
-
-                            var deleteResult = await _blobStorageService.DeleteFileAsync(ControleResultContainer, oldControleResultFileName);
-                            if (!deleteResult)
-                            {
-                                return BadRequest();
-                            }
-                        }
-
-                    return Ok(result.Value);
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(ControleResultContainer, oldControleResultFileName);
+                    if (!deleteResult)
+                    {
+                        return BadRequest();
+                    }
                 }
-            }
+
+            return Ok(result.Value);
+        }
 }
