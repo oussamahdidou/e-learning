@@ -182,10 +182,7 @@ namespace api.Repository
                 {
                     var oldPdfFileName = Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath);
                     var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldPdfFileName);
-                    if (!deleteResult)
-                    {
-                        return Result<Chapitre>.Failure("Failed to delete old PDF file"+ oldPdfFileName);
-                    }
+
                 }
 
                 chapitre.CoursPdfPath = newPdfUrl;
@@ -209,17 +206,14 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                
+
                 var newSchemaUrl = await _blobStorageService.UploadFileAsync(updateChapitreSchemaDto.File.OpenReadStream(), schemaContainer, updateChapitreSchemaDto.File.FileName);
 
                 if (!string.IsNullOrEmpty(chapitre.Schema))
                 {
                     var oldSchemaFileName = Path.GetFileName(new Uri(chapitre.Schema).LocalPath);
                     var deleteResult = await _blobStorageService.DeleteFileAsync(schemaContainer, oldSchemaFileName);
-                    if (!deleteResult)
-                    {
-                        return Result<Chapitre>.Failure("Failed to delete old schema file" + chapitre.Schema);
-                    }
+
                 }
 
                 chapitre.Schema = newSchemaUrl;
@@ -249,10 +243,7 @@ namespace api.Repository
                 {
                     var oldSyntheseFileName = Path.GetFileName(new Uri(chapitre.Synthese).LocalPath);
                     var deleteResult = await _blobStorageService.DeleteFileAsync(syntheseContainer, oldSyntheseFileName);
-                    if (!deleteResult)
-                    {
-                        return Result<Chapitre>.Failure("Failed to delete old synthese file");
-                    }
+
                 }
 
                 chapitre.Synthese = newSyntheseUrl;
@@ -284,10 +275,7 @@ namespace api.Repository
 
                     var oldVideoFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
                     var deleteResult = await _blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
-                    if (!deleteResult)
-                    {
-                        return Result<Chapitre>.Failure("Failed to delete old video file");
-                    }
+
                 }
 
                 chapitre.VideoPath = newVideoUrl;
