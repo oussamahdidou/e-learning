@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using api.Mappers;
 using api.generique;
+using api.Dtos.ResultControle;
 
 namespace api.Controllers
 {
@@ -50,8 +51,8 @@ namespace api.Controllers
                 return BadRequest(addResult.Error);
             
             string ControleResultSasUrl = _blobStorageService.GenerateSasToken(ControleResultContainer, Path.GetFileName(new Uri(ControleResultUrl).LocalPath), TimeSpan.FromMinutes(2));
-            addResult.Value.Reponse = ControleResultSasUrl;
-            return Ok(addResult.Value.Reponse);
+            
+            return Ok(ControleResultSasUrl);
         } 
         [HttpGet]
         [Authorize]
@@ -67,6 +68,8 @@ namespace api.Controllers
 
             if (!results.IsSuccess)
                 return BadRequest(results.Error);
+            
+            
 
             return Ok(results.Value);
         }
