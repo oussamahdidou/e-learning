@@ -1,10 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\cours\**" />
+    <Content Remove="wwwroot\cours\**" />
+    <EmbeddedResource Remove="wwwroot\cours\**" />
+    <None Remove="wwwroot\cours\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.21.2" />
@@ -31,7 +38,7 @@
 
   <ItemGroup>
     <Folder Include="NewFolder\" />
-    <Folder Include="wwwroot\cours\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
