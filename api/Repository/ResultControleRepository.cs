@@ -25,7 +25,7 @@ namespace api.Repository
                 ControleId = controleId,
                 Reponse = filePath
             };
-                _context.resultControles.Add(resultControle);
+                await _context.resultControles.AddAsync(resultControle);
                 await _context.SaveChangesAsync();
                 return Result<ResultControle>.Success(resultControle);
         }
