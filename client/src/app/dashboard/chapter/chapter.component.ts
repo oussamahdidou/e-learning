@@ -293,9 +293,9 @@ export class ChapterComponent implements OnInit {
 
   modifierNom() {
     Swal.fire({
-      title: 'Edit Controle Name',
+      title: 'Edit Chapitre Name',
       input: 'text',
-      inputLabel: 'Controle Name',
+      inputLabel: 'Chapitre Name',
       inputValue: this.chapitre.nom,
       showCancelButton: true,
       confirmButtonText: 'Save',
@@ -319,15 +319,11 @@ export class ChapterComponent implements OnInit {
         });
 
         this.dashboardService
-          .updateinstitution(result.value, this.chapterid)
+          .updatechapitrenom(result.value, this.chapterid)
           .subscribe(
             (response) => {
               this.chapitre.nom = response.nom;
-              Swal.fire(
-                'Saved!',
-                'Institution name has been updated.',
-                'success'
-              );
+              Swal.fire('Saved!', 'Chapitre name has been updated.', 'success');
             },
             (error) => {
               Swal.fire('Error', `${error.error}`, 'error');

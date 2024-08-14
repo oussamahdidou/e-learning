@@ -289,5 +289,16 @@ namespace api.Repository
             }
         }
 
+        public async Task<Result<Chapitre>> UpdateChapterName(UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitreNameDto.Id);
+            if (chapitre == null)
+            {
+                return Result<Chapitre>.Failure("chapitre not found");
+            }
+            chapitre.Nom = updateChapitreNameDto.Nom;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Chapitre>.Success(chapitre);
+        }
     }
 }
