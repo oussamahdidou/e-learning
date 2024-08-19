@@ -34,6 +34,9 @@ namespace api.Data
         public DbSet<ModuleRequirement> moduleRequirements { get; set; }
         public DbSet<ResultExam> resultExams { get; set; }
         public DbSet<ExamFinal> examFinals { get; set; }
+        public DbSet<CoursParagraphe> coursParagraphes { get; set; }
+        public DbSet<ElementPedagogique> elementPedagogiques { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -123,6 +126,16 @@ namespace api.Data
             .HasOne(u => u.ExamFinal)
             .WithMany(u => u.ResultExams)
             .HasForeignKey(p => p.ExamFinalId);
+            //*************************************************************************************************
+            builder.Entity<NiveauScolaireModule>(x => x.HasKey(p => new { p.ModuleId, p.NiveauScolaireId }));
+            builder.Entity<NiveauScolaireModule>()
+            .HasOne(u => u.Module)
+            .WithMany(u => u.NiveauScolaireModules)
+            .HasForeignKey(p => p.ModuleId);
+            builder.Entity<NiveauScolaireModule>()
+            .HasOne(u => u.NiveauScolaire)
+            .WithMany(u => u.NiveauScolaireModules)
+            .HasForeignKey(p => p.NiveauScolaireId);
         }
     }
 }

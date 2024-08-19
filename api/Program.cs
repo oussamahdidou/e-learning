@@ -61,7 +61,7 @@ builder.Services.AddDbContext<apiDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlServerOptions =>
     {
-        sqlServerOptions.CommandTimeout(300); 
+        sqlServerOptions.CommandTimeout(300);
     });
 });
 
@@ -133,14 +133,14 @@ builder.Services.AddScoped<IControleRepository, ControleRepository>();
 builder.Services.AddScoped<IExamFinalRepository, ExamFinalRepository>();
 builder.Services.AddScoped<IUserCenterInterface, UserCenterRepository>();
 builder.Services.AddScoped<IResultExamRepository, ResultExamRepository>();
-builder.Services.AddScoped<IBlobStorageService,BlobStorageService>();
-builder.Services.AddSingleton( x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
+builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {
-    await SeedData.SeedUsersAndRolesAsync(app);
-    await SeedData.Initialize(app);
+    // await SeedData.SeedUsersAndRolesAsync(app);
+    // await SeedData.Initialize(app);
 
 }
 else
