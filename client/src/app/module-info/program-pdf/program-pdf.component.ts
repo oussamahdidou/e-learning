@@ -7,6 +7,5 @@ import { environment } from '../../../environments/environment';
   styleUrl: './program-pdf.component.css',
 })
 export class ProgramPdfComponent {
-  host = environment.apiUrl;
   @Input() pdfUrl?: string;
 }
