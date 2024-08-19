@@ -60,10 +60,12 @@
 
 .dropdown-item {
   color: white;
+  cursor: pointer;
 }
 
 .dropdown-item:hover {
   background-color: #00b33c;
+  cursor: pointer;
 }
 .nav-item.dropdown {
   position: relative;
