@@ -21,7 +21,7 @@ namespace api.Mappers
                     ChapitreNum = c.ChapitreNum,
                     Nom = c.Nom,
                     Statue = checkedChapters.Contains(c.Id), 
-                    CoursPdfPath = c.CoursPdfPath,
+                    StudentCoursParagraphes = c.StudentCoursParagraphes.Select(p => p.Paragraphe).ToList(),
                     VideoPath = c.VideoPath,
                     Synthese = c.Synthese,
                     Schema = c.Schema,

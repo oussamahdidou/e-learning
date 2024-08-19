@@ -11,5 +11,6 @@ namespace api.Dtos.Chapitre
         public int Id { get; set; }
         [Required]
         public required IFormFile File { get; set; }
+        public required string ParagrapheUrl { get; set; }
     }
 }

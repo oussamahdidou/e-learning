@@ -35,7 +35,17 @@ namespace api.Repository
         {
             chapitre.Synthese = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(new Uri(chapitre.Synthese).LocalPath), TimeSpan.FromMinutes(5));
             chapitre.Schema = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(new Uri(chapitre.Schema).LocalPath), TimeSpan.FromMinutes(5));
-            chapitre.CoursPdfPath = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath), TimeSpan.FromMinutes(5));
+            List<string?> StudentCoursParagraphes = chapitre.StudentCoursParagraphes.Select(p => p.Paragraphe).ToList();
+            chapitre.StudentCoursParagraphes?.Clear();
+            foreach (string? paragraphePath in StudentCoursParagraphes)
+{
+    if (!string.IsNullOrEmpty(paragraphePath))
+    {
+        string newSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(paragraphePath).LocalPath), TimeSpan.FromMinutes(5));
+        chapitre.StudentCoursParagraphes?.Add(new CoursParagraphe { Paragraphe = newSasUrl });
+    }
+}
+                
             chapitre.VideoPath = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath), TimeSpan.FromMinutes(5));
 
             return chapitre;
@@ -63,68 +73,52 @@ namespace api.Repository
         }
 
         public async Task<Result<Chapitre>> CreateChapitre(CreateChapitreDto createChapitreDto)
+{
+    try
+    {
+
+        var syntheseUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Synthese.OpenReadStream(), syntheseContainer, createChapitreDto.Synthese.FileName);
+        var schemaUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Schema.OpenReadStream(), schemaContainer, createChapitreDto.Schema.FileName);
+        var videoUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Video.OpenReadStream(), videoContainer, createChapitreDto.Video.FileName);
+
+        Chapitre chapitre = new Chapitre
         {
-            try
-            {
-                var syntheseUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Synthese.OpenReadStream(), syntheseContainer, createChapitreDto.Synthese.FileName);
-                var schemaUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Schema.OpenReadStream(), schemaContainer, createChapitreDto.Schema.FileName);
-                var coursPdfUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.CoursPdf.OpenReadStream(), pdfContainer, createChapitreDto.CoursPdf.FileName);
-                var videoUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Video.OpenReadStream(), videoContainer, createChapitreDto.Video.FileName);
+            ChapitreNum = createChapitreDto.ChapitreNum,
+            Nom = createChapitreDto.Nom,
+            ModuleId = createChapitreDto.ModuleId,
+            Premium = createChapitreDto.Premium,
+            VideoPath = videoUrl,
+            Schema = schemaUrl,
+            Synthese = syntheseUrl,
+            Statue = createChapitreDto.Statue,
+            QuizId = createChapitreDto.QuizId,
+        };
 
-                Chapitre chapitre = new Chapitre
-                {
-                    ChapitreNum = createChapitreDto.ChapitreNum,
-                    Nom = createChapitreDto.Nom,
-                    ModuleId = createChapitreDto.ModuleId,
-                    Premium = createChapitreDto.Premium,
-                    CoursPdfPath = coursPdfUrl,
-                    VideoPath = videoUrl,
-                    Schema = schemaUrl,
-                    Synthese = syntheseUrl,
-                    Statue = createChapitreDto.Statue,
-                    QuizId = createChapitreDto.QuizId,
-                };
-
-                // Update existing chapitres
-                List<Chapitre> chapitres = await apiDbContext.chapitres
-                    .Where(x => x.ModuleId == createChapitreDto.ModuleId && x.ChapitreNum >= createChapitreDto.ChapitreNum)
-                    .ToListAsync();
-
-                foreach (var item in chapitres)
-                {
-                    item.ChapitreNum++;
-                }
-
-                await apiDbContext.chapitres.AddAsync(chapitre);
-                await apiDbContext.SaveChangesAsync();
-
-                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
-            }
-            catch (Exception ex)
-            {
-                return Result<Chapitre>.Failure(ex.Message);
-            }
+        foreach (var paragrapheFile in createChapitreDto.StudentCoursParagraphes)
+        {
+            var paragrapheUrl = await _blobStorageService.UploadFileAsync(paragrapheFile.OpenReadStream(), pdfContainer, paragrapheFile.FileName);
+            chapitre.StudentCoursParagraphes.Add(new CoursParagraphe { Paragraphe = paragrapheUrl });
         }
 
-        public async Task<bool> DeleteChapitre(int id)
-        {
-            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.CheckChapters).FirstOrDefaultAsync(x => x.Id == id);
-            if (chapitre == null)
-            {
-                return false;
-            }
-            apiDbContext.chapitres.Remove(chapitre);
-            await apiDbContext.SaveChangesAsync();
-            Controle? controle = await apiDbContext.controles.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Chapitres.Count() == 0);
-            if (controle == null)
-            {
-                return true;
-            }
-            apiDbContext.controles.Remove(controle);
-            await apiDbContext.SaveChangesAsync();
-            return true;
+        List<Chapitre> chapitres = await apiDbContext.chapitres
+            .Where(x => x.ModuleId == createChapitreDto.ModuleId && x.ChapitreNum >= createChapitreDto.ChapitreNum)
+            .ToListAsync();
 
+        foreach (var item in chapitres)
+        {
+            item.ChapitreNum++;
         }
+
+        await apiDbContext.chapitres.AddAsync(chapitre);
+        await apiDbContext.SaveChangesAsync();
+
+        return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+    }
+    catch (Exception ex)
+    {
+        return Result<Chapitre>.Failure(ex.Message);
+    }
+}
 
         public async Task<Result<Chapitre>> GetChapitreById(int id)
         {
@@ -166,35 +160,47 @@ namespace api.Repository
             }
         }
         public async Task<Result<Chapitre>> UpdateChapitrePdf(UpdateChapitrePdfDto updateChapitrePdfDto)
+{
+    try
+    {
+
+        Chapitre? chapitre = await apiDbContext.chapitres
+            .Include(c => c.StudentCoursParagraphes)
+            .FirstOrDefaultAsync(x => x.Id == updateChapitrePdfDto.Id);
+
+        if (chapitre == null)
         {
-            try
-            {
-                Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitrePdfDto.Id);
-                if (chapitre == null)
-                {
-                    return Result<Chapitre>.Failure("Chapitre not found");
-                }
-
-                var containerName = "pdf-container";
-                var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
-
-                if (!string.IsNullOrEmpty(chapitre.CoursPdfPath))
-                {
-                    var oldPdfFileName = Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath);
-                    var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldPdfFileName);
-
-                }
-
-                chapitre.CoursPdfPath = newPdfUrl;
-                await apiDbContext.SaveChangesAsync();
-
-                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
-            }
-            catch (Exception ex)
-            {
-                return Result<Chapitre>.Failure(ex.Message);
-            }
+            return Result<Chapitre>.Failure("Chapitre not found");
         }
+
+        var containerName = "pdf-container";
+
+        var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
+
+        var coursParagraphe = chapitre.StudentCoursParagraphes.FirstOrDefault(p => p.Paragraphe == updateChapitrePdfDto.ParagrapheUrl);
+
+        if (coursParagraphe == null)
+        {
+            return Result<Chapitre>.Failure("Paragraphe not found");
+        }
+
+        if (!string.IsNullOrEmpty(coursParagraphe.Paragraphe))
+        {
+            var oldPdfFileName = Path.GetFileName(new Uri(coursParagraphe.Paragraphe).LocalPath);
+            await _blobStorageService.DeleteFileAsync(containerName, oldPdfFileName);
+        }
+
+        coursParagraphe.Paragraphe = newPdfUrl;
+
+        await apiDbContext.SaveChangesAsync();
+
+        return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+    }
+    catch (Exception ex)
+    {
+        return Result<Chapitre>.Failure(ex.Message);
+    }
+}
 
         public async Task<Result<Chapitre>> UpdateChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto)
         {
@@ -299,6 +305,25 @@ namespace api.Repository
             chapitre.Nom = updateChapitreNameDto.Nom;
             await apiDbContext.SaveChangesAsync();
             return Result<Chapitre>.Success(chapitre);
+        }
+
+        public async Task<bool> DeleteChapitre(int id)
+        {
+            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.CheckChapters).FirstOrDefaultAsync(x => x.Id == id);
+            if (chapitre == null)
+            {
+                return false;
+            }
+            apiDbContext.chapitres.Remove(chapitre);
+            await apiDbContext.SaveChangesAsync();
+            Controle? controle = await apiDbContext.controles.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Chapitres.Count() == 0);
+            if (controle == null)
+            {
+                return true;
+            }
+            apiDbContext.controles.Remove(controle);
+            await apiDbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

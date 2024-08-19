@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using api.Dtos.Question;
 using api.Dtos.Quiz;
 using api.helpers;
+using api.Model;
 
 namespace api.Dtos.Chapitre
 {
@@ -12,7 +13,7 @@ namespace api.Dtos.Chapitre
     {
         public int ChapitreNum { get; set; }
         public string Nom { get; set; } = "";
-        public required IFormFile CoursPdf { get; set; }
+        public List<IFormFile>? StudentCoursParagraphes { get; set; }
         public required IFormFile Video { get; set; }
         public required IFormFile Synthese { get; set; }
         public required IFormFile Schema { get; set; }
