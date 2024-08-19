@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace api.Model
 {
-    public class NiveauScolaire
+    public class ElementPedagogique
     {
         [Key]
         public int Id { get; set; }
         public string Nom { get; set; } = "";
-        public int InstitutionId { get; set; }
-        public Institution? Institution { get; set; }
-        public List<NiveauScolaireModule> NiveauScolaireModules { get; set; } = new List<NiveauScolaireModule>();
+        public string Lien { get; set; } = "https://blog.coursify.me/wp-content/uploads/2018/08/plan-your-online-course.jpg";
+        public int NiveauScolaireId { get; set; }
+        public NiveauScolaire? NiveauScolaire { get; set; }
     }
 }
