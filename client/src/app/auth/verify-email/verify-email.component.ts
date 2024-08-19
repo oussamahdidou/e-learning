@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-verify-email',
@@ -8,7 +9,7 @@ import Swal from 'sweetalert2';
   styleUrl: './verify-email.component.css'
 })
 export class VerifyEmailComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,private router: Router) {}
   token = new URLSearchParams(window.location.search).get('token');
   email = new URLSearchParams(window.location.search).get('email');
   ngOnInit() {
@@ -23,7 +24,12 @@ verifyEmail(){
         title: 'Success',
         text: response.token,
         icon: 'success',
-      });
+      }).then(
+        () => {
+          this.router.navigate(['/auth/login']);
+        }
+      )
+
     },
     (error) => {
       Swal.fire({
