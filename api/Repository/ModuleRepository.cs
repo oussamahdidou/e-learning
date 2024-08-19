@@ -39,7 +39,7 @@ namespace api.Repository
                 Module module = new Module()
                 {
                     Nom = createModuleDto.Nom,
-                    NiveauScolaireId = createModuleDto.NiveauScolaireId,
+                    // NiveauScolaireId = createModuleDto.NiveauScolaireId,
                 };
                 await apiDbContext.modules.AddAsync(module);
                 await apiDbContext.SaveChangesAsync();

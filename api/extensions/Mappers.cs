@@ -15,9 +15,9 @@ namespace api.extensions
             return new RequiredModulesDto()
             {
                 Name = moduleRequirement.TargetModule.Nom,
-                Institution = moduleRequirement.TargetModule.NiveauScolaire.Institution.Nom,
+                Institution = moduleRequirement.TargetModule.NiveauScolaireModules.FirstOrDefault().NiveauScolaire.Institution.Nom,
                 Id = moduleRequirement.TargetModule.Id,
-                NiveauScolaire = moduleRequirement.TargetModule.NiveauScolaire.Nom,
+                NiveauScolaire = moduleRequirement.TargetModule.NiveauScolaireModules.FirstOrDefault().NiveauScolaire.Nom,
                 Seuill = moduleRequirement.Seuill,
             };
         }
@@ -26,9 +26,9 @@ namespace api.extensions
             return new RequiredModulesDto()
             {
                 Name = moduleRequirement.RequiredModule.Nom,
-                Institution = moduleRequirement.RequiredModule.NiveauScolaire.Institution.Nom,
+                Institution = moduleRequirement.RequiredModule.NiveauScolaireModules.FirstOrDefault().NiveauScolaire.Institution.Nom,
                 Id = moduleRequirement.RequiredModule.Id,
-                NiveauScolaire = moduleRequirement.RequiredModule.NiveauScolaire.Nom,
+                NiveauScolaire = moduleRequirement.RequiredModule.NiveauScolaireModules.FirstOrDefault().NiveauScolaire.Nom,
                 Seuill = moduleRequirement.Seuill,
             };
         }
