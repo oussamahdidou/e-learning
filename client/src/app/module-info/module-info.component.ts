@@ -42,6 +42,7 @@ export class ModuleInfoComponent {
           numberOfChapter: data.numberOfChapter,
         };
         this.pdfUrl = data.moduleProgram;
+        console.log(this.pdfUrl);
       },
       error: (err) => {
         console.log(err);
