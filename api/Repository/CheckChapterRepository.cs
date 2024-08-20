@@ -38,13 +38,14 @@ namespace api.Repository
             }
         }
 
-        public async Task<Result<CheckChapter>> CreateCheckChapter(AppUser student, int chapterId)
+        public async Task<Result<CheckChapter>> CreateCheckChapter(AppUser student, int chapterId ,string avis)
         {
             if (await _context.checkChapters.AnyAsync(x => x.ChapitreId == chapterId && x.StudentId == student.Id)) return Result<CheckChapter>.Success(new CheckChapter());
             CheckChapter checkChapter = new CheckChapter
             {
                 StudentId = student.Id,
                 ChapitreId = chapterId,
+                Comment = avis
             };
             try
             {

@@ -26,7 +26,7 @@
       <a class="chap">{{ chapitre.nom }}</a>
       <div
         class="checkbox-wrapper"
-        (click)="CheckChapter(chapitre, $event)"
+        (click)="openModel(chapitre.id)"
         [class.disabled]="chapitre.statue"
         [style.pointer-events]="chapitre.statue ? 'none' : 'auto'"
       >
@@ -158,5 +158,34 @@
         <mat-icon>quiz</mat-icon>
       </button>
     </a>
+  </div>
+  <!-- avis model -->
+  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()"></div>
+  <div class="modal" *ngIf="showModal">
+    <h5
+      class="modal-title"
+      id="reviewModalLabel"
+      style="text-align: center; padding: 10px"
+    >
+      How was this chapter?
+    </h5>
+
+    <div class="d-flex justify-content-around">
+      <button class="buttona" (click)="CheckChapter(chapterId, $event, 'mal')">
+        Mal
+      </button>
+      <button
+        class="buttona"
+        (click)="CheckChapter(chapterId, $event, 'Pas Mal')"
+      >
+        Pas Mal
+      </button>
+      <button
+        class="buttona"
+        (click)="CheckChapter(chapterId, $event, 'Excellent')"
+      >
+        Excellent
+      </button>
+    </div>
   </div>
 </div>

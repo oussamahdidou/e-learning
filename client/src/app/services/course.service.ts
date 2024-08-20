@@ -73,9 +73,9 @@ export class CourseService {
     return throwError('Something went wrong; please try again later.');
   }
 
-  checkChapter(id: number): Observable<boolean> {
+  checkChapter(id: number, avis: string): Observable<boolean> {
     return this.http
-      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}`, {
+      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}/${avis}`, {
         headers: this.authservice.headers,
       })
       .pipe(

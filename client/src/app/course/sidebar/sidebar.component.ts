@@ -1,6 +1,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  HostListener,
   Input,
   OnInit,
   Renderer2,
@@ -23,6 +24,8 @@ export class SidebarComponent implements OnInit {
   examFinal: any;
   part1: string = '';
   part2: number = 0;
+  showModal: boolean = false;
+  chapterId: number = 0;
 
   constructor(
     private courseService: CourseService,
@@ -97,25 +100,31 @@ export class SidebarComponent implements OnInit {
       this.activeElement = target;
     }
   }
-  CheckChapter(chapite: Chapitre, event: Event) {
+  CheckChapter(Id: number, event: Event, avis: string) {
     console.log('This is the module before checking ', this.module);
-    this.courseService.checkChapter(chapite.id).subscribe(
+    this.courseService.checkChapter(Id, avis).subscribe(
       (state) => {
         console.log(state);
         if (state && this.module) {
-          const chapter = this.module.chapitres.find(
-            (c) => c.id === chapite.id
-          );
+          const chapter = this.module.chapitres.find((c) => c.id === Id);
           if (chapter) {
             chapter.statue = true;
             this.setActive(event);
             this.calculateProgress();
           }
+          this.closeModal();
         }
       },
       (error) => {
         this.errorHandlingService.handleError(error, 'Error checking chapitre');
       }
     );
+  }
+  openModel(chapiteId: number) {
+    this.showModal = true;
+    this.chapterId = chapiteId;
+  }
+  closeModal(): void {
+    this.showModal = false;
   }
 }
