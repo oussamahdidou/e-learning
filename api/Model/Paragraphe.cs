@@ -10,6 +10,7 @@ namespace api.Model
     {
         [Key]
         public int Id { get; set; }
+        public string? Nom { get; set; }
         public string? Contenu { get; set; }
 
         public int CoursId { get; set; }

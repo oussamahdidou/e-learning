@@ -12,7 +12,6 @@ namespace api.Model
         public int Id { get; set; }
         public string? Titre { get; set; }
         public string? Type { get; set; } // "Prof" or "Etudiant"
-
         public int ChapitreId { get; set; }
         public Chapitre? Chapitre { get; set; }
 
