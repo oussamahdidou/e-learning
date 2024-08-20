@@ -34,7 +34,8 @@ namespace api.Data
         public DbSet<ModuleRequirement> moduleRequirements { get; set; }
         public DbSet<ResultExam> resultExams { get; set; }
         public DbSet<ExamFinal> examFinals { get; set; }
-        public DbSet<CoursParagraphe> coursParagraphes { get; set; }
+        public DbSet<Cours> cours { get; set; }
+        public DbSet<Paragraphe> paragraphes { get; set; }
         public DbSet<ElementPedagogique> elementPedagogiques { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -35,17 +35,7 @@ namespace api.Repository
         {
             chapitre.Synthese = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(new Uri(chapitre.Synthese).LocalPath), TimeSpan.FromMinutes(5));
             chapitre.Schema = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(new Uri(chapitre.Schema).LocalPath), TimeSpan.FromMinutes(5));
-            List<string?> StudentCoursParagraphes = chapitre.StudentCoursParagraphes.Select(p => p.Paragraphe).ToList();
-            chapitre.StudentCoursParagraphes?.Clear();
-            foreach (string? paragraphePath in StudentCoursParagraphes)
-{
-    if (!string.IsNullOrEmpty(paragraphePath))
-    {
-        string newSasUrl = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(paragraphePath).LocalPath), TimeSpan.FromMinutes(5));
-        chapitre.StudentCoursParagraphes?.Add(new CoursParagraphe { Paragraphe = newSasUrl });
-    }
-}
-                
+            // chapitre.CoursPdfPath = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath), TimeSpan.FromMinutes(5));
             chapitre.VideoPath = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath), TimeSpan.FromMinutes(5));
 
             return chapitre;
@@ -97,7 +87,7 @@ namespace api.Repository
         foreach (var paragrapheFile in createChapitreDto.StudentCoursParagraphes)
         {
             var paragrapheUrl = await _blobStorageService.UploadFileAsync(paragrapheFile.OpenReadStream(), pdfContainer, paragrapheFile.FileName);
-            chapitre.StudentCoursParagraphes.Add(new CoursParagraphe { Paragraphe = paragrapheUrl });
+            // chapitre.StudentCoursParagraphes.Add(new CoursParagraphe { Paragraphe = paragrapheUrl });
         }
 
         List<Chapitre> chapitres = await apiDbContext.chapitres
@@ -161,45 +151,59 @@ namespace api.Repository
         }
         public async Task<Result<Chapitre>> UpdateChapitrePdf(UpdateChapitrePdfDto updateChapitrePdfDto)
 {
-    try
-    {
 
-        Chapitre? chapitre = await apiDbContext.chapitres
-            .Include(c => c.StudentCoursParagraphes)
-            .FirstOrDefaultAsync(x => x.Id == updateChapitrePdfDto.Id);
+            try
+            {
+                Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitrePdfDto.Id);
+                if (chapitre == null)
+                {
+                    return Result<Chapitre>.Failure("Chapitre not found");
+                }
 
-        if (chapitre == null)
-        {
-            return Result<Chapitre>.Failure("Chapitre not found");
-        }
+                // var containerName = "pdf-container";
+                // var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
 
-        var containerName = "pdf-container";
+                // if (!string.IsNullOrEmpty(chapitre.CoursPdfPath))
+                // {
+                //     var oldPdfFileName = Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath);
+                //     var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldPdfFileName);
 
-        var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
+                // }
 
-        var coursParagraphe = chapitre.StudentCoursParagraphes.FirstOrDefault(p => p.Paragraphe == updateChapitrePdfDto.ParagrapheUrl);
+                // chapitre.CoursPdfPath = newPdfUrl;
+                // await apiDbContext.SaveChangesAsync();
 
-        if (coursParagraphe == null)
-        {
-            return Result<Chapitre>.Failure("Paragraphe not found");
-        }
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+            }
+            catch (Exception ex)
+            {
+                return Result<Chapitre>.Failure(ex.Message);
+            }
+      
 
-        if (!string.IsNullOrEmpty(coursParagraphe.Paragraphe))
-        {
-            var oldPdfFileName = Path.GetFileName(new Uri(coursParagraphe.Paragraphe).LocalPath);
-            await _blobStorageService.DeleteFileAsync(containerName, oldPdfFileName);
-        }
+        // var containerName = "pdf-container";
 
-        coursParagraphe.Paragraphe = newPdfUrl;
+        // var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
 
-        await apiDbContext.SaveChangesAsync();
+        // var coursParagraphe = chapitre.StudentCoursParagraphes.FirstOrDefault(p => p.Paragraphe == updateChapitrePdfDto.ParagrapheUrl);
 
-        return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
-    }
-    catch (Exception ex)
-    {
-        return Result<Chapitre>.Failure(ex.Message);
-    }
+        // if (coursParagraphe == null)
+        // {
+        //     return Result<Chapitre>.Failure("Paragraphe not found");
+        // }
+
+        // if (!string.IsNullOrEmpty(coursParagraphe.Paragraphe))
+        // {
+        //     var oldPdfFileName = Path.GetFileName(new Uri(coursParagraphe.Paragraphe).LocalPath);
+        //     await _blobStorageService.DeleteFileAsync(containerName, oldPdfFileName);
+        // }
+
+        // coursParagraphe.Paragraphe = newPdfUrl;
+
+        // await apiDbContext.SaveChangesAsync();
+
+        // return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+    
 }
 
         public async Task<Result<Chapitre>> UpdateChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto)

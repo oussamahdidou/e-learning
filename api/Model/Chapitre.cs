@@ -13,8 +13,7 @@ namespace api.Model
         public int ChapitreNum { get; set; }
         public string Nom { get; set; } = "";
         public string Statue { get; set; } = "";
-        public List<CoursParagraphe> StudentCoursParagraphes { get; set; } = new List<CoursParagraphe>();
-        public List<CoursParagraphe> TeacherCoursParagraphes { get; set; } = new List<CoursParagraphe>();
+        public List<Cours> Cours { get; set; } = new List<Cours>();
         public string? VideoPath { get; set; }
         public string? Synthese { get; set; }
         public string? Schema { get; set; }
