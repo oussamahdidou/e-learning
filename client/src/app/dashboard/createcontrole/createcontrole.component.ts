@@ -75,18 +75,11 @@ export class CreatecontroleComponent implements OnInit {
 
   onFileChange(event: any, type: string) {
     const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      if (type === 'enonce') {
-        this.enonceFile = file;
-      } else if (type === 'solution') {
-        this.solutionFile = file;
-      }
-    } else {
-      Swal.fire({
-        title: 'Warning',
-        text: 'Veuillez sélectionner un fichier PDF',
-        icon: 'warning',
-      });
+
+    if (type === 'enonce') {
+      this.enonceFile = file;
+    } else if (type === 'solution') {
+      this.solutionFile = file;
     }
   }
 
