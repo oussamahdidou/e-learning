@@ -14,7 +14,7 @@ namespace api.Model
         public string Ennonce { get; set; } = "";
         public string Solution { get; set; } = "";
         public string Status { get; set; } = "";
-        public int? TeacherId { get; set; }
+        public string? TeacherId { get; set; }
         public Teacher? Teacher { get; set; }
         public List<ResultExam> ResultExams { get; set; } = new List<ResultExam>();
 

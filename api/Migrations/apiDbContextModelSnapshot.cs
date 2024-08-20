@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "240b7eb5-7e1e-4070-92fc-6e5f782d38fc",
+                            Id = "095b9313-1439-412e-84f7-a96b68a2420c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "af9cb554-7201-46f0-928a-2f01670c8387",
+                            Id = "0abc338d-50ae-45c6-b2eb-1624eaadecbb",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "7b0fbeb8-7d7f-4f7f-bb7b-b25d1b39f7e2",
+                            Id = "b37fcf4f-1b95-45a2-9d77-608e2226b232",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -263,10 +263,6 @@ namespace api.Migrations
                     b.Property<int?>("ControleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("CoursPdfPath")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ModuleId")
                         .HasColumnType("int");
 
@@ -281,7 +277,6 @@ namespace api.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Schema")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Statue")
@@ -289,11 +284,12 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Synthese")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("VideoPath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -303,6 +299,8 @@ namespace api.Migrations
                     b.HasIndex("ModuleId");
 
                     b.HasIndex("QuizId");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("chapitres");
                 });
@@ -314,6 +312,9 @@ namespace api.Migrations
 
                     b.Property<int>("ChapitreId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("StudentId", "ChapitreId");
 
@@ -346,9 +347,64 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("TeacherId");
+
                     b.ToTable("controles");
+                });
+
+            modelBuilder.Entity("api.Model.Cours", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChapitreId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titre")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapitreId");
+
+                    b.ToTable("cours");
+                });
+
+            modelBuilder.Entity("api.Model.ElementPedagogique", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Lien")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("NiveauScolaireId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NiveauScolaireId");
+
+                    b.ToTable("elementPedagogiques");
                 });
 
             modelBuilder.Entity("api.Model.ExamFinal", b =>
@@ -375,7 +431,12 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("TeacherId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("examFinals");
                 });
@@ -419,9 +480,6 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("NiveauScolaireId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nom")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -429,8 +487,6 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ExamFinalId");
-
-                    b.HasIndex("NiveauScolaireId");
 
                     b.ToTable("modules");
                 });
@@ -475,6 +531,21 @@ namespace api.Migrations
                     b.ToTable("niveauScolaires");
                 });
 
+            modelBuilder.Entity("api.Model.NiveauScolaireModule", b =>
+                {
+                    b.Property<int>("ModuleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NiveauScolaireId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ModuleId", "NiveauScolaireId");
+
+                    b.HasIndex("NiveauScolaireId");
+
+                    b.ToTable("NiveauScolaireModule");
+                });
+
             modelBuilder.Entity("api.Model.Option", b =>
                 {
                     b.Property<int>("Id")
@@ -498,6 +569,30 @@ namespace api.Migrations
                     b.HasIndex("QuestionId");
 
                     b.ToTable("options");
+                });
+
+            modelBuilder.Entity("api.Model.Paragraphe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Contenu")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CoursId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoursId");
+
+                    b.ToTable("paragraphes");
                 });
 
             modelBuilder.Entity("api.Model.Question", b =>
@@ -628,6 +723,29 @@ namespace api.Migrations
                 {
                     b.HasBaseType("api.Model.AppUser");
 
+                    b.Property<string>("Branche")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateDeNaissance")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Etablissement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Niveaus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Prenom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasDiscriminator().HasValue("Student");
                 });
 
@@ -635,8 +753,42 @@ namespace api.Migrations
                 {
                     b.HasBaseType("api.Model.AppUser");
 
+                    b.Property<DateTime>("DateDeNaissance")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Etablissement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Granted")
                         .HasColumnType("bit");
+
+                    b.Property<string>("JustificatifDeLaProfession")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Prenom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("AspNetUsers", t =>
+                        {
+                            t.Property("DateDeNaissance")
+                                .HasColumnName("Teacher_DateDeNaissance");
+
+                            t.Property("Etablissement")
+                                .HasColumnName("Teacher_Etablissement");
+
+                            t.Property("Nom")
+                                .HasColumnName("Teacher_Nom");
+
+                            t.Property("Prenom")
+                                .HasColumnName("Teacher_Prenom");
+                        });
 
                     b.HasDiscriminator().HasValue("Teacher");
                 });
@@ -708,11 +860,17 @@ namespace api.Migrations
                         .WithMany()
                         .HasForeignKey("QuizId");
 
+                    b.HasOne("api.Model.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
+
                     b.Navigation("Controle");
 
                     b.Navigation("Module");
 
                     b.Navigation("Quiz");
+
+                    b.Navigation("Teacher");
                 });
 
             modelBuilder.Entity("api.Model.CheckChapter", b =>
@@ -734,21 +892,53 @@ namespace api.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("api.Model.Controle", b =>
+                {
+                    b.HasOne("api.Model.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("api.Model.Cours", b =>
+                {
+                    b.HasOne("api.Model.Chapitre", "Chapitre")
+                        .WithMany("Cours")
+                        .HasForeignKey("ChapitreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chapitre");
+                });
+
+            modelBuilder.Entity("api.Model.ElementPedagogique", b =>
+                {
+                    b.HasOne("api.Model.NiveauScolaire", "NiveauScolaire")
+                        .WithMany()
+                        .HasForeignKey("NiveauScolaireId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NiveauScolaire");
+                });
+
+            modelBuilder.Entity("api.Model.ExamFinal", b =>
+                {
+                    b.HasOne("api.Model.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("TeacherId");
+
+                    b.Navigation("Teacher");
+                });
+
             modelBuilder.Entity("api.Model.Module", b =>
                 {
                     b.HasOne("api.Model.ExamFinal", "ExamFinal")
                         .WithMany()
                         .HasForeignKey("ExamFinalId");
 
-                    b.HasOne("api.Model.NiveauScolaire", "NiveauScolaire")
-                        .WithMany("Modules")
-                        .HasForeignKey("NiveauScolaireId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ExamFinal");
-
-                    b.Navigation("NiveauScolaire");
                 });
 
             modelBuilder.Entity("api.Model.ModuleRequirement", b =>
@@ -781,6 +971,25 @@ namespace api.Migrations
                     b.Navigation("Institution");
                 });
 
+            modelBuilder.Entity("api.Model.NiveauScolaireModule", b =>
+                {
+                    b.HasOne("api.Model.Module", "Module")
+                        .WithMany("NiveauScolaireModules")
+                        .HasForeignKey("ModuleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Model.NiveauScolaire", "NiveauScolaire")
+                        .WithMany("NiveauScolaireModules")
+                        .HasForeignKey("NiveauScolaireId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Module");
+
+                    b.Navigation("NiveauScolaire");
+                });
+
             modelBuilder.Entity("api.Model.Option", b =>
                 {
                     b.HasOne("api.Model.Question", "Question")
@@ -790,6 +999,17 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.Navigation("Question");
+                });
+
+            modelBuilder.Entity("api.Model.Paragraphe", b =>
+                {
+                    b.HasOne("api.Model.Cours", "Cours")
+                        .WithMany("Paragraphes")
+                        .HasForeignKey("CoursId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Cours");
                 });
 
             modelBuilder.Entity("api.Model.Question", b =>
@@ -882,6 +1102,8 @@ namespace api.Migrations
             modelBuilder.Entity("api.Model.Chapitre", b =>
                 {
                     b.Navigation("CheckChapters");
+
+                    b.Navigation("Cours");
                 });
 
             modelBuilder.Entity("api.Model.Controle", b =>
@@ -889,6 +1111,11 @@ namespace api.Migrations
                     b.Navigation("Chapitres");
 
                     b.Navigation("ResultControles");
+                });
+
+            modelBuilder.Entity("api.Model.Cours", b =>
+                {
+                    b.Navigation("Paragraphes");
                 });
 
             modelBuilder.Entity("api.Model.ExamFinal", b =>
@@ -909,12 +1136,14 @@ namespace api.Migrations
 
                     b.Navigation("ModulesRequiredIn");
 
+                    b.Navigation("NiveauScolaireModules");
+
                     b.Navigation("TestNiveaus");
                 });
 
             modelBuilder.Entity("api.Model.NiveauScolaire", b =>
                 {
-                    b.Navigation("Modules");
+                    b.Navigation("NiveauScolaireModules");
                 });
 
             modelBuilder.Entity("api.Model.Question", b =>

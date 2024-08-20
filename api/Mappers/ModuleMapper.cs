@@ -11,7 +11,7 @@ namespace api.Mappers
     {
         public static ModuleDto toModuleDto(this Module module, IEnumerable<int> checkedChapters)
         {
-             return new ModuleDto 
+            return new ModuleDto
             {
                 Id = module.Id,
                 Nom = module.Nom,
@@ -20,8 +20,8 @@ namespace api.Mappers
                     Id = c.Id,
                     ChapitreNum = c.ChapitreNum,
                     Nom = c.Nom,
-                    Statue = checkedChapters.Contains(c.Id), 
-                    StudentCoursParagraphes = c.StudentCoursParagraphes.Select(p => p.Paragraphe).ToList(),
+                    Statue = checkedChapters.Contains(c.Id),
+                    // StudentCoursParagraphes = c.StudentCoursParagraphes.Select(p => p.Paragraphe).ToList(),
                     VideoPath = c.VideoPath,
                     Synthese = c.Synthese,
                     Schema = c.Schema,
@@ -29,17 +29,17 @@ namespace api.Mappers
                     Quiz = c.Quiz.ToQuizDto()
                 }).ToList(),
                 Controles = module.Chapitres
-                    .Select(c => c.Controle)
-                    .Where(ctrl => ctrl != null)
-                    .DistinctBy(ctrl => ctrl.Id)
-                    .Select(ctrl => new ControleDto
-                    {
-                        Id = ctrl.Id,
-                        Nom = ctrl.Nom,
-                        Ennonce = ctrl.Ennonce,
-                        Solution = ctrl.Solution,
-                        ChapitreNum = ctrl.Chapitres.Select(ch => ch.ChapitreNum).ToList()
-                    }).ToList()
+                   .Select(c => c.Controle)
+                   .Where(ctrl => ctrl != null)
+                   .DistinctBy(ctrl => ctrl.Id)
+                   .Select(ctrl => new ControleDto
+                   {
+                       Id = ctrl.Id,
+                       Nom = ctrl.Nom,
+                       Ennonce = ctrl.Ennonce,
+                       Solution = ctrl.Solution,
+                       ChapitreNum = ctrl.Chapitres.Select(ch => ch.ChapitreNum).ToList()
+                   }).ToList()
             };
         }
     }

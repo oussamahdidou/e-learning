@@ -21,7 +21,7 @@ namespace api.Model
         public int? QuizId { get; set; }
         public int ModuleId { get; set; }
         public int? ControleId { get; set; }
-        public int? TeacherId { get; set; }
+        public string? TeacherId { get; set; }
         public Teacher? Teacher { get; set; }
         public Controle? Controle { get; set; }
         public Module? Module { get; set; }
