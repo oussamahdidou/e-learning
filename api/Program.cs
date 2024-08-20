@@ -139,7 +139,7 @@ builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {
-    // await SeedData.SeedUsersAndRolesAsync(app);
+    await SeedData.SeedUsersAndRolesAsync(app);
     // await SeedData.Initialize(app);
 
 }
