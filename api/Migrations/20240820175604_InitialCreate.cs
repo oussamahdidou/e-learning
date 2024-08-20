@@ -491,7 +491,7 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NiveauScolaireModule",
+                name: "niveauScolaireModules",
                 columns: table => new
                 {
                     NiveauScolaireId = table.Column<int>(type: "int", nullable: false),
@@ -499,15 +499,15 @@ namespace api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NiveauScolaireModule", x => new { x.ModuleId, x.NiveauScolaireId });
+                    table.PrimaryKey("PK_niveauScolaireModules", x => new { x.ModuleId, x.NiveauScolaireId });
                     table.ForeignKey(
-                        name: "FK_NiveauScolaireModule_modules_ModuleId",
+                        name: "FK_niveauScolaireModules_modules_ModuleId",
                         column: x => x.ModuleId,
                         principalTable: "modules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_NiveauScolaireModule_niveauScolaires_NiveauScolaireId",
+                        name: "FK_niveauScolaireModules_niveauScolaires_NiveauScolaireId",
                         column: x => x.NiveauScolaireId,
                         principalTable: "niveauScolaires",
                         principalColumn: "Id",
@@ -611,9 +611,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "095b9313-1439-412e-84f7-a96b68a2420c", null, "Admin", "ADMIN" },
-                    { "0abc338d-50ae-45c6-b2eb-1624eaadecbb", null, "Teacher", "TEACHER" },
-                    { "b37fcf4f-1b95-45a2-9d77-608e2226b232", null, "Student", "STUDENT" }
+                    { "8a41bb77-ea0e-4de7-a27e-8596f3dbac84", null, "Teacher", "TEACHER" },
+                    { "be6c2176-38a9-4d42-b8bd-90a66515101e", null, "Student", "STUDENT" },
+                    { "e94a9c8f-ebc0-40dd-963d-fe12a1adc070", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -711,8 +711,8 @@ namespace api.Migrations
                 column: "ExamFinalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NiveauScolaireModule_NiveauScolaireId",
-                table: "NiveauScolaireModule",
+                name: "IX_niveauScolaireModules_NiveauScolaireId",
+                table: "niveauScolaireModules",
                 column: "NiveauScolaireId");
 
             migrationBuilder.CreateIndex(
@@ -784,7 +784,7 @@ namespace api.Migrations
                 name: "moduleRequirements");
 
             migrationBuilder.DropTable(
-                name: "NiveauScolaireModule");
+                name: "niveauScolaireModules");
 
             migrationBuilder.DropTable(
                 name: "options");

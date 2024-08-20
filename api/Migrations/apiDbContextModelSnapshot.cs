@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "095b9313-1439-412e-84f7-a96b68a2420c",
+                            Id = "e94a9c8f-ebc0-40dd-963d-fe12a1adc070",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0abc338d-50ae-45c6-b2eb-1624eaadecbb",
+                            Id = "8a41bb77-ea0e-4de7-a27e-8596f3dbac84",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "b37fcf4f-1b95-45a2-9d77-608e2226b232",
+                            Id = "be6c2176-38a9-4d42-b8bd-90a66515101e",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -543,7 +543,7 @@ namespace api.Migrations
 
                     b.HasIndex("NiveauScolaireId");
 
-                    b.ToTable("NiveauScolaireModule");
+                    b.ToTable("niveauScolaireModules");
                 });
 
             modelBuilder.Entity("api.Model.Option", b =>

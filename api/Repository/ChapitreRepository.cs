@@ -63,52 +63,96 @@ namespace api.Repository
         }
 
         public async Task<Result<Chapitre>> CreateChapitre(CreateChapitreDto createChapitreDto)
-{
-    try
-    {
-
-        var syntheseUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Synthese.OpenReadStream(), syntheseContainer, createChapitreDto.Synthese.FileName);
-        var schemaUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Schema.OpenReadStream(), schemaContainer, createChapitreDto.Schema.FileName);
-        var videoUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Video.OpenReadStream(), videoContainer, createChapitreDto.Video.FileName);
-
-        Chapitre chapitre = new Chapitre
         {
-            ChapitreNum = createChapitreDto.ChapitreNum,
-            Nom = createChapitreDto.Nom,
-            ModuleId = createChapitreDto.ModuleId,
-            Premium = createChapitreDto.Premium,
-            VideoPath = videoUrl,
-            Schema = schemaUrl,
-            Synthese = syntheseUrl,
-            Statue = createChapitreDto.Statue,
-            QuizId = createChapitreDto.QuizId,
-        };
+            try
+            {
+                var videoUrl = "";
+                var syntheseUrl = "";
+                var schemaUrl = "";
+                List<Paragraphe> studentcoursparagraphes = new List<Paragraphe>();
+                List<Paragraphe> professeurscoursparagraphes = new List<Paragraphe>();
 
-        foreach (var paragrapheFile in createChapitreDto.StudentCoursParagraphes)
-        {
-            var paragrapheUrl = await _blobStorageService.UploadFileAsync(paragrapheFile.OpenReadStream(), pdfContainer, paragrapheFile.FileName);
-            // chapitre.StudentCoursParagraphes.Add(new CoursParagraphe { Paragraphe = paragrapheUrl });
+                if (createChapitreDto.CoursVideoFile != null)
+                {
+
+                    videoUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.CoursVideoFile.OpenReadStream(), videoContainer, createChapitreDto.CoursVideoFile.FileName);
+
+                }
+                else
+                {
+                    videoUrl = createChapitreDto.CoursVideoLink;
+                }
+                if (createChapitreDto.Synthese != null)
+                {
+
+                    syntheseUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Synthese.OpenReadStream(), syntheseContainer, createChapitreDto.Synthese.FileName);
+
+                }
+                if (createChapitreDto.Schema != null)
+                {
+
+                    schemaUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Schema.OpenReadStream(), schemaContainer, createChapitreDto.Schema.FileName);
+
+                }
+                foreach (var item in createChapitreDto.StudentCourseParagraphs)
+                {
+                    string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), pdfContainer, item.FileName);
+                    studentcoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {1}", Contenu = url });
+                }
+                foreach (var item in createChapitreDto.ProfessorCourseParagraphs)
+                {
+                    string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), pdfContainer, item.FileName);
+                    professeurscoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {1}", Contenu = url });
+                }
+                Chapitre chapitre = new Chapitre
+                {
+                    ChapitreNum = createChapitreDto.Number,
+                    Nom = createChapitreDto.Nom,
+                    ModuleId = createChapitreDto.ModuleId,
+                    Premium = createChapitreDto.Premium,
+                    VideoPath = videoUrl,
+                    Schema = schemaUrl,
+                    Synthese = syntheseUrl,
+                    Statue = createChapitreDto.Statue,
+                    QuizId = createChapitreDto.QuizId,
+                    Cours = new List<Cours>()
+                    {
+                        new Cours()
+                            {
+                                Titre = "Fichier Cours",
+                                Paragraphes= professeurscoursparagraphes,
+                                Type="Teacher"
+                            },
+                        new Cours()
+                            {
+                                Titre = "Fichier Cours",
+                                Paragraphes= studentcoursparagraphes,
+                                Type="Student"
+                            }
+                    }
+                };
+
+
+
+                List<Chapitre> chapitres = await apiDbContext.chapitres
+                    .Where(x => x.ModuleId == createChapitreDto.ModuleId && x.ChapitreNum >= createChapitreDto.Number)
+                    .ToListAsync();
+
+                foreach (var item in chapitres)
+                {
+                    item.ChapitreNum++;
+                }
+
+                await apiDbContext.chapitres.AddAsync(chapitre);
+                await apiDbContext.SaveChangesAsync();
+
+                return Result<Chapitre>.Success(chapitre);
+            }
+            catch (Exception ex)
+            {
+                return Result<Chapitre>.Failure(ex.Message);
+            }
         }
-
-        List<Chapitre> chapitres = await apiDbContext.chapitres
-            .Where(x => x.ModuleId == createChapitreDto.ModuleId && x.ChapitreNum >= createChapitreDto.ChapitreNum)
-            .ToListAsync();
-
-        foreach (var item in chapitres)
-        {
-            item.ChapitreNum++;
-        }
-
-        await apiDbContext.chapitres.AddAsync(chapitre);
-        await apiDbContext.SaveChangesAsync();
-
-        return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
-    }
-    catch (Exception ex)
-    {
-        return Result<Chapitre>.Failure(ex.Message);
-    }
-}
 
         public async Task<Result<Chapitre>> GetChapitreById(int id)
         {
@@ -150,7 +194,7 @@ namespace api.Repository
             }
         }
         public async Task<Result<Chapitre>> UpdateChapitrePdf(UpdateChapitrePdfDto updateChapitrePdfDto)
-{
+        {
 
             try
             {
@@ -179,32 +223,32 @@ namespace api.Repository
             {
                 return Result<Chapitre>.Failure(ex.Message);
             }
-      
 
-        // var containerName = "pdf-container";
 
-        // var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
+            // var containerName = "pdf-container";
 
-        // var coursParagraphe = chapitre.StudentCoursParagraphes.FirstOrDefault(p => p.Paragraphe == updateChapitrePdfDto.ParagrapheUrl);
+            // var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
 
-        // if (coursParagraphe == null)
-        // {
-        //     return Result<Chapitre>.Failure("Paragraphe not found");
-        // }
+            // var coursParagraphe = chapitre.StudentCoursParagraphes.FirstOrDefault(p => p.Paragraphe == updateChapitrePdfDto.ParagrapheUrl);
 
-        // if (!string.IsNullOrEmpty(coursParagraphe.Paragraphe))
-        // {
-        //     var oldPdfFileName = Path.GetFileName(new Uri(coursParagraphe.Paragraphe).LocalPath);
-        //     await _blobStorageService.DeleteFileAsync(containerName, oldPdfFileName);
-        // }
+            // if (coursParagraphe == null)
+            // {
+            //     return Result<Chapitre>.Failure("Paragraphe not found");
+            // }
 
-        // coursParagraphe.Paragraphe = newPdfUrl;
+            // if (!string.IsNullOrEmpty(coursParagraphe.Paragraphe))
+            // {
+            //     var oldPdfFileName = Path.GetFileName(new Uri(coursParagraphe.Paragraphe).LocalPath);
+            //     await _blobStorageService.DeleteFileAsync(containerName, oldPdfFileName);
+            // }
 
-        // await apiDbContext.SaveChangesAsync();
+            // coursParagraphe.Paragraphe = newPdfUrl;
 
-        // return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
-    
-}
+            // await apiDbContext.SaveChangesAsync();
+
+            // return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+
+        }
 
         public async Task<Result<Chapitre>> UpdateChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto)
         {
