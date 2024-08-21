@@ -115,12 +115,12 @@ export class CourseService {
 
   getCourPdfUrlById(id: number): Observable<string | undefined> {
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+      .get<any>(`${environment.apiUrl}/api/Paragraphes/${id}`, {
         headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
-          return data.coursPdfPath;
+          return data.contenu;
         }),
         catchError(this.handleError)
       );
