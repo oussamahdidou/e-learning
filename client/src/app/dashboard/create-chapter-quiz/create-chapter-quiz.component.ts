@@ -32,8 +32,8 @@ export class CreateChapterQuizComponent {
       videoType: ['file'],
       coursVideoFile: [null],
       coursVideoLink: [''],
-      schema: [''],
-      synthese: [''],
+      schema: [null],
+      synthese: [null],
     });
 
     this.quizFormGroup = this._formBuilder.group({
@@ -81,9 +81,28 @@ export class CreateChapterQuizComponent {
     this.getOptions(questionIndex).removeAt(optionIndex);
   }
 
-  onFileChange(event: any, field: string) {
+  onFileChange(event: any, field: string, index?: number) {
     const file = event.target.files[0];
-    this.chapterFormGroup.patchValue({ [field]: file });
+    if (file) {
+      // Check if field refers to an array of form controls
+      if (
+        field === 'studentCourseParagraphs' ||
+        field === 'professorCourseParagraphs'
+      ) {
+        if (index !== undefined) {
+          const formArray = this.chapterFormGroup.get(field) as FormArray;
+          if (formArray && formArray.at(index)) {
+            // Safely update form control value
+            formArray.at(index).patchValue({ fileData: file });
+          }
+        }
+      } else {
+        const control = this.chapterFormGroup.get(field);
+        if (control) {
+          control.setValue(file); // Safely set the value of the control
+        }
+      }
+    }
   }
 
   validateQuizData(quizData: any) {
@@ -109,6 +128,7 @@ export class CreateChapterQuizComponent {
     this.studentCourseParagraphs.push(
       this._formBuilder.group({
         file: [''],
+        fileData: [null], // Added to store the file
       })
     );
   }
@@ -121,6 +141,7 @@ export class CreateChapterQuizComponent {
     this.professorCourseParagraphs.push(
       this._formBuilder.group({
         file: [''],
+        fileData: [null], // Added to store the file
       })
     );
   }
@@ -150,80 +171,7 @@ export class CreateChapterQuizComponent {
     return this.chapterFormGroup.get('videoType')?.value === 'link';
   }
 
-  // Submit handler
-  // onSubmit() {
-  //   if (this.chapterFormGroup.valid || this.quizFormGroup.valid) {
-  //     const formData = new FormData();
-
-  //     // Append text fields if they are provided
-  //     if (this.chapterFormGroup.get('nom')!.value) {
-  //       formData.append('Nom', this.chapterFormGroup.get('nom')!.value);
-  //     }
-
-  //     if (this.chapterFormGroup.get('number')!.value) {
-  //       formData.append('Number', this.chapterFormGroup.get('number')!.value);
-  //     }
-
-  //     // Append student course paragraphs
-  //     this.studentCourseParagraphs.controls.forEach((control, index) => {
-  //       if (control.get('file')!.value) {
-  //         formData.append(
-  //           `StudentCourseParagraphs`,
-  //           control.get('file')!.value
-  //         );
-  //       }
-  //     });
-
-  //     // Append professor course paragraphs
-  //     this.professorCourseParagraphs.controls.forEach((control, index) => {
-  //       if (control.get('file')!.value) {
-  //         formData.append(
-  //           `ProfessorCourseParagraphs`,
-  //           control.get('file')!.value
-  //         );
-  //       }
-  //     });
-
-  //     // Append video file or link if provided
-  //     if (
-  //       this.isVideoFile() &&
-  //       this.chapterFormGroup.get('coursVideoFile')!.value
-  //     ) {
-  //       formData.append(
-  //         'CoursVideoFile',
-  //         this.chapterFormGroup.get('coursVideoFile')!.value
-  //       );
-  //     } else if (
-  //       this.isVideoLink() &&
-  //       this.chapterFormGroup.get('coursVideoLink')!.value
-  //     ) {
-  //       formData.append(
-  //         'CoursVideoLink',
-  //         this.chapterFormGroup.get('coursVideoLink')!.value
-  //       );
-  //     }
-
-  //     // Append schema and synthese files if provided
-  //     if (this.chapterFormGroup.get('schema')!.value) {
-  //       formData.append('Schema', this.chapterFormGroup.get('schema')!.value);
-  //     }
-
-  //     if (this.chapterFormGroup.get('synthese')!.value) {
-  //       formData.append(
-  //         'Synthese',
-  //         this.chapterFormGroup.get('synthese')!.value
-  //       );
-  //     }
-
-  //     // Submit the form data (this would be an API call)
-  //     console.log('Form Submitted:', formData);
-  //     // Example: this.dashboardservice.submitChapter(formData).subscribe(response => console.log(response));
-  //   } else {
-  //     console.error('Form is invalid');
-  //   }
-  // }
   onSubmit() {
-    //   if (this.chapterFormGroup.valid && this.quizFormGroup.valid) {
     const formData = new FormData();
 
     // Append text fields if they are provided
@@ -239,39 +187,30 @@ export class CreateChapterQuizComponent {
     }
 
     // Append student course paragraphs
-    this.studentCourseParagraphs.controls.forEach((control, index) => {
-      if (control.get('file')!.value) {
-        formData.append(`StudentCourseParagraphs`, control.get('file')!.value);
+    this.studentCourseParagraphs.controls.forEach((control) => {
+      if (control.get('fileData')!.value) {
+        const file = control.get('fileData')!.value;
+        formData.append('StudentCourseParagraphs', file);
       }
     });
 
     // Append professor course paragraphs
-    this.professorCourseParagraphs.controls.forEach((control, index) => {
-      if (control.get('file')!.value) {
-        formData.append(
-          `ProfessorCourseParagraphs`,
-          control.get('file')!.value
-        );
+    this.professorCourseParagraphs.controls.forEach((control) => {
+      if (control.get('fileData')!.value) {
+        const file = control.get('fileData')!.value;
+        formData.append('ProfessorCourseParagraphs', file);
       }
     });
 
     // Append video file or link if provided
-    if (
-      this.isVideoFile() &&
-      this.chapterFormGroup.get('coursVideoFile')!.value
-    ) {
-      formData.append(
-        'CoursVideoFile',
-        this.chapterFormGroup.get('coursVideoFile')!.value
-      );
-    } else if (
-      this.isVideoLink() &&
-      this.chapterFormGroup.get('coursVideoLink')!.value
-    ) {
-      formData.append(
-        'CoursVideoLink',
-        this.chapterFormGroup.get('coursVideoLink')!.value
-      );
+    const videoFile = this.chapterFormGroup.get('coursVideoFile')!.value;
+    if (videoFile) {
+      formData.append('CoursVideoFile', videoFile);
+    }
+
+    const videoLink = this.chapterFormGroup.get('coursVideoLink')!.value;
+    if (videoLink) {
+      formData.append('CoursVideoLink', videoLink);
     }
 
     // Append schema and synthese files if provided
@@ -283,11 +222,16 @@ export class CreateChapterQuizComponent {
       formData.append('Synthese', this.chapterFormGroup.get('synthese')!.value);
     }
 
+    console.log('Form Data Entries:');
+    formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+    });
+
     // Append quiz data
     let quizData = this.quizFormGroup.value;
     quizData = this.validateQuizData(quizData); // Ensure data is valid
+
     formData.append('ModuleId', this.moduleId.toString());
-    console.log(JSON.stringify(quizData.questions));
 
     // Show loading modal
     Swal.fire({
@@ -315,7 +259,7 @@ export class CreateChapterQuizComponent {
                 text: 'Chapter created successfully.',
                 icon: 'success',
               }).then(() => {
-                window.location.href = `/dashboard/module/${this.moduleId}`;
+                console.log(response);
               });
             },
             (error) => {

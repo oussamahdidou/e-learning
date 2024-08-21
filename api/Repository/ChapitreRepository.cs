@@ -76,11 +76,13 @@ namespace api.Repository
                 {
 
                     videoUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.CoursVideoFile.OpenReadStream(), videoContainer, createChapitreDto.CoursVideoFile.FileName);
-
+                    Console.WriteLine($"le fichier video {videoUrl}");
                 }
                 else
                 {
                     videoUrl = createChapitreDto.CoursVideoLink;
+                    Console.WriteLine($"le lien de la video {videoUrl}");
+
                 }
                 if (createChapitreDto.Synthese != null)
                 {
@@ -165,7 +167,7 @@ namespace api.Repository
                     return Result<Chapitre>.Failure("Chapitre not found");
                 }
 
-                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+                return Result<Chapitre>.Success(chapitre);
             }
             catch (Exception ex)
             {
