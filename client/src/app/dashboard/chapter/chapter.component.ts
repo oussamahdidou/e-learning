@@ -28,18 +28,29 @@ export class ChapterComponent implements OnInit {
       confirmButtonText: 'Yes, delete it!',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while we process your request.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardService.deletechapitre(this.chapterid).subscribe(
           (response) => {
             Swal.fire({
               title: 'Deleted!',
               text: 'Your file has been deleted.',
               icon: 'success',
+            }).then(() => {
+              window.location.href = `/dashboard/module/${this.chapitre.moduleId}`;
             });
-            window.location.href = `/dashboard/module/${this.chapitre.moduleId}`;
           },
           (error) => {
             Swal.fire({
-              title: 'Deleted!',
+              title: 'Error!',
               text: error.error,
               icon: 'error',
             });
@@ -48,11 +59,8 @@ export class ChapterComponent implements OnInit {
       }
     });
   }
+
   chapterid!: number;
-
-  host = environment.apiUrl;
-  pdfSrc!: string;
-
   constructor(
     private readonly dashboardService: DashboardService,
     private readonly route: ActivatedRoute,
@@ -69,7 +77,9 @@ export class ChapterComponent implements OnInit {
           this.chapitre = reponse;
           this.quiz = this.chapitre.quiz;
         },
-        (error) => {}
+        (error) => {
+          Swal.fire(`error`, `${error.error}`, `error`);
+        }
       );
     });
   }
@@ -134,13 +144,26 @@ export class ChapterComponent implements OnInit {
 
   onSubmit() {
     console.log('Quiz:', this.transformQuizObject(this.quiz));
+
+    // Show loading modal
+    Swal.fire({
+      title: 'Updating...',
+      text: 'Please wait while we process your request.',
+      allowOutsideClick: false,
+      didOpen: () => {
+        Swal.showLoading();
+      },
+    });
+
     this.dashboardService
       .updatequiz(this.quiz.id, this.transformQuizObject(this.quiz))
       .subscribe(
         (response) => {
-          console.log(response);
+          Swal.fire('Success', 'Quiz updated successfully', 'success');
         },
-        (error) => {}
+        (error) => {
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
       );
   }
   SelectSynthese(event: any) {
@@ -149,61 +172,130 @@ export class ChapterComponent implements OnInit {
       const formData = new FormData();
       formData.append('File', file);
       formData.append('Id', this.chapterid.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the file is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardService.updatechapitreSynthese(formData).subscribe(
         (response) => {
+          // Close the loading modal and show success message
+          Swal.fire('Success', 'File uploaded successfully', 'success');
           this.chapitre.synthese = response.synthese;
         },
-        (error) => {}
+        (error) => {
+          // Close the loading modal and show error message
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
       );
     }
   }
+
   SelectSchema(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
       formData.append('File', file);
       formData.append('Id', this.chapterid.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the file is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardService.updatechapitreSchema(formData).subscribe(
         (response) => {
+          // Close the loading modal and show success message
+          Swal.fire('Success', 'File uploaded successfully', 'success');
           this.chapitre.schema = response.schema;
         },
-        (error) => {}
+        (error) => {
+          // Close the loading modal and show error message
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
       );
     }
   }
+
   SelectVideo(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
       formData.append('File', file);
       formData.append('Id', this.chapterid.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the video is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardService.updatechapitreVideo(formData).subscribe(
         (response) => {
+          // Close the loading modal and show success message
+          Swal.fire('Success', 'Video uploaded successfully', 'success');
           this.chapitre.videoPath = response.videoPath;
         },
-        (error) => {}
+        (error) => {
+          // Close the loading modal and show error message
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
       );
     }
   }
+
   SelectPdf(event: any) {
     const file: File = event.target.files[0];
     if (file) {
       const formData = new FormData();
       formData.append('File', file);
       formData.append('Id', this.chapterid.toString());
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the PDF is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.dashboardService.updatechapitrePdf(formData).subscribe(
         (response) => {
+          // Close the loading modal and show success message
+          Swal.fire('Success', 'PDF uploaded successfully', 'success');
+          console.log("and this is the response ",response)
           this.chapitre.coursPdfPath = response.coursPdfPath;
         },
-        (error) => {}
+        (error) => {
+          // Close the loading modal and show error message
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
       );
     }
   }
+
   modifierNom() {
     Swal.fire({
-      title: 'Edit Controle  Name',
+      title: 'Edit Chapitre Name',
       input: 'text',
-      inputLabel: 'Controle Name',
+      inputLabel: 'Chapitre Name',
       inputValue: this.chapitre.nom,
       showCancelButton: true,
       confirmButtonText: 'Save',
@@ -216,23 +308,31 @@ export class ChapterComponent implements OnInit {
       },
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Saving...',
+          text: 'Please wait while the name is being updated.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardService
-          .updateinstitution(result.value, this.chapterid)
+          .updatechapitrenom(result.value, this.chapterid)
           .subscribe(
             (response) => {
               this.chapitre.nom = response.nom;
-              console.log(response);
-              Swal.fire(
-                'Saved!',
-                'Institution name has been updated.',
-                'success'
-              );
+              Swal.fire('Saved!', 'Chapitre name has been updated.', 'success');
             },
-            (error) => {}
+            (error) => {
+              Swal.fire('Error', `${error.error}`, 'error');
+            }
           );
       }
     });
   }
+
   refuser() {
     Swal.fire({
       title: 'Are you sure?',
@@ -241,32 +341,44 @@ export class ChapterComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes !',
+      confirmButtonText: 'Yes!',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardService.refuserchapitre(this.chapterid).subscribe(
           (response) => {
-            console.log(response);
             this.chapitre.statue = response.statue;
             Swal.fire({
-              title: 'Refuser!',
-              text: 'Your file has been Refuser.',
+              title: 'Refused!',
+              text: 'Your file has been refused.',
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
         );
       }
     });
   }
+
   approuver() {
     if (
       this.chapitre.quiz.statue === 'Denied' ||
       this.chapitre.quiz.statue === 'Pending'
     ) {
       Swal.fire(
-        'info',
-        'il faut accepter le quiz avant d`accepter le chapitre entier',
+        'Info',
+        'You need to approve the quiz before accepting the entire chapter.',
         'info'
       );
     } else {
@@ -280,22 +392,34 @@ export class ChapterComponent implements OnInit {
         confirmButtonText: 'Yes',
       }).then((result) => {
         if (result.isConfirmed) {
+          // Show loading modal
+          Swal.fire({
+            title: 'Processing...',
+            text: 'Please wait while your request is being processed.',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
           this.dashboardService.approuverchapitre(this.chapterid).subscribe(
             (response) => {
-              console.log(response);
               this.chapitre.statue = response.statue;
               Swal.fire({
-                title: 'Accepter!',
-                text: 'Your file has been Accepter.',
+                title: 'Accepted!',
+                text: 'The chapter has been accepted.',
                 icon: 'success',
               });
             },
-            (error) => {}
+            (error) => {
+              Swal.fire('Error', `${error.error}`, 'error');
+            }
           );
         }
       });
     }
   }
+
   refuserquiz() {
     Swal.fire({
       title: 'Are you sure?',
@@ -304,24 +428,36 @@ export class ChapterComponent implements OnInit {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Yes !',
+      confirmButtonText: 'Yes!',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardService.refuserquiz(this.chapitre.quiz.id).subscribe(
           (response) => {
-            console.log(response);
             this.chapitre.quiz.statue = response.statue;
             Swal.fire({
-              title: 'Refuser!',
-              text: 'Your file has been Refuser.',
+              title: 'Refused!',
+              text: 'The quiz has been refused.',
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
         );
       }
     });
   }
+
   approuverquiz() {
     Swal.fire({
       title: 'Are you sure?',
@@ -333,17 +469,28 @@ export class ChapterComponent implements OnInit {
       confirmButtonText: 'Yes',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
         this.dashboardService.approuverquiz(this.chapitre.quiz.id).subscribe(
           (response) => {
-            console.log(response);
             this.chapitre.quiz.statue = response.statue;
             Swal.fire({
-              title: 'Accepter!',
-              text: 'Your file has been Accepter.',
+              title: 'Accepted!',
+              text: 'The quiz has been accepted.',
               icon: 'success',
             });
           },
-          (error) => {}
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
         );
       }
     });

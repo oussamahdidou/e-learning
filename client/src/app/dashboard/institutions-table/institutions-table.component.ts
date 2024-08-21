@@ -35,7 +35,9 @@ export class InstitutionsTableComponent implements OnInit {
           }
         };
       },
-      (error) => {}
+      (error) => {
+        Swal.fire(`error`, `${error.error}`, `error`);
+      }
     );
   }
 
@@ -62,7 +64,9 @@ export class InstitutionsTableComponent implements OnInit {
             this.dataSource.data = [...this.institutions];
             Swal.fire('Added!', 'New institution has been added.', 'success');
           },
-          (error) => {}
+          (error) => {
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
         );
       }
     });
@@ -138,7 +142,9 @@ export class InstitutionsTableComponent implements OnInit {
                 'success'
               );
             },
-            (error) => {}
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
           );
       }
     });

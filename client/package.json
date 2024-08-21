@@ -25,6 +25,7 @@
     "@videogular/ngx-videogular": "^8.0.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.3",
+    "client": "file:",
     "ng2-charts": "^6.0.1",
     "ng2-pdf-viewer": "^10.2.2",
     "ngx-skeleton-loader": "^9.0.0",

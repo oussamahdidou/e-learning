@@ -17,6 +17,7 @@ namespace api.interfaces
         Task<Result<Chapitre>> UpdateChapitreVideo(UpdateChapitreVideoDto updateChapitreVideoDto);
         Task<Result<Chapitre>> UpdateChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto);
         Task<Result<Chapitre>> UpdateChapitreSynthese(UpdateChapitreSyntheseDto updateChapitreSyntheseDto);
+        Task<Result<Chapitre>> UpdateChapterName(UpdateChapitreNameDto updateChapitreNameDto);
         Task<Result<Chapitre>> Approuver(int id);
         Task<Result<Chapitre>> Refuser(int id);
         Task<bool> DeleteChapitre(int id);

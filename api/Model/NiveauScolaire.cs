@@ -13,6 +13,6 @@ namespace api.Model
         public string Nom { get; set; } = "";
         public int InstitutionId { get; set; }
         public Institution? Institution { get; set; }
-        public List<Module> Modules { get; set; } = new List<Module>();
+        public List<NiveauScolaireModule> NiveauScolaireModules { get; set; } = new List<NiveauScolaireModule>();
     }
 }

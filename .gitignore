@@ -1,5 +1,9 @@
 api/bin/
 api/obj/
 .fake
+<<<<<<< HEAD
 
+=======
+>>>>>>> 43432ee425bee563fdc7409af88e679a52ae91f0
 api/appsettings.json
+api/wwwroot

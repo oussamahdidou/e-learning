@@ -51,7 +51,26 @@ export interface RequiredModule {
   Institution: string;
   Seuill: number;
 }
+export interface moduleInfo {
+  moduleID: number;
+  nom: string;
+  numberOfChapter: number;
+  moduleImg: string;
+  moduleDescription: string;
+  moduleProgram: string;
+  checkCount: number;
+}
 export interface IsEligible {
   isEligible: boolean;
   modules: RequiredModule[];
+}
+export interface NomDescription {
+  nom: string;
+  moduleDescription: string;
+}
+export interface InfoCard {
+  Id: number;
+  nom: string;
+  numberOfChapter: number;
+  moduleImg: string;
 }

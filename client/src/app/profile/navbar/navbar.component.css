@@ -64,6 +64,7 @@ ul li {
 
 .dropdown-item {
   color: white;
+  cursor: pointer;
 }
 
 .dropdown-item:hover {

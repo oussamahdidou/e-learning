@@ -4,6 +4,7 @@ import { CourseService } from '../../services/course.service';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { ErrorHandlingService } from '../../services/error-handling.service';
+import { SharedDataService } from '../../services/shared-data.service';
 
 @Component({
   selector: 'app-lecture',
@@ -12,13 +13,13 @@ import { ErrorHandlingService } from '../../services/error-handling.service';
 })
 export class LectureComponent {
   @Input() vdUrl: string | undefined;
-  host = environment.apiUrl;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private courseService: CourseService,
-    private errorHandlingService: ErrorHandlingService
+    private errorHandlingService: ErrorHandlingService,
+    private shared: SharedDataService
   ) {}
 
   ngOnInit(): void {
@@ -26,17 +27,20 @@ export class LectureComponent {
       const idParam = params.get('lectureid');
       if (idParam) {
         const id = +idParam;
-        this.courseService
-          .getVdUrlById(id)
-          .subscribe((url: string | undefined) => {
+        this.courseService.getVdUrlById(id).subscribe(
+          (url: string | undefined) => {
             this.vdUrl = url;
           },
-          (error) =>{
-            this.errorHandlingService.handleError(error,'Failed to load video. Please try again later.')
+          (error) => {
+            this.errorHandlingService.handleError(
+              error,
+              'Failed to load video. Please try again later.'
+            );
           }
         );
+        this.shared.setActiveDiv(`lecture/${id}`);
       } else {
-        this.errorHandlingService.handleError(null,'ID parameter is missing')
+        this.errorHandlingService.handleError(null, 'ID parameter is missing');
       }
     });
   }

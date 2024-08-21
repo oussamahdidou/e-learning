@@ -146,5 +146,15 @@ namespace api.Controllers
         {
             return Ok(await chapitreRepository.DeleteChapitre(id));
         }
+        [HttpPut("UpdateChapterName")]
+        public async Task<IActionResult> UpdateChapterName([FromBody] UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Result<Chapitre> result = await chapitreRepository.UpdateChapterName(updateChapitreNameDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }

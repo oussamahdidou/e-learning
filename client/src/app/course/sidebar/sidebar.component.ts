@@ -9,6 +9,7 @@ import { CourseService } from '../../services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Chapitre, Module } from '../../interfaces/dashboard';
 import { ErrorHandlingService } from '../../services/error-handling.service';
+import { SharedDataService } from '../../services/shared-data.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -20,16 +21,25 @@ export class SidebarComponent implements OnInit {
   progress: number = 0;
   private activeElement: HTMLElement | null = null;
   examFinal: any;
+  part1: string = '';
+  part2: number = 0;
 
   constructor(
     private courseService: CourseService,
     private renderer: Renderer2,
     private route: ActivatedRoute,
     private errorHandlingService: ErrorHandlingService,
-    private router: Router
+    private router: Router,
+    private shared: SharedDataService
   ) {}
 
   ngOnInit() {
+    this.shared.activeDiv$.subscribe((value) => {
+      const parts = value.split('/');
+      this.part1 = parts[0];
+      this.part2 = Number(parts[1]);
+      console.log('now', value);
+    });
     const id = +this.route.snapshot.paramMap.get('id')!;
     this.courseService.getCourseById(id).subscribe(
       (module) => {
@@ -45,14 +55,14 @@ export class SidebarComponent implements OnInit {
   }
 
   fetchExamFinal(moduleId: any) {
-    const id: number = parseInt(moduleId)
+    const id: number = parseInt(moduleId);
     this.courseService.getExamFinalByModuleId(moduleId).subscribe(
       (examFinal) => {
         this.examFinal = examFinal;
         console.log('Exam Final:', this.examFinal);
       },
       (error) => {
-          console.warn('No exam final found for this module.', error)
+        console.warn('No exam final found for this module.', error);
       }
     );
   }

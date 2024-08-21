@@ -10,6 +10,7 @@ using api.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using api.Dtos.UserCenter;
 namespace api.Controllers
 {
     [ApiController]
@@ -33,14 +34,40 @@ namespace api.Controllers
             {
                 return BadRequest();
             }
-            // 5f584df6-2795-4a9b-9364-d57c912ef0d8
-            // 0bcd548d-9341-4a51-9c3a-540a84ba67e9
+
             Result<ModuleDto> result = await moduleRepository.GetModuleById(id, user);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
+        }
+        [HttpGet("moduleInfo/{id:int}")]
+        [Authorize]
+        public async Task<IActionResult> GetModuleInformationById([FromRoute] int id)
+        {
+            string username = User.GetUsername();
+            AppUser? user = await _manager.FindByNameAsync(username);
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            Result<Module> module = await moduleRepository.GetModuleInformationByID(id);
+
+            ModuleWithCheckCountDto moduleInfo = new ModuleWithCheckCountDto
+            {
+                ModuleID = module.Value.Id,
+                Nom = module.Value.Nom,
+                NumberOfChapter = module.Value.Chapitres.Count(),
+                ModuleImg = module.Value.ModuleImg,
+                ModuleProgram = module.Value.CourseProgram,
+                ModuleDescription = module.Value.Description,
+            };
+            if (module.IsSuccess)
+            {
+                return Ok(moduleInfo);
+            }
+            return BadRequest(module.Error);
         }
         [HttpPost]
         public async Task<IActionResult> CreateModule([FromBody] CreateModuleDto createModuleDto)
@@ -69,6 +96,45 @@ namespace api.Controllers
             return Ok(await moduleRepository.DeleteModule(id));
 
         }
-
+        [HttpPut("UpdateModuleImage")]
+        public async Task<IActionResult> UpdateModuleImage([FromForm] UpdateModuleImageDto updateModuleImageDto)
+        {
+            Result<Module> result = await moduleRepository.UpdateModuleImage(updateModuleImageDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateModuleProgram")]
+        public async Task<IActionResult> UpdateModuleProgram([FromForm] UpdateModuleProgramDto updateModuleProgramDto)
+        {
+            Result<Module> result = await moduleRepository.UpdateModuleProgram(updateModuleProgramDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateModuleDescription")]
+        public async Task<IActionResult> UpdateModuleDescription([FromBody] UpdateModuleDescriptionDto updateModuleDescriptionDto)
+        {
+            Result<Module> result = await moduleRepository.UpdateModuleDescription(updateModuleDescriptionDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpGet("GetModuleinfo/{id:int}")]
+        public async Task<IActionResult> GetModuleinfo([FromRoute] int id)
+        {
+            Result<Module> result = await moduleRepository.GetModuleInfo(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }

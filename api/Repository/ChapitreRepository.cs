@@ -19,10 +19,26 @@ namespace api.Repository
     {
         private readonly apiDbContext apiDbContext;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ChapitreRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
+        private string pdfContainer = "pdf-container";
+        private string videoContainer = "video-container";
+        private string schemaContainer = "schema-container";
+        private string syntheseContainer = "synthese-container";
+        private readonly IBlobStorageService _blobStorageService;
+        public ChapitreRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment, IBlobStorageService blobStorageService)
         {
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
+            _blobStorageService = blobStorageService;
+        }
+
+        private Chapitre GenerateSasUrls(Chapitre chapitre)
+        {
+            chapitre.Synthese = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(new Uri(chapitre.Synthese).LocalPath), TimeSpan.FromMinutes(5));
+            chapitre.Schema = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(new Uri(chapitre.Schema).LocalPath), TimeSpan.FromMinutes(5));
+            // chapitre.CoursPdfPath = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath), TimeSpan.FromMinutes(5));
+            chapitre.VideoPath = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath), TimeSpan.FromMinutes(5));
+
+            return chapitre;
         }
 
         public async Task<Result<Chapitre>> Approuver(int id)
@@ -36,7 +52,7 @@ namespace api.Repository
                 }
                 chapitre.Statue = ObjectStatus.Approuver;
                 await apiDbContext.SaveChangesAsync();
-                return Result<Chapitre>.Success(chapitre);
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
             catch (System.Exception ex)
             {
@@ -50,71 +66,94 @@ namespace api.Repository
         {
             try
             {
-                Result<string> syntheseresult = await createChapitreDto.Synthese.UploadSynthese(webHostEnvironment);
-                Result<string> schemaresult = await createChapitreDto.Schema.UploadSchema(webHostEnvironment);
-                Result<string> resultcoursPdf = await createChapitreDto.CoursPdf.UploadCoursPdf(webHostEnvironment);
-                Result<string> resultvideo = await createChapitreDto.Video.UploadVideo(webHostEnvironment);
+                var videoUrl = "";
+                var syntheseUrl = "";
+                var schemaUrl = "";
+                List<Paragraphe> studentcoursparagraphes = new List<Paragraphe>();
+                List<Paragraphe> professeurscoursparagraphes = new List<Paragraphe>();
 
-                if (syntheseresult.IsSuccess &&
-                    schemaresult.IsSuccess &&
-                    resultcoursPdf.IsSuccess &&
-                    resultvideo.IsSuccess)
+                if (createChapitreDto.CoursVideoFile != null)
                 {
 
-                    Chapitre chapitre = new Chapitre()
-                    {
-                        ChapitreNum = createChapitreDto.ChapitreNum,
-                        Nom = createChapitreDto.Nom,
-                        ModuleId = createChapitreDto.ModuleId,
-                        Premium = createChapitreDto.Premium,
-                        CoursPdfPath = resultcoursPdf.Value,
-                        VideoPath = resultvideo.Value,
-                        Schema = schemaresult.Value,
-                        Synthese = syntheseresult.Value,
-                        Statue = createChapitreDto.Statue,
-                        QuizId = createChapitreDto.QuizId,
-
-                    };
-                    List<Chapitre> chapitres = await apiDbContext.chapitres.Where(x => x.ModuleId == createChapitreDto.ModuleId && x.ChapitreNum >= createChapitreDto.ChapitreNum).ToListAsync();
-                    foreach (var item in chapitres)
-                    {
-                        item.ChapitreNum++;
-                    }
-                    await apiDbContext.chapitres.AddAsync(chapitre);
-                    await apiDbContext.SaveChangesAsync();
-                    return Result<Chapitre>.Success(chapitre);
-
+                    videoUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.CoursVideoFile.OpenReadStream(), videoContainer, createChapitreDto.CoursVideoFile.FileName);
+                    Console.WriteLine($"le fichier video {videoUrl}");
+                }
+                else
+                {
+                    videoUrl = createChapitreDto.CoursVideoLink;
+                    Console.WriteLine($"le lien de la video {videoUrl}");
 
                 }
-                return Result<Chapitre>.Failure(syntheseresult.Error + schemaresult.Error + resultcoursPdf.Error + resultvideo.Error);
-            }
-            catch (System.Exception ex)
-            {
+                if (createChapitreDto.Synthese != null)
+                {
 
+                    syntheseUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Synthese.OpenReadStream(), syntheseContainer, createChapitreDto.Synthese.FileName);
+
+                }
+                if (createChapitreDto.Schema != null)
+                {
+
+                    schemaUrl = await _blobStorageService.UploadFileAsync(createChapitreDto.Schema.OpenReadStream(), schemaContainer, createChapitreDto.Schema.FileName);
+
+                }
+                foreach (var item in createChapitreDto.StudentCourseParagraphs)
+                {
+                    string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), pdfContainer, item.FileName);
+                    studentcoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {1}", Contenu = url });
+                }
+                foreach (var item in createChapitreDto.ProfessorCourseParagraphs)
+                {
+                    string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), pdfContainer, item.FileName);
+                    professeurscoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {1}", Contenu = url });
+                }
+                Chapitre chapitre = new Chapitre
+                {
+                    ChapitreNum = createChapitreDto.Number,
+                    Nom = createChapitreDto.Nom,
+                    ModuleId = createChapitreDto.ModuleId,
+                    Premium = createChapitreDto.Premium,
+                    VideoPath = videoUrl,
+                    Schema = schemaUrl,
+                    Synthese = syntheseUrl,
+                    Statue = createChapitreDto.Statue,
+                    QuizId = createChapitreDto.QuizId,
+                    Cours = new List<Cours>()
+                    {
+                        new Cours()
+                            {
+                                Titre = "Fichier Cours",
+                                Paragraphes= professeurscoursparagraphes,
+                                Type="Teacher"
+                            },
+                        new Cours()
+                            {
+                                Titre = "Fichier Cours",
+                                Paragraphes= studentcoursparagraphes,
+                                Type="Student"
+                            }
+                    }
+                };
+
+
+
+                List<Chapitre> chapitres = await apiDbContext.chapitres
+                    .Where(x => x.ModuleId == createChapitreDto.ModuleId && x.ChapitreNum >= createChapitreDto.Number)
+                    .ToListAsync();
+
+                foreach (var item in chapitres)
+                {
+                    item.ChapitreNum++;
+                }
+
+                await apiDbContext.chapitres.AddAsync(chapitre);
+                await apiDbContext.SaveChangesAsync();
+
+                return Result<Chapitre>.Success(chapitre);
+            }
+            catch (Exception ex)
+            {
                 return Result<Chapitre>.Failure(ex.Message);
             }
-
-
-        }
-
-        public async Task<bool> DeleteChapitre(int id)
-        {
-            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.CheckChapters).FirstOrDefaultAsync(x => x.Id == id);
-            if (chapitre == null)
-            {
-                return false;
-            }
-            apiDbContext.chapitres.Remove(chapitre);
-            await apiDbContext.SaveChangesAsync();
-            Controle? controle = await apiDbContext.controles.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Chapitres.Count() == 0);
-            if (controle == null)
-            {
-                return true;
-            }
-            apiDbContext.controles.Remove(controle);
-            await apiDbContext.SaveChangesAsync();
-            return true;
-
         }
 
         public async Task<Result<Chapitre>> GetChapitreById(int id)
@@ -122,16 +161,16 @@ namespace api.Repository
             try
             {
                 Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == id);
+
                 if (chapitre == null)
                 {
-                    return Result<Chapitre>.Failure("chapitre notfound");
-
+                    return Result<Chapitre>.Failure("Chapitre not found");
                 }
+
                 return Result<Chapitre>.Success(chapitre);
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-
                 return Result<Chapitre>.Failure(ex.Message);
             }
         }
@@ -156,36 +195,61 @@ namespace api.Repository
 
             }
         }
-
         public async Task<Result<Chapitre>> UpdateChapitrePdf(UpdateChapitrePdfDto updateChapitrePdfDto)
         {
+
             try
             {
                 Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitrePdfDto.Id);
                 if (chapitre == null)
                 {
-                    return Result<Chapitre>.Failure("chapitre not found");
+                    return Result<Chapitre>.Failure("Chapitre not found");
                 }
-                Result<string> resultUpload = await updateChapitrePdfDto.File.UploadCoursPdf(webHostEnvironment);
-                Result<string> resultDelete = chapitre.CoursPdfPath.DeleteFile();
-                if (resultUpload.IsSuccess)
-                {
-                    if (resultDelete.IsSuccess)
-                    {
-                        chapitre.CoursPdfPath = resultUpload.Value;
-                        await apiDbContext.SaveChangesAsync();
-                        return Result<Chapitre>.Success(chapitre);
-                    }
-                    return Result<Chapitre>.Failure($"{resultDelete.Error}");
-                }
-                return Result<Chapitre>.Failure($"{resultUpload.Error}");
 
+                // var containerName = "pdf-container";
+                // var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
+
+                // if (!string.IsNullOrEmpty(chapitre.CoursPdfPath))
+                // {
+                //     var oldPdfFileName = Path.GetFileName(new Uri(chapitre.CoursPdfPath).LocalPath);
+                //     var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldPdfFileName);
+
+                // }
+
+                // chapitre.CoursPdfPath = newPdfUrl;
+                // await apiDbContext.SaveChangesAsync();
+
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-
-                return Result<Chapitre>.Failure($"{ex.Message}");
+                return Result<Chapitre>.Failure(ex.Message);
             }
+
+
+            // var containerName = "pdf-container";
+
+            // var newPdfUrl = await _blobStorageService.UploadFileAsync(updateChapitrePdfDto.File.OpenReadStream(), containerName, updateChapitrePdfDto.File.FileName);
+
+            // var coursParagraphe = chapitre.StudentCoursParagraphes.FirstOrDefault(p => p.Paragraphe == updateChapitrePdfDto.ParagrapheUrl);
+
+            // if (coursParagraphe == null)
+            // {
+            //     return Result<Chapitre>.Failure("Paragraphe not found");
+            // }
+
+            // if (!string.IsNullOrEmpty(coursParagraphe.Paragraphe))
+            // {
+            //     var oldPdfFileName = Path.GetFileName(new Uri(coursParagraphe.Paragraphe).LocalPath);
+            //     await _blobStorageService.DeleteFileAsync(containerName, oldPdfFileName);
+            // }
+
+            // coursParagraphe.Paragraphe = newPdfUrl;
+
+            // await apiDbContext.SaveChangesAsync();
+
+            // return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+
         }
 
         public async Task<Result<Chapitre>> UpdateChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto)
@@ -195,28 +259,28 @@ namespace api.Repository
                 Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitreSchemaDto.Id);
                 if (chapitre == null)
                 {
-                    return Result<Chapitre>.Failure("chapitre not found");
+                    return Result<Chapitre>.Failure("Chapitre not found");
                 }
-                Result<string> resultUpload = await updateChapitreSchemaDto.File.UploadSchema(webHostEnvironment);
-                Result<string> resultDelete = chapitre.Schema.DeleteFile();
-                if (resultUpload.IsSuccess)
+
+
+                var newSchemaUrl = await _blobStorageService.UploadFileAsync(updateChapitreSchemaDto.File.OpenReadStream(), schemaContainer, updateChapitreSchemaDto.File.FileName);
+
+                if (!string.IsNullOrEmpty(chapitre.Schema))
                 {
-                    if (resultDelete.IsSuccess)
-                    {
-                        chapitre.Schema = resultUpload.Value;
-                        await apiDbContext.SaveChangesAsync();
-                        return Result<Chapitre>.Success(chapitre);
-                    }
-                    return Result<Chapitre>.Failure($"{resultDelete.Error}");
+                    var oldSchemaFileName = Path.GetFileName(new Uri(chapitre.Schema).LocalPath);
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(schemaContainer, oldSchemaFileName);
+
                 }
-                return Result<Chapitre>.Failure($"{resultUpload.Error}");
+
+                chapitre.Schema = newSchemaUrl;
+                await apiDbContext.SaveChangesAsync();
+
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
-
-                return Result<Chapitre>.Failure($"{ex.Message}");
+                return Result<Chapitre>.Failure(ex.Message);
             }
-
         }
 
         public async Task<Result<Chapitre>> UpdateChapitreSynthese(UpdateChapitreSyntheseDto updateChapitreSyntheseDto)
@@ -226,26 +290,26 @@ namespace api.Repository
                 Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitreSyntheseDto.Id);
                 if (chapitre == null)
                 {
-                    return Result<Chapitre>.Failure("chapitre not found");
+                    return Result<Chapitre>.Failure("Chapitre not found");
                 }
-                Result<string> resultUpload = await updateChapitreSyntheseDto.File.UploadSynthese(webHostEnvironment);
-                Result<string> resultDelete = chapitre.Synthese.DeleteFile();
-                if (resultUpload.IsSuccess)
-                {
-                    if (resultDelete.IsSuccess)
-                    {
-                        chapitre.Synthese = resultUpload.Value;
-                        await apiDbContext.SaveChangesAsync();
-                        return Result<Chapitre>.Success(chapitre);
-                    }
-                    return Result<Chapitre>.Failure($"{resultDelete.Error}");
-                }
-                return Result<Chapitre>.Failure($"{resultUpload.Error}");
-            }
-            catch (System.Exception ex)
-            {
 
-                return Result<Chapitre>.Failure($"{ex.Message}");
+                var newSyntheseUrl = await _blobStorageService.UploadFileAsync(updateChapitreSyntheseDto.File.OpenReadStream(), syntheseContainer, updateChapitreSyntheseDto.File.FileName);
+
+                if (!string.IsNullOrEmpty(chapitre.Synthese))
+                {
+                    var oldSyntheseFileName = Path.GetFileName(new Uri(chapitre.Synthese).LocalPath);
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(syntheseContainer, oldSyntheseFileName);
+
+                }
+
+                chapitre.Synthese = newSyntheseUrl;
+                await apiDbContext.SaveChangesAsync();
+
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+            }
+            catch (Exception ex)
+            {
+                return Result<Chapitre>.Failure(ex.Message);
             }
         }
 
@@ -256,27 +320,60 @@ namespace api.Repository
                 Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitreVideoDto.Id);
                 if (chapitre == null)
                 {
-                    return Result<Chapitre>.Failure("chapitre not found");
+                    return Result<Chapitre>.Failure("Chapitre not found");
                 }
-                Result<string> resultUpload = await updateChapitreVideoDto.File.UploadVideo(webHostEnvironment);
-                Result<string> resultDelete = chapitre.VideoPath.DeleteFile();
-                if (resultUpload.IsSuccess)
-                {
-                    if (resultDelete.IsSuccess)
-                    {
-                        chapitre.VideoPath = resultUpload.Value;
-                        await apiDbContext.SaveChangesAsync();
-                        return Result<Chapitre>.Success(chapitre);
-                    }
-                    return Result<Chapitre>.Failure($"{resultDelete.Error}");
-                }
-                return Result<Chapitre>.Failure($"{resultUpload.Error}");
-            }
-            catch (System.Exception ex)
-            {
 
-                return Result<Chapitre>.Failure($"{ex.Message}");
+                var containerName = "video-container";
+                var newVideoUrl = await _blobStorageService.UploadFileAsync(updateChapitreVideoDto.File.OpenReadStream(), containerName, updateChapitreVideoDto.File.FileName);
+
+                if (!string.IsNullOrEmpty(chapitre.VideoPath))
+                {
+
+                    var oldVideoFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
+
+                }
+
+                chapitre.VideoPath = newVideoUrl;
+                await apiDbContext.SaveChangesAsync();
+
+                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
             }
+            catch (Exception ex)
+            {
+                return Result<Chapitre>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Chapitre>> UpdateChapterName(UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitreNameDto.Id);
+            if (chapitre == null)
+            {
+                return Result<Chapitre>.Failure("chapitre not found");
+            }
+            chapitre.Nom = updateChapitreNameDto.Nom;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Chapitre>.Success(chapitre);
+        }
+
+        public async Task<bool> DeleteChapitre(int id)
+        {
+            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.CheckChapters).FirstOrDefaultAsync(x => x.Id == id);
+            if (chapitre == null)
+            {
+                return false;
+            }
+            apiDbContext.chapitres.Remove(chapitre);
+            await apiDbContext.SaveChangesAsync();
+            Controle? controle = await apiDbContext.controles.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Chapitres.Count() == 0);
+            if (controle == null)
+            {
+                return true;
+            }
+            apiDbContext.controles.Remove(controle);
+            await apiDbContext.SaveChangesAsync();
+            return true;
         }
     }
 }

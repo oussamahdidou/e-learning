@@ -1,0 +1,11 @@
+.head {
+  min-height: 450px;
+  background-color: #fdfaf1;
+}
+.name-desc {
+  color: darkslategrey;
+  width: 750px;
+}
+.title {
+  font-weight: bold;
+}
