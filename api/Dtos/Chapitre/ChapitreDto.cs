@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Quiz;
+using api.Model;
 
 namespace api.Dtos.Chapitre
 {
@@ -13,7 +14,7 @@ namespace api.Dtos.Chapitre
         public int ChapitreNum { get; set; }
         public required string Nom { get; set; }
         public bool Statue { get; set; } = false;
-        public required string CoursPdfPath { get; set; }
+        public List<string?>? StudentCoursParagraphes { get; set; }
         public required string VideoPath { get; set; }
         public required string Synthese { get; set; }
         public required string Schema { get; set; }

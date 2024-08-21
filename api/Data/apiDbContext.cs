@@ -21,6 +21,7 @@ namespace api.Data
         public DbSet<Student> students { get; set; }
         public DbSet<Institution> institutions { get; set; }
         public DbSet<NiveauScolaire> niveauScolaires { get; set; }
+        public DbSet<NiveauScolaireModule> niveauScolaireModules { get; set; }
         public DbSet<Module> modules { get; set; }
         public DbSet<Chapitre> chapitres { get; set; }
         public DbSet<Quiz> quizzes { get; set; }
@@ -34,6 +35,10 @@ namespace api.Data
         public DbSet<ModuleRequirement> moduleRequirements { get; set; }
         public DbSet<ResultExam> resultExams { get; set; }
         public DbSet<ExamFinal> examFinals { get; set; }
+        public DbSet<Cours> cours { get; set; }
+        public DbSet<Paragraphe> paragraphes { get; set; }
+        public DbSet<ElementPedagogique> elementPedagogiques { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -123,6 +128,16 @@ namespace api.Data
             .HasOne(u => u.ExamFinal)
             .WithMany(u => u.ResultExams)
             .HasForeignKey(p => p.ExamFinalId);
+            //*************************************************************************************************
+            builder.Entity<NiveauScolaireModule>(x => x.HasKey(p => new { p.ModuleId, p.NiveauScolaireId }));
+            builder.Entity<NiveauScolaireModule>()
+            .HasOne(u => u.Module)
+            .WithMany(u => u.NiveauScolaireModules)
+            .HasForeignKey(p => p.ModuleId);
+            builder.Entity<NiveauScolaireModule>()
+            .HasOne(u => u.NiveauScolaire)
+            .WithMany(u => u.NiveauScolaireModules)
+            .HasForeignKey(p => p.NiveauScolaireId);
         }
     }
 }

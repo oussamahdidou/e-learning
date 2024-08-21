@@ -11,5 +11,6 @@ namespace api.Model
         public int ChapitreId { get; set; }
         public Student? Student { get; set; }
         public Chapitre? Chapitre { get; set; }
+        public string? Comment { get; set; }
     }
 }

@@ -18,10 +18,13 @@ namespace api.Repository
     {
         private readonly apiDbContext apiDbContext;
         private readonly IWebHostEnvironment webHostEnvironment;
-        public ControleRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
+
+        private readonly IBlobStorageService _blobStorageService;
+        public ControleRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment, IBlobStorageService blobStorageService)
         {
             this.apiDbContext = apiDbContext;
             this.webHostEnvironment = webHostEnvironment;
+            _blobStorageService = blobStorageService;
         }
 
         public async Task<Result<Controle>> Approuver(int id)
@@ -49,33 +52,33 @@ namespace api.Repository
         {
             try
             {
-                Result<string> ennonceresult = await createControleDto.Ennonce.UploadControle(webHostEnvironment);
-                Result<string> solutionresult = await createControleDto.Solution.UploadControleSolution(webHostEnvironment);
+                var controleContainer = "controle-container";
+                string enonceUrl = await _blobStorageService.UploadFileAsync(createControleDto.Ennonce.OpenReadStream(), controleContainer, createControleDto.Ennonce.FileName);
+                string solutionleUrl = await _blobStorageService.UploadFileAsync(createControleDto.Solution.OpenReadStream(), controleContainer, createControleDto.Solution.FileName);
 
-                if (ennonceresult.IsSuccess && solutionresult.IsSuccess)
+
+
+                Controle controle = new Controle()
                 {
-                    Controle controle = new Controle()
-                    {
-                        Ennonce = ennonceresult.Value,
-                        Solution = solutionresult.Value,
-                        Nom = createControleDto.Nom,
-                        Status = createControleDto.Statue,
+                    Ennonce = enonceUrl,
+                    Solution = solutionleUrl,
+                    Nom = createControleDto.Nom,
+                    Status = createControleDto.Statue,
 
-                    };
-                    await apiDbContext.controles.AddAsync(controle);
-                    await apiDbContext.SaveChangesAsync();
-                    var chaptersToUpdate = await apiDbContext.chapitres
-                                                         .Where(c => createControleDto.Chapters.Contains(c.Id))
-                                                         .ToListAsync();
+                };
+                await apiDbContext.controles.AddAsync(controle);
+                await apiDbContext.SaveChangesAsync();
+                var chaptersToUpdate = await apiDbContext.chapitres
+                                                     .Where(c => createControleDto.Chapters.Contains(c.Id))
+                                                     .ToListAsync();
 
-                    foreach (var chapter in chaptersToUpdate)
-                    {
-                        chapter.ControleId = controle.Id;
-                    }
-                    await apiDbContext.SaveChangesAsync();
-                    return Result<Controle>.Success(controle);
+                foreach (var chapter in chaptersToUpdate)
+                {
+                    chapter.ControleId = controle.Id;
                 }
-                return Result<Controle>.Failure("error in files upload");
+                await apiDbContext.SaveChangesAsync();
+                return Result<Controle>.Success(controle);
+
             }
             catch (System.Exception ex)
             {
@@ -177,19 +180,15 @@ namespace api.Repository
                 {
                     return Result<Controle>.Failure("controle not found");
                 }
-                Result<string> resultUpload = await updateControleEnnonceDto.Ennonce.UploadControle(webHostEnvironment);
-                if (resultUpload.IsSuccess)
-                {
-                    Result<string> resultDelete = controle.Ennonce.DeleteFile();
-                    if (resultDelete.IsSuccess)
-                    {
-                        controle.Ennonce = resultUpload.Value;
-                        await apiDbContext.SaveChangesAsync();
-                        return Result<Controle>.Success(controle);
-                    }
-                    return Result<Controle>.Failure("error in file delete");
-                }
-                return Result<Controle>.Failure("error in file upload");
+                var controleContainer = "controle-container";
+                string enonceUrl = await _blobStorageService.UploadFileAsync(updateControleEnnonceDto.Ennonce.OpenReadStream(), controleContainer, updateControleEnnonceDto.Ennonce.FileName);
+
+
+                await _blobStorageService.DeleteFileAsync(controleContainer, new Uri(controle.Ennonce).Segments.Last());
+                controle.Ennonce = enonceUrl;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Controle>.Success(controle);
+
             }
             catch (System.Exception ex)
             {
@@ -228,19 +227,16 @@ namespace api.Repository
                 {
                     return Result<Controle>.Failure("controle not found");
                 }
-                Result<string> resultUpload = await updateControleSolutionDto.Solution.UploadControleSolution(webHostEnvironment);
-                if (resultUpload.IsSuccess)
-                {
-                    Result<string> resultDelete = controle.Solution.DeleteFile();
-                    if (resultDelete.IsSuccess)
-                    {
-                        controle.Solution = resultUpload.Value;
-                        await apiDbContext.SaveChangesAsync();
-                        return Result<Controle>.Success(controle);
-                    }
-                    return Result<Controle>.Failure("error in file delete");
-                }
-                return Result<Controle>.Failure("error in file upload");
+                var controleContainer = "controle-container";
+                string solutionUrl = await _blobStorageService.UploadFileAsync(updateControleSolutionDto.Solution.OpenReadStream(), controleContainer, updateControleSolutionDto.Solution.FileName);
+
+
+
+                await _blobStorageService.DeleteFileAsync(controleContainer, new Uri(controle.Ennonce).Segments.Last());
+                controle.Solution = solutionUrl;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Controle>.Success(controle);
+
             }
             catch (System.Exception ex)
             {

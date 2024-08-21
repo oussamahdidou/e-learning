@@ -1,25 +1,36 @@
 <app-navbar></app-navbar>
-@if
-(niveauScolaire) {
-<div class="container-fluid mt-5 ">
-  <h3 class="text-center section-title my-5 pt-5">Explore Les Modules de "{{niveauScolaire.nom}}"</h3>
+@if (niveauScolaire) {
+<div class="container-fluid mt-5">
+  <h3 class="text-center section-title my-5 pt-5">
+    Explore Les Modules de "{{ niveauScolaire.nom }}"
+  </h3>
   <div class="row justify-content-center align-items-end mx-auto container">
     @for (item of niveauScolaire.modules; track $index) {
-    <div class="col-lg-3  px-2  ">
-      <div class="d-flex flex-column p-3  align-items-baseline item-container" style="aspect-ratio: 16/9;">
-        <img src="{{item.moduleImg}}" class="img-fluid" alt="{{item.nom}}">
-        <span class="item-description text-break my-3">{{item.nom}}</span>
+    <div class="col-lg-3 px-2">
+      <div
+        class="d-flex flex-column p-3 align-items-baseline item-container"
+        style="aspect-ratio: 16/9"
+      >
+        <img
+          src="{{ item.moduleImg }}"
+          class="img-fluid"
+          style="aspect-ratio: 16/9"
+        />
+        <span class="item-description text-break my-3">{{ item.nom }}</span>
         <div class="d-flex justify-content-between align-items-center w-100">
+          <button mat-raised-button routerLink="/module-info/{{ item.id }}">
+            Explore
+          </button>
 
-          <button mat-raised-button routerLink="/course/{{item.id}}">Explore </button>
-
-
-          <button mat-raised-button color="warn" routerLink="/course/{{item.id}}/testniveau/{{item.id}}">Test
-            Niveau</button>
-
+          <button
+            mat-raised-button
+            color="warn"
+            routerLink="/course/{{ item.id }}/testniveau/{{ item.id }}"
+          >
+            Test Niveau
+          </button>
         </div>
       </div>
-
     </div>
 
     }

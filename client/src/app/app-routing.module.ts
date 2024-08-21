@@ -10,12 +10,21 @@ const routes: Routes = [
     path: '',
     component: HomeComponent,
   },
+
   {
     path: 'institutions',
     canActivate: [StudentGuardService],
     loadChildren: () =>
       import('./institutions/institutions.module').then(
         (m) => m.InstitutionsModule
+      ),
+  },
+  {
+    path: 'module-info',
+    canActivate: [StudentGuardService],
+    loadChildren: () =>
+      import('./module-info/module-info.module').then(
+        (m) => m.ModuleInfoModule
       ),
   },
   {

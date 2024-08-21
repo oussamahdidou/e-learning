@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 
 using Microsoft.Extensions.DependencyInjection;
+using Azure.Storage.Blobs;
 
 
 
@@ -58,9 +59,12 @@ builder.Services.AddSwaggerGen(option =>
 });
 builder.Services.AddDbContext<apiDbContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlServerOptions =>
+    {
+        sqlServerOptions.CommandTimeout(300);
+    });
 });
+
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = true;
@@ -129,12 +133,14 @@ builder.Services.AddScoped<IControleRepository, ControleRepository>();
 builder.Services.AddScoped<IExamFinalRepository, ExamFinalRepository>();
 builder.Services.AddScoped<IUserCenterInterface, UserCenterRepository>();
 builder.Services.AddScoped<IResultExamRepository, ResultExamRepository>();
+builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
+builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
 {
     await SeedData.SeedUsersAndRolesAsync(app);
-    await SeedData.Initialize(app);
+    // await SeedData.Initialize(app);
 
 }
 else

@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { Question, Quiz } from '../../interfaces/dashboard';
 import { ErrorHandlingService } from '../../services/error-handling.service';
+import { SharedDataService } from '../../services/shared-data.service';
 
 @Component({
   selector: 'app-quiz',
@@ -29,10 +30,12 @@ export class QuizComponent implements OnInit {
     private courseService: CourseService,
     private route: ActivatedRoute,
     private router: Router,
-    private errorHandlingService: ErrorHandlingService
+    private errorHandlingService: ErrorHandlingService,
+    private shared: SharedDataService
   ) {}
 
   ngOnInit(): void {
+    this.shared.setActiveDiv('about');
     this.route.parent?.params.subscribe((params) => {
       this.courseId = params['id'];
     });
@@ -44,6 +47,7 @@ export class QuizComponent implements OnInit {
           this.id = quizId;
           if (!isNaN(quizId)) {
             this.loadQuiz(quizId);
+            this.shared.setActiveDiv(`quiz/${this.id}`);
           } else {
             this.errorHandlingService.handleError(null, 'Invalid quiz ID');
             this.router.navigate(['/']);

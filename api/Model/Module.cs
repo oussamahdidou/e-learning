@@ -15,13 +15,12 @@ namespace api.Model
         public string Description { get; set; } = "module description";
         public string? CourseProgram { get; set; }
         public List<Chapitre> Chapitres { get; set; } = new List<Chapitre>();
-        public int NiveauScolaireId { get; set; }
-
-        public NiveauScolaire? NiveauScolaire { get; set; }
         public List<ModuleRequirement> ModuleRequirements { get; set; } = new List<ModuleRequirement>();
         public List<ModuleRequirement> ModulesRequiredIn { get; set; } = new List<ModuleRequirement>();
         public List<TestNiveau> TestNiveaus { get; set; } = new List<TestNiveau>();
         public ExamFinal? ExamFinal { get; set; }
         public int? ExamFinalId { get; set; }
+        public List<NiveauScolaireModule> NiveauScolaireModules { get; set; } = new List<NiveauScolaireModule>();
+
     }
 }

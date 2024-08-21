@@ -11,6 +11,9 @@ namespace api.Dtos.UserCenter
         public int ModuleID { get; set; }
         public string? Nom { get; set; }
         public int NumberOfChapter { get; set; }
-        public int CheckCount { get; set; }
+        public string? ModuleImg { get; set; }
+        public string? ModuleDescription { get; set; }
+        public string? ModuleProgram { get; set; }
+        public int? CheckCount { get; set; }
     }
 }

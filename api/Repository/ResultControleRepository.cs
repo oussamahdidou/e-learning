@@ -19,26 +19,15 @@ namespace api.Repository
         }
         public async Task<Result<ResultControle>> AddResult(AppUser user, int controleId, string filePath)
         {
-            Controle? controle = await _context.controles.FindAsync(controleId);
-            if (controle == null) return Result<ResultControle>.Failure("no controle was found");
-            Student? student = await _context.students.FindAsync(user.Id);
-            if (student == null) return Result<ResultControle>.Failure("no Student was found");
             ResultControle resultControle = new ResultControle
             {
-                Student = student,
+                StudentId = user.Id,
                 ControleId = controleId,
                 Reponse = filePath
             };
-            try
-            {
-                _context.resultControles.Add(resultControle);
+                await _context.resultControles.AddAsync(resultControle);
                 await _context.SaveChangesAsync();
                 return Result<ResultControle>.Success(resultControle);
-            }
-            catch (Exception ex)
-            {
-                return Result<ResultControle>.Failure(ex.Message);
-            }
         }
 
         public async Task<Result<ResultControle>> GetResultControleById(AppUser user, int controleId)
