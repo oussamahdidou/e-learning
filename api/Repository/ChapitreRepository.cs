@@ -375,5 +375,39 @@ namespace api.Repository
             await apiDbContext.SaveChangesAsync();
             return true;
         }
+
+        public async Task<Result<Paragraphe>> CreateParagraphe(CreateParagrapheDto createParagrapheDto)
+        {
+            try
+            {
+                string url = await _blobStorageService.UploadFileAsync(createParagrapheDto.ParagrapheContenu.OpenReadStream(), pdfContainer, createParagrapheDto.ParagrapheContenu.FileName);
+                Paragraphe paragraphe = new Paragraphe()
+                {
+                    Nom = "Paragraphe",
+                    Contenu = url,
+                    CoursId = createParagrapheDto.CoursId
+                };
+                await apiDbContext.paragraphes.AddAsync(paragraphe);
+                await apiDbContext.SaveChangesAsync();
+                return Result<Paragraphe>.Success(paragraphe);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Paragraphe>.Failure(ex.Message);
+
+            }
+        }
+
+        public async Task<Result<Paragraphe>> GetParagrapheByid(int id)
+        {
+            Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
+            if (paragraphe != null)
+            {
+                return Result<Paragraphe>.Success(paragraphe);
+            }
+            return Result<Paragraphe>.Failure("paragraphe not found");
+
+        }
     }
 }

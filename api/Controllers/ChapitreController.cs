@@ -156,5 +156,25 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpPost("CreateParagraphe")]
+        public async Task<IActionResult> CreateParagraphe([FromForm] CreateParagrapheDto createParagrapheDto)
+        {
+            Result<Paragraphe> result = await chapitreRepository.CreateParagraphe(createParagrapheDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpGet("Paragraphe/{id:int}")]
+        public async Task<IActionResult> Paragraphe([FromRoute] int id)
+        {
+            Result<Paragraphe> result = await chapitreRepository.GetParagrapheByid(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }

@@ -44,6 +44,8 @@ import {
 import { AdminGuardService } from '../services/admin-guard.service';
 import { DashboardGuardService } from '../dashboard-guard.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SafeUrlPipe } from '../pipes/safe-url.pipe';
+import { ParagrapheComponent } from './paragraphe/paragraphe.component';
 const routes: Routes = [
   {
     path: '',
@@ -99,6 +101,11 @@ const routes: Routes = [
         component: ControleComponent,
       },
       {
+        path: 'paragraphe/:id',
+        canActivate: [DashboardGuardService],
+        component: ParagrapheComponent,
+      },
+      {
         path: '',
         canActivate: [DashboardGuardService],
         component: DashboardtableComponent,
@@ -116,7 +123,7 @@ const routes: Routes = [
     SidenavComponent,
     ApprobationTableComponent,
     CreatecontroleComponent,
-
+    SafeUrlPipe,
     CreateChapterQuizComponent,
     ChapterComponent,
     ModuleComponent,
@@ -125,6 +132,7 @@ const routes: Routes = [
     UpdateControleChaptersDialogComponent,
     DashboardtableComponent,
     NavbarComponent,
+    ParagrapheComponent,
   ],
   imports: [
     CommonModule,

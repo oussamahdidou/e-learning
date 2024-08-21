@@ -470,4 +470,21 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  createparagraphe(paragraphe: any): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Chapitre/CreateParagraphe`,
+      paragraphe,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getparagraphebyid(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Chapitre/Paragraphe/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

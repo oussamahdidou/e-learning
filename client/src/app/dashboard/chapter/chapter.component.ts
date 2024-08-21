@@ -59,7 +59,24 @@ export class ChapterComponent implements OnInit {
       }
     });
   }
-
+  teacherCourse: any;
+  studentCourse: any;
+  convertLink() {
+    if (
+      this.chapitre.videoPath.includes('youtube.com/watch?v=') ||
+      this.chapitre.videoPath.includes('youtu.be/')
+    ) {
+      this.isYoutubeLink = true;
+      if (this.chapitre.videoPath.includes('youtube.com/watch?v=')) {
+        const videoId = this.chapitre.videoPath.split('v=')[1].split('&')[0]; // Extract video ID
+        this.chapitre.videoPath = `https://www.youtube.com/embed/${videoId}`;
+      } else if (this.chapitre.videoPath.includes('youtu.be/')) {
+        const videoId = this.chapitre.videoPath.split('youtu.be/')[1];
+        this.chapitre.videoPath = `https://www.youtube.com/embed/${videoId}`;
+      }
+    } else {
+    }
+  }
   chapterid!: number;
   constructor(
     private readonly dashboardService: DashboardService,
@@ -67,14 +84,22 @@ export class ChapterComponent implements OnInit {
     public authservice: AuthService
   ) {}
   chapitre: any;
-
+  isYoutubeLink: boolean = false;
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.chapterid = params['id'];
       this.dashboardService.GetChapitrebyid(this.chapterid).subscribe(
         (reponse) => {
-          console.log(reponse);
+          // console.log(reponse);
           this.chapitre = reponse;
+          this.teacherCourse = reponse.cours.find(
+            (course: any) => course.type === 'Teacher'
+          );
+          this.studentCourse = reponse.cours.find(
+            (course: any) => course.type === 'Student'
+          );
+          console.log(this.studentCourse);
+          this.convertLink();
           this.quiz = this.chapitre.quiz;
         },
         (error) => {
@@ -143,7 +168,7 @@ export class ChapterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Quiz:', this.transformQuizObject(this.quiz));
+    // console.log('Quiz:', this.transformQuizObject(this.quiz));
 
     // Show loading modal
     Swal.fire({
@@ -165,6 +190,66 @@ export class ChapterComponent implements OnInit {
           Swal.fire('Error', `${error.error}`, 'error');
         }
       );
+  }
+  SelectStudentParagraphe(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('ParagrapheContenu', file);
+      formData.append('CoursId', this.studentCourse.id);
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the file is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      this.dashboardService.createparagraphe(formData).subscribe(
+        (response) => {
+          // Close the loading modal and show success message
+          Swal.fire('Success', 'File uploaded successfully', 'success');
+          this.studentCourse.paragraphes.push(response);
+        },
+        (error) => {
+          // Close the loading modal and show error message
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
+      );
+    }
+  }
+  SelectTeacherParagraphe(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('ParagrapheContenu', file);
+      formData.append('CoursId', this.teacherCourse.id);
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the file is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      this.dashboardService.createparagraphe(formData).subscribe(
+        (response) => {
+          // Close the loading modal and show success message
+          Swal.fire('Success', 'File uploaded successfully', 'success');
+          this.teacherCourse.paragraphes.push(response);
+        },
+        (error) => {
+          // Close the loading modal and show error message
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
+      );
+    }
   }
   SelectSynthese(event: any) {
     const file: File = event.target.files[0];
@@ -280,7 +365,7 @@ export class ChapterComponent implements OnInit {
         (response) => {
           // Close the loading modal and show success message
           Swal.fire('Success', 'PDF uploaded successfully', 'success');
-          console.log("and this is the response ",response)
+          // console.log('and this is the response ', response);
           this.chapitre.coursPdfPath = response.coursPdfPath;
         },
         (error) => {
