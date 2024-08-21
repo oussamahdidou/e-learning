@@ -113,7 +113,7 @@ export class CourseService {
       );
   }
 
-  getCourPdfUrlById(id: number): Observable<string | undefined> {
+  getParagrapheUrlById(id: number): Observable<string> {
     return this.http
       .get<any>(`${environment.apiUrl}/api/Paragraphes/${id}`, {
         headers: this.authservice.headers,
@@ -139,7 +139,7 @@ export class CourseService {
       );
   }
 
-  getControleById(controleId: number): Observable<Controle | undefined> {
+  getControleById(controleId: number): Observable<Controle> {
     return this.http
       .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`, {
         headers: this.authservice.headers,
