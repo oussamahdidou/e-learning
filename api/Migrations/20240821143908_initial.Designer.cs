@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    [Migration("20240820190406_initial_database")]
-    partial class initial_database
+    [Migration("20240821143908_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "883c94c9-f93c-4da8-af9c-8503bb25f087",
+                            Id = "71becb79-0f59-4f24-ae18-8edbcc20517c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "ab5d7950-eb09-42f5-af3b-892b25acaf08",
+                            Id = "b1baa003-10fa-42ea-8289-af6512458b12",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "54dea14d-0f4f-4de9-a563-7919920b0ba0",
+                            Id = "520e356a-2752-49a0-9e6d-df8500bc38c4",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -546,7 +546,7 @@ namespace api.Migrations
 
                     b.HasIndex("NiveauScolaireId");
 
-                    b.ToTable("NiveauScolaireModule");
+                    b.ToTable("niveauScolaireModules");
                 });
 
             modelBuilder.Entity("api.Model.Option", b =>

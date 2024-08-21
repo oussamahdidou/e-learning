@@ -36,14 +36,18 @@ namespace api.Repository
         {
             try
             {
-                Module module = new Module()
+                NiveauScolaireModule niveauScolaireModule = new NiveauScolaireModule()
                 {
-                    Nom = createModuleDto.Nom,
-                    // NiveauScolaireId = createModuleDto.NiveauScolaireId,
+                    NiveauScolaireId = createModuleDto.NiveauScolaireId,
+                    Module = new Module()
+                    {
+                        Nom = createModuleDto.Nom,
+                    }
+
                 };
-                await apiDbContext.modules.AddAsync(module);
+                await apiDbContext.niveauScolaireModules.AddAsync(niveauScolaireModule);
                 await apiDbContext.SaveChangesAsync();
-                return Result<Module>.Success(module);
+                return Result<Module>.Success(niveauScolaireModule.Module);
 
             }
             catch (Exception ex)

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class initial_database : Migration
+    public partial class initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -491,7 +491,7 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NiveauScolaireModule",
+                name: "niveauScolaireModules",
                 columns: table => new
                 {
                     NiveauScolaireId = table.Column<int>(type: "int", nullable: false),
@@ -499,15 +499,15 @@ namespace api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NiveauScolaireModule", x => new { x.ModuleId, x.NiveauScolaireId });
+                    table.PrimaryKey("PK_niveauScolaireModules", x => new { x.ModuleId, x.NiveauScolaireId });
                     table.ForeignKey(
-                        name: "FK_NiveauScolaireModule_modules_ModuleId",
+                        name: "FK_niveauScolaireModules_modules_ModuleId",
                         column: x => x.ModuleId,
                         principalTable: "modules",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_NiveauScolaireModule_niveauScolaires_NiveauScolaireId",
+                        name: "FK_niveauScolaireModules_niveauScolaires_NiveauScolaireId",
                         column: x => x.NiveauScolaireId,
                         principalTable: "niveauScolaires",
                         principalColumn: "Id",
@@ -611,9 +611,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "54dea14d-0f4f-4de9-a563-7919920b0ba0", null, "Student", "STUDENT" },
-                    { "883c94c9-f93c-4da8-af9c-8503bb25f087", null, "Admin", "ADMIN" },
-                    { "ab5d7950-eb09-42f5-af3b-892b25acaf08", null, "Teacher", "TEACHER" }
+                    { "520e356a-2752-49a0-9e6d-df8500bc38c4", null, "Student", "STUDENT" },
+                    { "71becb79-0f59-4f24-ae18-8edbcc20517c", null, "Admin", "ADMIN" },
+                    { "b1baa003-10fa-42ea-8289-af6512458b12", null, "Teacher", "TEACHER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -711,8 +711,8 @@ namespace api.Migrations
                 column: "ExamFinalId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_NiveauScolaireModule_NiveauScolaireId",
-                table: "NiveauScolaireModule",
+                name: "IX_niveauScolaireModules_NiveauScolaireId",
+                table: "niveauScolaireModules",
                 column: "NiveauScolaireId");
 
             migrationBuilder.CreateIndex(
@@ -784,7 +784,7 @@ namespace api.Migrations
                 name: "moduleRequirements");
 
             migrationBuilder.DropTable(
-                name: "NiveauScolaireModule");
+                name: "niveauScolaireModules");
 
             migrationBuilder.DropTable(
                 name: "options");

@@ -62,7 +62,9 @@ export class ModuleRequirementsDialogComponent implements OnInit {
             .getModules(niveauscolaireId)
             .subscribe((data) => {
               console.log('Modules fetched:', data);
-              this.modules = data.modules;
+              this.modules = data.niveauScolaireModules.map(
+                (item: any) => item.module
+              );
               this.form.get('module')?.setValue(''); // Reset module
             });
         } else {
