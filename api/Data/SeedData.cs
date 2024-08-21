@@ -90,142 +90,7 @@ namespace api.Data
                 }
             }
         }
-        public static async Task Initialize(IApplicationBuilder applicationBuilder){
-        using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope()){
-            apiDbContext? context = serviceScope.ServiceProvider.GetService<apiDbContext>();
-                     if (context.controles.Any() || context.chapitres.Any() || context.institutions.Any())                {
-                       return;   
-                   }
-                   context.Database.EnsureCreated();
-                   if(!context.institutions.Any()){
-                    var institution1 = new Institution{
-                        Nom = "ENCG",
-                        NiveauScolaires = new List<NiveauScolaire>
-                        {
-                            new NiveauScolaire
-                            {
-                                Nom = "Semestre 1",
-                                NiveauScolaireModules = new List<NiveauScolaireModule>
-                                {
-                                    new NiveauScolaireModule
-                                    {
-                                    Module = new Module
-                                    {
-                                        Nom = "Langues et Communication 1",
-                                        Description = "Introduction to communication skills, focusing on effective verbal and non-verbal techniques.",
-                                        Chapitres = new List<Chapitre>
-                                        {
-                                            new Chapitre
-                                        {
-                                            ChapitreNum = 1,
-                                            Nom = "Les Fondamentaux de la Communication",
-                                            Premium = true,
-                                            Statue = "Approuver",
-                                            VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4",
-                                            Synthese = "Detailed summary of communication fundamentals.",
-                                            Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf",
-                                            Cours = new List<Cours>
-                                            {
-                                                new Cours
-                                                {
-                                                    Titre = "Introduction to Communication",
-                                                    Type = "Prof",
-                                                    Paragraphes = new List<Paragraphe>
-                                                    {
-                                                        new Paragraphe { Nom = "Introduction", Contenu = "This is the introduction to communication." },
-                                                        new Paragraphe { Nom = "Importance of Communication", Contenu = "Why communication is vital in today's world." }
-                                                    }
-                                                },
-                                                new Cours
-                                                {
-                                                    Titre = "Communication Models",
-                                                    Type = "Etudiant",
-                                                    Paragraphes = new List<Paragraphe>
-                                                    {
-                                                        new Paragraphe { Nom = "Shannon-Weaver Model", Contenu = "Details about the Shannon-Weaver communication model." },
-                                                        new Paragraphe { Nom = "Berlo's SMCR Model", Contenu = "Explanation of Berlo's SMCR model of communication." }
-                                                    }
-                                                }
-                                            },
-                                            Quiz = new Quiz
-                                            {
-                                                Nom = "Les Fondamentaux de la Communication",
-                                                Statue = "Approuver",
-                                                Questions = new List<Question>
-                                                {
-                                                    new Question
-                                                    {
-                                                        Nom = "Quel est le but principal de la communication verbale ?",
-                                                        Options = new List<Option>
-                                                        {
-                                                            new Option { Nom = "Exprimer des émotions uniquement", Truth = false },
-                                                            new Option { Nom = "Échanger des informations", Truth = true },
-                                                            new Option { Nom = "Éviter les malentendus", Truth = false }
-                                                        }
-                                                    },
-                                                    // Add more questions here...
-                                                }
-                                            }
-                                        },
-                                        new Chapitre
-                                        {
-                                            ChapitreNum = 2,
-                                            Nom = "Techniques de Rédaction Professionnelle",
-                                            Premium = true,
-                                            Statue = "Approuver",
-                                            VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4",
-                                            Synthese = "Summary of professional writing techniques.",
-                                            Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf",
-                                            Cours = new List<Cours>
-                                            {
-                                                new Cours
-                                                {
-                                                    Titre = "Professional Writing Techniques",
-                                                    Type = "Prof",
-                                                    Paragraphes = new List<Paragraphe>
-                                                    {
-                                                        new Paragraphe { Nom = "Clarity in Writing", Contenu = "How to maintain clarity in professional writing." },
-                                                        new Paragraphe { Nom = "Conciseness", Contenu = "Why brevity is key in professional documents." }
-                                                    }
-                                                }
-                                            },
-                                            Quiz = new Quiz
-                                            {
-                                                Nom = "Techniques de Rédaction Professionnelle",
-                                                Statue = "Approuver",
-                                                Questions = new List<Question>
-                                                {
-                                                    new Question
-                                                    {
-                                                        Nom = "Quel est l'objectif principal d'une rédaction professionnelle ?",
-                                                        Options = new List<Option>
-                                                        {
-                                                            new Option { Nom = "Exprimer des opinions personnelles", Truth = false },
-                                                            new Option { Nom = "Transmettre des informations de manière claire et précise", Truth = true },
-                                                            new Option { Nom = "Utiliser un langage complexe", Truth = false }
-                                                        }
-                                                    },
-                                                    // Add more questions here...
-                                                }
-                                            }
-                                        }
-                                        // Add more chapters here...
-                                    }
-                                }
-                            },
-                            // Add more modules here...
-                        }
-                    },
-
-                }
-            };
-
-            await context.institutions.AddRangeAsync(institution1);
-            await context.SaveChangesAsync();
-
-            }
-        }
-    }
+        
     }
 
     
@@ -5567,4 +5432,144 @@ namespace api.Data
     //             }
     //         }
     //     }
+
+
+    // public static async Task Initialize(IApplicationBuilder applicationBuilder){
+    //     using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope()){
+    //         apiDbContext? context = serviceScope.ServiceProvider.GetService<apiDbContext>();
+    //                  if (context.controles.Any() || context.chapitres.Any() || context.institutions.Any())                {
+    //                    return;   
+    //                }
+    //                context.Database.EnsureCreated();
+    //                if(!context.institutions.Any()){
+    //                 var institution1 = new Institution{
+    //                     Nom = "ENCG",
+    //                     NiveauScolaires = new List<NiveauScolaire>
+    //                     {
+    //                         new NiveauScolaire
+    //                         {
+    //                             Nom = "Semestre 1",
+    //                             NiveauScolaireModules = new List<NiveauScolaireModule>
+    //                             {
+    //                                 new NiveauScolaireModule
+    //                                 {
+    //                                 Module = new Module
+    //                                 {
+    //                                     Nom = "Langues et Communication 1",
+    //                                     Description = "Introduction to communication skills, focusing on effective verbal and non-verbal techniques.",
+    //                                     Chapitres = new List<Chapitre>
+    //                                     {
+    //                                         new Chapitre
+    //                                     {
+    //                                         ChapitreNum = 1,
+    //                                         Nom = "Les Fondamentaux de la Communication",
+    //                                         Premium = true,
+    //                                         Statue = "Approuver",
+    //                                         VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4",
+    //                                         Synthese = "Detailed summary of communication fundamentals.",
+    //                                         Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf",
+    //                                         Cours = new List<Cours>
+    //                                         {
+    //                                             new Cours
+    //                                             {
+    //                                                 Titre = "Introduction to Communication",
+    //                                                 Type = "Prof",
+    //                                                 Paragraphes = new List<Paragraphe>
+    //                                                 {
+    //                                                     new Paragraphe { Nom = "Introduction", Contenu = "This is the introduction to communication." },
+    //                                                     new Paragraphe { Nom = "Importance of Communication", Contenu = "Why communication is vital in today's world." }
+    //                                                 }
+    //                                             },
+    //                                             new Cours
+    //                                             {
+    //                                                 Titre = "Communication Models",
+    //                                                 Type = "Etudiant",
+    //                                                 Paragraphes = new List<Paragraphe>
+    //                                                 {
+    //                                                     new Paragraphe { Nom = "Shannon-Weaver Model", Contenu = "Details about the Shannon-Weaver communication model." },
+    //                                                     new Paragraphe { Nom = "Berlo's SMCR Model", Contenu = "Explanation of Berlo's SMCR model of communication." }
+    //                                                 }
+    //                                             }
+    //                                         },
+    //                                         Quiz = new Quiz
+    //                                         {
+    //                                             Nom = "Les Fondamentaux de la Communication",
+    //                                             Statue = "Approuver",
+    //                                             Questions = new List<Question>
+    //                                             {
+    //                                                 new Question
+    //                                                 {
+    //                                                     Nom = "Quel est le but principal de la communication verbale ?",
+    //                                                     Options = new List<Option>
+    //                                                     {
+    //                                                         new Option { Nom = "Exprimer des émotions uniquement", Truth = false },
+    //                                                         new Option { Nom = "Échanger des informations", Truth = true },
+    //                                                         new Option { Nom = "Éviter les malentendus", Truth = false }
+    //                                                     }
+    //                                                 },
+    //                                                 // Add more questions here...
+    //                                             }
+    //                                         }
+    //                                     },
+    //                                     new Chapitre
+    //                                     {
+    //                                         ChapitreNum = 2,
+    //                                         Nom = "Techniques de Rédaction Professionnelle",
+    //                                         Premium = true,
+    //                                         Statue = "Approuver",
+    //                                         VideoPath = "https://storagecent.blob.core.windows.net/video-container/GMRmVRlC7LG5c5wTAL_3gGNVyRo6bmdjAAAF.mp4",
+    //                                         Synthese = "Summary of professional writing techniques.",
+    //                                         Schema = "https://storagecent.blob.core.windows.net/program-container/33266ca0-a1ca-4465-a7b5-66ed81c1025e_le-sch-communication.pdf",
+    //                                         Cours = new List<Cours>
+    //                                         {
+    //                                             new Cours
+    //                                             {
+    //                                                 Titre = "Professional Writing Techniques",
+    //                                                 Type = "Prof",
+    //                                                 Paragraphes = new List<Paragraphe>
+    //                                                 {
+    //                                                     new Paragraphe { Nom = "Clarity in Writing", Contenu = "How to maintain clarity in professional writing." },
+    //                                                     new Paragraphe { Nom = "Conciseness", Contenu = "Why brevity is key in professional documents." }
+    //                                                 }
+    //                                             }
+    //                                         },
+    //                                         Quiz = new Quiz
+    //                                         {
+    //                                             Nom = "Techniques de Rédaction Professionnelle",
+    //                                             Statue = "Approuver",
+    //                                             Questions = new List<Question>
+    //                                             {
+    //                                                 new Question
+    //                                                 {
+    //                                                     Nom = "Quel est l'objectif principal d'une rédaction professionnelle ?",
+    //                                                     Options = new List<Option>
+    //                                                     {
+    //                                                         new Option { Nom = "Exprimer des opinions personnelles", Truth = false },
+    //                                                         new Option { Nom = "Transmettre des informations de manière claire et précise", Truth = true },
+    //                                                         new Option { Nom = "Utiliser un langage complexe", Truth = false }
+    //                                                     }
+    //                                                 },
+    //                                                 // Add more questions here...
+    //                                             }
+    //                                         }
+    //                                     }
+    //                                     // Add more chapters here...
+    //                                 }
+    //                             }
+    //                         },
+    //                         // Add more modules here...
+    //                     }
+    //                 },
+
+    //             }
+    //         };
+
+    //         await context.institutions.AddRangeAsync(institution1);
+    //         await context.SaveChangesAsync();
+
+    //         }
+    //     }
+    // }
+
+
 }
