@@ -12,7 +12,7 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    [Migration("20240810164553_InitialCreate")]
+    [Migration("20240811185051_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "0eab849a-c59a-4c43-a4bb-44b4a2eb774b",
+                            Id = "b73fc62e-21e7-4aa7-b231-78d1a6ad9407",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "29e35d00-88bf-4ac3-b452-32cb80a72656",
+                            Id = "0eff2e93-0d06-4963-b782-79a5cfe01e1c",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "f66f5274-4aaa-474d-8565-1fac10801ddc",
+                            Id = "e11f32e7-2410-496c-802b-d97669a43171",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
