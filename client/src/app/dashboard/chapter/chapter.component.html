@@ -31,9 +31,10 @@
         }}
       </h4>
       <ng-template matStepLabel> Cours Etudiant </ng-template>
+      @if (authservice.$IsAdmin|async) {
       <input type="file" name="" #courseparagraphe id="" class="d-none" (change)="SelectStudentParagraphe($event)">
       <button mat-raised-button color="primary" (click)="courseparagraphe.click()">Ajouter
-        Paragraphe</button>
+        Paragraphe</button>}
       <h4>Cours Etudiant</h4>
       <div class=" row justify-content-center align-items-center gap-4 pt-5">
         @if (studentCourse) {
@@ -51,10 +52,11 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel> Cours Profeseur </ng-template>
+      @if (authservice.$IsAdmin|async) {
       <input type="file" name="" #teachercourseparagraphe id="" class="d-none"
         (change)="SelectTeacherParagraphe($event)">
       <button mat-raised-button color="primary" (click)="teachercourseparagraphe.click()">Ajouter
-        Paragraphe</button>
+        Paragraphe</button>}
       <h4>Cours Professeur</h4>
       <div class="row justify-content-center align-items-center gap-4 pt-5">
         @if (teacherCourse) {

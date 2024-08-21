@@ -479,6 +479,15 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  updateparagraphe(paragraphe: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateParagraphe`,
+      paragraphe,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
   getparagraphebyid(id: number): Observable<any> {
     return this.http.get(
       `${environment.apiUrl}/api/Chapitre/Paragraphe/${id}`,

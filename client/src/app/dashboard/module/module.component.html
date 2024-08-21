@@ -12,13 +12,7 @@
           ajouter programme
         </button>
         } }
-        <input
-          type="file"
-          #program
-          accept="application/pdf"
-          (change)="SelectProgram($event)"
-          style="display: none"
-        />
+        <input type="file" #program accept="application/pdf" (change)="SelectProgram($event)" style="display: none" />
       </h4>
 
       <div class="row justify-content-center align-items-center">
@@ -29,13 +23,7 @@
               modifier image
             </button>
             }
-            <input
-              type="file"
-              #image
-              accept="image/*"
-              (change)="SelectImage($event)"
-              style="display: none"
-            />
+            <input type="file" #image accept="image/*" (change)="SelectImage($event)" style="display: none" />
             <img [src]="moduleinfo.moduleImg" class="module-img" alt="" />
           </div>
         </div>
@@ -44,29 +32,13 @@
             @if (descriptionfield) {
             <p>{{ description }}</p>
             @if (authservice.$IsAdmin|async) {
-            <button
-              (click)="descriptionfield = !descriptionfield"
-              mat-raised-button
-            >
-              modifier description</button
-            >} } @else { @if (authservice.$IsAdmin|async) {
-            <form
-              #moduleForm="ngForm"
-              (ngSubmit)="updatedescription(moduleForm)"
-            >
-              <textarea
-                class="p-4 rounded"
-                name="description"
-                id="description"
-                [(ngModel)]="moduleinfo.description"
-                required
-              ></textarea>
+            <button (click)="descriptionfield = !descriptionfield" mat-raised-button>
+              modifier description</button>} } @else { @if (authservice.$IsAdmin|async) {
+            <form #moduleForm="ngForm" (ngSubmit)="updatedescription(moduleForm)">
+              <textarea class="p-4 rounded" name="description" id="description" [(ngModel)]="moduleinfo.description"
+                required></textarea>
               <button mat-raised-button type="submit">Submit</button>
-              <button
-                type="button"
-                (click)="descriptionfield = !descriptionfield"
-                mat-raised-button
-              >
+              <button type="button" (click)="descriptionfield = !descriptionfield" mat-raised-button>
                 cancel
               </button>
             </form>
@@ -80,16 +52,13 @@
       <ng-template matStepLabel>Module Programme</ng-template>
       <h4>
         Module Programme
+        @if (authservice.$IsAdmin|async){
         <button (click)="program.click()" mat-raised-button>
           modifier programme
-        </button>
+        </button>}
         <div class="pdf-container w-75 px-5 mx-auto">
-          <pdf-viewer
-            src="{{ moduleinfo.courseProgram }}"
-            [render-text]="true"
-            [original-size]="false"
-            style="width: 100%; height: 700px"
-          >
+          <pdf-viewer src="{{ moduleinfo.courseProgram }}" [render-text]="true" [original-size]="false"
+            style="width: 100%; height: 700px">
           </pdf-viewer>
         </div>
       </h4>
@@ -99,32 +68,17 @@
       <ng-template matStepLabel> Chaptitres Table </ng-template>
       <h4>Chaptitres Table</h4>
       <div class="container">
-        <div
-          class="mb-4 d-flex justify-content-between align-items-center px-4"
-        >
+        <div class="mb-4 d-flex justify-content-between align-items-center px-4">
           <mat-form-field>
             <mat-label>Search</mat-label>
-            <input
-              matInput
-              (keyup)="applyChapitresFilter($event)"
-              placeholder="Ex. UserName"
-            />
+            <input matInput (keyup)="applyChapitresFilter($event)" placeholder="Ex. UserName" />
           </mat-form-field>
-          <button
-            routerLink="/dashboard/createchapter/{{ moduleId }}"
-            mat-raised-button
-            color="primary"
-          >
+          <button routerLink="/dashboard/createchapter/{{ moduleId }}" mat-raised-button color="primary">
             <mat-icon>add</mat-icon>
             Ajouter Chapitre
           </button>
         </div>
-        <table
-          mat-table
-          [dataSource]="chapitressource"
-          class="mat-elevation-z8"
-          matSort
-        >
+        <table mat-table [dataSource]="chapitressource" class="mat-elevation-z8" matSort>
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
@@ -148,11 +102,7 @@
           <ng-container matColumnDef="plus">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>plus</th>
             <td mat-cell *matCellDef="let element">
-              <button
-                routerLink="/dashboard/chapter/{{ element.id }}"
-                mat-raised-button
-                color="primary"
-              >
+              <button routerLink="/dashboard/chapter/{{ element.id }}" mat-raised-button color="primary">
                 Plus
               </button>
             </td>
@@ -167,32 +117,17 @@
       <ng-template matStepLabel> Controles Table </ng-template>
       <h4>Controles Table</h4>
       <div class="container">
-        <div
-          class="mb-4 d-flex justify-content-between align-items-center px-4"
-        >
+        <div class="mb-4 d-flex justify-content-between align-items-center px-4">
           <mat-form-field>
             <mat-label>Search</mat-label>
-            <input
-              matInput
-              (keyup)="applyControlesFilter($event)"
-              placeholder="Ex. UserName"
-            />
+            <input matInput (keyup)="applyControlesFilter($event)" placeholder="Ex. UserName" />
           </mat-form-field>
-          <button
-            routerLink="/dashboard/createcontrole/{{ moduleId }}"
-            mat-raised-button
-            color="primary"
-          >
+          <button routerLink="/dashboard/createcontrole/{{ moduleId }}" mat-raised-button color="primary">
             <mat-icon>add</mat-icon>
             Ajouter Controle
           </button>
         </div>
-        <table
-          mat-table
-          [dataSource]="controlessource"
-          class="mat-elevation-z8"
-          matSort
-        >
+        <table mat-table [dataSource]="controlessource" class="mat-elevation-z8" matSort>
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
@@ -207,18 +142,12 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>action</th>
             <td mat-cell *matCellDef="let element">
               @if (authservice.$IsAdmin|async) {
-              <button
-                mat-flat-button
-                color="warn"
-                (click)="deletecontrole(element.id)"
-              >
+              <button mat-flat-button color="warn" (click)="deletecontrole(element.id)">
                 Supprimer
               </button>
 
               } @else {
-              <span style="color: red"
-                >les actions sont exclusifs pour l`admin</span
-              >
+              <span style="color: red">les actions sont exclusifs pour l`admin</span>
               }
             </td>
           </ng-container>
@@ -226,11 +155,7 @@
           <ng-container matColumnDef="plus">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>plus</th>
             <td mat-cell *matCellDef="let element">
-              <button
-                routerLink="/dashboard/controle/{{ element.id }}"
-                mat-raised-button
-                color="primary"
-              >
+              <button routerLink="/dashboard/controle/{{ element.id }}" mat-raised-button color="primary">
                 Plus
               </button>
             </td>
@@ -276,46 +201,23 @@
       </button>
 
       } }
-      <input
-        type="file"
-        #ennonce
-        (change)="SelectEnnonce($event)"
-        style="display: none"
-      />
+      <input type="file" #ennonce (change)="SelectEnnonce($event)" style="display: none" />
       <div class="pdf-container w-75 px-5 mx-auto">
-        <pdf-viewer
-          src="{{ exam.ennonce }}"
-          [render-text]="true"
-          [original-size]="false"
-          style="width: 100%; height: 700px"
-        >
+        <pdf-viewer src="{{ exam.ennonce }}" [render-text]="true" [original-size]="false"
+          style="width: 100%; height: 700px">
         </pdf-viewer>
       </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>ExamFinal Solution</ng-template>
       <h4>
-        Solution @if (authservice.$IsAdmin|async) {<button
-          mat-raised-button
-          color="primary"
-          (click)="solution.click()"
-        >
-          Modifier Solution</button
-        >}
+        Solution @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="solution.click()">
+          Modifier Solution</button>}
       </h4>
-      <input
-        type="file"
-        #solution
-        (change)="SelectSolution($event)"
-        style="display: none"
-      />
+      <input type="file" #solution (change)="SelectSolution($event)" style="display: none" />
       <div class="pdf-container w-75 px-5 mx-auto">
-        <pdf-viewer
-          src="{{ exam.solution }}"
-          [render-text]="true"
-          [original-size]="false"
-          style="width: 100%; height: 700px"
-        >
+        <pdf-viewer src="{{ exam.solution }}" [render-text]="true" [original-size]="false"
+          style="width: 100%; height: 700px">
         </pdf-viewer>
       </div>
     </mat-step>
@@ -323,51 +225,24 @@
     <mat-step>
       <ng-template matStepLabel> Create Exam </ng-template>
       <h4>Create Exam</h4>
-      <form
-        *ngIf="controleForm"
-        [formGroup]="controleForm"
-        (ngSubmit)="onSubmit()"
-        class="container mt-4"
-      >
+      <form *ngIf="controleForm" [formGroup]="controleForm" (ngSubmit)="onSubmit()" class="container mt-4">
         <div class="mb-3">
           <label for="nomControle" class="form-label">Nom du contrôle</label>
-          <input
-            id="nomControle"
-            type="text"
-            class="form-control"
-            formControlName="nomControle"
-            required
-          />
+          <input id="nomControle" type="text" class="form-control" formControlName="nomControle" required />
         </div>
 
         <div class="mb-3">
           <label for="enonce" class="form-label">Énoncé du contrôle</label>
-          <input
-            id="enonce"
-            type="file"
-            accept="application/pdf"
-            (change)="onFileChange($event, 'enonce')"
-            class="form-control"
-            required
-          />
+          <input id="enonce" type="file" accept="application/pdf" (change)="onFileChange($event, 'enonce')"
+            class="form-control" required />
         </div>
 
         <div class="mb-3">
           <label for="solution" class="form-label">Solution du contrôle</label>
-          <input
-            id="solution"
-            type="file"
-            accept="application/pdf"
-            (change)="onFileChange($event, 'solution')"
-            class="form-control"
-            required
-          />
+          <input id="solution" type="file" accept="application/pdf" (change)="onFileChange($event, 'solution')"
+            class="form-control" required />
         </div>
-        <button
-          type="submit"
-          class="btn btn-primary"
-          [disabled]="!controleForm.valid"
-        >
+        <button type="submit" class="btn btn-primary" [disabled]="!controleForm.valid">
           Soumettre
         </button>
       </form>
@@ -377,29 +252,17 @@
       <ng-template matStepLabel> Modules Requis Table </ng-template>
       <h4>Modules Requis Table</h4>
       <div class="">
-        <div
-          class="mb-4 d-flex justify-content-between align-items-center px-4"
-        >
+        <div class="mb-4 d-flex justify-content-between align-items-center px-4">
           <mat-form-field>
             <mat-label>Search</mat-label>
-            <input
-              matInput
-              (keyup)="applyControlesFilter($event)"
-              placeholder="Ex. UserName"
-            />
+            <input matInput (keyup)="applyControlesFilter($event)" placeholder="Ex. UserName" />
           </mat-form-field>
           @if (authservice.$IsAdmin|async){
           <button (click)="openDialog()" mat-raised-button color="primary">
             <mat-icon>add</mat-icon>
-            Ajouter Module</button
-          >}
+            Ajouter Module</button>}
         </div>
-        <table
-          mat-table
-          [dataSource]="modulessource"
-          class="mat-elevation-z8"
-          matSort
-        >
+        <table mat-table [dataSource]="modulessource" class="mat-elevation-z8" matSort>
           <ng-container matColumnDef="id">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
             <td mat-cell *matCellDef="let element">{{ element.id }}</td>
@@ -435,34 +298,19 @@
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
             <td mat-cell *matCellDef="let element">
               @if (authservice.$IsAdmin|async) {
-              <button
-                mat-flat-button
-                color="warn"
-                (click)="deleterequiredmodule(element.id)"
-              >
+              <button mat-flat-button color="warn" (click)="deleterequiredmodule(element.id)">
                 Supprimer
               </button>
-              <button
-                mat-flat-button
-                color="accent"
-                (click)="editrequiredmodule(element)"
-              >
-                Modifier</button
-              >} @else {
-              <span style="color: red"
-                >les actions sont exclusifs pour l`admin</span
-              >
+              <button mat-flat-button color="accent" (click)="editrequiredmodule(element)">
+                Modifier</button>} @else {
+              <span style="color: red">les actions sont exclusifs pour l`admin</span>
               }
             </td>
           </ng-container>
           <ng-container matColumnDef="plus">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>plus</th>
             <td mat-cell *matCellDef="let element">
-              <button
-                routerLink="/dashboard/module/{{ element.id }}"
-                mat-raised-button
-                color="primary"
-              >
+              <button routerLink="/dashboard/module/{{ element.id }}" mat-raised-button color="primary">
                 Plus
               </button>
             </td>

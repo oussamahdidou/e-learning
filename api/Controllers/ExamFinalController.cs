@@ -51,6 +51,7 @@ namespace api.Controllers
             }
             else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
             {
+                createExamFinalDto.TeacherId = appUser.Id;
                 Result<ExamFinal> result = await examFinalRepository.CreateExamFinal(createExamFinalDto);
                 if (!result.IsSuccess)
                 {

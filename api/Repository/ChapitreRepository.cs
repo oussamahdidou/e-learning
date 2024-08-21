@@ -117,6 +117,7 @@ namespace api.Repository
                     Synthese = syntheseUrl,
                     Statue = createChapitreDto.Statue,
                     QuizId = createChapitreDto.QuizId,
+                    TeacherId = createChapitreDto.TeacherId,
                     Cours = new List<Cours>()
                     {
                         new Cours()
@@ -408,6 +409,36 @@ namespace api.Repository
             }
             return Result<Paragraphe>.Failure("paragraphe not found");
 
+        }
+
+        public async Task<Result<Paragraphe>> UpdateParagraphe(UpdateParagrapheDto updateParagrapheDto)
+        {
+            try
+            {
+                Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == updateParagrapheDto.Id);
+                if (paragraphe == null)
+                {
+                    return Result<Paragraphe>.Failure("Chapitre not found");
+                }
+
+                var newParagrapheUrl = await _blobStorageService.UploadFileAsync(updateParagrapheDto.File.OpenReadStream(), pdfContainer, updateParagrapheDto.File.FileName);
+
+                if (!string.IsNullOrEmpty(paragraphe.Contenu))
+                {
+                    var oldparagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(syntheseContainer, oldparagrapheFileName);
+
+                }
+
+                paragraphe.Contenu = newParagrapheUrl;
+                await apiDbContext.SaveChangesAsync();
+
+                return Result<Paragraphe>.Success(paragraphe);
+            }
+            catch (Exception ex)
+            {
+                return Result<Paragraphe>.Failure(ex.Message);
+            }
         }
     }
 }

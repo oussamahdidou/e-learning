@@ -62,6 +62,7 @@ namespace api.Controllers
             }
             else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
             {
+                createChapitreDto.TeacherId = appUser.Id;
                 Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
                 if (!result.IsSuccess)
                 {
@@ -175,6 +176,18 @@ namespace api.Controllers
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateParagraphe")]
+        public async Task<IActionResult> UpdateParagraphe([FromForm] UpdateParagrapheDto UpdateParagrapheDto)
+        {
+
+            Result<Paragraphe> result = await chapitreRepository.UpdateParagraphe(UpdateParagrapheDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
         }
     }
 }

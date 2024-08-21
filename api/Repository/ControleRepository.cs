@@ -64,6 +64,7 @@ namespace api.Repository
                     Solution = solutionleUrl,
                     Nom = createControleDto.Nom,
                     Status = createControleDto.Statue,
+                    TeacherId = createControleDto.TeacherId
 
                 };
                 await apiDbContext.controles.AddAsync(controle);
