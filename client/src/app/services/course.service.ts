@@ -100,7 +100,7 @@ export class CourseService {
       );
   }
 
-  getVdUrlById(id: number): Observable<string | undefined> {
+  getVdUrlById(id: number): Observable<string> {
     return this.http
       .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
         headers: this.authservice.headers,

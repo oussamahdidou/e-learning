@@ -13,9 +13,12 @@ namespace api.Repository
     public class ParagrapheRepository : IParagrapheRepository
     {
          private readonly apiDbContext apiDbContext;
-        public ParagrapheRepository(apiDbContext apiDbContext)
+         private readonly IBlobStorageService _blobStorageService;
+         private string pdfContainer = "pdf-container";
+        public ParagrapheRepository(apiDbContext apiDbContext , IBlobStorageService blobStorageService)
         {
             this.apiDbContext = apiDbContext;
+            _blobStorageService = blobStorageService;
         }
 
 
@@ -27,6 +30,8 @@ namespace api.Repository
             {
                 return Result<Paragraphe>.Failure("Cour Not Found");
             }
+
+            // paragraphe.Contenu = _blobStorageService.GenerateSasToken(pdfContainer, Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath), TimeSpan.FromMinutes(5));
 
             return Result<Paragraphe>.Success(paragraphe);
         }

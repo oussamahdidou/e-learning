@@ -39,7 +39,7 @@
     <div
       *ngFor="let pdfPath of chapitre.studentCoursParagraphes; let i = index"
       class="items"
-      [ngClass]="{ onit: part1 === 'cour' && part2 === chapitre.id }"
+      [ngClass]="{ onit: part1 === 'cour' && part2 === pdfPath }"
     >
       <a
         [routerLink]="['/course', module?.id, 'cour', pdfPath]"
