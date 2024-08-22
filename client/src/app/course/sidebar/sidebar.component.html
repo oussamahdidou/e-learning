@@ -37,21 +37,20 @@
     </div>
 
     <div
-    *ngFor="let pdfPath of chapitre.studentCoursParagraphes; let i = index"
-    class="items"
-    [ngClass]="{ onit: part1 === 'cour' && part2 === i + 1 }"
-  >
-    <a
-      [routerLink]="['/course', module?.id, 'cour', pdfPath]"
-      class="d-flex align-items-center w-100 text-decoration-none"
+      *ngFor="let pdfPath of chapitre.studentCoursParagraphes; let i = index"
+      class="items"
+      [ngClass]="{ onit: part1 === 'cour' && part2 === pdfPath }"
     >
-      <span class="flex-grow-1">Cour: Partie {{i+1}}</span>
-      <button mat-icon-button color="primary" aria-label="Course PDF">
-        <mat-icon>picture_as_pdf</mat-icon>
-      </button>
-    </a>
-  </div>
-
+      <a
+        [routerLink]="['/course', module?.id, 'cour', pdfPath]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+      >
+        <span class="flex-grow-1">Cour: Partie {{ i + 1 }}</span>
+        <button mat-icon-button color="primary" aria-label="Course PDF">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+      </a>
+    </div>
 
     <div
       class="items"
