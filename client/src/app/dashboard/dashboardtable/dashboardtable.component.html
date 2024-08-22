@@ -35,7 +35,13 @@
             toptestniveaulabels.length > 0 &&
             toptestniveaunmbr.length > 0 &&
             leasttestniveaulabels.length > 0 &&
-            leasttestniveaunmbr.length > 0) {
+            leasttestniveaunmbr.length > 0 &&
+            topteacherslabels.length > 0 &&
+            topteachersnmbrs.length > 0 &&
+            worstteacherslabels.length > 0 &&
+            worstteachersnmbrs.length > 0
+
+            ) {
             <div class="row justify-content-center align-items-center">
                 <div class="col-lg-6  p-3">
                     <div class="chart">
@@ -59,6 +65,18 @@
                 <div class="col-lg-6  p-3">
                     <div class="chart">
                         <canvas baseChart [data]="barChartData4" [options]="testniveauscharts" chartType="bar">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="col-lg-6  p-3">
+                    <div class="chart">
+                        <canvas baseChart [data]="barChartData5" [options]="teacherscharts" chartType="bar">
+                        </canvas>
+                    </div>
+                </div>
+                <div class="col-lg-6  p-3">
+                    <div class="chart">
+                        <canvas baseChart [data]="barChartData6" [options]="teacherscharts" chartType="bar">
                         </canvas>
                     </div>
                 </div>

@@ -496,4 +496,33 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  getTeacherbyid(id: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/Dashboard/Teacher/${id}`, {
+      headers: this.authservice.headers,
+    });
+  }
+  getteacherobjects(id: string): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/GetTeacherObjects/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  gettopteachers(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/TopTeachersContributors`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getworstteachers(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/WorstTeachersContributors`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

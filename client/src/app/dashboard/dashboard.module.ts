@@ -46,6 +46,7 @@ import { DashboardGuardService } from '../dashboard-guard.service';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SafeUrlPipe } from '../pipes/safe-url.pipe';
 import { ParagrapheComponent } from './paragraphe/paragraphe.component';
+import { TeacherProfileComponent } from './teacher-profile/teacher-profile.component';
 const routes: Routes = [
   {
     path: '',
@@ -110,6 +111,11 @@ const routes: Routes = [
         canActivate: [DashboardGuardService],
         component: DashboardtableComponent,
       },
+      {
+        path: 'profile/:id',
+        canActivate: [DashboardGuardService],
+        component: TeacherProfileComponent,
+      },
     ],
   },
 ];
@@ -133,6 +139,7 @@ const routes: Routes = [
     DashboardtableComponent,
     NavbarComponent,
     ParagrapheComponent,
+    TeacherProfileComponent,
   ],
   imports: [
     CommonModule,

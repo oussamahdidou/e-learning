@@ -188,6 +188,22 @@ namespace api.Repository
 
         }
 
+        public async Task<Result<List<PendingObjectsDto>>> GetTeacherObjects(string TeacherId)
+        {
+            try
+            {
+                List<PendingObjectsDto> chapitres = await apiDbContext.chapitres.Where(x => x.TeacherId == TeacherId).Select(x => x.FromChapitreToPendingObjectsDto()).ToListAsync();
+                List<PendingObjectsDto> controles = await apiDbContext.controles.Where(x => x.TeacherId == TeacherId).Select(x => x.FromControleToPendingObjectsDto()).ToListAsync();
+                List<PendingObjectsDto> exams = await apiDbContext.modules.Include(x => x.ExamFinal).Where(x => x.ExamFinal.TeacherId == TeacherId).Select(x => x.FromExamToPendingObjectsDto()).ToListAsync();
+                return Result<List<PendingObjectsDto>>.Success(chapitres.Concat(controles).Concat(exams).ToList());
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<List<PendingObjectsDto>>.Failure(ex.Message);
+            }
+        }
+
         public async Task<Result<List<BarChartsDto>>> GetTopTestNiveauModules()
         {
             var top5ModulesWithAverageNotes = await apiDbContext.modules
@@ -286,6 +302,24 @@ namespace api.Repository
             }
         }
 
+        public async Task<Result<List<BarChartsDto>>> TopContributerTeachers()
+        {
+            try
+            {
+                List<Teacher> teachers = await apiDbContext.teachers.Include(x => x.Chapitres).Include(x => x.Controles).Include(x => x.ExamFinals).ToListAsync();
+                List<BarChartsDto> top5Teachers = teachers
+                               .OrderByDescending(t => t.Chapitres.Count + t.ExamFinals.Count + t.Controles.Count)
+                               .Select(x => x.FromTeacherToBarChartsDto()).Take(5)
+                               .ToList();
+                return Result<List<BarChartsDto>>.Success(top5Teachers);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<List<BarChartsDto>>.Failure(ex.Message);
+            }
+        }
+
         public async Task<bool> UpdateControleChapitres(List<GetChapitresToUpdateControlesDto> getChapitresToUpdateControlesDtos, int controleId)
         {
             try
@@ -313,6 +347,24 @@ namespace api.Repository
             {
 
                 return false;
+            }
+        }
+
+        public async Task<Result<List<BarChartsDto>>> WorstContributersTeachers()
+        {
+            try
+            {
+                List<Teacher> teachers = await apiDbContext.teachers.Include(x => x.Chapitres).Include(x => x.Controles).Include(x => x.ExamFinals).ToListAsync();
+                List<BarChartsDto> top5Teachers = teachers
+                               .OrderBy(t => t.Chapitres.Count + t.ExamFinals.Count + t.Controles.Count)
+                               .Select(x => x.FromTeacherToBarChartsDto()).Take(5)
+                               .ToList();
+                return Result<List<BarChartsDto>>.Success(top5Teachers);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<List<BarChartsDto>>.Failure(ex.Message);
             }
         }
     }

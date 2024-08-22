@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart, ChartConfiguration, ChartOptions } from 'chart.js';
 import {
   BarController,
@@ -10,6 +10,7 @@ import {
   Legend,
 } from 'chart.js';
 import { DashboardService } from '../../services/dashboard.service';
+import { BaseChartDirective } from 'ng2-charts';
 Chart.register(
   BarController,
   BarElement,
@@ -25,6 +26,7 @@ Chart.register(
   styleUrl: './dashboardtable.component.css',
 })
 export class DashboardtableComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart: BaseChartDirective | undefined;
   topmoduleslabels: any[] = [];
   topmodulesnmbr: any[] = [];
   leastmoduleslabels: any[] = [];
@@ -33,34 +35,58 @@ export class DashboardtableComponent implements OnInit {
   toptestniveaunmbr: any[] = [];
   leasttestniveaulabels: any[] = [];
   leasttestniveaunmbr: any[] = [];
+  topteachersnmbrs: any[] = [];
+  worstteachersnmbrs: any[] = [];
+  topteacherslabels: any[] = [];
+  worstteacherslabels: any[] = [];
   stats: any;
   constructor(private readonly dashboardservice: DashboardService) {}
   ngOnInit(): void {
     this.dashboardservice.getmostcheckedmodules().subscribe(
       (response) => {
         this.extractTopmodules(response);
-        console.log(response);
+        console.log(this.topmoduleslabels);
+        console.log(this.topmodulesnmbr);
       },
       (error) => {}
     );
     this.dashboardservice.getleastcheckedmodules().subscribe(
       (response) => {
         this.extractleastmodules(response);
-        console.log(response);
+        console.log(this.leastmoduleslabels);
+        console.log(this.leastmodulesnmbr);
       },
       (error) => {}
     );
     this.dashboardservice.gettoptestniveaumodules().subscribe(
       (response) => {
         this.extractToptestniveau(response);
-        console.log(response);
+        console.log(this.toptestniveaulabels);
+        console.log(this.toptestniveaunmbr);
       },
       (error) => {}
     );
     this.dashboardservice.getworsttestniveaumodules().subscribe(
       (response) => {
         this.extractleasttestniveau(response);
-        console.log(response);
+        console.log(this.leasttestniveaulabels);
+        console.log(this.leasttestniveaunmbr);
+      },
+      (error) => {}
+    );
+    this.dashboardservice.gettopteachers().subscribe(
+      (response) => {
+        this.extractTopteachers(response);
+        console.log(this.topteacherslabels);
+        console.log(this.topteachersnmbrs);
+      },
+      (error) => {}
+    );
+    this.dashboardservice.getworstteachers().subscribe(
+      (response) => {
+        this.extractWorstteachers(response);
+        console.log(this.worstteacherslabels);
+        console.log(this.worstteachersnmbrs);
       },
       (error) => {}
     );
@@ -101,6 +127,21 @@ export class DashboardtableComponent implements OnInit {
       },
     },
   };
+  public teacherscharts: ChartOptions<'bar'> = {
+    responsive: true,
+    maintainAspectRatio: false,
+    aspectRatio: 20 / 20,
+    scales: {
+      y: {
+        beginAtZero: true,
+        min: 0,
+        max: 50,
+        ticks: {
+          stepSize: 5,
+        },
+      },
+    },
+  };
   public barChartData1: ChartConfiguration<'bar'>['data'] = {
     labels: this.topmoduleslabels,
     datasets: [
@@ -113,7 +154,6 @@ export class DashboardtableComponent implements OnInit {
       },
     ],
   };
-
   public barChartData2: ChartConfiguration<'bar'>['data'] = {
     labels: this.leastmoduleslabels,
     datasets: [
@@ -126,7 +166,6 @@ export class DashboardtableComponent implements OnInit {
       },
     ],
   };
-
   public barChartData3: ChartConfiguration<'bar'>['data'] = {
     labels: this.toptestniveaulabels,
     datasets: [
@@ -139,13 +178,36 @@ export class DashboardtableComponent implements OnInit {
       },
     ],
   };
-
   public barChartData4: ChartConfiguration<'bar'>['data'] = {
     labels: this.leasttestniveaulabels,
     datasets: [
       {
         data: this.leasttestniveaunmbr,
         label: 'Mauvaise Performance aux test niveau',
+        backgroundColor: 'rgba(255,0,0,0.3)',
+        borderColor: 'black',
+        borderWidth: 1,
+      },
+    ],
+  };
+  public barChartData5: ChartConfiguration<'bar'>['data'] = {
+    labels: this.topteacherslabels,
+    datasets: [
+      {
+        data: this.topteachersnmbrs,
+        label: 'Les prof les plus performans',
+        backgroundColor: 'rgba(0,0,255,0.3)',
+        borderColor: 'black',
+        borderWidth: 1,
+      },
+    ],
+  };
+  public barChartData6: ChartConfiguration<'bar'>['data'] = {
+    labels: this.worstteacherslabels,
+    datasets: [
+      {
+        data: this.worstteachersnmbrs,
+        label: 'Les prof les moins performans',
         backgroundColor: 'rgba(255,0,0,0.3)',
         borderColor: 'black',
         borderWidth: 1,
@@ -179,5 +241,24 @@ export class DashboardtableComponent implements OnInit {
       this.toptestniveaulabels.unshift(obj.name);
       this.toptestniveaunmbr.unshift(obj.count);
     });
+  }
+  extractTopteachers(objects: any[]) {
+    objects.reverse();
+    objects.forEach((obj) => {
+      this.topteacherslabels.unshift(obj.name);
+      this.topteachersnmbrs.unshift(obj.count);
+    });
+  }
+  extractWorstteachers(objects: any[]) {
+    objects.reverse();
+    objects.forEach((obj) => {
+      this.worstteacherslabels.unshift(obj.name);
+      this.worstteachersnmbrs.unshift(obj.count);
+    });
+  }
+  updateChart() {
+    if (this.chart) {
+      this.chart.update();
+    }
   }
 }
