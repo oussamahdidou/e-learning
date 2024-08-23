@@ -136,5 +136,25 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpGet("GetModulesNiveauScolaire/{id:int}")]
+        public async Task<IActionResult> GetModulesNiveauScolaire([FromRoute] int id)
+        {
+            Result<List<NiveauScolaire>> result = await moduleRepository.GetModuleNiveauScolaires(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPost("CreateModuleNiveauScolaire")]
+        public async Task<IActionResult> CreateModuleNiveauScolaire([FromBody] CreateNiveauScolaireModuleDto createNiveauScolaireModuleDto)
+        {
+            Result<NiveauScolaire> result = await moduleRepository.CreateNiveauScolaireModule(createNiveauScolaireModuleDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 }

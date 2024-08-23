@@ -15,6 +15,7 @@ import {
 import Swal from 'sweetalert2';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../services/auth.service';
+import { CreateNiveauScolaireModuleDialogComponent } from '../create-niveau-scolaire-module-dialog/create-niveau-scolaire-module-dialog.component';
 
 @Component({
   selector: 'app-module',
@@ -22,6 +23,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './module.component.css',
 })
 export class ModuleComponent implements OnInit {
+  deleteniveauscolaire(id: number) {}
   SelectProgram(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -382,6 +384,7 @@ export class ModuleComponent implements OnInit {
 
   displayedColumns: string[] = ['id', 'number', 'nom', 'module', 'plus'];
   controlesColumns: string[] = ['id', 'nom', 'action', 'plus'];
+  niveausColumns: string[] = ['id', 'niveauscolaire', 'institution', 'action'];
   modulesColumns: string[] = [
     'id',
     'nom',
@@ -395,10 +398,38 @@ export class ModuleComponent implements OnInit {
   chapitressource: MatTableDataSource<any>;
   controlessource: MatTableDataSource<any>;
   modulessource!: MatTableDataSource<any>;
+  niveaussource!: MatTableDataSource<any>;
   moduleinfo: any;
   chapters: any[] = [];
   controles: any[] = [];
   modules: any[] = [];
+  niveauscolaires: any[] = [
+    {
+      id: 1,
+      niveauscolaire: 'Primaire',
+      institution: 'École A',
+    },
+    {
+      id: 2,
+      niveauscolaire: 'Secondaire',
+      institution: 'Lycée B',
+    },
+    {
+      id: 3,
+      niveauscolaire: 'Collège',
+      institution: 'Collège C',
+    },
+    {
+      id: 4,
+      niveauscolaire: 'Licence',
+      institution: 'Université D',
+    },
+    {
+      id: 5,
+      niveauscolaire: 'Master',
+      institution: 'Université E',
+    },
+  ];
   openDialog(): void {
     const dialogRef = this.dialog.open(ModuleRequirementsDialogComponent, {
       width: '400px',
@@ -441,23 +472,17 @@ export class ModuleComponent implements OnInit {
       }
     });
   }
+
   moduleId: number = 0;
   enonceFile: File | null = null;
   solutionFile: File | null = null;
   onFileChange(event: any, type: string) {
     const file = event.target.files[0];
-    if (file && file.type === 'application/pdf') {
-      if (type === 'enonce') {
-        this.enonceFile = file;
-      } else if (type === 'solution') {
-        this.solutionFile = file;
-      }
-    } else {
-      Swal.fire({
-        title: 'Warning',
-        text: 'Veuillez sélectionner un fichier PDF',
-        icon: 'warning',
-      });
+
+    if (type === 'enonce') {
+      this.enonceFile = file;
+    } else if (type === 'solution') {
+      this.solutionFile = file;
     }
   }
   SelectSolution(event: any) {
@@ -609,6 +634,13 @@ export class ModuleComponent implements OnInit {
           return item[property];
       }
     };
+    this.niveaussource = new MatTableDataSource(this.niveauscolaires);
+    this.niveaussource.sortingDataAccessor = (item, property) => {
+      switch (property) {
+        default:
+          return item[property];
+      }
+    };
     this.controlessource = new MatTableDataSource(this.controles);
     this.controlessource.sortingDataAccessor = (item, property) => {
       switch (property) {
@@ -688,6 +720,20 @@ export class ModuleComponent implements OnInit {
         },
         (error) => {}
       );
+      this.dashboardservice.getmodulesniveauscolaires(this.moduleId).subscribe(
+        (response) => {
+          this.niveauscolaires = response;
+          this.niveaussource = new MatTableDataSource(this.niveauscolaires);
+          this.niveaussource.sortingDataAccessor = (item, property) => {
+            switch (property) {
+              default:
+                return item[property];
+            }
+          };
+          this.niveaussource.sort = this.sort;
+        },
+        (error) => {}
+      );
     });
   }
 
@@ -702,5 +748,58 @@ export class ModuleComponent implements OnInit {
   applyModulesFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.controlessource.filter = filterValue.trim().toLowerCase();
+  }
+  applyNiveausFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.controlessource.filter = filterValue.trim().toLowerCase();
+  }
+
+  openNiveauScolaireDialog(): void {
+    const dialogRef = this.dialog.open(
+      CreateNiveauScolaireModuleDialogComponent,
+      {
+        width: '400px',
+        data: { name: 'Angular' },
+      }
+    );
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+      console.log(result);
+      if (result) {
+        this.dashboardservice
+          .createmoduleniveauscolaire(this.moduleId, result.niveauscolaireId)
+          .subscribe(
+            (response) => {
+              this.dashboardservice
+                .getmodulesniveauscolaires(this.moduleId)
+                .subscribe(
+                  (response) => {
+                    this.niveauscolaires = response;
+                    this.niveaussource = new MatTableDataSource(
+                      this.niveauscolaires
+                    );
+                    this.niveaussource.sortingDataAccessor = (
+                      item,
+                      property
+                    ) => {
+                      switch (property) {
+                        default:
+                          return item[property];
+                      }
+                    };
+                    this.niveaussource.sort = this.sort;
+                  },
+                  (error) => {
+                    Swal.fire(`error`, `${error.error}`, `error`);
+                  }
+                );
+            },
+            (error) => {
+              Swal.fire(`error`, `${error.error}`, `error`);
+            }
+          );
+      }
+    });
   }
 }

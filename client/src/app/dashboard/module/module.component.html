@@ -321,5 +321,64 @@
         </table>
       </div>
     </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Les Niveaux Scolaires</ng-template>
+      <h4>Les niveaus scolaires et les institutions ou se modules appartient</h4>
+      <div class="">
+        <div class="mb-4 d-flex justify-content-between align-items-center px-4">
+          <mat-form-field>
+            <mat-label>Search</mat-label>
+            <input matInput (keyup)="applyNiveausFilter($event)" placeholder="Ex. UserName" />
+          </mat-form-field>
+          @if (authservice.$IsAdmin|async){
+          <button (click)="openNiveauScolaireDialog()" mat-raised-button color="primary">
+            <mat-icon>add</mat-icon>
+            Ajouter a un niveauscolaire</button>}
+        </div>
+        <table mat-table [dataSource]="niveaussource" class="mat-elevation-z8" matSort>
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>id</th>
+            <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="niveauscolaire">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              niveauscolaire
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.nom }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="institution">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+              institution
+            </th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.institution.nom }}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+            <td mat-cell *matCellDef="let element">
+              @if (authservice.$IsAdmin|async) {
+              <button mat-flat-button color="warn" (click)="deleteniveauscolaire(element.id)">
+                Supprimer
+              </button>
+
+              }
+              @else {
+              <span style="color: red">les actions sont exclusifs pour l`admin</span>
+              }
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="niveausColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: niveausColumns"></tr>
+        </table>
+      </div>
+    </mat-step>
   </mat-horizontal-stepper>
 </div>

@@ -47,6 +47,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SafeUrlPipe } from '../pipes/safe-url.pipe';
 import { ParagrapheComponent } from './paragraphe/paragraphe.component';
 import { TeacherProfileComponent } from './teacher-profile/teacher-profile.component';
+import { CreateNiveauScolaireModuleDialogComponent } from './create-niveau-scolaire-module-dialog/create-niveau-scolaire-module-dialog.component';
 const routes: Routes = [
   {
     path: '',
@@ -140,6 +141,7 @@ const routes: Routes = [
     NavbarComponent,
     ParagrapheComponent,
     TeacherProfileComponent,
+    CreateNiveauScolaireModuleDialogComponent,
   ],
   imports: [
     CommonModule,

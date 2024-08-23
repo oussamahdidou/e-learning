@@ -525,4 +525,27 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  getmodulesniveauscolaires(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Module/GetModulesNiveauScolaire/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  createmoduleniveauscolaire(
+    moduleId: number,
+    niveauScolaireId: number
+  ): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Module/CreateModuleNiveauScolaire`,
+      {
+        moduleId: moduleId,
+        niveauScolaireId: niveauScolaireId,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }
