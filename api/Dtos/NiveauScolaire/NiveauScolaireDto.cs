@@ -15,9 +15,6 @@ namespace api.Dtos.NiveauScolaire
 
         public List<ModuleDto> ModuleDto { get; set; } = new List<ModuleDto>();
 
-        public NiveauScolaireDto()
-        {
-            ModuleDto = new List<ModuleDto>();
-        }
+
     }
 }

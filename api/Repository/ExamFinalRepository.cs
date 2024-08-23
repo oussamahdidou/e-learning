@@ -49,6 +49,7 @@ namespace api.Repository
                 Ennonce = enonceUrl,
                 Solution = solutionUrl,
                 Status = createExamFinalDto.Status,
+                TeacherId = createExamFinalDto.TeacherId
 
             };
             await apiDbContext.AddAsync(examFinal);

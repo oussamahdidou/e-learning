@@ -45,22 +45,4 @@ export class TeachersComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-
-  toggleApproval(teacher: any) {
-    if (teacher.granted) {
-      this.dashboardservice.removeaccessgrant(teacher.id).subscribe(
-        (response) => {
-          teacher.granted = !teacher.granted;
-        },
-        (error) => {}
-      );
-    } else {
-      this.dashboardservice.grantaccess(teacher.id).subscribe(
-        (response) => {
-          teacher.granted = !teacher.granted;
-        },
-        (error) => {}
-      );
-    }
-  }
 }

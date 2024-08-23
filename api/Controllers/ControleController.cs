@@ -53,6 +53,7 @@ namespace api.Controllers
             }
             else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
             {
+                createControleDto.TeacherId = appUser.Id;
                 Result<Controle> result = await controleRepository.CreateControle(createControleDto);
                 if (!result.IsSuccess)
                 {

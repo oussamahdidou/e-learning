@@ -13,13 +13,20 @@ namespace api.interfaces
 
         Task<Result<Chapitre>> GetChapitreById(int id);
         Task<Result<Chapitre>> CreateChapitre(CreateChapitreDto createChapitreDto);
+        Task<Result<Paragraphe>> CreateParagraphe(CreateParagrapheDto createParagrapheDto);
+        Task<Result<Paragraphe>> GetParagrapheByid(int id);
+        Task<Result<Paragraphe>> UpdateParagraphe(UpdateParagrapheDto updateParagrapheDto);
+
         Task<Result<Chapitre>> UpdateChapitrePdf(UpdateChapitrePdfDto updateChapitrePdfDto);
         Task<Result<Chapitre>> UpdateChapitreVideo(UpdateChapitreVideoDto updateChapitreVideoDto);
+        Task<Result<Chapitre>> UpdateChapitreVideoLink(UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto);
+
         Task<Result<Chapitre>> UpdateChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto);
         Task<Result<Chapitre>> UpdateChapitreSynthese(UpdateChapitreSyntheseDto updateChapitreSyntheseDto);
         Task<Result<Chapitre>> UpdateChapterName(UpdateChapitreNameDto updateChapitreNameDto);
         Task<Result<Chapitre>> Approuver(int id);
         Task<Result<Chapitre>> Refuser(int id);
         Task<bool> DeleteChapitre(int id);
+
     }
 }

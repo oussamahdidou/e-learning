@@ -1,0 +1,11 @@
+.teacher-card {
+  border-radius: 25px;
+  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.4);
+}
+.teacher-card p {
+  font-weight: 700;
+  font-family: "lato";
+}
+.profile-container {
+  margin-left: 200px;
+}

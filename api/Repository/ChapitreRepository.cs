@@ -116,6 +116,7 @@ namespace api.Repository
                     Synthese = syntheseUrl,
                     Statue = createChapitreDto.Statue,
                     QuizId = createChapitreDto.QuizId,
+                    TeacherId = createChapitreDto.TeacherId,
                     Cours = new List<Cours>()
                     {
                         new Cours()
@@ -373,6 +374,98 @@ namespace api.Repository
             apiDbContext.controles.Remove(controle);
             await apiDbContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<Result<Paragraphe>> CreateParagraphe(CreateParagrapheDto createParagrapheDto)
+        {
+            try
+            {
+                string url = await _blobStorageService.UploadFileAsync(createParagrapheDto.ParagrapheContenu.OpenReadStream(), pdfContainer, createParagrapheDto.ParagrapheContenu.FileName);
+                Paragraphe paragraphe = new Paragraphe()
+                {
+                    Nom = "Paragraphe",
+                    Contenu = url,
+                    CoursId = createParagrapheDto.CoursId
+                };
+                await apiDbContext.paragraphes.AddAsync(paragraphe);
+                await apiDbContext.SaveChangesAsync();
+                return Result<Paragraphe>.Success(paragraphe);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Paragraphe>.Failure(ex.Message);
+
+            }
+        }
+
+        public async Task<Result<Paragraphe>> GetParagrapheByid(int id)
+        {
+            Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
+            if (paragraphe != null)
+            {
+                return Result<Paragraphe>.Success(paragraphe);
+            }
+            return Result<Paragraphe>.Failure("paragraphe not found");
+
+        }
+
+        public async Task<Result<Paragraphe>> UpdateParagraphe(UpdateParagrapheDto updateParagrapheDto)
+        {
+            try
+            {
+                Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == updateParagrapheDto.Id);
+                if (paragraphe == null)
+                {
+                    return Result<Paragraphe>.Failure("Chapitre not found");
+                }
+
+                var newParagrapheUrl = await _blobStorageService.UploadFileAsync(updateParagrapheDto.File.OpenReadStream(), pdfContainer, updateParagrapheDto.File.FileName);
+
+                if (!string.IsNullOrEmpty(paragraphe.Contenu))
+                {
+                    var oldparagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldparagrapheFileName);
+
+                }
+
+                paragraphe.Contenu = newParagrapheUrl;
+                await apiDbContext.SaveChangesAsync();
+
+                return Result<Paragraphe>.Success(paragraphe);
+            }
+            catch (Exception ex)
+            {
+                return Result<Paragraphe>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Chapitre>> UpdateChapitreVideoLink(UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto)
+        {
+            try
+            {
+                Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitreVideoLinkDto.chapitreId);
+                if (chapitre != null)
+                {
+                    if (!string.IsNullOrEmpty(chapitre.VideoPath))
+                    {
+                        var oldchapitreFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
+                        var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldchapitreFileName);
+
+                    }
+
+                    chapitre.VideoPath = updateChapitreVideoLinkDto.Link;
+                    await apiDbContext.SaveChangesAsync();
+
+                    return Result<Chapitre>.Success(chapitre);
+                }
+                return Result<Chapitre>.Failure("chapitre not found");
+            }
+            catch (System.Exception ex)
+            {
+                return Result<Chapitre>.Failure(ex.Message);
+
+            }
         }
     }
 }

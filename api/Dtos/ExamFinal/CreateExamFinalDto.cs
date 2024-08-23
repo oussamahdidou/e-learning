@@ -13,5 +13,7 @@ namespace api.Dtos.ExamFinal
         public required IFormFile Solution { get; set; }
         public string Status { get; set; } = ObjectStatus.Pending;
         public int ModuleId { get; set; }
+        public string? TeacherId { get; set; }
+
     }
 }

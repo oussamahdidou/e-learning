@@ -6,6 +6,7 @@ using api.Data;
 using api.Dtos.Chapitre;
 using api.Dtos.Control;
 using api.Dtos.Module;
+using api.Dtos.NiveauScolaire;
 using api.Dtos.Option;
 using api.Dtos.Question;
 using api.Dtos.Quiz;
@@ -133,6 +134,7 @@ namespace api.Repository
             try
             {
                 var module = await apiDbContext.modules
+                .Include(x => x.NiveauScolaireModules)
                 .Include(x => x.ExamFinal).ThenInclude(x => x.ResultExams)
                     .Include(m => m.Chapitres)
                         .ThenInclude(c => c.Quiz)
@@ -249,6 +251,77 @@ namespace api.Repository
                 return Result<Module>.Failure("module notfound");
             }
             return Result<Module>.Success(module);
+        }
+
+        public async Task<Result<List<NiveauScolaire>>> GetModuleNiveauScolaires(int Id)
+        {
+            try
+            {
+                List<NiveauScolaire> niveauScolaires = await apiDbContext.niveauScolaireModules
+                                                        .Include(x => x.NiveauScolaire)
+                                                        .ThenInclude(x => x.Institution)
+                                                        .Where(x => x.ModuleId == Id && x.NiveauScolaire != null)
+                                                        .Select(x => x.NiveauScolaire!)
+                                                        .ToListAsync();
+                return Result<List<NiveauScolaire>>.Success(niveauScolaires);
+
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<List<NiveauScolaire>>.Failure(ex.Message);
+
+            }
+        }
+
+        public async Task<Result<NiveauScolaire?>> CreateNiveauScolaireModule(CreateNiveauScolaireModuleDto createNiveauScolaireModuleDto)
+        {
+            try
+            {
+                if (await apiDbContext.niveauScolaireModules.AnyAsync(x => x.NiveauScolaireId == createNiveauScolaireModuleDto.NiveauScolaireId && x.ModuleId == createNiveauScolaireModuleDto.ModuleId))
+                {
+                    return Result<NiveauScolaire?>.Failure("le module est deja dans ce niveau");
+                }
+                else
+                {
+                    NiveauScolaireModule niveauScolaireModule = new NiveauScolaireModule()
+                    {
+                        NiveauScolaireId = createNiveauScolaireModuleDto.NiveauScolaireId,
+                        ModuleId = createNiveauScolaireModuleDto.ModuleId
+
+                    };
+                    await apiDbContext.AddAsync(niveauScolaireModule);
+                    await apiDbContext.SaveChangesAsync();
+                    return Result<NiveauScolaire?>.Success(niveauScolaireModule.NiveauScolaire);
+                }
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<NiveauScolaire?>.Failure(ex.Message);
+
+            }
+        }
+
+        public async Task<bool> DeleteNiveauScolaireModule(int ModuleId, int NiveauScolaireId)
+        {
+            try
+            {
+                NiveauScolaireModule? niveauScolaireModule = await apiDbContext.niveauScolaireModules.FirstOrDefaultAsync(x => x.ModuleId == ModuleId && x.NiveauScolaireId == NiveauScolaireId);
+                if (niveauScolaireModule == null)
+                {
+                    return false;
+                }
+                apiDbContext.niveauScolaireModules.Remove(niveauScolaireModule);
+                await apiDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (System.Exception)
+            {
+
+                return false;
+            }
+
         }
     }
 }

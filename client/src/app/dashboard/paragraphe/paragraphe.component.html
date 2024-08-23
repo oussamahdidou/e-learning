@@ -1,0 +1,16 @@
+@if (paragraphe) {
+
+<div class="container-fluid w-75 mx-auto pt-5  align-items-center">
+    <h4>
+        Paragraphe @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary"
+            (click)="Paragraphe.click()">
+            Modifier Paragraphe
+        </button>
+        }
+    </h4>
+    <input type="file" #Paragraphe (change)="SelectParagraphe($event)" style="display: none" />
+    <pdf-viewer src="{{paragraphe.contenu}}" [render-text]="true" [original-size]="false"
+        style="width: 100%; height: 700px">
+    </pdf-viewer>
+</div>
+}
