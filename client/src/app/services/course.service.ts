@@ -73,9 +73,9 @@ export class CourseService {
     return throwError('Something went wrong; please try again later.');
   }
 
-  checkChapter(id: number): Observable<boolean> {
+  checkChapter(id: number, avis: string): Observable<boolean> {
     return this.http
-      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}`, {
+      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}/${avis}`, {
         headers: this.authservice.headers,
       })
       .pipe(
@@ -100,7 +100,7 @@ export class CourseService {
       );
   }
 
-  getVdUrlById(id: number): Observable<string | undefined> {
+  getVdUrlById(id: number): Observable<string> {
     return this.http
       .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
         headers: this.authservice.headers,
@@ -113,14 +113,14 @@ export class CourseService {
       );
   }
 
-  getCourPdfUrlById(id: number): Observable<string | undefined> {
+  getParagrapheUrlById(id: number): Observable<string> {
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+      .get<any>(`${environment.apiUrl}/api/Paragraphes/${id}`, {
         headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
-          return data.coursPdfPath;
+          return data.contenu;
         }),
         catchError(this.handleError)
       );
@@ -139,7 +139,7 @@ export class CourseService {
       );
   }
 
-  getControleById(controleId: number): Observable<Controle | undefined> {
+  getControleById(controleId: number): Observable<Controle> {
     return this.http
       .get<any>(`${environment.apiUrl}/api/Controle/${controleId}`, {
         headers: this.authservice.headers,

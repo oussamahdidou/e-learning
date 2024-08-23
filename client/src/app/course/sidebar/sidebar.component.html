@@ -26,7 +26,7 @@
       <a class="chap">{{ chapitre.nom }}</a>
       <div
         class="checkbox-wrapper"
-        (click)="CheckChapter(chapitre, $event)"
+        (click)="openModel(chapitre.id)"
         [class.disabled]="chapitre.statue"
         [style.pointer-events]="chapitre.statue ? 'none' : 'auto'"
       >
@@ -37,15 +37,15 @@
     </div>
 
     <div
+      *ngFor="let pdfPath of chapitre.studentCoursParagraphes; let i = index"
       class="items"
-      *ngIf="chapitre.coursPdfPath"
-      [ngClass]="{ onit: part1 === 'cour' && part2 === chapitre.id }"
+      [ngClass]="{ onit: part1 === 'cour' && part2 === pdfPath }"
     >
       <a
-        [routerLink]="['/course', module?.id, 'cour', chapitre.id]"
+        [routerLink]="['/course', module?.id, 'cour', pdfPath]"
         class="d-flex align-items-center w-100 text-decoration-none"
       >
-        <span class="flex-grow-1">Cour</span>
+        <span class="flex-grow-1">Cour: Partie {{ i + 1 }}</span>
         <button mat-icon-button color="primary" aria-label="Course PDF">
           <mat-icon>picture_as_pdf</mat-icon>
         </button>
@@ -158,5 +158,34 @@
         <mat-icon>quiz</mat-icon>
       </button>
     </a>
+  </div>
+  <!-- avis model -->
+  <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()"></div>
+  <div class="modal" *ngIf="showModal">
+    <h5
+      class="modal-title"
+      id="reviewModalLabel"
+      style="text-align: center; padding: 10px"
+    >
+      Comment était ce chapitre ?
+    </h5>
+
+    <div class="d-flex justify-content-around">
+      <button class="buttona" (click)="CheckChapter(chapterId, $event, 'mal')">
+        Mal
+      </button>
+      <button
+        class="buttona"
+        (click)="CheckChapter(chapterId, $event, 'Pas Mal')"
+      >
+        Pas Mal
+      </button>
+      <button
+        class="buttona"
+        (click)="CheckChapter(chapterId, $event, 'Excellent')"
+      >
+        Excellent
+      </button>
+    </div>
   </div>
 </div>

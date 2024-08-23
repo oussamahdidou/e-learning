@@ -17,7 +17,7 @@ using api.Mappers;
 using api.Model;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens; 
 
 namespace api.Repository
 {
@@ -67,7 +67,10 @@ namespace api.Repository
                         .ThenInclude(y => y.Questions)
                         .ThenInclude(y => y.Options)
                     .Include(x => x.Chapitres)
-                        .ThenInclude(y => y.Controle)
+                        .ThenInclude(w => w.Cours)
+                        .ThenInclude(e => e.Paragraphes)
+                    .Include(z => z.Chapitres)
+                        .ThenInclude(w => w.Controle)
                     .Where(x => x.Id == id)
                     .Select(x => new Module
                     {
