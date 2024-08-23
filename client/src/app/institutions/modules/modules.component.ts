@@ -5,7 +5,7 @@ import { InstitutionService } from './../../services/institution.service';
 @Component({
   selector: 'app-modules',
   templateUrl: './modules.component.html',
-  styleUrls: ['./modules.component.css']
+  styleUrls: ['./modules.component.css'],
 })
 export class ModulesComponent implements OnInit {
   niveauScolaire: any = null;
@@ -16,7 +16,7 @@ export class ModulesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       const id = +params['id'];
       this.loadNiveauScolaire(id);
     });
@@ -26,9 +26,13 @@ export class ModulesComponent implements OnInit {
     this.institutionService.getModules(id).subscribe(
       (data) => {
         this.niveauScolaire = data;
+        console.log(data);
       },
       (error) => {
-        console.error('Erreur lors du chargement du niveau scolaire et des modules', error);
+        console.error(
+          'Erreur lors du chargement du niveau scolaire et des modules',
+          error
+        );
       }
     );
   }
