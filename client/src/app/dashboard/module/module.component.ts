@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { ModuleRequirementsDialogComponent } from '../module-requirements-dialog/module-requirements-dialog.component';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { DashboardService } from '../../services/dashboard.service';
 import {
   FormBuilder,
@@ -23,7 +23,105 @@ import { CreateNiveauScolaireModuleDialogComponent } from '../create-niveau-scol
   styleUrl: './module.component.css',
 })
 export class ModuleComponent implements OnInit {
-  deleteniveauscolaire(id: number) {}
+  deleteniveauscolaire(id: number) {
+    if (this.niveauscolaires.length > 1) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Show loading modal
+          Swal.fire({
+            title: 'Deleting...',
+            text: 'Please wait while we process your request.',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          this.dashboardservice
+            .deletemoduleniveauscolaire(this.moduleId, id)
+            .subscribe(
+              (response) => {
+                Swal.close(); // Close the loading modal
+                Swal.fire({
+                  title: 'Deleted!',
+                  text: 'Your file has been deleted.',
+                  icon: 'success',
+                });
+                this.niveauscolaires = this.niveauscolaires.filter(
+                  (niveauscolaire) => niveauscolaire.id !== id
+                );
+                this.niveaussource.data = [...this.niveauscolaires];
+              },
+              (error) => {
+                Swal.close(); // Close the loading modal
+                Swal.fire({
+                  title: 'Error',
+                  text: error.error,
+                  icon: 'error',
+                });
+              }
+            );
+        }
+      });
+    } else {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'Le Module appartient a un seul niveauscolaire si tu le supprime de se niveauscolaire il va etre supprimer totalement',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Show loading modal
+          Swal.fire({
+            title: 'Deleting...',
+            text: 'Please wait while we process your request.',
+            allowOutsideClick: false,
+            didOpen: () => {
+              Swal.showLoading();
+            },
+          });
+
+          this.dashboardservice
+            .deletemoduleniveauscolaire(this.moduleId, id)
+            .subscribe(
+              (response) => {
+                Swal.close(); // Close the loading modal
+                Swal.fire({
+                  title: 'Deleted!',
+                  text: 'Your file has been deleted.',
+                  icon: 'success',
+                });
+                this.dashboardservice.deletemodule(this.moduleId).subscribe(
+                  (response) => {
+                    this.router.navigateByUrl('/dashboard/institutionstable');
+                  },
+                  (error) => {}
+                );
+              },
+              (error) => {
+                Swal.close(); // Close the loading modal
+                Swal.fire({
+                  title: 'Error',
+                  text: error.error,
+                  icon: 'error',
+                });
+              }
+            );
+        }
+      });
+    }
+  }
   SelectProgram(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -275,7 +373,7 @@ export class ModuleComponent implements OnInit {
             this.controles = this.controles.filter(
               (controle) => controle.id !== id
             );
-            this.controlessource.data = [...this.controles];
+            this.niveaussource.data = [...this.niveauscolaires];
           },
           (error) => {
             Swal.close(); // Close the loading modal
@@ -620,7 +718,8 @@ export class ModuleComponent implements OnInit {
     public dialog: MatDialog,
     private readonly route: ActivatedRoute,
     private readonly dashboardservice: DashboardService,
-    public authservice: AuthService
+    public authservice: AuthService,
+    private readonly router: Router
   ) {
     this.controleForm = this.fb.group({
       nomControle: ['', Validators.required],

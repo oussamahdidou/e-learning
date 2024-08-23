@@ -548,4 +548,27 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  deletemoduleniveauscolaire(
+    moduleId: number,
+    niveauScolaireId: number
+  ): Observable<any> {
+    return this.http.delete(
+      `${environment.apiUrl}/api/Module/DeleteNiveauScolaireModule/${moduleId}/${niveauScolaireId}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updatechapitreVideoWithLink(id: number, link: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateChapitreVideoLink`,
+      {
+        chapitreId: id,
+        link: link,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

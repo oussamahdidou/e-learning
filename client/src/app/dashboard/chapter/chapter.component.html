@@ -74,24 +74,33 @@
       <ng-template matStepLabel> CoursVideo </ng-template>
       <h4>
         CoursVideo @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Video.click()">
-          Modifier Video
+          Modifier Video (Upload)
         </button>
+        <input type="file" #Video (change)="SelectVideo($event)" accept="video/*" style="display: none" />
+
+        <div>
+          <input class="form-control my-4" placeholder="Or enter video URL" [(ngModel)]="videoUrl" />
+          <button mat-raised-button color="primary" (click)="updateVideoWithLink()">
+            Update via Link
+          </button>
+        </div>
+
         }
       </h4>
-      <input type="file" #Video (change)="SelectVideo($event)" accept="video/*" style="display: none" />
 
       <section class="video px-5 mt-3 mx-auto d-flex justify-content-center align-items-center">
-        @if (!isYoutubeLink) {
+        @if (isYoutubeLink) {
+        <iframe width="560" height="315" [src]="chapitre.videoPath | safeUrl" frameborder="0" allowfullscreen>
+        </iframe>
+        }
+        @else {
+
         <video class="img-fluid" controls>
           <source src="{{ chapitre.videoPath }}" type="video/mp4" />
           <source src="{{ chapitre.videoPath }}" type="video/webm" />
           <source src="{{ chapitre.videoPath }}" type="video/ogg" />
           <source src="{{ chapitre.videoPath }}" type="video/ts" />
         </video>
-        }
-        @else {
-        <iframe width="560" height="315" [src]="chapitre.videoPath | safeUrl" frameborder="0" allowfullscreen>
-        </iframe>
         }
 
       </section>

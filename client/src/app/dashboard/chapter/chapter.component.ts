@@ -75,6 +75,7 @@ export class ChapterComponent implements OnInit {
         this.chapitre.videoPath = `https://www.youtube.com/embed/${videoId}`;
       }
     } else {
+      this.isYoutubeLink = false;
     }
   }
   chapterid!: number;
@@ -335,6 +336,7 @@ export class ChapterComponent implements OnInit {
           // Close the loading modal and show success message
           Swal.fire('Success', 'Video uploaded successfully', 'success');
           this.chapitre.videoPath = response.videoPath;
+          this.convertLink(); // Update the video path with the new URL`
         },
         (error) => {
           // Close the loading modal and show error message
@@ -343,7 +345,37 @@ export class ChapterComponent implements OnInit {
       );
     }
   }
+  videoUrl!: string;
+  updateVideoWithLink() {
+    if (this.videoUrl) {
+      // Show loading modal
+      Swal.fire({
+        title: 'Updating...',
+        text: 'Please wait while the video URL is being updated.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
+      this.dashboardService
+        .updatechapitreVideoWithLink(this.chapterid, this.videoUrl)
+        .subscribe(
+          (response) => {
+            // Close the loading modal and show success message
+            Swal.fire('Success', 'Video updated successfully', 'success');
+            this.chapitre.videoPath = response.videoPath;
+            this.convertLink(); // Update the video path with the new URL
+          },
+          (error) => {
+            // Close the loading modal and show error message
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+    } else {
+      Swal.fire('Error', 'Please provide a valid video URL', 'error');
+    }
+  }
   SelectPdf(event: any) {
     const file: File = event.target.files[0];
     if (file) {
