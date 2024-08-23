@@ -11,13 +11,15 @@ namespace api.Dtos.Chapitre
 {
     public class CreateChapitreDto
     {
-        public int ChapitreNum { get; set; }
+        public int Number { get; set; }
         public string Nom { get; set; } = "";
-        public List<IFormFile>? StudentCoursParagraphes { get; set; }
-        public required IFormFile Video { get; set; }
-        public required IFormFile Synthese { get; set; }
-        public required IFormFile Schema { get; set; }
-        public bool Premium { get; set; }
+        public List<IFormFile> StudentCourseParagraphs { get; set; } = new List<IFormFile>();
+        public List<IFormFile> ProfessorCourseParagraphs { get; set; } = new List<IFormFile>();
+        public IFormFile? CoursVideoFile { get; set; }
+        public string? CoursVideoLink { get; set; }
+        public IFormFile? Synthese { get; set; }
+        public IFormFile? Schema { get; set; }
+        public bool Premium { get; set; } = true;
         public string Statue { get; set; } = ObjectStatus.Pending;
         public int ModuleId { get; set; }
         public int QuizId { get; set; }

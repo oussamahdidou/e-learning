@@ -5,41 +5,78 @@
     <mat-step [stepControl]="chapterFormGroup">
       <form [formGroup]="chapterFormGroup">
         <ng-template matStepLabel>Create Chapter</ng-template>
+
         <div class="form-group">
           <label for="nom">Chapter Name</label>
           <input type="text" id="nom" class="form-control" formControlName="nom" required />
         </div>
+
         <div class="form-group">
           <label for="number">Number</label>
           <input type="number" id="number" class="form-control" formControlName="number" required />
         </div>
-        <div class="form-group">
-          <label for="coursPdf">Cours PDF</label>
-          <input type="file" id="coursPdf" class="form-control-file form-control"
-            (change)="onFileChange($event, 'coursPdf')" accept=".pdf" required />
+
+        <!-- Student Course PDF Paragraphs -->
+        <div formArrayName="studentCourseParagraphs">
+          <div *ngFor="let paragraph of studentCourseParagraphs.controls; let i = index" [formGroupName]="i">
+            <div class="form-group">
+              <label>Student Course PDF</label>
+              <input type="file" (change)="onFileChange($event, 'studentCourseParagraphs', i)"
+                class="form-control-file" />
+            </div>
+            <button type="button" class="btn btn-danger" (click)="removeStudentParagraph(i)">Remove Paragraph</button>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="addStudentParagraph()">Add Student Paragraph</button>
         </div>
-        <div class="form-group">
-          <label for="coursVideo">Cours Video</label>
-          <input type="file" id="coursVideo" class="form-control-file form-control"
-            (change)="onFileChange($event, 'coursVideo')" accept="video/*" required />
+
+        <!-- Professor Course PDF Paragraphs -->
+        <div formArrayName="professorCourseParagraphs">
+          <div *ngFor="let paragraph of professorCourseParagraphs.controls; let i = index" [formGroupName]="i">
+            <div class="form-group">
+              <label>Professor Course PDF</label>
+              <input type="file" (change)="onFileChange($event, 'professorCourseParagraphs', i)"
+                class="form-control-file" />
+            </div>
+            <button type="button" class="btn btn-danger" (click)="removeProfessorParagraph(i)">Remove Paragraph</button>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="addProfessorParagraph()">Add Professor
+            Paragraph</button>
         </div>
+
+        <!-- Video Upload -->
+        <div class="form-group">
+          <label for="videoType">Video Type</label>
+          <select id="videoType" class="form-control" formControlName="videoType" (change)="onVideoTypeChange($event)">
+            <option value="file">File</option>
+            <option value="link">Link</option>
+          </select>
+        </div>
+
+        <div class="form-group" *ngIf="isVideoFile()">
+          <label for="coursVideoFile">Course Video File</label>
+          <input type="file" id="coursVideoFile" class="form-control-file"
+            (change)="onFileChange($event, 'coursVideoFile')" />
+        </div>
+
+        <div class="form-group" *ngIf="isVideoLink()">
+          <label for="coursVideoLink">Course Video Link</label>
+          <input type="text" id="coursVideoLink" class="form-control" formControlName="coursVideoLink" />
+        </div>
+
         <div class="form-group">
           <label for="schema">Schema</label>
-          <input type="file" id="schema" class="form-control-file form-control"
-            (change)="onFileChange($event, 'schema')" accept=".pdf" required />
+          <input type="file" id="schema" class="form-control-file" (change)="onFileChange($event, 'schema')" />
         </div>
+
         <div class="form-group">
           <label for="synthese">Synthese</label>
-          <input type="file" id="synthese" class="form-control-file form-control"
-            (change)="onFileChange($event, 'synthese')" accept=".pdf" required />
+          <input type="file" id="synthese" class="form-control-file" (change)="onFileChange($event, 'synthese')" />
         </div>
-        <div>
-          <button mat-button matStepperNext [disabled]="chapterFormGroup.invalid">
-            Next
-          </button>
-        </div>
+
+        <button mat-raised-button color="primary" matStepperNext>Next</button>
       </form>
     </mat-step>
+
 
     <mat-step [stepControl]="quizFormGroup">
       <form [formGroup]="quizFormGroup">
@@ -83,7 +120,7 @@
         </button>
         <div>
           <button mat-button matStepperPrevious>Back</button>
-          <button mat-button [disabled]="quizFormGroup.invalid" type="button" (click)="onSubmit()">
+          <button mat-button type="button" (click)="onSubmit()">
             Submit
           </button>
         </div>

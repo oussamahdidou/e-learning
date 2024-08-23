@@ -38,9 +38,10 @@ export class ModulesTableComponent implements OnInit {
       this.moduleid = params['id'];
       this.dashboardservice.getModules(this.moduleid).subscribe(
         (response) => {
-          this.modules = response.modules;
+          this.modules = response.niveauScolaireModules;
           this.dataSource = new MatTableDataSource(this.modules);
           this.niveauscolaire = response.nom;
+          console.log(response);
           this.dataSource.sortingDataAccessor = (item, property) => {
             switch (property) {
               default:
@@ -76,7 +77,11 @@ export class ModulesTableComponent implements OnInit {
           .createModule(result.value, this.moduleid)
           .subscribe(
             (response) => {
-              this.modules.push(response);
+              this.modules.push({
+                niveauScolaireId: 1,
+                moduleId: 3,
+                module: response,
+              });
               this.dataSource.data = [...this.modules];
               Swal.fire('Added!', 'New module has been added.', 'success');
             },

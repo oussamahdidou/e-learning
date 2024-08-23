@@ -21,6 +21,7 @@ namespace api.Data
         public DbSet<Student> students { get; set; }
         public DbSet<Institution> institutions { get; set; }
         public DbSet<NiveauScolaire> niveauScolaires { get; set; }
+        public DbSet<NiveauScolaireModule> niveauScolaireModules { get; set; }
         public DbSet<Module> modules { get; set; }
         public DbSet<Chapitre> chapitres { get; set; }
         public DbSet<Quiz> quizzes { get; set; }
