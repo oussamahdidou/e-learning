@@ -156,5 +156,10 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpDelete("DeleteNiveauScolaireModule/{ModuleId:int}/{NiveauScolaireId:int}")]
+        public async Task<IActionResult> DeleteNiveauScolaireModule([FromRoute] int ModuleId, [FromRoute] int NiveauScolaireId)
+        {
+            return Ok(await moduleRepository.DeleteNiveauScolaireModule(ModuleId, NiveauScolaireId));
+        }
     }
 }

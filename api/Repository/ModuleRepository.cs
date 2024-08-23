@@ -131,6 +131,7 @@ namespace api.Repository
             try
             {
                 var module = await apiDbContext.modules
+                .Include(x => x.NiveauScolaireModules)
                 .Include(x => x.ExamFinal).ThenInclude(x => x.ResultExams)
                     .Include(m => m.Chapitres)
                         .ThenInclude(c => c.Quiz)
@@ -297,6 +298,27 @@ namespace api.Repository
                 return Result<NiveauScolaire?>.Failure(ex.Message);
 
             }
+        }
+
+        public async Task<bool> DeleteNiveauScolaireModule(int ModuleId, int NiveauScolaireId)
+        {
+            try
+            {
+                NiveauScolaireModule? niveauScolaireModule = await apiDbContext.niveauScolaireModules.FirstOrDefaultAsync(x => x.ModuleId == ModuleId && x.NiveauScolaireId == NiveauScolaireId);
+                if (niveauScolaireModule == null)
+                {
+                    return false;
+                }
+                apiDbContext.niveauScolaireModules.Remove(niveauScolaireModule);
+                await apiDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (System.Exception)
+            {
+
+                return false;
+            }
+
         }
     }
 }

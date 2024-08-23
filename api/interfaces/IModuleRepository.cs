@@ -21,6 +21,7 @@ namespace api.interfaces
         Task<Result<Module>> GetModuleInfo(int Id);
         Task<Result<List<NiveauScolaire>>> GetModuleNiveauScolaires(int Id);
         Task<Result<NiveauScolaire>> CreateNiveauScolaireModule(CreateNiveauScolaireModuleDto createNiveauScolaireModuleDto);
+        Task<bool> DeleteNiveauScolaireModule(int ModuleId, int NiveauScolaireId);
 
 
 

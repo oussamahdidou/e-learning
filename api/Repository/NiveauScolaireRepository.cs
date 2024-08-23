@@ -78,39 +78,47 @@ namespace api.Repository
         {
             try
             {
-                // var niveauScolaire = await apiDbContext.niveauScolaires
-                // .Include(ns => ns.Modules).ThenInclude(x => x.ExamFinal).ThenInclude(x => x.ResultExams)
-                //     .Include(ns => ns.Modules)
-                //         .ThenInclude(m => m.Chapitres)
-                //             .ThenInclude(c => c.Quiz)
-                //                 .ThenInclude(q => q.Questions)
-                //                     .ThenInclude(q => q.Options)
-                //     .Include(ns => ns.Modules)
-                //         .ThenInclude(m => m.Chapitres)
-                //             .ThenInclude(c => c.Quiz)
-                //             .ThenInclude(q => q.QuizResults)
-                //     .Include(ns => ns.Modules)
-                //         .ThenInclude(m => m.TestNiveaus)
-                //     .Include(ns => ns.Modules)
-                //         .ThenInclude(m => m.ModuleRequirements)
-                //     .Include(ns => ns.Modules)
-                //         .ThenInclude(m => m.ModulesRequiredIn)
-                //     .Include(ns => ns.Modules)
-                //         .ThenInclude(m => m.ExamFinal)
-                //     .Include(ns => ns.Modules)
-                //         .ThenInclude(m => m.Chapitres)
-                //             .ThenInclude(c => c.Controle).ThenInclude(x => x.ResultControles)
-                //     .Include(ns => ns.Modules)
-                //         .ThenInclude(m => m.Chapitres)
-                //             .ThenInclude(c => c.CheckChapters)
-                //     .FirstOrDefaultAsync(ns => ns.Id == niveauScolaireId);
+                var niveauScolaire = await apiDbContext.niveauScolaires.Include(x => x.NiveauScolaireModules)
+                .ThenInclude(ns => ns.Module).ThenInclude(x => x.ExamFinal).ThenInclude(x => x.ResultExams)
+                    .Include(x => x.NiveauScolaireModules)
+                    .ThenInclude(ns => ns.Module)
+                        .ThenInclude(m => m.Chapitres)
+                            .ThenInclude(c => c.Quiz)
+                                .ThenInclude(q => q.Questions)
+                                    .ThenInclude(q => q.Options)
+                    .Include(x => x.NiveauScolaireModules)
+                    .ThenInclude(ns => ns.Module)
+                        .ThenInclude(m => m.Chapitres)
+                            .ThenInclude(c => c.Quiz)
+                            .ThenInclude(q => q.QuizResults)
+                    .Include(x => x.NiveauScolaireModules)
+                    .ThenInclude(ns => ns.Module)
+                        .ThenInclude(m => m.TestNiveaus)
+                    .Include(x => x.NiveauScolaireModules)
+                    .ThenInclude(ns => ns.Module)
+                        .ThenInclude(m => m.ModuleRequirements)
+                    .Include(x => x.NiveauScolaireModules)
+                    .ThenInclude(ns => ns.Module)
+                        .ThenInclude(m => m.ModulesRequiredIn)
+                    .Include(x => x.NiveauScolaireModules)
+                    .ThenInclude(ns => ns.Module)
+                        .ThenInclude(m => m.ExamFinal)
+                    .Include(x => x.NiveauScolaireModules)
+                    .ThenInclude(ns => ns.Module)
+                        .ThenInclude(m => m.Chapitres)
+                            .ThenInclude(c => c.Controle).ThenInclude(x => x.ResultControles)
+                    .Include(x => x.NiveauScolaireModules)
+                    .ThenInclude(ns => ns.Module)
+                        .ThenInclude(m => m.Chapitres)
+                            .ThenInclude(c => c.CheckChapters)
+                    .FirstOrDefaultAsync(ns => ns.Id == niveauScolaireId);
 
-                // if (niveauScolaire != null)
-                // {
-                //     apiDbContext.niveauScolaires.Remove(niveauScolaire);
-                //     await apiDbContext.SaveChangesAsync();
-                //     return true;
-                // }
+                if (niveauScolaire != null)
+                {
+                    apiDbContext.niveauScolaires.Remove(niveauScolaire);
+                    await apiDbContext.SaveChangesAsync();
+                    return true;
+                }
                 return false;
             }
             catch (System.Exception)

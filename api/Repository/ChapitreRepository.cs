@@ -426,7 +426,7 @@ namespace api.Repository
                 if (!string.IsNullOrEmpty(paragraphe.Contenu))
                 {
                     var oldparagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
-                    var deleteResult = await _blobStorageService.DeleteFileAsync(syntheseContainer, oldparagrapheFileName);
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldparagrapheFileName);
 
                 }
 
@@ -438,6 +438,34 @@ namespace api.Repository
             catch (Exception ex)
             {
                 return Result<Paragraphe>.Failure(ex.Message);
+            }
+        }
+
+        public async Task<Result<Chapitre>> UpdateChapitreVideoLink(UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto)
+        {
+            try
+            {
+                Chapitre? chapitre = await apiDbContext.chapitres.FirstOrDefaultAsync(x => x.Id == updateChapitreVideoLinkDto.chapitreId);
+                if (chapitre != null)
+                {
+                    if (!string.IsNullOrEmpty(chapitre.VideoPath))
+                    {
+                        var oldchapitreFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
+                        var deleteResult = await _blobStorageService.DeleteFileAsync(pdfContainer, oldchapitreFileName);
+
+                    }
+
+                    chapitre.VideoPath = updateChapitreVideoLinkDto.Link;
+                    await apiDbContext.SaveChangesAsync();
+
+                    return Result<Chapitre>.Success(chapitre);
+                }
+                return Result<Chapitre>.Failure("chapitre not found");
+            }
+            catch (System.Exception ex)
+            {
+                return Result<Chapitre>.Failure(ex.Message);
+
             }
         }
     }

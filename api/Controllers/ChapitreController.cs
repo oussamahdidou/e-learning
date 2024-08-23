@@ -99,6 +99,17 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpPut("UpdateChapitreVideoLink")]
+        public async Task<IActionResult> UpdateChapitreVideoLink([FromBody] UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto)
+        {
+
+            Result<Chapitre> result = await chapitreRepository.UpdateChapitreVideoLink(updateChapitreVideoLinkDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
         [HttpPut("UpdateChapitreSchema")]
         public async Task<IActionResult> UpdateChapitreSchema([FromForm] UpdateChapitreSchemaDto updateChapitreSchemaDto)
         {
