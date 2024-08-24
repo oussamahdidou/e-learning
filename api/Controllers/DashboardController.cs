@@ -208,5 +208,12 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpPut("TeacherProgress/{Id}")]
+
+        public async Task<IActionResult> UpdateTeacherChapterProgressAsync([FromRoute] string Id, [FromBody] NewProgress newProgress)
+        {
+            // Find the teacher by their ID
+            return Ok(await dashboardRepository.TeacherProgress(Id, newProgress));
+        }
     }
 }

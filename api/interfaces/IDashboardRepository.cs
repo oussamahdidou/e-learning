@@ -25,6 +25,7 @@ namespace api.interfaces
         Task<Result<List<BarChartsDto>>> GetLeastCheckedModules();
         Task<Result<List<BarChartsDto>>> GetTopTestNiveauModules();
         Task<Result<List<BarChartsDto>>> GetWorstTestNiveauModules();
+        Task<bool> TeacherProgress(string TeacherId, NewProgress newProgress);
         Task<Result<StatsDto>> GetStats();
     }
 }

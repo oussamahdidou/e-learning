@@ -45,54 +45,55 @@ export class DashboardtableComponent implements OnInit {
     this.dashboardservice.getmostcheckedmodules().subscribe(
       (response) => {
         this.extractTopmodules(response);
-        console.log(this.topmoduleslabels);
-        console.log(this.topmodulesnmbr);
+        // console.log(this.topmoduleslabels);
+        // console.log(this.topmodulesnmbr);
       },
       (error) => {}
     );
     this.dashboardservice.getleastcheckedmodules().subscribe(
       (response) => {
         this.extractleastmodules(response);
-        console.log(this.leastmoduleslabels);
-        console.log(this.leastmodulesnmbr);
+        // console.log(this.leastmoduleslabels);
+        // console.log(this.leastmodulesnmbr);
       },
       (error) => {}
     );
     this.dashboardservice.gettoptestniveaumodules().subscribe(
       (response) => {
         this.extractToptestniveau(response);
-        console.log(this.toptestniveaulabels);
-        console.log(this.toptestniveaunmbr);
+        // console.log(this.toptestniveaulabels);
+        // console.log(this.toptestniveaunmbr);
       },
       (error) => {}
     );
     this.dashboardservice.getworsttestniveaumodules().subscribe(
       (response) => {
         this.extractleasttestniveau(response);
-        console.log(this.leasttestniveaulabels);
-        console.log(this.leasttestniveaunmbr);
+        // console.log(this.leasttestniveaulabels);
+        // console.log(this.leasttestniveaunmbr);
       },
       (error) => {}
     );
     this.dashboardservice.gettopteachers().subscribe(
       (response) => {
         this.extractTopteachers(response);
-        console.log(this.topteacherslabels);
-        console.log(this.topteachersnmbrs);
+        // console.log(this.topteacherslabels);
+        // console.log(this.topteachersnmbrs);
       },
       (error) => {}
     );
     this.dashboardservice.getworstteachers().subscribe(
       (response) => {
         this.extractWorstteachers(response);
-        console.log(this.worstteacherslabels);
-        console.log(this.worstteachersnmbrs);
+        // console.log(this.worstteacherslabels);
+        // console.log(this.worstteachersnmbrs);
       },
       (error) => {}
     );
     this.dashboardservice.getstats().subscribe(
       (response) => {
         this.stats = response;
+        console.log(response);
       },
       (error) => {}
     );

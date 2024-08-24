@@ -42,7 +42,13 @@
         <div class=" col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
           <h5> Paragraphe{{ $index +1}}</h5>
           <p>paragraphe du cours du chapitre {{chapitre.nom}}</p>
-          <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
+          <div class="d-flex  align-items-center gap-1">
+            <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
+            @if (authservice.$IsAdmin|async) {
+            <button class="btn  btn-danger" (click)="deleteparagraphe(item.id)">Supprimer</button>
+
+            }
+          </div>
         </div>
         }
         }
@@ -64,7 +70,13 @@
         <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
           <h5> Paragraphe{{ $index +1}}</h5>
           <p>paragraphe du cours du chapitre {{chapitre.nom}}</p>
-          <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
+          <div class="d-flex  align-items-center gap-1">
+            <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
+            @if (authservice.$IsAdmin|async) {
+            <button class="btn  btn-danger" (click)="deleteparagraphe(item.id)">Supprimer</button>
+
+            }
+          </div>
         </div>
         }}
 

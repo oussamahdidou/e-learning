@@ -612,4 +612,52 @@ export class ChapterComponent implements OnInit {
       }
     });
   }
+  deleteparagraphe(id: number) {
+    // Step 1: Show confirmation modal
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this paragraph?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Step 2: Show loading modal
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while the paragraph is being deleted.',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Step 3: Call the delete API
+        this.dashboardService.deleteparagraphe(id).subscribe(
+          (response) => {
+            // Step 4: Close loading modal and show success message
+            Swal.close();
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'The paragraph has been deleted successfully.',
+              icon: 'success',
+            });
+          },
+          (error) => {
+            // Step 5: Close loading modal and show error message
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: 'There was an error deleting the paragraph. Please try again later.',
+              icon: 'error',
+            });
+          }
+        );
+      }
+    });
+  }
 }

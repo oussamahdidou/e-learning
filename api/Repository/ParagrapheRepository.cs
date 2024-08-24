@@ -12,21 +12,34 @@ namespace api.Repository
 {
     public class ParagrapheRepository : IParagrapheRepository
     {
-         private readonly apiDbContext apiDbContext;
-         private readonly IBlobStorageService _blobStorageService;
-         private string pdfContainer = "pdf-container";
-        public ParagrapheRepository(apiDbContext apiDbContext , IBlobStorageService blobStorageService)
+        private readonly apiDbContext apiDbContext;
+        private readonly IBlobStorageService _blobStorageService;
+        private string pdfContainer = "pdf-container";
+        public ParagrapheRepository(apiDbContext apiDbContext, IBlobStorageService blobStorageService)
         {
             this.apiDbContext = apiDbContext;
             _blobStorageService = blobStorageService;
         }
 
+        public async Task<bool> DeletePAragraphe(int id)
+        {
+            Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (paragraphe == null)
+            {
+                return false;
+            }
+            apiDbContext.paragraphes.Remove(paragraphe);
+            await apiDbContext.SaveChangesAsync();
+            return true;
+
+        }
 
         public async Task<Result<Paragraphe>> GetCourById(int id)
         {
             Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(paragraphe == null)
+            if (paragraphe == null)
             {
                 return Result<Paragraphe>.Failure("Cour Not Found");
             }

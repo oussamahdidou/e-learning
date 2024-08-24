@@ -7,23 +7,27 @@
             @if (stats) {
             <div class="row justify-content-center align-items-center py-5">
                 <div class="col-lg-3">
-                    <div class="stats py-3 ps-3 ">
-                        Nombre des etudiant
+                    <div class="stats py-3 px-3 d-flex justify-content-between align-items-center">
+                        <span>L`avancement des professeur</span>
+                        <span class="number">{{stats.coursesNmbr}}</span>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="stats py-3 ps-3 ">
-                        Nombre des professeur
+                    <div class="stats py-3 px-3 d-flex justify-content-between align-items-center">
+                        <span>Nombre des Etudiant</span>
+                        <span class="number">{{stats.studentNmbr}}</span>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="stats py-3 ps-3 ">
-                        nombre des coures
+                    <div class="stats py-3 px-3 d-flex justify-content-between align-items-center">
+                        <span>nombre des Professeurs</span>
+                        <span class="number">{{stats.teacherNmbr}}</span>
                     </div>
                 </div>
                 <div class="col-lg-3">
-                    <div class="stats py-3 ps-3 ">
-                        Lorem, ipsum dolor.
+                    <div class="stats py-3 px-3 d-flex justify-content-between align-items-center">
+                        <span>Les element ajouter par les prof non approuvee</span>
+                        <span class="number">{{stats.unapprouvedNmbr}}</span>
                     </div>
                 </div>
             </div>

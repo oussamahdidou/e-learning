@@ -571,4 +571,13 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  deleteparagraphe(id: number): Observable<any> {
+    return this.http.delete(
+      `${environment.apiUrl}/api/Paragraphes/${id}`,
+
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

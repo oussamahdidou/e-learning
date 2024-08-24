@@ -18,6 +18,7 @@
                                 <p>prenom : {{teacher.prenom}}</p>
                                 <p>mail : {{teacher.email}}</p>
                                 <p>etablissement : {{teacher.etablissement}}</p>
+                                <p>Date de naissance : {{teacher.dateDeNaissance|date}}</p>
                                 <div class="d-flex flex-column gap-3 justify-content-end align-items-end">
                                     @if ((authservice.$IsAdmin|async) || authservice.token.id==teacherid) {
                                     <button mat-flat-button color="warn" class="w-100 "> Supprimer</button>

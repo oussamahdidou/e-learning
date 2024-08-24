@@ -168,13 +168,13 @@ namespace api.Repository
             {
                 List<Student> students = await apiDbContext.students.ToListAsync();
                 List<Teacher> teachers = await apiDbContext.teachers.ToListAsync();
-                List<Module> modules = await apiDbContext.modules.ToListAsync();
+
                 List<Chapitre> chapitres = await apiDbContext.chapitres.Where(x => x.Statue == ObjectStatus.Pending).ToListAsync();
                 List<Controle> controles = await apiDbContext.controles.Where(x => x.Status == ObjectStatus.Pending).ToListAsync();
                 List<ExamFinal> Exams = await apiDbContext.examFinals.Where(x => x.Status == ObjectStatus.Pending).ToListAsync();
                 return Result<StatsDto>.Success(new StatsDto()
                 {
-                    CoursesNmbr = modules.Count,
+                    CoursesNmbr = (int)teachers.Average(x => x.ChapterProgress),
                     StudentNmbr = students.Count,
                     TeacherNmbr = teachers.Count,
                     UnapprouvedNmbr = chapitres.Count + controles.Count + Exams.Count,
@@ -300,6 +300,21 @@ namespace api.Repository
                 return Result<Teacher>.Failure(ex.Message);
 
             }
+        }
+
+        public async Task<bool> TeacherProgress(string TeacherId, NewProgress newProgress)
+        {
+            Teacher? teacher = await apiDbContext.teachers.FirstOrDefaultAsync(x => x.Id == TeacherId);
+            if (teacher == null)
+            {
+                return false;
+            }
+            teacher.LastChapterProgressUpdate = DateTime.Now;
+            teacher.ChapterProgress = newProgress.newProgress;
+            await apiDbContext.SaveChangesAsync();
+            return true;
+
+
         }
 
         public async Task<Result<List<BarChartsDto>>> TopContributerTeachers()
