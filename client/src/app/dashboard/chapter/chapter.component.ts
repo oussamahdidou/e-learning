@@ -646,6 +646,14 @@ export class ChapterComponent implements OnInit {
               text: 'The paragraph has been deleted successfully.',
               icon: 'success',
             });
+            this.studentCourse.paragraphes =
+              this.studentCourse.paragraphes.filter(
+                (cours: any) => cours.id !== id
+              );
+            this.teacherCourse.paragraphes =
+              this.studentCourse.paragraphes.filter(
+                (cours: any) => cours.id !== id
+              );
           },
           (error) => {
             // Step 5: Close loading modal and show error message
