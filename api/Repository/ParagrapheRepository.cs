@@ -23,17 +23,28 @@ namespace api.Repository
 
         public async Task<bool> DeletePAragraphe(int id)
         {
+            // Retrieve the Paragraphe by its Id
             Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
 
             if (paragraphe == null)
             {
                 return false;
             }
+
+            // Delete Paragraphe Contenu if exists
+            if (!string.IsNullOrEmpty(paragraphe.Contenu))
+            {
+                var oldParagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
+                await _blobStorageService.DeleteFileAsync(pdfContainer, oldParagrapheFileName);
+            }
+
+            // Remove the Paragraphe from the database
             apiDbContext.paragraphes.Remove(paragraphe);
             await apiDbContext.SaveChangesAsync();
-            return true;
 
+            return true;
         }
+
 
         public async Task<Result<Paragraphe>> GetCourById(int id)
         {

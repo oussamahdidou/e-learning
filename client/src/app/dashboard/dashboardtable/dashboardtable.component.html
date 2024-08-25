@@ -1,9 +1,9 @@
-<div class=" " style="  background-color: aliceblue;">
+<div class=" h-100" style="  background-color: aliceblue;">
     <app-sidenav></app-sidenav>
     <div class="dashboard-container p-0 ">
         <app-navbar></app-navbar>
 
-        <div class="px-3">
+        <div class="px-3 h-100">
             @if (stats) {
             <div class="row justify-content-center align-items-center py-5">
                 <div class="col-lg-3">
@@ -85,6 +85,13 @@
                     </div>
                 </div>
             </div>
+            }
+            @else{
+            <div class="row justify-content-center align-items-center h-100">
+                <p class="text-center"> Pas de donnees disponibles</p>
+            </div>
+
+
             }
         </div>
     </div>

@@ -23,6 +23,7 @@ namespace api.Repository
         private string videoContainer = "video-container";
         private string schemaContainer = "schema-container";
         private string syntheseContainer = "synthese-container";
+        private string controleContainer = "controle-container";
         private readonly IBlobStorageService _blobStorageService;
         public ChapitreRepository(apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment, IBlobStorageService blobStorageService)
         {
@@ -359,22 +360,82 @@ namespace api.Repository
 
         public async Task<bool> DeleteChapitre(int id)
         {
-            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.CheckChapters).FirstOrDefaultAsync(x => x.Id == id);
+            // Retrieve the Chapitre including related data
+            Chapitre? chapitre = await apiDbContext.chapitres
+                .Include(x => x.CheckChapters)
+                .Include(x => x.Cours).ThenInclude(x => x.Paragraphes)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (chapitre == null)
             {
                 return false;
             }
+
+            // Delete Video if exists
+            if (!string.IsNullOrEmpty(chapitre.VideoPath))
+            {
+                var oldVideoFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
+                await _blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
+            }
+
+            // Delete Schema if exists
+            if (!string.IsNullOrEmpty(chapitre.Schema))
+            {
+                var oldSchemaFileName = Path.GetFileName(new Uri(chapitre.Schema).LocalPath);
+                await _blobStorageService.DeleteFileAsync(schemaContainer, oldSchemaFileName);
+            }
+
+            // Delete Synthese if exists
+            if (!string.IsNullOrEmpty(chapitre.Synthese))
+            {
+                var oldSyntheseFileName = Path.GetFileName(new Uri(chapitre.Synthese).LocalPath);
+                await _blobStorageService.DeleteFileAsync(syntheseContainer, oldSyntheseFileName);
+            }
+
+            // Delete Paragraphe Contenu if exists
+            foreach (var cours in chapitre.Cours)
+            {
+                foreach (var paragraphe in cours.Paragraphes)
+                {
+                    if (!string.IsNullOrEmpty(paragraphe.Contenu))
+                    {
+                        var oldParagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
+                        await _blobStorageService.DeleteFileAsync(pdfContainer, oldParagrapheFileName);
+                    }
+                }
+            }
+
+            // If Chapitre has a Controle, delete Ennonce and Solution
+            if (chapitre.Controle != null)
+            {
+                if (!string.IsNullOrEmpty(chapitre.Controle.Ennonce))
+                {
+                    var oldEnnonceFileName = Path.GetFileName(new Uri(chapitre.Controle.Ennonce).LocalPath);
+                    await _blobStorageService.DeleteFileAsync(controleContainer, oldEnnonceFileName);
+                }
+
+                if (!string.IsNullOrEmpty(chapitre.Controle.Solution))
+                {
+                    var oldSolutionFileName = Path.GetFileName(new Uri(chapitre.Controle.Solution).LocalPath);
+                    await _blobStorageService.DeleteFileAsync(controleContainer, oldSolutionFileName);
+                }
+            }
+
+            // Remove the Chapitre from the database
             apiDbContext.chapitres.Remove(chapitre);
             await apiDbContext.SaveChangesAsync();
+
+            // Check if Controle is orphaned (no Chapitres linked), and delete if so
             Controle? controle = await apiDbContext.controles.Include(x => x.Chapitres).FirstOrDefaultAsync(x => x.Chapitres.Count() == 0);
-            if (controle == null)
+            if (controle != null)
             {
-                return true;
+                apiDbContext.controles.Remove(controle);
+                await apiDbContext.SaveChangesAsync();
             }
-            apiDbContext.controles.Remove(controle);
-            await apiDbContext.SaveChangesAsync();
+
             return true;
         }
+
 
         public async Task<Result<Paragraphe>> CreateParagraphe(CreateParagrapheDto createParagrapheDto)
         {
