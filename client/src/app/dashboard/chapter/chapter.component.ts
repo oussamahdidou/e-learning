@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chapter',
@@ -86,6 +87,29 @@ export class ChapterComponent implements OnInit {
   ) {}
   chapitre: any;
   isYoutubeLink: boolean = false;
+  getFileType(filePath: string): string {
+    const extension = filePath.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'pdf':
+        return 'pdf';
+      case 'doc':
+      case 'docx':
+        return 'word';
+      case 'ppt':
+      case 'pptx':
+        return 'powerpoint';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return 'image';
+      default:
+        return 'unknown';
+    }
+  }
+  getViewerUrl(filePath: string): string {
+    return `https://docs.google.com/viewer?url=${filePath}&embedded=true`;
+  }
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.chapterid = params['id'];

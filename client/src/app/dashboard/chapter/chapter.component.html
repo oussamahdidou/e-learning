@@ -129,9 +129,19 @@
       <input type="file" #Schema (change)="SelectSchema($event)" style="display: none" />
 
       <div class="pdf-container w-75 mx-auto">
+        @if (getFileType(chapitre.schema)=="pdf") {
         <pdf-viewer src="{{ chapitre.schema }}" [render-text]="true" [original-size]="false"
           style="width: 100%; height: 700px">
         </pdf-viewer>
+        }
+        @else if (getFileType(chapitre.schema)=="word") {
+        <iframe [src]="getViewerUrl(chapitre.schema)  | safeUrl" width="100%" height="700px"></iframe>}
+        @else if (getFileType(chapitre.schema)=="image") {
+        <img [src]="chapitre.schema" width="100%" height="700px" />}
+        @else if (getFileType(chapitre.schema)=="powerpoint") {
+        <iframe [src]="chapitre.schema | safeUrl" width="100%" height="700px"></iframe>
+
+        }
       </div>
     </mat-step>
 
@@ -145,9 +155,19 @@
       </h4>
       <input type="file" #Synthese (change)="SelectSynthese($event)" style="display: none" />
       <div class="pdf-container w-75 mx-auto">
+        @if (getFileType(chapitre.synthese)=="pdf") {
         <pdf-viewer src="{{ chapitre.synthese }}" [render-text]="true" [original-size]="false"
           style="width: 100%; height: 700px">
         </pdf-viewer>
+        }
+        @else if (getFileType(chapitre.synthese)=="word") {
+        <iframe [src]="getViewerUrl(chapitre.synthese)  | safeUrl" width="100%" height="700px"></iframe>}
+        @else if (getFileType(chapitre.synthese)=="image") {
+        <img [src]="chapitre.synthese" width="100%" height="700px" />}
+        @else if (getFileType(chapitre.synthese)=="powerpoint") {
+        <iframe [src]="chapitre.synthese | safeUrl" width="100%" height="700px"></iframe>
+
+        }
       </div>
     </mat-step>
 

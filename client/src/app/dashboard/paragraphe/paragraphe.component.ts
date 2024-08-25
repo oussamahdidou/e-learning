@@ -10,6 +10,29 @@ import Swal from 'sweetalert2';
   styleUrl: './paragraphe.component.css',
 })
 export class ParagrapheComponent {
+  getFileType(filePath: string): string {
+    const extension = filePath.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'pdf':
+        return 'pdf';
+      case 'doc':
+      case 'docx':
+        return 'word';
+      case 'ppt':
+      case 'pptx':
+        return 'powerpoint';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return 'image';
+      default:
+        return 'unknown';
+    }
+  }
+  getViewerUrl(filePath: string): string {
+    return `https://docs.google.com/viewer?url=${filePath}&embedded=true`;
+  }
   SelectParagraphe(event: any) {
     const file: File = event.target.files[0];
     if (file) {

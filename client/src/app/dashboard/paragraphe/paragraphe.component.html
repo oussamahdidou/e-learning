@@ -9,8 +9,18 @@
         }
     </h4>
     <input type="file" #Paragraphe (change)="SelectParagraphe($event)" style="display: none" />
-    <pdf-viewer src="{{paragraphe.contenu}}" [render-text]="true" [original-size]="false"
+    @if (getFileType(paragraphe.contenu)=="pdf") {
+    <pdf-viewer src="{{  paragraphe.contenu }}" [render-text]="true" [original-size]="false"
         style="width: 100%; height: 700px">
     </pdf-viewer>
+    }
+    @else if (getFileType( paragraphe.contenu)=="word") {
+    <iframe [src]="getViewerUrl( paragraphe.contenu)  | safeUrl" width="100%" height="700px"></iframe>}
+    @else if (getFileType( paragraphe.contenu)=="image") {
+    <img [src]=" paragraphe.contenu" width="100%" height="700px" />}
+    @else if (getFileType( paragraphe.contenu)=="powerpoint") {
+    <iframe [src]=" paragraphe.contenu | safeUrl" width="100%" height="700px"></iframe>
+
+    }
 </div>
 }

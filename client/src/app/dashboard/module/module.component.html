@@ -57,9 +57,20 @@
           modifier programme
         </button>}
         <div class="pdf-container w-75 px-5 mx-auto">
-          <pdf-viewer src="{{ moduleinfo.courseProgram }}" [render-text]="true" [original-size]="false"
+
+          @if (getFileType(moduleinfo.courseProgram)=="pdf") {
+          <pdf-viewer src="{{  moduleinfo.courseProgram }}" [render-text]="true" [original-size]="false"
             style="width: 100%; height: 700px">
           </pdf-viewer>
+          }
+          @else if (getFileType( moduleinfo.courseProgram)=="word") {
+          <iframe [src]="getViewerUrl( moduleinfo.courseProgram)  | safeUrl" width="100%" height="700px"></iframe>}
+          @else if (getFileType( moduleinfo.courseProgram)=="image") {
+          <img [src]=" moduleinfo.courseProgram" width="100%" height="700px" />}
+          @else if (getFileType( moduleinfo.courseProgram)=="powerpoint") {
+          <iframe [src]=" moduleinfo.courseProgram | safeUrl" width="100%" height="700px"></iframe>
+
+          }
         </div>
       </h4>
     </mat-step>
@@ -203,9 +214,19 @@
       } }
       <input type="file" #ennonce (change)="SelectEnnonce($event)" style="display: none" />
       <div class="pdf-container w-75 px-5 mx-auto">
+        @if (getFileType(exam.ennonce)=="pdf") {
         <pdf-viewer src="{{ exam.ennonce }}" [render-text]="true" [original-size]="false"
           style="width: 100%; height: 700px">
         </pdf-viewer>
+        }
+        @else if (getFileType(exam.ennonce)=="word") {
+        <iframe [src]="getViewerUrl(exam.ennonce)  | safeUrl" width="100%" height="700px"></iframe>}
+        @else if (getFileType(exam.ennonce)=="image") {
+        <img [src]="exam.ennonce" width="100%" height="700px" />}
+        @else if (getFileType(exam.ennonce)=="powerpoint") {
+        <iframe [src]="exam.ennonce | safeUrl" width="100%" height="700px"></iframe>
+
+        }
       </div>
     </mat-step>
     <mat-step>
@@ -216,9 +237,19 @@
       </h4>
       <input type="file" #solution (change)="SelectSolution($event)" style="display: none" />
       <div class="pdf-container w-75 px-5 mx-auto">
+        @if (getFileType(exam.solution)=="pdf") {
         <pdf-viewer src="{{ exam.solution }}" [render-text]="true" [original-size]="false"
           style="width: 100%; height: 700px">
         </pdf-viewer>
+        }
+        @else if (getFileType(exam.solution)=="word") {
+        <iframe [src]="getViewerUrl(exam.solution)  | safeUrl" width="100%" height="700px"></iframe>}
+        @else if (getFileType(exam.solution)=="image") {
+        <img [src]="exam.solution" width="100%" height="700px" />}
+        @else if (getFileType(exam.solution)=="powerpoint") {
+        <iframe [src]="exam.solution | safeUrl" width="100%" height="700px"></iframe>
+
+        }
       </div>
     </mat-step>
     } @else {
