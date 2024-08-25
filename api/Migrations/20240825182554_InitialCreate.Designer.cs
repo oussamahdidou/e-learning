@@ -12,7 +12,7 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    [Migration("20240825045553_InitialCreate")]
+    [Migration("20240825182554_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -54,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "3b55dbaa-0790-4503-bdc4-86c5fb31c4e0",
+                            Id = "0b325af0-6aad-4f20-b0ca-aee88f1be5ba",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "06265d7b-1457-495c-90d1-de2b8aec6bee",
+                            Id = "e4212f4f-6cf7-48bf-9562-bbbd0b6bc12b",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "4be90086-2fe5-41ed-9c21-4f1842b7019c",
+                            Id = "109bf94f-a1ff-4281-a942-f90b093cd39b",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -324,6 +324,36 @@ namespace api.Migrations
                     b.HasIndex("ChapitreId");
 
                     b.ToTable("checkChapters");
+                });
+
+            modelBuilder.Entity("api.Model.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PosteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("PosteId");
+
+                    b.ToTable("comments");
                 });
 
             modelBuilder.Entity("api.Model.Controle", b =>
@@ -598,6 +628,41 @@ namespace api.Migrations
                     b.ToTable("paragraphes");
                 });
 
+            modelBuilder.Entity("api.Model.Poste", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Fichier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("postes");
+                });
+
             modelBuilder.Entity("api.Model.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -788,6 +853,10 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.ToTable("AspNetUsers", t =>
                         {
                             t.Property("DateDeNaissance")
@@ -903,6 +972,23 @@ namespace api.Migrations
                     b.Navigation("Chapitre");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("api.Model.Comment", b =>
+                {
+                    b.HasOne("api.Model.AppUser", "AppUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("api.Model.Poste", "Poste")
+                        .WithMany("Comments")
+                        .HasForeignKey("PosteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Poste");
                 });
 
             modelBuilder.Entity("api.Model.Controle", b =>
@@ -1025,6 +1111,15 @@ namespace api.Migrations
                     b.Navigation("Cours");
                 });
 
+            modelBuilder.Entity("api.Model.Poste", b =>
+                {
+                    b.HasOne("api.Model.AppUser", "AppUser")
+                        .WithMany("Postes")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
+                });
+
             modelBuilder.Entity("api.Model.Question", b =>
                 {
                     b.HasOne("api.Model.Quiz", "Quiz")
@@ -1112,6 +1207,13 @@ namespace api.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("api.Model.AppUser", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Postes");
+                });
+
             modelBuilder.Entity("api.Model.Chapitre", b =>
                 {
                     b.Navigation("CheckChapters");
@@ -1159,6 +1261,11 @@ namespace api.Migrations
                     b.Navigation("ElementPedagogiques");
 
                     b.Navigation("NiveauScolaireModules");
+                });
+
+            modelBuilder.Entity("api.Model.Poste", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("api.Model.Question", b =>

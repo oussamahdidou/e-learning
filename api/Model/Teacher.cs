@@ -14,6 +14,7 @@ namespace api.Model
         public DateTime DateDeNaissance { get; set; }
         public bool Granted { get; set; } = false;
         public string Specialite { get; set; } = "";
+        public string Status { get; set; } = "";
         public DateTime LastChapterProgressUpdate { get; set; }
         public int ChapterProgress { get; set; }
         public List<ExamFinal> ExamFinals { get; set; } = new List<ExamFinal>();
