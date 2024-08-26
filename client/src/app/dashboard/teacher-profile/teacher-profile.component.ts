@@ -4,6 +4,7 @@ import { AuthService } from '../../services/auth.service';
 import { DashboardService } from '../../services/dashboard.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-teacher-profile',
@@ -34,12 +35,43 @@ export class TeacherProfileComponent implements OnInit {
     };
   }
   delete() {
-    this.authservice.deleteuser(this.teacherid).subscribe(
-      (response) => {
-        window.location.href = `/dashboard/teacherstable`;
-      },
-      (error) => {}
-    );
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show a loading spinner
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while we delete the user.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Perform the delete operation
+        this.authservice.deleteuser(this.teacherid).subscribe(
+          (response) => {
+            Swal.fire('Deleted!', 'The user has been deleted.', 'success').then(
+              () => {
+                window.location.href = `/dashboard/teacherstable`;
+              }
+            );
+          },
+          (error) => {
+            console.log(error);
+
+            Swal.fire('Error!', `${error.error}`, 'error');
+          }
+        );
+      }
+    });
   }
   ngOnInit(): void {
     this.route.params.subscribe((params) => {

@@ -24,7 +24,7 @@ namespace api.Controllers
 
 
         private readonly IMailer mailer;
-        public AccountController(IMailer mailer, ITokenService tokenService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager,IBlobStorageService blobStorageService)
+        public AccountController(IMailer mailer, ITokenService tokenService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IBlobStorageService blobStorageService)
 
         {
             this.tokenService = tokenService;
@@ -37,7 +37,7 @@ namespace api.Controllers
         [HttpPost("Login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
-            
+
             var user = await userManager.Users.FirstOrDefaultAsync(x => x.UserName == loginDto.UserName);
             if (user == null)
                 return NotFound("invalid username");
@@ -70,7 +70,7 @@ namespace api.Controllers
             {
                 if (!ModelState.IsValid)
                     return BadRequest("Incorrect Fields Format, Try Again");
-                
+
                 var user = new AppUser
                 {
                     Nom = registerDto.Nom,
@@ -133,7 +133,7 @@ namespace api.Controllers
                 return StatusCode(500, e);
             }
         }
-        
+
         [HttpPost("TeacherRegister")]
         public async Task<IActionResult> TeacherRegister([FromForm] TeacherRegisterDto teacherRegisterDto)
         {
@@ -143,10 +143,10 @@ namespace api.Controllers
 
                 if (!ModelState.IsValid)
                     return BadRequest(new AuthNotificationDto()
-                        {
-                            Message = "Incorrect Fields Format, Try Again"
-                        });
-                
+                    {
+                        Message = "Incorrect Fields Format, Try Again"
+                    });
+
                 if (teacherRegisterDto.JustificatifDeLaProfession != null)
                 {
 
@@ -155,7 +155,7 @@ namespace api.Controllers
                 }
 
                 Console.WriteLine("222222222222222222222222222222222222222222222222");
-                
+
                 var user = new AppUser
                 {
                     Teacher_Nom = teacherRegisterDto.Teacher_Nom,
@@ -166,7 +166,7 @@ namespace api.Controllers
                     UserName = teacherRegisterDto.UserName,
                     Email = teacherRegisterDto.Email,
                 };
-                
+
                 var userCreation = await userManager.CreateAsync(user, teacherRegisterDto.Password);
                 Console.WriteLine("api ::::: 11111111111111111111111111111111111111111");
 
@@ -223,7 +223,7 @@ namespace api.Controllers
                 return StatusCode(500, e);
             }
         }
-        
+
 
         [HttpGet("emailconfirmation")]
         public async Task<IActionResult> EmailConfirmation([FromQuery] string email, [FromQuery] string token)
@@ -303,26 +303,32 @@ namespace api.Controllers
             }
                 );
         }
-        [HttpDelete("deleteuser")]
-        public async Task<IActionResult> DeleteUser([FromBody] DeleteUserDto deleteUserDto)
+        [HttpDelete("deleteuser/{Id}")]
+        public async Task<IActionResult> DeleteUser([FromRoute] string Id)
         {
             Console.WriteLine("00000000000000000000000000000000000000000");
-            var user = await userManager.FindByIdAsync(deleteUserDto.Id);
+            var user = await userManager.FindByIdAsync(Id);
             Console.WriteLine("11111111111111111111111111111111111111111111111");
-            if (user is null){
+            if (user is null)
+            {
                 return BadRequest("User Not Found");
-            }else{
+            }
+            else
+            {
                 var result = await userManager.DeleteAsync(user);
                 Console.WriteLine("222222222222222222222222222222222222222222222222");
-                if(result.Succeeded){
+                if (result.Succeeded)
+                {
                     return Ok(new AuthNotificationDto()
-                        {
-                            Message = "User Deleted Successfuly"
-                        }
+                    {
+                        Message = "User Deleted Successfuly"
+                    }
                     );
-                }else{
+                }
+                else
+                {
                     return BadRequest("User Not Deleted");
-                } 
+                }
             }
         }
     }

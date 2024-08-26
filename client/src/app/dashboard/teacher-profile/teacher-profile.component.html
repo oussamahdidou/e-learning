@@ -21,7 +21,8 @@
                                 <p>Date de naissance : {{teacher.dateDeNaissance|date}}</p>
                                 <div class="d-flex flex-column gap-3 justify-content-end align-items-end">
                                     @if ((authservice.$IsAdmin|async) || authservice.token.id==teacherid) {
-                                    <button mat-flat-button color="warn" class="w-100 "> Supprimer</button>
+                                    <button mat-flat-button color="warn" class="w-100 " (click)="delete()">
+                                        Supprimer</button>
                                     } @if (authservice.$IsAdmin|async) {
                                     @if (!teacher.granted) {
                                     <button (click)="toggleApproval()" mat-raised-button color="primary" class="w-100 ">
