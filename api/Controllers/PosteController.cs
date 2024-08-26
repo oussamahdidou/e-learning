@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Extensions;
 using api.generique;
+using api.helpers;
 using api.interfaces;
 using api.Model;
 using Microsoft.AspNetCore.Authorization;
@@ -42,9 +43,9 @@ namespace api.Controllers
 
         [HttpGet("gelallposts")]
         // [Authorize]
-        public async Task<IActionResult> getAllPosts()
+        public async Task<IActionResult> getAllPosts([FromQuery] QueryObject queryObject)
         {
-            Result<List<Poste>> result = await _posteRepo.GetAllPosts();
+            Result<List<Poste>> result = await _posteRepo.GetAllPosts(queryObject);
 
             if(result.IsSuccess)
             {

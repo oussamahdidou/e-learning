@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.generique;
+using api.helpers;
 using api.interfaces;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
@@ -30,10 +31,16 @@ namespace api.Repository
             return Result<Poste>.Success(poste);
         }
 
-        public async Task<Result<List<Poste>>> GetAllPosts()
+        public async Task<Result<List<Poste>>> GetAllPosts(QueryObject queryObject)
         {
-            List<Poste> poste = await _context.postes.ToListAsync();
-            return Result<List<Poste>>.Success(poste);
+            var poste =  _context.postes.AsQueryable();
+
+            if(!string.IsNullOrWhiteSpace(queryObject.titre))
+            {
+               poste = poste.Where(x => x.Titre.Equals(queryObject.titre));
+            }
+            
+            return Result<List<Poste>>.Success(await poste.ToListAsync());
         }
 
 
