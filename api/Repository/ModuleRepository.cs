@@ -6,6 +6,7 @@ using api.Data;
 using api.Dtos.Chapitre;
 using api.Dtos.Control;
 using api.Dtos.Module;
+using api.Dtos.NiveauScolaire;
 using api.Dtos.Option;
 using api.Dtos.Question;
 using api.Dtos.Quiz;
@@ -26,6 +27,13 @@ namespace api.Repository
         private readonly apiDbContext apiDbContext;
         private readonly IWebHostEnvironment webHostEnvironment;
         private readonly IBlobStorageService blobStorageService;
+        private string pdfContainer = "pdf-container";
+        private string videoContainer = "video-container";
+        private string schemaContainer = "schema-container";
+        private string syntheseContainer = "synthese-container";
+        private string controleContainer = "controle-container";
+        private string imageContainer = "image-container";
+        private string programContainer = "program-container";
         public ModuleRepository(IBlobStorageService blobStorageService, apiDbContext apiDbContext, IWebHostEnvironment webHostEnvironment)
         {
             this.apiDbContext = apiDbContext;
@@ -67,7 +75,10 @@ namespace api.Repository
                         .ThenInclude(y => y.Questions)
                         .ThenInclude(y => y.Options)
                     .Include(x => x.Chapitres)
-                        .ThenInclude(y => y.Controle)
+                        .ThenInclude(w => w.Cours)
+                        .ThenInclude(e => e.Paragraphes)
+                    .Include(z => z.Chapitres)
+                        .ThenInclude(w => w.Controle)
                     .Where(x => x.Id == id)
                     .Select(x => new Module
                     {
@@ -130,7 +141,8 @@ namespace api.Repository
             try
             {
                 var module = await apiDbContext.modules
-                .Include(x => x.ExamFinal).ThenInclude(x => x.ResultExams)
+                    .Include(x => x.NiveauScolaireModules)
+                    .Include(x => x.ExamFinal).ThenInclude(x => x.ResultExams)
                     .Include(m => m.Chapitres)
                         .ThenInclude(c => c.Quiz)
                             .ThenInclude(q => q.Questions)
@@ -143,24 +155,115 @@ namespace api.Repository
                     .Include(m => m.ModulesRequiredIn)
                     .Include(m => m.ExamFinal)
                     .Include(m => m.Chapitres)
+                        .ThenInclude(x => x.Cours)
+                        .ThenInclude(x => x.Paragraphes)
+                    .Include(m => m.Chapitres)
                         .ThenInclude(c => c.Controle).ThenInclude(x => x.ResultControles)
                     .Include(m => m.Chapitres)
                         .ThenInclude(c => c.CheckChapters)
                     .FirstOrDefaultAsync(m => m.Id == moduleId);
 
-                if (module != null)
+                if (module == null)
                 {
-                    apiDbContext.modules.Remove(module);
-                    await apiDbContext.SaveChangesAsync();
-                    return true;
+                    return false;
                 }
-                return false;
+
+                // Delete Module Image if exists
+                if (!string.IsNullOrEmpty(module.ModuleImg))
+                {
+                    var oldImageFileName = Path.GetFileName(new Uri(module.ModuleImg).LocalPath);
+                    await blobStorageService.DeleteFileAsync(imageContainer, oldImageFileName);
+                }
+
+                // Delete Course Program if exists
+                if (!string.IsNullOrEmpty(module.CourseProgram))
+                {
+                    var oldProgramFileName = Path.GetFileName(new Uri(module.CourseProgram).LocalPath);
+                    await blobStorageService.DeleteFileAsync(programContainer, oldProgramFileName);
+                }
+
+                // Delete Exam Final if exists
+                if (module.ExamFinal != null)
+                {
+                    if (!string.IsNullOrEmpty(module.ExamFinal.Ennonce))
+                    {
+                        var oldEnnonceFileName = Path.GetFileName(new Uri(module.ExamFinal.Ennonce).LocalPath);
+                        await blobStorageService.DeleteFileAsync(controleContainer, oldEnnonceFileName);
+                    }
+
+                    if (!string.IsNullOrEmpty(module.ExamFinal.Solution))
+                    {
+                        var oldSolutionFileName = Path.GetFileName(new Uri(module.ExamFinal.Solution).LocalPath);
+                        await blobStorageService.DeleteFileAsync(controleContainer, oldSolutionFileName);
+                    }
+                }
+
+                // Iterate over Chapitres to delete related files
+                foreach (var chapitre in module.Chapitres)
+                {
+                    // Delete Video if exists
+                    if (!string.IsNullOrEmpty(chapitre.VideoPath))
+                    {
+                        var oldVideoFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
+                        await blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
+                    }
+
+                    // Delete Schema if exists
+                    if (!string.IsNullOrEmpty(chapitre.Schema))
+                    {
+                        var oldSchemaFileName = Path.GetFileName(new Uri(chapitre.Schema).LocalPath);
+                        await blobStorageService.DeleteFileAsync(schemaContainer, oldSchemaFileName);
+                    }
+
+                    // Delete Synthese if exists
+                    if (!string.IsNullOrEmpty(chapitre.Synthese))
+                    {
+                        var oldSyntheseFileName = Path.GetFileName(new Uri(chapitre.Synthese).LocalPath);
+                        await blobStorageService.DeleteFileAsync(syntheseContainer, oldSyntheseFileName);
+                    }
+
+                    // Delete Paragraphe Contenu if exists
+                    foreach (var cours in chapitre.Cours)
+                    {
+                        foreach (var paragraphe in cours.Paragraphes)
+                        {
+                            if (!string.IsNullOrEmpty(paragraphe.Contenu))
+                            {
+                                var oldParagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
+                                await blobStorageService.DeleteFileAsync(pdfContainer, oldParagrapheFileName);
+                            }
+                        }
+                    }
+
+                    // Delete Controle Ennonce and Solution if exists
+                    if (chapitre.Controle != null)
+                    {
+                        if (!string.IsNullOrEmpty(chapitre.Controle.Ennonce))
+                        {
+                            var oldEnnonceFileName = Path.GetFileName(new Uri(chapitre.Controle.Ennonce).LocalPath);
+                            await blobStorageService.DeleteFileAsync(controleContainer, oldEnnonceFileName);
+                        }
+
+                        if (!string.IsNullOrEmpty(chapitre.Controle.Solution))
+                        {
+                            var oldSolutionFileName = Path.GetFileName(new Uri(chapitre.Controle.Solution).LocalPath);
+                            await blobStorageService.DeleteFileAsync(controleContainer, oldSolutionFileName);
+                        }
+                    }
+                }
+
+                // Remove the Module from the database
+                apiDbContext.modules.Remove(module);
+                await apiDbContext.SaveChangesAsync();
+
+                return true;
             }
             catch (System.Exception)
             {
                 return false;
             }
         }
+
 
         public async Task<Result<Module>> UpdateModuleImage(UpdateModuleImageDto updateModuleImageDto)
         {
@@ -246,6 +349,77 @@ namespace api.Repository
                 return Result<Module>.Failure("module notfound");
             }
             return Result<Module>.Success(module);
+        }
+
+        public async Task<Result<List<NiveauScolaire>>> GetModuleNiveauScolaires(int Id)
+        {
+            try
+            {
+                List<NiveauScolaire> niveauScolaires = await apiDbContext.niveauScolaireModules
+                                                        .Include(x => x.NiveauScolaire)
+                                                        .ThenInclude(x => x.Institution)
+                                                        .Where(x => x.ModuleId == Id && x.NiveauScolaire != null)
+                                                        .Select(x => x.NiveauScolaire!)
+                                                        .ToListAsync();
+                return Result<List<NiveauScolaire>>.Success(niveauScolaires);
+
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<List<NiveauScolaire>>.Failure(ex.Message);
+
+            }
+        }
+
+        public async Task<Result<NiveauScolaire?>> CreateNiveauScolaireModule(CreateNiveauScolaireModuleDto createNiveauScolaireModuleDto)
+        {
+            try
+            {
+                if (await apiDbContext.niveauScolaireModules.AnyAsync(x => x.NiveauScolaireId == createNiveauScolaireModuleDto.NiveauScolaireId && x.ModuleId == createNiveauScolaireModuleDto.ModuleId))
+                {
+                    return Result<NiveauScolaire?>.Failure("le module est deja dans ce niveau");
+                }
+                else
+                {
+                    NiveauScolaireModule niveauScolaireModule = new NiveauScolaireModule()
+                    {
+                        NiveauScolaireId = createNiveauScolaireModuleDto.NiveauScolaireId,
+                        ModuleId = createNiveauScolaireModuleDto.ModuleId
+
+                    };
+                    await apiDbContext.AddAsync(niveauScolaireModule);
+                    await apiDbContext.SaveChangesAsync();
+                    return Result<NiveauScolaire?>.Success(niveauScolaireModule.NiveauScolaire);
+                }
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<NiveauScolaire?>.Failure(ex.Message);
+
+            }
+        }
+
+        public async Task<bool> DeleteNiveauScolaireModule(int ModuleId, int NiveauScolaireId)
+        {
+            try
+            {
+                NiveauScolaireModule? niveauScolaireModule = await apiDbContext.niveauScolaireModules.FirstOrDefaultAsync(x => x.ModuleId == ModuleId && x.NiveauScolaireId == NiveauScolaireId);
+                if (niveauScolaireModule == null)
+                {
+                    return false;
+                }
+                apiDbContext.niveauScolaireModules.Remove(niveauScolaireModule);
+                await apiDbContext.SaveChangesAsync();
+                return true;
+            }
+            catch (System.Exception)
+            {
+
+                return false;
+            }
+
         }
     }
 }

@@ -18,9 +18,18 @@ namespace api.Repository
     public class InstitutionRepository : IinstitutionRepository
     {
         private readonly apiDbContext apiDbContext;
-        public InstitutionRepository(apiDbContext apiDbContext)
+        private readonly IBlobStorageService blobStorageService;
+        private string pdfContainer = "pdf-container";
+        private string videoContainer = "video-container";
+        private string schemaContainer = "schema-container";
+        private string syntheseContainer = "synthese-container";
+        private string controleContainer = "controle-container";
+        private string imageContainer = "image-container";
+        private string programContainer = "program-container";
+        public InstitutionRepository(apiDbContext apiDbContext, IBlobStorageService blobStorageService)
         {
             this.apiDbContext = apiDbContext;
+            this.blobStorageService = blobStorageService;
         }
         public async Task<Result<Institution>> CreateInstitution(string InstitutionName)
         {
@@ -47,52 +56,130 @@ namespace api.Repository
         {
             try
             {
-                //         var institution = await apiDbContext.institutions
-                // .Include(i => i.NiveauScolaires)
-                //     .ThenInclude(ns => ns.Modules)
-                //         .ThenInclude(m => m.Chapitres)
-                //             .ThenInclude(c => c.Quiz)
-                //                 .ThenInclude(q => q.Questions)
-                //                     .ThenInclude(q => q.Options)
-                // .Include(i => i.NiveauScolaires)
-                //     .ThenInclude(ns => ns.Modules)
-                //         .ThenInclude(m => m.Chapitres)
-                //             .ThenInclude(c => c.Quiz)
-                //             .ThenInclude(q => q.QuizResults)
-                // .Include(i => i.NiveauScolaires)
-                //     .ThenInclude(ns => ns.Modules)
-                //         .ThenInclude(m => m.TestNiveaus)
-                // .Include(i => i.NiveauScolaires)
-                //     .ThenInclude(ns => ns.Modules)
-                //         .ThenInclude(m => m.ModuleRequirements)
-                // .Include(i => i.NiveauScolaires)
-                //     .ThenInclude(ns => ns.Modules)
-                //         .ThenInclude(m => m.ModulesRequiredIn)
-                // .Include(i => i.NiveauScolaires)
-                //     .ThenInclude(ns => ns.Modules)
-                //         .ThenInclude(m => m.ExamFinal)
-                //         .ThenInclude(m => m.ResultExams)
-                // .Include(i => i.NiveauScolaires)
-                //     .ThenInclude(ns => ns.Modules)
-                //         .ThenInclude(m => m.Chapitres)
-                //             .ThenInclude(c => c.Controle).ThenInclude(x => x.ResultControles)
-                // .Include(i => i.NiveauScolaires)
-                //     .ThenInclude(ns => ns.Modules)
-                //         .ThenInclude(m => m.Chapitres)
-                //             .ThenInclude(c => c.CheckChapters)
-                // .FirstOrDefaultAsync(i => i.Id == institutionId);
+                var institution = await apiDbContext.institutions
+                    .Include(i => i.NiveauScolaires)
+                        .ThenInclude(ns => ns.NiveauScolaireModules)
+                    .Include(i => i.NiveauScolaires)
+                        .ThenInclude(ns => ns.ElementPedagogiques)
+                    .FirstOrDefaultAsync(i => i.Id == institutionId);
 
-                //         if (institution != null)
-                //         {
-                //             apiDbContext.institutions.Remove(institution);
-                //             await apiDbContext.SaveChangesAsync();
-                //             return true;
-                //         }
+                if (institution != null)
+                {
+                    // Delete Element Pedagogique Links
+                    foreach (var niveauScolaire in institution.NiveauScolaires)
+                    {
+                        foreach (var elementPedagogique in niveauScolaire.ElementPedagogiques)
+                        {
+                            if (!string.IsNullOrEmpty(elementPedagogique.Lien))
+                            {
+                                var oldLienFileName = Path.GetFileName(new Uri(elementPedagogique.Lien).LocalPath);
+                                await blobStorageService.DeleteFileAsync(imageContainer, oldLienFileName);
+                            }
+                        }
+                    }
+
+                    // Remove the institution from the database
+                    apiDbContext.institutions.Remove(institution);
+                    await apiDbContext.SaveChangesAsync();
+
+                    // Find and delete orphaned modules (not linked to any NiveauScolaireModules)
+                    var modulesToDelete = await apiDbContext.modules
+                        .Include(m => m.Chapitres)
+                            .ThenInclude(c => c.Cours)
+                                .ThenInclude(c => c.Paragraphes)
+                        .Include(m => m.Chapitres)
+                            .ThenInclude(c => c.Controle)
+                        .Include(m => m.ExamFinal)
+                        .Where(m => !apiDbContext.niveauScolaireModules.Any(nsm => nsm.ModuleId == m.Id))
+                        .ToListAsync();
+
+                    // Delete associated files for each module
+                    foreach (var module in modulesToDelete)
+                    {
+                        if (!string.IsNullOrEmpty(module.ModuleImg))
+                        {
+                            var Image = Path.GetFileName(new Uri(module.ModuleImg).LocalPath);
+                            await blobStorageService.DeleteFileAsync(imageContainer, Image);
+                        }
+                        if (!string.IsNullOrEmpty(module.CourseProgram))
+                        {
+                            var CourseProgram = Path.GetFileName(new Uri(module.CourseProgram).LocalPath);
+                            await blobStorageService.DeleteFileAsync(programContainer, CourseProgram);
+                        }
+                        // Delete ExamFinal files
+                        if (module.ExamFinal != null)
+                        {
+                            if (!string.IsNullOrEmpty(module.ExamFinal.Ennonce))
+                            {
+                                var oldExamFileName = Path.GetFileName(new Uri(module.ExamFinal.Ennonce).LocalPath);
+                                await blobStorageService.DeleteFileAsync(controleContainer, oldExamFileName);
+                            }
+                            if (!string.IsNullOrEmpty(module.ExamFinal.Solution))
+                            {
+                                var oldSolutionFileName = Path.GetFileName(new Uri(module.ExamFinal.Solution).LocalPath);
+                                await blobStorageService.DeleteFileAsync(controleContainer, oldSolutionFileName);
+                            }
+                        }
+
+                        // Delete Chapitre files
+                        foreach (var chapitre in module.Chapitres)
+                        {
+                            if (!string.IsNullOrEmpty(chapitre.VideoPath))
+                            {
+                                var oldVideoFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
+                                await blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
+                            }
+                            if (!string.IsNullOrEmpty(chapitre.Schema))
+                            {
+                                var oldSchemaFileName = Path.GetFileName(new Uri(chapitre.Schema).LocalPath);
+                                await blobStorageService.DeleteFileAsync(schemaContainer, oldSchemaFileName);
+                            }
+                            if (!string.IsNullOrEmpty(chapitre.Synthese))
+                            {
+                                var oldSyntheseFileName = Path.GetFileName(new Uri(chapitre.Synthese).LocalPath);
+                                await blobStorageService.DeleteFileAsync(syntheseContainer, oldSyntheseFileName);
+                            }
+
+                            // Delete Cours Paragraphes files
+                            foreach (var cours in chapitre.Cours)
+                            {
+                                foreach (var paragraphe in cours.Paragraphes)
+                                {
+                                    if (!string.IsNullOrEmpty(paragraphe.Contenu))
+                                    {
+                                        var oldParagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
+                                        await blobStorageService.DeleteFileAsync(pdfContainer, oldParagrapheFileName);
+                                    }
+                                }
+                            }
+
+                            // Delete Controle files
+                            if (chapitre.Controle != null)
+                            {
+                                if (!string.IsNullOrEmpty(chapitre.Controle.Ennonce))
+                                {
+                                    var oldControleFileName = Path.GetFileName(new Uri(chapitre.Controle.Ennonce).LocalPath);
+                                    await blobStorageService.DeleteFileAsync(controleContainer, oldControleFileName);
+                                }
+                                if (!string.IsNullOrEmpty(chapitre.Controle.Solution))
+                                {
+                                    var oldSolutionFileName = Path.GetFileName(new Uri(chapitre.Controle.Solution).LocalPath);
+                                    await blobStorageService.DeleteFileAsync(controleContainer, oldSolutionFileName);
+                                }
+                            }
+                        }
+                    }
+
+                    // Remove the orphaned modules from the database
+                    apiDbContext.modules.RemoveRange(modulesToDelete);
+                    await apiDbContext.SaveChangesAsync();
+
+                    return true;
+                }
                 return false;
             }
             catch (System.Exception)
             {
-
                 return false;
             }
         }

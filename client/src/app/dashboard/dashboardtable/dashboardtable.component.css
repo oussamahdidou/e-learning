@@ -10,7 +10,16 @@
 .stats {
   background-color: white;
   color: rgb(70, 38, 206);
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family: Lato;
+  font-weight: 700;
+  font-size: 20px;
   border-radius: 25px;
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+  min-height: 100px;
+}
+
+.number {
+  font-family: Lato;
+  font-weight: 600;
+  font-size: 70px;
 }

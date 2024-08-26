@@ -38,6 +38,8 @@ namespace api.Data
         public DbSet<Cours> cours { get; set; }
         public DbSet<Paragraphe> paragraphes { get; set; }
         public DbSet<ElementPedagogique> elementPedagogiques { get; set; }
+        public DbSet<Comment> comments { get; set; }
+        public DbSet<Poste> postes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -138,6 +140,18 @@ namespace api.Data
             .HasOne(u => u.NiveauScolaire)
             .WithMany(u => u.NiveauScolaireModules)
             .HasForeignKey(p => p.NiveauScolaireId);
+            //**************************************************************************************************
+            builder.Entity<Comment>(x =>
+                      {
+                          x.HasKey(p => p.Id); // Set Id as the primary key
+                          x.Property(p => p.Id).ValueGeneratedOnAdd(); // Configure Id to be auto-generated
+                          x.HasOne(u => u.AppUser)
+                              .WithMany(u => u.Comments)
+                              .HasForeignKey(p => p.AppUserId);
+                          x.HasOne(u => u.Poste)
+                              .WithMany(u => u.Comments)
+                              .HasForeignKey(p => p.PosteId);
+                      });
         }
     }
 }

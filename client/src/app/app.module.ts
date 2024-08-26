@@ -21,7 +21,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { InstitutionsModule } from './institutions/institutions.module';
 import { CourseModule } from './course/course.module';
@@ -37,8 +37,10 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { ProfileModule } from './profile/profile.module';
 import { LearningComponent } from './profile/learning/learning.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { LoginComponent } from './auth/login/login.component';
 @NgModule({
   declarations: [AppComponent, HomeComponent],
+  
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -48,6 +50,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     NgxSkeletonLoaderModule,

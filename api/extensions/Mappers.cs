@@ -88,5 +88,13 @@ namespace api.extensions
 
             };
         }
+        public static BarChartsDto FromTeacherToBarChartsDto(this Teacher teacher)
+        {
+            return new BarChartsDto()
+            {
+                Name = $"{teacher.Nom} {teacher.Prenom}",
+                Count = teacher.Chapitres.Count() + teacher.Controles.Count() + teacher.ExamFinals.Count(),
+            };
+        }
     }
 }

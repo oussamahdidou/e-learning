@@ -62,6 +62,7 @@ namespace api.Controllers
             }
             else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
             {
+                createChapitreDto.TeacherId = appUser.Id;
                 Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
                 if (!result.IsSuccess)
                 {
@@ -92,6 +93,17 @@ namespace api.Controllers
         {
 
             Result<Chapitre> result = await chapitreRepository.UpdateChapitreVideo(updateChapitreVideoDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateChapitreVideoLink")]
+        public async Task<IActionResult> UpdateChapitreVideoLink([FromBody] UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto)
+        {
+
+            Result<Chapitre> result = await chapitreRepository.UpdateChapitreVideoLink(updateChapitreVideoLinkDto);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
@@ -155,6 +167,38 @@ namespace api.Controllers
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
+        }
+        [HttpPost("CreateParagraphe")]
+        public async Task<IActionResult> CreateParagraphe([FromForm] CreateParagrapheDto createParagrapheDto)
+        {
+            Result<Paragraphe> result = await chapitreRepository.CreateParagraphe(createParagrapheDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpGet("Paragraphe/{id:int}")]
+        public async Task<IActionResult> Paragraphe([FromRoute] int id)
+        {
+            Result<Paragraphe> result = await chapitreRepository.GetParagrapheByid(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateParagraphe")]
+        public async Task<IActionResult> UpdateParagraphe([FromForm] UpdateParagrapheDto UpdateParagrapheDto)
+        {
+
+            Result<Paragraphe> result = await chapitreRepository.UpdateParagraphe(UpdateParagrapheDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
         }
     }
 }

@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-chapter',
@@ -59,7 +60,25 @@ export class ChapterComponent implements OnInit {
       }
     });
   }
-
+  teacherCourse: any;
+  studentCourse: any;
+  convertLink() {
+    if (
+      this.chapitre.videoPath.includes('youtube.com/watch?v=') ||
+      this.chapitre.videoPath.includes('youtu.be/')
+    ) {
+      this.isYoutubeLink = true;
+      if (this.chapitre.videoPath.includes('youtube.com/watch?v=')) {
+        const videoId = this.chapitre.videoPath.split('v=')[1].split('&')[0]; // Extract video ID
+        this.chapitre.videoPath = `https://www.youtube.com/embed/${videoId}`;
+      } else if (this.chapitre.videoPath.includes('youtu.be/')) {
+        const videoId = this.chapitre.videoPath.split('youtu.be/')[1];
+        this.chapitre.videoPath = `https://www.youtube.com/embed/${videoId}`;
+      }
+    } else {
+      this.isYoutubeLink = false;
+    }
+  }
   chapterid!: number;
   constructor(
     private readonly dashboardService: DashboardService,
@@ -67,14 +86,45 @@ export class ChapterComponent implements OnInit {
     public authservice: AuthService
   ) {}
   chapitre: any;
-
+  isYoutubeLink: boolean = false;
+  getFileType(filePath: string): string {
+    const extension = filePath.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'pdf':
+        return 'pdf';
+      case 'doc':
+      case 'docx':
+        return 'word';
+      case 'ppt':
+      case 'pptx':
+        return 'powerpoint';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return 'image';
+      default:
+        return 'unknown';
+    }
+  }
+  getViewerUrl(filePath: string): string {
+    return `https://docs.google.com/viewer?url=${filePath}&embedded=true`;
+  }
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.chapterid = params['id'];
       this.dashboardService.GetChapitrebyid(this.chapterid).subscribe(
         (reponse) => {
-          console.log(reponse);
+          // console.log(reponse);
           this.chapitre = reponse;
+          this.teacherCourse = reponse.cours.find(
+            (course: any) => course.type === 'Teacher'
+          );
+          this.studentCourse = reponse.cours.find(
+            (course: any) => course.type === 'Student'
+          );
+          console.log(this.studentCourse);
+          this.convertLink();
           this.quiz = this.chapitre.quiz;
         },
         (error) => {
@@ -143,7 +193,7 @@ export class ChapterComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log('Quiz:', this.transformQuizObject(this.quiz));
+    // console.log('Quiz:', this.transformQuizObject(this.quiz));
 
     // Show loading modal
     Swal.fire({
@@ -165,6 +215,66 @@ export class ChapterComponent implements OnInit {
           Swal.fire('Error', `${error.error}`, 'error');
         }
       );
+  }
+  SelectStudentParagraphe(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('ParagrapheContenu', file);
+      formData.append('CoursId', this.studentCourse.id);
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the file is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      this.dashboardService.createparagraphe(formData).subscribe(
+        (response) => {
+          // Close the loading modal and show success message
+          Swal.fire('Success', 'File uploaded successfully', 'success');
+          this.studentCourse.paragraphes.push(response);
+        },
+        (error) => {
+          // Close the loading modal and show error message
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
+      );
+    }
+  }
+  SelectTeacherParagraphe(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append('ParagrapheContenu', file);
+      formData.append('CoursId', this.teacherCourse.id);
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Uploading...',
+        text: 'Please wait while the file is being uploaded.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
+      this.dashboardService.createparagraphe(formData).subscribe(
+        (response) => {
+          // Close the loading modal and show success message
+          Swal.fire('Success', 'File uploaded successfully', 'success');
+          this.teacherCourse.paragraphes.push(response);
+        },
+        (error) => {
+          // Close the loading modal and show error message
+          Swal.fire('Error', `${error.error}`, 'error');
+        }
+      );
+    }
   }
   SelectSynthese(event: any) {
     const file: File = event.target.files[0];
@@ -250,6 +360,7 @@ export class ChapterComponent implements OnInit {
           // Close the loading modal and show success message
           Swal.fire('Success', 'Video uploaded successfully', 'success');
           this.chapitre.videoPath = response.videoPath;
+          this.convertLink(); // Update the video path with the new URL`
         },
         (error) => {
           // Close the loading modal and show error message
@@ -258,7 +369,37 @@ export class ChapterComponent implements OnInit {
       );
     }
   }
+  videoUrl!: string;
+  updateVideoWithLink() {
+    if (this.videoUrl) {
+      // Show loading modal
+      Swal.fire({
+        title: 'Updating...',
+        text: 'Please wait while the video URL is being updated.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
 
+      this.dashboardService
+        .updatechapitreVideoWithLink(this.chapterid, this.videoUrl)
+        .subscribe(
+          (response) => {
+            // Close the loading modal and show success message
+            Swal.fire('Success', 'Video updated successfully', 'success');
+            this.chapitre.videoPath = response.videoPath;
+            this.convertLink(); // Update the video path with the new URL
+          },
+          (error) => {
+            // Close the loading modal and show error message
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+    } else {
+      Swal.fire('Error', 'Please provide a valid video URL', 'error');
+    }
+  }
   SelectPdf(event: any) {
     const file: File = event.target.files[0];
     if (file) {
@@ -280,7 +421,7 @@ export class ChapterComponent implements OnInit {
         (response) => {
           // Close the loading modal and show success message
           Swal.fire('Success', 'PDF uploaded successfully', 'success');
-          console.log("and this is the response ",response)
+          // console.log('and this is the response ', response);
           this.chapitre.coursPdfPath = response.coursPdfPath;
         },
         (error) => {
@@ -490,6 +631,62 @@ export class ChapterComponent implements OnInit {
           },
           (error) => {
             Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+      }
+    });
+  }
+  deleteparagraphe(id: number) {
+    // Step 1: Show confirmation modal
+    Swal.fire({
+      title: 'Are you sure?',
+      text: 'Do you want to delete this paragraph?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Step 2: Show loading modal
+        Swal.fire({
+          title: 'Deleting...',
+          text: 'Please wait while the paragraph is being deleted.',
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        // Step 3: Call the delete API
+        this.dashboardService.deleteparagraphe(id).subscribe(
+          (response) => {
+            // Step 4: Close loading modal and show success message
+            Swal.close();
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'The paragraph has been deleted successfully.',
+              icon: 'success',
+            });
+            this.studentCourse.paragraphes =
+              this.studentCourse.paragraphes.filter(
+                (cours: any) => cours.id !== id
+              );
+            this.teacherCourse.paragraphes =
+              this.studentCourse.paragraphes.filter(
+                (cours: any) => cours.id !== id
+              );
+          },
+          (error) => {
+            // Step 5: Close loading modal and show error message
+            Swal.close();
+            Swal.fire({
+              title: 'Error!',
+              text: 'There was an error deleting the paragraph. Please try again later.',
+              icon: 'error',
+            });
           }
         );
       }

@@ -14,5 +14,7 @@ namespace api.Model
         public int InstitutionId { get; set; }
         public Institution? Institution { get; set; }
         public List<NiveauScolaireModule> NiveauScolaireModules { get; set; } = new List<NiveauScolaireModule>();
+        public List<ElementPedagogique> ElementPedagogiques { get; set; } = new List<ElementPedagogique>();
+
     }
 }

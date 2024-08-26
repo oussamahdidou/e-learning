@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import Swal from 'sweetalert2';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 import { SharedDataService } from '../../services/shared-data.service';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-lecture',
@@ -13,13 +14,16 @@ import { SharedDataService } from '../../services/shared-data.service';
 })
 export class LectureComponent {
   @Input() vdUrl: string | undefined;
+  isFromYtb: boolean = false;
+  safeUrl?: SafeResourceUrl;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private courseService: CourseService,
     private errorHandlingService: ErrorHandlingService,
-    private shared: SharedDataService
+    private shared: SharedDataService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -28,8 +32,18 @@ export class LectureComponent {
       if (idParam) {
         const id = +idParam;
         this.courseService.getVdUrlById(id).subscribe(
-          (url: string | undefined) => {
-            this.vdUrl = url;
+          (url: string) => {
+            if (url.includes('youtube')) {
+              this.vdUrl = url.split('v=').pop();
+              const youtubeUrl = 'https://www.youtube.com/embed/' + this.vdUrl;
+              this.safeUrl =
+              this.sanitizer.bypassSecurityTrustResourceUrl(youtubeUrl);
+              this.isFromYtb = true;
+              console.log(this.vdUrl);
+            } else {
+              this.vdUrl = url;
+              console.log(this.vdUrl);
+            }
           },
           (error) => {
             this.errorHandlingService.handleError(
