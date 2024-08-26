@@ -42,12 +42,17 @@
       height: 300px;
       z-index: 0;
     }
-
+    .form-label ,.text-center{
+      color: beige;
+    }
     .bg-glass {
-      background-color: hsla(0, 0%, 100%, 0.9) !important;
+      background-color: rgba(0, 0, 0, 0.4); 
+      box-shadow: 0 0 15px rgba(88, 169, 235, 0.6); 
+      /* background-color: hsla(0, 0%, 100%, 0.9) !important; */
       backdrop-filter: saturate(200%) blur(25px);
       border-radius: 10px; 
       z-index: 10; 
+      
     }
     .link {
       color: #1778f2;

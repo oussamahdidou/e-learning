@@ -6,20 +6,18 @@ using System.Threading.Tasks;
 
 namespace api.Dtos.Account
 {
-    public class RegisterDto
+    public class TeacherRegisterDto
     {
         [Required]
-        public string? Nom {get; set;} 
+        public string? Teacher_Nom {get; set;} 
         [Required]
-        public string? Prenom {get; set;} 
-        
-        public DateTime? DateDeNaissance {get; set;} 
+        public string? Teacher_Prenom {get; set;} 
         [Required]
-        public string? Etablissement {get; set;} 
+        public DateTime? Teacher_DateDeNaissance {get; set;} 
         [Required]
-        public string? Branche {get; set;} 
+        public string? Teacher_Etablissement {get; set;} 
         [Required]
-        public string? Niveaus {get; set;} 
+        public IFormFile? JustificatifDeLaProfession {get; set;} 
         [Required]
         public string? UserName {get; set;} 
         [Required]
