@@ -16,12 +16,14 @@
   <div class="row justify-content-center mx-auto container">
     <div *ngFor="let item of institutions; let i = index" class="col-lg-3 px-2">
       <div class="d-flex flex-column p-3 justify-content-start align-items-baseline item-container">
-        <img src="img/institution.png" class="img-fluid" />
+        <img src="img\instutition.png" class="img-fluid">
         <span class="item-description text-break my-3">{{ item.nom }}</span>
-        <button mat-raised-button [routerLink]="'/institutions/niveau-scolaire/' + item.id">
+        <button class="btn btn-primary mat-raised-button explore-button" [routerLink]="'/espaceprof/niveauscolaire/' + item.id">
           Explore
         </button>
+        
       </div>
     </div>
   </div>
 </div>
+

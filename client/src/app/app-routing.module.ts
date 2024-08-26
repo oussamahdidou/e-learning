@@ -5,6 +5,7 @@ import { AuthService } from './services/auth.service';
 import { AdminGuardService } from './services/admin-guard.service';
 import { DashboardGuardService } from './dashboard-guard.service';
 import { StudentGuardService } from './services/student-guard.service';
+
 const routes: Routes = [
   {
     path: '',
@@ -19,6 +20,17 @@ const routes: Routes = [
         (m) => m.InstitutionsModule
       ),
   },
+
+  {
+    path: 'espaceprof',
+    canActivate: [StudentGuardService],
+    loadChildren: () =>
+      import('./espaceprof/espaceprof.module').then(
+        (m) => m.EspaceProfModule
+      ),
+  },
+ 
+ 
   {
     path: 'module-info',
     canActivate: [StudentGuardService],

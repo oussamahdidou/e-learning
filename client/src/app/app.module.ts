@@ -37,6 +37,9 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { ProfileModule } from './profile/profile.module';
 import { LearningComponent } from './profile/learning/learning.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { EspaceProfModule } from './espaceprof/espaceprof.module';
+
+
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
@@ -66,6 +69,9 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     VgBufferingModule,
     MatStepperModule,
     TruncatePipe,
+    EspaceProfModule,
+   
+    
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
