@@ -1,29 +1,16 @@
-mat-dialog-content {
-    max-height: 400px;
-    overflow-y: auto;
-  }
-  
-  mat-list-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  
-  button {
-    margin-left: 10px;
-  }
-  .explore-button {
-    font-family: "Nunito Sans", sans-serif;
-    font-weight: 800;
-    color: rgba(0, 0, 0, 0.8);
-    box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.12);
-    border-radius: 20px;
-    background-color: #007bff;
-    padding: 10px 20px;
-  }
-  
-  .explore-button:hover {
-    background-color: #0056b3;
-  }
-  
+.section-title {
+  color: rgba(0, 0, 0, 0.8);
+  font-family: "Nunito Sans", sans-serif;
+  font-weight: 800;
+}
+
+.item-description {
+  font-family: "Fira Code", monospace;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.item-container {
+  box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.12);
+  border-radius: 20px;
+}

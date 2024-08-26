@@ -23,14 +23,11 @@ const routes: Routes = [
 
   {
     path: 'espaceprof',
-    canActivate: [StudentGuardService],
+    canActivate: [DashboardGuardService],
     loadChildren: () =>
-      import('./espaceprof/espaceprof.module').then(
-        (m) => m.EspaceProfModule
-      ),
+      import('./espaceprof/espaceprof.module').then((m) => m.EspaceProfModule),
   },
- 
- 
+
   {
     path: 'module-info',
     canActivate: [StudentGuardService],

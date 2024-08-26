@@ -8,14 +8,12 @@ namespace api.Dtos.ElementPedagogique
 {
     public class CreateElementPedagogiqueDto
     {
-       [Required]
-        public string Nom { get; set; } = string.Empty;
+        [Required]
+        public required string Nom { get; set; }
 
         [Required]
-        [Url]
-        public string Lien { get; set; } = "https://blog.coursify.me/wp-content/uploads/2018/08/plan-your-online-course.jpg";
-
+        public required IFormFile Lien { get; set; }
         [Required]
-        public int NiveauScolaireId { get; set; }  
+        public int NiveauScolaireId { get; set; }
     }
 }

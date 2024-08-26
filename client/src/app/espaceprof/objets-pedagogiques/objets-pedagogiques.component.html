@@ -1,24 +1,25 @@
-<div class="container-fluid mt-5">
-  <h4 class="text-center">Objets Pédagogiques Disponibles "</h4>
-  <div *ngIf="objetsPedagogiques.length > 0; else noData" class="row">
-    <div *ngFor="let objet of objetsPedagogiques" class="col-lg-4 mb-3">
-      <div class="card">
-        <div class="card-body">
-          
-          
-          <img src="img\instutition.png" class="img-fluid">
-         
-          <h5 class="card-title">{{ objet.nom }}</h5>
-          <a [href]="objet.lien" class="btn btn-primary explore-button" target="_blank">Télécharger</a>
+<app-navbar></app-navbar>
 
-          <button [routerLink]="'/espaceprof/ElementPedagogique/' + objet.id" mat-raised-button class="btn btn-primary explore-button">
-            Ajouter un Élément Pédagogique
-          </button> 
+<div class="container-fluid mt-5">
+  <h3 class="text-center section-title my-5 pt-5">
+    Explore Les objetsPedagogiques
+  </h3>
+  <div class="row justify-content-center align-items-end mx-auto container">
+    @for (item of objetsPedagogiques; track $index) {
+    <div class="col-lg-3 px-2">
+      <div class="d-flex flex-column p-3 align-items-baseline item-container" style="aspect-ratio: 9/12">
+        <img src="/img/institution.png" class="img-fluid" />
+        <span class="item-description text-break my-3">{{ item.nom }}</span>
+        <div class="d-flex justify-content-between align-items-center w-100">
+          <a href="{{ item.lien }}" download>
+            <button mat-raised-button>
+              Download
+            </button>
+          </a>
         </div>
       </div>
     </div>
+
+    }
   </div>
-  <ng-template #noData>
-    <p class="text-center">Aucun objet pédagogique disponible pour ce niveau scolaire.</p>
-  </ng-template>
 </div>

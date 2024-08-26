@@ -7,6 +7,7 @@ using api.generique;
 using api.interfaces;
 using api.Model;
 using api.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -14,30 +15,30 @@ namespace api.Controllers
 
 {
     [Route("api/[controller]")]
-[ApiController]
-public class ElementPedagogiqueController : ControllerBase
-{
-    private readonly IElementPedagogiqueRepository _elementPedagogiqueRepository;
-
-    public ElementPedagogiqueController(IElementPedagogiqueRepository elementPedagogiqueRepository)
+    [ApiController]
+    public class ElementPedagogiqueController : ControllerBase
     {
-        _elementPedagogiqueRepository = elementPedagogiqueRepository;
-    }
+        private readonly IElementPedagogiqueRepository _elementPedagogiqueRepository;
 
-    [HttpPost]
-    
-    public async Task<IActionResult> CreateElementPedagogique([FromBody] CreateElementPedagogiqueDto createElementDto)
-    {
-       Result<ElementPedagogique> result = await _elementPedagogiqueRepository.CreateElementPedagogiqueAsync(createElementDto);
-        if (result.IsSuccess)
+        public ElementPedagogiqueController(IElementPedagogiqueRepository elementPedagogiqueRepository)
         {
-            return Ok(result.Value);
+            _elementPedagogiqueRepository = elementPedagogiqueRepository;
         }
-        return BadRequest(result.Error);
-    }
+
+        [HttpPost]
+
+        public async Task<IActionResult> CreateElementPedagogique([FromForm] CreateElementPedagogiqueDto createElementDto)
+        {
+            Result<ElementPedagogique> result = await _elementPedagogiqueRepository.CreateElementPedagogiqueAsync(createElementDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
 
 
-         [HttpGet("{Id:int}")]
+        [HttpGet("{Id:int}")]
         public async Task<IActionResult> GetElementsById([FromRoute] int Id)
         {
             Result<List<ElementPedagogique>> result = await _elementPedagogiqueRepository.GetElementsById(Id);
@@ -47,31 +48,21 @@ public class ElementPedagogiqueController : ControllerBase
             }
             return BadRequest(result.Error);
         }
-     /*
-        
+
+
+
+
+
         [Authorize(Roles = "Admin")]
-        [HttpPut]
-        public async Task<IActionResult> UpdateElementPedagogique([FromBody] UpdateElementPedagogiqueDto updateElementDto)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteElementPedagogique([FromRoute] int id)
         {
-            Result<ElementPedagogique> result = await elementPedagogiqueRepository.UpdateElementPedagogique(updateElementDto);
+            Result<bool> result = await _elementPedagogiqueRepository.DeleteElementPedagogique(id);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
         }
-
-        
-        [Authorize(Roles = "Admin")]
-        [HttpDelete("{id:int}")]
-        public async Task<IActionResult> DeleteElementPedagogique([FromRoute] int id)
-        {
-            Result<bool> result = await elementPedagogiqueRepository.DeleteElementPedagogique(id);
-            if (result.IsSuccess)
-            {
-                return Ok(result.Value);
-            }
-            return BadRequest(result.Error);
-        } */
     }
 }

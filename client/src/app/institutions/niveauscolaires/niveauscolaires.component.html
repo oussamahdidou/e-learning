@@ -7,7 +7,7 @@
     @for (item of institution.niveauScolaires; track $index) {
     <div class="col-lg-3  px-2 py-3 ">
       <div class="d-flex flex-column p-3 justify-content-start align-items-baseline item-container">
-        <img src="img\instutition.png" class="img-fluid">
+        <img src="img\institution.png" class="img-fluid">
         <span class="item-description text-break my-3">{{item.nom}}</span>
         <button mat-raised-button routerLink="/institutions/modules/{{item.id}}">Explore </button>
       </div>
@@ -17,5 +17,5 @@
     }
   </div>
 
-}
+  }
 </div>

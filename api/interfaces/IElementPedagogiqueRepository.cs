@@ -10,10 +10,9 @@ namespace api.interfaces
 {
     public interface IElementPedagogiqueRepository
     {
-          Task<Result<List<ElementPedagogique>>> GetElementsById(int Id);
-          // Task<Result<ElementPedagogique>> CreateObjetPedagogiqueAsync(CreateElementPedagogiqueDto createElementPedagogiqueDto);
-         Task<Result<ElementPedagogique>> CreateElementPedagogiqueAsync(CreateElementPedagogiqueDto createElementDto); // Updated to match the repository implementation
-   
-   
+        Task<Result<List<ElementPedagogique>>> GetElementsById(int Id);
+        // Task<Result<ElementPedagogique>> CreateObjetPedagogiqueAsync(CreateElementPedagogiqueDto createElementPedagogiqueDto);
+        Task<Result<ElementPedagogique>> CreateElementPedagogiqueAsync(CreateElementPedagogiqueDto createElementDto); // Updated to match the repository implementation
+        Task<Result<bool>> DeleteElementPedagogique(int id);
     }
 }

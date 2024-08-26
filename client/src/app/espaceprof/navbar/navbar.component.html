@@ -1,19 +1,17 @@
-<!-- navbar.component.html -->
 <div class="d-flex justify-content-between navbar">
-    <div class="navbar-brand">E-learning</div>
-    <div id="navbarSupportedContent">
-      <ul class="navbar-nav d-flex flex-row justify-content-center">
-        <li class="nav-item dropdown">
-          <button class="btn ml-2" type="button" data-bs-toggle="dropdown">
-            <mat-icon class="account">perm_identity</mat-icon>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" [routerLink]="['/profile/mylearning']">My Learning</a></li>
-            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-            <li><a class="dropdown-item" href="auth/reset-password">Reset Password</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+  <div class="navbar-brand">E-learning</div>
+  <div class="" id="navbarSupportedContent">
+    <ul class="navbar-nav d-flex flex-row justify-content-center">
+      <li class="nav-item dropdown">
+        <button class="btn ml-2" type="button" data-bs-toggle="dropdown">
+          <mat-icon class="account">perm_identity</mat-icon>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+          <li><a class="dropdown-item" [routerLink]="['/profile/mylearning']">My Learning</a></li>
+          <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
+          <li><a class="dropdown-item" href="auth/reset-password">Reset Password</a></li>
+        </ul>
+      </li>
+    </ul>
   </div>
-  
+</div>

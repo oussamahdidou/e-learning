@@ -11,23 +11,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
 {
-     public class ElementPedagogiqueRepository : IElementPedagogiqueRepository
+    public class ElementPedagogiqueRepository : IElementPedagogiqueRepository
     {
         private readonly apiDbContext _context;
+        private readonly IBlobStorageService blobStorageService;
 
-        public ElementPedagogiqueRepository(apiDbContext context)
+        public ElementPedagogiqueRepository(apiDbContext context, IBlobStorageService blobStorageService)
         {
             _context = context;
+            this.blobStorageService = blobStorageService;
         }
 
         public async Task<Result<ElementPedagogique>> CreateElementPedagogiqueAsync(CreateElementPedagogiqueDto createElementDto)
         {
             try
             {
+                var pdfcontainer = "pdf-container";
+                var objet = await blobStorageService.UploadFileAsync(createElementDto.Lien.OpenReadStream(), pdfcontainer, createElementDto.Lien.FileName);
+
                 var element = new ElementPedagogique
                 {
                     Nom = createElementDto.Nom,
-                    Lien = createElementDto.Lien,
+                    Lien = objet,
                     NiveauScolaireId = createElementDto.NiveauScolaireId
                 };
 
@@ -42,62 +47,16 @@ namespace api.Repository
             }
         }
 
-        
-
-        /*
-
-public async Task<Result<ElementPedagogique>> UpdateElementPedagogique(UpdateElementPedagogiqueDto updateElementDto)
-{
-   try
-   {
-       var element = await _context.ElementPedagogiques.FindAsync(updateElementDto.Id);
-
-       if (element == null)
-       {
-           return Result<ElementPedagogique>.Failure("Element pédagogique non trouvé");
-       }
-
-       element.Nom = updateElementDto.Titre;
-       element.Url = updateElementDto.Url;
-
-       await _context.SaveChangesAsync();
-
-       return Result<ElementPedagogique>.Success(element);
-   }
-   catch (Exception ex)
-   {
-       return Result<ElementPedagogique>.Failure(ex.Message);
-   }
-}
-
-public async Task<Result<bool>> DeleteElementPedagogique(int elementId)
-{
-   try
-   {
-       var element = await _context.ElementPedagogiques.FindAsync(elementId);
-
-       if (element == null)
-       {
-           return Result<bool>.Failure("Element pédagogique non trouvé");
-       }
-
-       _context.ElementPedagogiques.Remove(element);
-       await _context.SaveChangesAsync();
-
-       return Result<bool>.Success(true);
-   }
-   catch (Exception ex)
-   {
-       return Result<bool>.Failure(ex.Message);
-   }
-}*/
-
+        public Task<Result<bool>> DeleteElementPedagogique(int id)
+        {
+            throw new NotImplementedException();
+        }
         public async Task<Result<List<ElementPedagogique>>> GetElementsById(int Id)
         {
             try
             {
                 var elements = await _context.elementPedagogiques
-                    .Where(e => e.Id == Id)
+                    .Where(e => e.NiveauScolaireId == Id)
                     .ToListAsync();
 
                 if (elements == null || !elements.Any())

@@ -1,25 +1,27 @@
 <app-navbar></app-navbar>
 <div class="container-fluid mt-5">
-  <div *ngIf="institution">
-    <h3 class="text-center section-title my-5 pt-5">
-      Explore Les Niveau Scolaires de "{{ institution.nom }}"
-    </h3>
-    <div class="row justify-content-center mx-auto container align-items-end">
-      <div *ngFor="let item of institution.niveauScolaires; let i = index" class="col-lg-3 px-2 py-3">
-        <div class="d-flex flex-column p-3 justify-content-start align-items-baseline item-container">
-          <img src="img\instutition.png" class="img-fluid">
-          <span class="item-description text-break my-3">{{ item.nom }}</span>
-          <!-- Bouton de téléchargement -->
-          <!--<button mat-raised-button class="btn btn-primary" explore-button explore-button (click)="downloadObjetPedagogique(item)">Download</button><br>
-       <button [routerLink]="'/espaceprof/ElementPedagogique/' + item.id"   mat-raised-button class="btn btn-primary explore-button">
-         Ajouter un Élément Pédagogique
-       </button>  !-->
-       <button mat-raised-button class="btn btn-primary explore-button" [routerLink]="'/espaceprof/ObjetPedagogique/' + item.id">
-        Voir les Objets Pédagogiques
-      </button>
+  @if (institution) {
 
+  <h3 class="text-center section-title my-5 pt-5">Explore Les Niveau Scolaires de "{{institution.nom}}"</h3>
+  <div class="row justify-content-center mx-auto container align-items-end">
+    @for (item of institution.niveauScolaires; track $index) {
+    <div class="col-lg-3  px-2 py-3 ">
+      <div class="d-flex flex-column p-3 justify-content-start align-items-baseline item-container">
+        <img src="/img/institution.png" class="img-fluid">
+        <span class="item-description text-break my-3">{{item.nom}}</span>
+        <div class="d-flex align-items-center justify-content-center gap-3 w-100">
+          <button mat-raised-button routerLink="/espaceprof/ObjetPedagogique/{{item.id}}" class="w-100">Explore
+          </button>
+          @if (authservice.$IsAdmin|async) {
+          <button mat-flat-button (click)="openModal(item.id)" class="w-100">Ajouter</button>
+          }
         </div>
       </div>
+
     </div>
+
+    }
   </div>
+
+  }
 </div>

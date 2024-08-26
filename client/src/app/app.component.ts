@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
-import { ChildrenOutletContexts, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ChildrenOutletContexts,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
 import { slideInAnimation } from './animation';
 import { TeacherProgressServiceService } from './services/teacher-progress-service.service';
 import { AuthService } from './services/auth.service';
@@ -9,11 +13,9 @@ import { AuthService } from './services/auth.service';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  animations: [
-    slideInAnimation
-  ]
+  animations: [slideInAnimation],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'client';
 
   constructor(
@@ -22,11 +24,17 @@ export class AppComponent {
     private readonly authservice: AuthService
   ) {
     console.log(environment.apiUrl);
-    authservice.$IsTeacher.subscribe((isteacher) => {
-      teacherprogress.showFeedbackModal(authservice.token.unique_name);
+  }
+  ngOnInit(): void {
+    this.authservice.$IsTeacher.subscribe((isteacher) => {
+      this.teacherprogress.showFeedbackModal(
+        this.authservice.token.unique_name
+      );
     });
   }
   getRouteAnimationData() {
-    return this.contexts.getContext('primary')?.route?.snapshot?.data?.['animation'];
+    return this.contexts.getContext('primary')?.route?.snapshot?.data?.[
+      'animation'
+    ];
   }
 }
