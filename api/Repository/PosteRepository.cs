@@ -37,9 +37,9 @@ namespace api.Repository
 
             if(!string.IsNullOrWhiteSpace(queryObject.titre))
             {
-               poste = poste.Where(x => x.Titre.Equals(queryObject.titre));
+               poste = poste.Where(x => EF.Functions.Like(x.Titre, $"%{queryObject.titre}%"));
             }
-            
+
             return Result<List<Poste>>.Success(await poste.ToListAsync());
         }
 
