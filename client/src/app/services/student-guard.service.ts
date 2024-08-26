@@ -12,19 +12,23 @@ import Swal from 'sweetalert2';
 })
 export class StudentGuardService {
   constructor(private _router: Router, private authService: AuthService) {}
+
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     this.authService.$IsStudent.subscribe(($IsStudent) => {
-      if ($IsStudent) {
-        return true;
-      } else {
-        Swal.fire({
-          title: 'UnAuthorized',
-          text: `You should be a Student`,
-          icon: 'error',
-        });
-        this._router.navigate(['/auth/login']);
-        return false;
-      }
+      
+      this.authService.$IsTeacher.subscribe(($IsTeacher) => {
+        if ($IsStudent || $IsTeacher) { 
+          return true;
+        } else {
+          Swal.fire({
+            title: 'UnAuthorized',
+            text: `You should be a Student or a Teacher`,
+            icon: 'error',
+          });
+          this._router.navigate(['/auth/login']);
+          return false;
+        }
+      });
     });
   }
 }

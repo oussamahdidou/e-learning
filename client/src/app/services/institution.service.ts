@@ -21,4 +21,41 @@ export class InstitutionService {
   getModules(id: number): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/api/NiveauScolaire/${id}`);
   }
+<<<<<<< HEAD
+  ////////////////
+
+
+  getObjetsPedagogiques(id: number): Observable<any> {
+    console.log(`Calling API: ${environment.apiUrl}/api/ElementPedagogique/${id}`);
+    return this.http.get<any>(`${environment.apiUrl}/api/ElementPedagogique/${id}`);
+  }
+  
+  
+    createElementPedagogique(elementDto: any): Observable<any> {
+      return this.http.post<any>(`${environment.apiUrl}/api/ElementPedagogique`, elementDto);
+    }
+=======
+
+  // Nouvelle méthode pour récupérer un objet pédagogique spécifique
+  //getObjectPedagogique(id: number): Observable<any> {
+   // return this.http.get<any>(`${environment.apiUrl}/api/ObjectPedagogique/${id}`);
+  //}
+  //getObjetsPedagogiques(id: number): Observable<any> {
+   // return this.http.get<any>(`${environment.apiUrl}/api/ElementPedagogique/${id}`);
+  //}
+  //getObjetsPedagogiques(id: number): Observable<any> {
+    //console.log(`Calling API: ${environment.apiUrl}/api/ElementPedagogique/${id}`);
+    //return this.http.get<any>(`${environment.apiUrl}/api/ElementPedagogique/${id}`);
+ // }
+
+ getObjetsPedagogiques(id: number): Observable<any> {
+  console.log(`Calling API: ${environment.apiUrl}/api/ElementPedagogique/${id}`);
+  return this.http.get<any>(`${environment.apiUrl}/api/ElementPedagogique/${id}`);
+}
+
+
+  createElementPedagogique(elementDto: any): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/api/ElementPedagogique`, elementDto);
+  }
+>>>>>>> MANAL
 }

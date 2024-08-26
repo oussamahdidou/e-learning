@@ -134,7 +134,7 @@ builder.Services.AddScoped<IExamFinalRepository, ExamFinalRepository>();
 builder.Services.AddScoped<IUserCenterInterface, UserCenterRepository>();
 builder.Services.AddScoped<IResultExamRepository, ResultExamRepository>();
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
-builder.Services.AddScoped<IParagrapheRepository, ParagrapheRepository>();
+builder.Services.AddScoped<IElementPedagogiqueRepository, ElementPedagogiqueRepository >();
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
 
 var app = builder.Build();
