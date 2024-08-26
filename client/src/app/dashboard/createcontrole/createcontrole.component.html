@@ -10,14 +10,12 @@
 
       <div class="mb-3">
         <label for="enonce" class="form-label">Énoncé du contrôle</label>
-        <input id="enonce" type="file" accept="application/pdf" (change)="onFileChange($event, 'enonce')"
-          class="form-control" required />
+        <input id="enonce" type="file" (change)="onFileChange($event, 'enonce')" class="form-control" required />
       </div>
 
       <div class="mb-3">
         <label for="solution" class="form-label">Solution du contrôle</label>
-        <input id="solution" type="file" accept="application/pdf" (change)="onFileChange($event, 'solution')"
-          class="form-control" required />
+        <input id="solution" type="file" (change)="onFileChange($event, 'solution')" class="form-control" required />
       </div>
 
 
