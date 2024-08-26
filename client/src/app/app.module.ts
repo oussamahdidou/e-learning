@@ -38,6 +38,7 @@ import { ProfileModule } from './profile/profile.module';
 import { LearningComponent } from './profile/learning/learning.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { LoginComponent } from './auth/login/login.component';
+import { EspaceProfModule } from './espaceprof/espaceprof.module';
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   
@@ -69,6 +70,9 @@ import { LoginComponent } from './auth/login/login.component';
     VgBufferingModule,
     MatStepperModule,
     TruncatePipe,
+    EspaceProfModule,
+   
+    
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

@@ -1,0 +1,43 @@
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card p-4 shadow-lg" style="width: 500px;">
+      <!-- Image en haut de la carte -->
+      <div class="card-img-top">
+        <img src="image.jpg" class="img-fluid" alt="" style="max-height: 200px; object-fit: cover;">
+      </div>
+      <div class="card-body">
+        <h3 class="card-title text-center mb-4">Ajouter un Element Pedagogique</h3>
+  
+        <form [formGroup]="elementForm" (ngSubmit)="onSubmit()">
+          <div class="form-group mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" id="nom" formControlName="nom" class="form-control" required />
+          </div>
+  
+          <div class="form-group mb-3">
+            <label for="lien" class="form-label">Lien</label>
+            <input type="text" id="lien" formControlName="lien" class="form-control" required />
+          </div>
+  
+          <div class="d-flex mb-3">
+            <div class="form-group me-2" style="flex: 1;">
+              <label for="niveauScolaireId" class="form-label">Niveau Scolaire ID</label>
+              <input type="number" id="niveauScolaireId" formControlName="niveauScolaireId" class="form-control" required />
+            </div>
+          </div>
+          <button type="submit" class="btn explore-button w-100" [disabled]="!elementForm.valid">Ajouter Élément Pédagogique</button>
+          
+
+
+          <!-- Messages de succès et d'erreur -->
+          <div *ngIf="successMessage" class="alert alert-success mt-3">
+            {{ successMessage }}
+          </div>
+  
+          <div *ngIf="errorMessage" class="alert alert-danger mt-3">
+            {{ errorMessage }}
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  

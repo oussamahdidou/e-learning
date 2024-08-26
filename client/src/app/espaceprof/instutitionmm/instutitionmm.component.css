@@ -1,0 +1,14 @@
+.explore-button {
+    font-family: "Nunito Sans", sans-serif;
+    font-weight: 800;
+    color: rgba(0, 0, 0, 0.8);
+    box-shadow: 4px 8px 20px rgba(0, 0, 0, 0.12);
+    border-radius: 20px;
+    background-color: #007bff; /* Couleur primaire de ton bouton */
+    padding: 10px 20px; /* Ajuste les espacements si nécessaire */
+  }
+  
+  .explore-button:hover {
+    background-color: #0056b3; /* Couleur du bouton au survol */
+  }
+  

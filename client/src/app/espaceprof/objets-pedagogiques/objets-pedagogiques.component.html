@@ -1,0 +1,24 @@
+<div class="container-fluid mt-5">
+  <h4 class="text-center">Objets Pédagogiques Disponibles "</h4>
+  <div *ngIf="objetsPedagogiques.length > 0; else noData" class="row">
+    <div *ngFor="let objet of objetsPedagogiques" class="col-lg-4 mb-3">
+      <div class="card">
+        <div class="card-body">
+          
+          
+          <img src="img\instutition.png" class="img-fluid">
+         
+          <h5 class="card-title">{{ objet.nom }}</h5>
+          <a [href]="objet.lien" class="btn btn-primary explore-button" target="_blank">Télécharger</a>
+
+          <button [routerLink]="'/espaceprof/ElementPedagogique/' + objet.id" mat-raised-button class="btn btn-primary explore-button">
+            Ajouter un Élément Pédagogique
+          </button> 
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template #noData>
+    <p class="text-center">Aucun objet pédagogique disponible pour ce niveau scolaire.</p>
+  </ng-template>
+</div>
