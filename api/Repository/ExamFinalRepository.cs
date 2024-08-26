@@ -49,6 +49,7 @@ namespace api.Repository
                 Ennonce = enonceUrl,
                 Solution = solutionUrl,
                 Status = createExamFinalDto.Status,
+                TeacherId = createExamFinalDto.TeacherId
 
             };
             await apiDbContext.AddAsync(examFinal);
@@ -186,6 +187,11 @@ namespace api.Repository
                 {
                     return false;
                 }
+                var controleContainer = "controle-container";
+
+                await blobStorageService.DeleteFileAsync(controleContainer, new Uri(examFinal.Ennonce).Segments.Last());
+                await blobStorageService.DeleteFileAsync(controleContainer, new Uri(examFinal.Solution).Segments.Last());
+
                 module.ExamFinalId = null;
                 apiDbContext.examFinals.Remove(examFinal);
                 await apiDbContext.SaveChangesAsync();

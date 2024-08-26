@@ -22,6 +22,7 @@ export interface Chapitre {
   nom: string;
   statue: boolean;
   coursPdfPath: string | null;
+  studentCoursParagraphes : number[] | null
   videoPath: string | null;
   synthese: string | null;
   schema: string | null;

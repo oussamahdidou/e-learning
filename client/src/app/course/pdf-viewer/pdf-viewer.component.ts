@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 import { SharedDataService } from '../../services/shared-data.service';
 import Swal from 'sweetalert2';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-pdf-viewer',
@@ -12,7 +13,7 @@ import Swal from 'sweetalert2';
   styleUrls: ['./pdf-viewer.component.css'],
 })
 export class PdfViewerComponent {
-  pdfUrl: string | undefined;
+  pdfUrl: string = '';
   isExam: boolean = false;
   isControleFinal: boolean = false;
   exam: any;
@@ -23,13 +24,17 @@ export class PdfViewerComponent {
   devoirExists: boolean = false;
   id: number = 0;
   res: any;
+  urls: any;
+  extension: string = '';
+  sanitizedDocUrl?: SafeResourceUrl;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private courseService: CourseService,
     private errorHandlingService: ErrorHandlingService,
-    private shared: SharedDataService
+    private shared: SharedDataService,
+    private sanitizer: DomSanitizer
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +45,7 @@ export class PdfViewerComponent {
         const routePath = this.route.snapshot.routeConfig?.path;
 
         if (routePath?.includes('cour')) {
-          this.loadCourPdf();
+          this.loadParagrapheUrl();
           this.shared.setActiveDiv(`cour/${this.id}`);
         } else if (routePath?.includes('synthese')) {
           this.loadSynthesePdf();
@@ -65,11 +70,20 @@ export class PdfViewerComponent {
     });
   }
 
+  public loadDoc(path: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      'https://view.officeapps.live.com/op/embed.aspx?src=' + path
+    );
+  }
+
   // Load Methods
-  private loadCourPdf() {
-    this.courseService.getCourPdfUrlById(this.id).subscribe(
+  private loadParagrapheUrl() {
+    this.courseService.getParagrapheUrlById(this.id).subscribe(
       (url) => {
         this.pdfUrl = url;
+        this.urls = url.split('.').length;
+        this.extension = url.split('.')[this.urls - 1];
+        console.log(this.extension);
       },
       (error) => {
         this.errorHandlingService.handleError(
@@ -85,6 +99,9 @@ export class PdfViewerComponent {
       (url) => {
         if (url) {
           this.pdfUrl = url;
+          this.urls = url.split('.').length;
+          this.extension = url.split('.')[this.urls - 1];
+          console.log(this.extension);
         }
       },
       (error) => {
@@ -100,6 +117,9 @@ export class PdfViewerComponent {
       (url) => {
         if (url) {
           this.pdfUrl = url;
+          this.urls = url.split('.').length;
+          this.extension = url.split('.')[this.urls - 1];
+          console.log(this.extension);
         }
       },
       (error) => {
@@ -114,8 +134,10 @@ export class PdfViewerComponent {
   private loadExamPdf() {
     this.courseService.getControleById(this.id).subscribe(
       (url) => {
-        this.pdfUrl = url?.ennonce;
+        this.pdfUrl = url.ennonce;
         this.exam = url;
+        this.urls = url.ennonce.split('.').length;
+        this.extension = url.ennonce.split('.')[this.urls - 1];
         this.isDevoirExists(this.id);
       },
       (error) => {
@@ -132,6 +154,8 @@ export class PdfViewerComponent {
       (url) => {
         this.pdfUrl = url.ennonce;
         this.exam = url;
+        this.urls = url.ennonce.split('.').length;
+        this.extension = url.ennonce.split('.')[this.urls - 1];
         this.idControleFinalExists(this.id);
       },
       (error) => {

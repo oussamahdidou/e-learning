@@ -23,5 +23,7 @@ namespace api.Dtos.Chapitre
         public string Statue { get; set; } = ObjectStatus.Pending;
         public int ModuleId { get; set; }
         public int QuizId { get; set; }
+        public string? TeacherId { get; set; }
+
     }
 }

@@ -19,5 +19,7 @@ namespace api.Model
         public DateTime? Teacher_DateDeNaissance { get; set; }
         public string? Teacher_Etablissement { get; set; }
         public string? JustificatifDeLaProfession {get; set;}
+        public List<Poste> Postes { get; set; } = new List<Poste>();
+        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }

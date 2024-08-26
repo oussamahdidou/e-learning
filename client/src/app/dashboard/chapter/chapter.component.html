@@ -30,116 +30,144 @@
         </button>
         }}
       </h4>
-      <ng-template matStepLabel> CoursPdf </ng-template>
-      <h4>
-        CoursPdf @if (authservice.$IsAdmin|async) {
-        <button mat-raised-button color="primary" (click)="Pdf.click()">
-          Modifier Pdf</button
-        >}
-      </h4>
-      <input
-        type="file"
-        #Pdf
-        (change)="SelectPdf($event)"
-        style="display: none"
-      />
-      <div class="pdf-container w-75 px-5 mx-auto">
-        <pdf-viewer
-          src="{{ chapitre.coursPdfPath }}"
-          [render-text]="true"
-          [original-size]="false"
-          style="width: 100%; height: 700px"
-        >
-        </pdf-viewer>
+      <ng-template matStepLabel> Cours Etudiant </ng-template>
+      @if (authservice.$IsAdmin|async) {
+      <input type="file" name="" #courseparagraphe id="" class="d-none" (change)="SelectStudentParagraphe($event)">
+      <button mat-raised-button color="primary" (click)="courseparagraphe.click()">Ajouter
+        Paragraphe</button>}
+      <h4>Cours Etudiant</h4>
+      <div class=" row justify-content-center align-items-center gap-4 pt-5">
+        @if (studentCourse) {
+        @for (item of studentCourse.paragraphes; track $index) {
+        <div class=" col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
+          <h5> Paragraphe{{ $index +1}}</h5>
+          <p>paragraphe du cours du chapitre {{chapitre.nom}}</p>
+          <div class="d-flex  align-items-center gap-1">
+            <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
+            @if (authservice.$IsAdmin|async) {
+            <button class="btn  btn-danger" (click)="deleteparagraphe(item.id)">Supprimer</button>
+
+            }
+          </div>
+        </div>
+        }
+        }
+      </div>
+
+
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel> Cours Profeseur </ng-template>
+      @if (authservice.$IsAdmin|async) {
+      <input type="file" name="" #teachercourseparagraphe id="" class="d-none"
+        (change)="SelectTeacherParagraphe($event)">
+      <button mat-raised-button color="primary" (click)="teachercourseparagraphe.click()">Ajouter
+        Paragraphe</button>}
+      <h4>Cours Professeur</h4>
+      <div class="row justify-content-center align-items-center gap-4 pt-5">
+        @if (teacherCourse) {
+        @for (item of teacherCourse.paragraphes; track $index) {
+        <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
+          <h5> Paragraphe{{ $index +1}}</h5>
+          <p>paragraphe du cours du chapitre {{chapitre.nom}}</p>
+          <div class="d-flex  align-items-center gap-1">
+            <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
+            @if (authservice.$IsAdmin|async) {
+            <button class="btn  btn-danger" (click)="deleteparagraphe(item.id)">Supprimer</button>
+
+            }
+          </div>
+        </div>
+        }}
+
       </div>
     </mat-step>
-
     <mat-step>
       <ng-template matStepLabel> CoursVideo </ng-template>
       <h4>
-        CoursVideo @if (authservice.$IsAdmin|async) {<button
-          mat-raised-button
-          color="primary"
-          (click)="Video.click()"
-        >
-          Modifier Video
+        CoursVideo @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Video.click()">
+          Modifier Video (Upload)
         </button>
+        <input type="file" #Video (change)="SelectVideo($event)" accept="video/*" style="display: none" />
+
+        <div>
+          <input class="form-control my-4" placeholder="Or enter video URL" [(ngModel)]="videoUrl" />
+          <button mat-raised-button color="primary" (click)="updateVideoWithLink()">
+            Update via Link
+          </button>
+        </div>
+
         }
       </h4>
-      <input
-        type="file"
-        #Video
-        (change)="SelectVideo($event)"
-        accept="video/*"
-        style="display: none"
-      />
 
-      <section class="video px-5 mt-3">
+      <section class="video px-5 mt-3 mx-auto d-flex justify-content-center align-items-center">
+        @if (isYoutubeLink) {
+        <iframe width="560" height="315" [src]="chapitre.videoPath | safeUrl" frameborder="0" allowfullscreen>
+        </iframe>
+        }
+        @else {
+
         <video class="img-fluid" controls>
           <source src="{{ chapitre.videoPath }}" type="video/mp4" />
           <source src="{{ chapitre.videoPath }}" type="video/webm" />
           <source src="{{ chapitre.videoPath }}" type="video/ogg" />
           <source src="{{ chapitre.videoPath }}" type="video/ts" />
         </video>
+        }
+
       </section>
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel> Schema </ng-template>
       <h4>
-        Schema @if (authservice.$IsAdmin|async) {<button
-          mat-raised-button
-          color="primary"
-          (click)="Schema.click()"
-        >
+        Schema @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Schema.click()">
           Modifier Schema
         </button>
         }
       </h4>
-      <input
-        type="file"
-        #Schema
-        (change)="SelectSchema($event)"
-        style="display: none"
-      />
+      <input type="file" #Schema (change)="SelectSchema($event)" style="display: none" />
 
       <div class="pdf-container w-75 mx-auto">
-        <pdf-viewer
-          src="{{ chapitre.schema }}"
-          [render-text]="true"
-          [original-size]="false"
-          style="width: 100%; height: 700px"
-        >
+        @if (getFileType(chapitre.schema)=="pdf") {
+        <pdf-viewer src="{{ chapitre.schema }}" [render-text]="true" [original-size]="false"
+          style="width: 100%; height: 700px">
         </pdf-viewer>
+        }
+        @else if (getFileType(chapitre.schema)=="word") {
+        <iframe [src]="getViewerUrl(chapitre.schema)  | safeUrl" width="100%" height="700px"></iframe>}
+        @else if (getFileType(chapitre.schema)=="image") {
+        <img [src]="chapitre.schema" width="100%" height="700px" />}
+        @else if (getFileType(chapitre.schema)=="powerpoint") {
+        <iframe [src]="chapitre.schema | safeUrl" width="100%" height="700px"></iframe>
+
+        }
       </div>
     </mat-step>
 
     <mat-step>
       <ng-template matStepLabel> Synthese </ng-template>
       <h4>
-        Synthese @if (authservice.$IsAdmin|async) {<button
-          mat-raised-button
-          color="primary"
-          (click)="Synthese.click()"
-        >
+        Synthese @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Synthese.click()">
           Modifier Synthese
         </button>
         }
       </h4>
-      <input
-        type="file"
-        #Synthese
-        (change)="SelectSynthese($event)"
-        style="display: none"
-      />
+      <input type="file" #Synthese (change)="SelectSynthese($event)" style="display: none" />
       <div class="pdf-container w-75 mx-auto">
-        <pdf-viewer
-          src="{{ chapitre.synthese }}"
-          [render-text]="true"
-          [original-size]="false"
-          style="width: 100%; height: 700px"
-        >
+        @if (getFileType(chapitre.synthese)=="pdf") {
+        <pdf-viewer src="{{ chapitre.synthese }}" [render-text]="true" [original-size]="false"
+          style="width: 100%; height: 700px">
         </pdf-viewer>
+        }
+        @else if (getFileType(chapitre.synthese)=="word") {
+        <iframe [src]="getViewerUrl(chapitre.synthese)  | safeUrl" width="100%" height="700px"></iframe>}
+        @else if (getFileType(chapitre.synthese)=="image") {
+        <img [src]="chapitre.synthese" width="100%" height="700px" />}
+        @else if (getFileType(chapitre.synthese)=="powerpoint") {
+        <iframe [src]="chapitre.synthese | safeUrl" width="100%" height="700px"></iframe>
+
+        }
       </div>
     </mat-step>
 
@@ -171,79 +199,35 @@
       <form (ngSubmit)="onSubmit()" #quizForm="ngForm">
         <div class="mb-3">
           <label for="quizName" class="form-label">Quiz Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="quizName"
-            required
-            [(ngModel)]="quiz.nom"
-            name="quizName"
-          />
+          <input type="text" class="form-control" id="quizName" required [(ngModel)]="quiz.nom" name="quizName" />
         </div>
 
-        <div
-          *ngFor="let question of quiz.questions; let i = index"
-          class="mb-4"
-        >
+        <div *ngFor="let question of quiz.questions; let i = index" class="mb-4">
           <div class="mb-3">
-            <label for="questionText{{ i }}" class="form-label"
-              >Question {{ i + 1 }}</label
-            >
+            <label for="questionText{{ i }}" class="form-label">Question {{ i + 1 }}</label>
 
-            <input
-              type="text"
-              class="form-control"
-              id="questionText{{ i }}"
-              required
-              [(ngModel)]="question.nom"
-              name="questionText{{ i }}"
-            />
+            <input type="text" class="form-control" id="questionText{{ i }}" required [(ngModel)]="question.nom"
+              name="questionText{{ i }}" />
           </div>
 
-          <div
-            *ngFor="let option of question.options; let j = index"
-            class="input-group mb-2"
-          >
+          <div *ngFor="let option of question.options; let j = index" class="input-group mb-2">
             <div class="input-group-text">
-              <input
-                type="radio"
-                [name]="'correctOption' + i"
-                [checked]="option.truth"
-                (change)="setCorrectOption(i, j)"
-              />
+              <input type="radio" [name]="'correctOption' + i" [checked]="option.truth"
+                (change)="setCorrectOption(i, j)" />
             </div>
-            <input
-              type="text"
-              class="form-control"
-              [(ngModel)]="option.nom"
-              name="option{{ i }}-{{ j }}"
-              placeholder="Option {{ j + 1 }}"
-            />
+            <input type="text" class="form-control" [(ngModel)]="option.nom" name="option{{ i }}-{{ j }}"
+              placeholder="Option {{ j + 1 }}" />
             @if (authservice.$IsAdmin|async) {
-            <button
-              type="button"
-              class="btn btn-danger btn-sm"
-              (click)="deleteOption(i, j)"
-            >
-              Delete Option</button
-            >}
+            <button type="button" class="btn btn-danger btn-sm" (click)="deleteOption(i, j)">
+              Delete Option</button>}
           </div>
           @if (authservice.$IsAdmin|async) {
-          <button
-            type="button"
-            class="btn btn-secondary btn-sm"
-            (click)="addOption(i)"
-          >
+          <button type="button" class="btn btn-secondary btn-sm" (click)="addOption(i)">
             Add Option
           </button>
 
-          <button
-            type="button"
-            class="btn btn-danger btn-secondary btn-sm"
-            (click)="deleteQuestion(i)"
-          >
-            Delete Question</button
-          >}
+          <button type="button" class="btn btn-danger btn-secondary btn-sm" (click)="deleteQuestion(i)">
+            Delete Question</button>}
         </div>
         @if (authservice.$IsAdmin|async) {
         <button type="button" class="btn btn-secondary" (click)="addQuestion()">

@@ -14,7 +14,7 @@ namespace api.Dtos.Chapitre
         public int ChapitreNum { get; set; }
         public required string Nom { get; set; }
         public bool Statue { get; set; } = false;
-        public List<string?>? StudentCoursParagraphes { get; set; }
+        public List<int?>? StudentCoursParagraphes { get; set; }
         public required string VideoPath { get; set; }
         public required string Synthese { get; set; }
         public required string Schema { get; set; }

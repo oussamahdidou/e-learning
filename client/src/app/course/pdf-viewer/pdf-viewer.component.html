@@ -1,6 +1,8 @@
 <div class="container d-flex align-items-center flex-column">
   <div class="container d-flex align-items-center justify-content-between">
-    <h1>{{ isExam ? 'Controle' : isControleFinal ? 'Controle Final' : 'Lecture' }}</h1>
+    <h1>
+      {{ isExam ? "Controle" : isControleFinal ? "Controle Final" : "Lecture" }}
+    </h1>
     <ng-container *ngIf="isExam || isControleFinal">
       <button
         class="mx-5 rounded-pill btn-devoir px-4 --bs-danger-border-subtle"
@@ -20,7 +22,7 @@
       </button>
     </ng-container>
   </div>
-
+  @if(extension == 'pdf') {
   <div class="pdfcontainer">
     <pdf-viewer
       [src]="pdfUrl"
@@ -30,6 +32,25 @@
     >
     </pdf-viewer>
   </div>
+  } @if(extension == 'jpeg' ||extension == 'png' || extension == 'jpg'){
+  <div class="pdfcontainer">
+    <img [src]="pdfUrl" style="width: 100%" alt="" />
+  </div>
+  } @if(extension == 'doc' ||extension == 'docx' ){
+  <div class="pdfcontainer">
+    <iframe [src]="loadDoc(pdfUrl)" class="pdfcour" frameborder="0"></iframe>
+  </div>
+
+  } @if(extension == 'ppt' ||extension == 'pptx' ){
+  <div class="pdfcontainer">
+    <iframe
+      [src]="'https://view.officeapps.live.com/op/embed.aspx?src=' + pdfUrl"
+      class="pdfcour"
+      frameborder="0"
+    ></iframe>
+  </div>
+
+  }
 
   <!-- Modal -->
   <ng-container *ngIf="isExam || isControleFinal">

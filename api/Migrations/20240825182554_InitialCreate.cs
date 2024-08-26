@@ -45,6 +45,10 @@ namespace api.Migrations
                     JustificatifDeLaProfession = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Teacher_DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Granted = table.Column<bool>(type: "bit", nullable: true),
+                    Specialite = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastChapterProgressUpdate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ChapterProgress = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -243,6 +247,29 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "postes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Titre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fichier = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_postes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_postes_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "niveauScolaires",
                 columns: table => new
                 {
@@ -375,6 +402,33 @@ namespace api.Migrations
                         name: "FK_resultExams_examFinals_ExamFinalId",
                         column: x => x.ExamFinalId,
                         principalTable: "examFinals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Titre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PosteId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_comments_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_comments_postes_PosteId",
+                        column: x => x.PosteId,
+                        principalTable: "postes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -611,9 +665,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "8a41bb77-ea0e-4de7-a27e-8596f3dbac84", null, "Teacher", "TEACHER" },
-                    { "be6c2176-38a9-4d42-b8bd-90a66515101e", null, "Student", "STUDENT" },
-                    { "e94a9c8f-ebc0-40dd-963d-fe12a1adc070", null, "Admin", "ADMIN" }
+                    { "0b325af0-6aad-4f20-b0ca-aee88f1be5ba", null, "Admin", "ADMIN" },
+                    { "109bf94f-a1ff-4281-a942-f90b093cd39b", null, "Student", "STUDENT" },
+                    { "e4212f4f-6cf7-48bf-9562-bbbd0b6bc12b", null, "Teacher", "TEACHER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -681,6 +735,16 @@ namespace api.Migrations
                 column: "ChapitreId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_comments_AppUserId",
+                table: "comments",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_comments_PosteId",
+                table: "comments",
+                column: "PosteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_controles_TeacherId",
                 table: "controles",
                 column: "TeacherId");
@@ -731,6 +795,11 @@ namespace api.Migrations
                 column: "CoursId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_postes_AppUserId",
+                table: "postes",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_questions_QuizId",
                 table: "questions",
                 column: "QuizId");
@@ -778,6 +847,9 @@ namespace api.Migrations
                 name: "checkChapters");
 
             migrationBuilder.DropTable(
+                name: "comments");
+
+            migrationBuilder.DropTable(
                 name: "elementPedagogiques");
 
             migrationBuilder.DropTable(
@@ -806,6 +878,9 @@ namespace api.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "postes");
 
             migrationBuilder.DropTable(
                 name: "niveauScolaires");
