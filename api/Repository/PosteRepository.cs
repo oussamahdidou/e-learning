@@ -29,5 +29,19 @@ namespace api.Repository
 
             return Result<Poste>.Success(poste);
         }
+
+        public async Task<Result<List<Poste>>> GetAllPosts()
+        {
+            List<Poste> poste = await _context.postes.ToListAsync();
+            return Result<List<Poste>>.Success(poste);
+        }
+
+
+        public async Task<Result<List<Poste>>> GetUserPosts(AppUser user)
+        {
+            List<Poste> postes = await _context.postes.Where(x => x.AppUserId == user.Id).ToListAsync();
+
+            return Result<List<Poste>>.Success(postes);
+        }
     }
 }

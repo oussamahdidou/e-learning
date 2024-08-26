@@ -10,5 +10,9 @@ namespace api.interfaces
     public interface IPosteRepository
     {
         Task<Result<Poste>> GetPostById(int id);
+
+        Task<Result<List<Poste>>> GetAllPosts();
+
+        Task<Result<List<Poste>>> GetUserPosts(AppUser user);
     }
 }
