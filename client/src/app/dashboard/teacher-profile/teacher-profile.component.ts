@@ -33,6 +33,14 @@ export class TeacherProfileComponent implements OnInit {
       }
     };
   }
+  delete() {
+    this.authservice.deleteuser(this.teacherid).subscribe(
+      (response) => {
+        window.location.href = `/dashboard/teacherstable`;
+      },
+      (error) => {}
+    );
+  }
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.teacherid = params['id'];

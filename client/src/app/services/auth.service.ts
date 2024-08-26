@@ -1,4 +1,9 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -93,12 +98,12 @@ export class AuthService {
   }
 
   registeruser(
-    Nom:string,
-    Prenom:string,
-    DateDeNaissance:Date,
-    Etablissement:string,
-    Branche:string,
-    Niveaus:string,
+    Nom: string,
+    Prenom: string,
+    DateDeNaissance: Date,
+    Etablissement: string,
+    Branche: string,
+    Niveaus: string,
     userName: string,
     email: string,
     password: string,
@@ -127,25 +132,21 @@ export class AuthService {
       );
   }
 
-  teacherregisteruser(
-    formData: FormData,
-  ): Observable<any> {
+  teacherregisteruser(formData: FormData): Observable<any> {
     return this.http
-      .post(`${environment.apiUrl}/api/Account/TeacherRegister`,formData, {
-      })
+      .post(`${environment.apiUrl}/api/Account/TeacherRegister`, formData, {})
       .pipe(
         // catchError(this.handleError)
         tap<any>(
           (response) => {},
           (error) => {
-            formData.forEach(element => {
-              console.log('data : '+ element);
+            formData.forEach((element) => {
+              console.log('data : ' + element);
             });
-            
-            console.log('error : 1111111' + error.message); 
-            console.log('error : 2222222' + error.name); 
+
+            console.log('error : 1111111' + error.message);
+            console.log('error : 2222222' + error.name);
             console.log('error : 3333333' + error.stack);
-            
           }
         )
       );
@@ -218,8 +219,12 @@ export class AuthService {
         errorMessage = error.error.Message; // Custom error message from backend
       }
     }
-    console.log("error :::"+errorMessage);
+    console.log('error :::' + errorMessage);
     return throwError(() => new Error(errorMessage));
   }
+  deleteuser(id: string): Observable<any> {
+    return this.http.delete(
+      `${environment.apiUrl}/api/Account/deleteuser/${id}`
+    );
+  }
 }
-  
