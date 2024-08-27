@@ -40,6 +40,10 @@ namespace api.Repository
                poste = poste.Where(x => EF.Functions.Like(x.Titre, $"%{queryObject.titre}%"));
             }
 
+            // pagination
+            int skip = (queryObject.pageNumber - 1) * queryObject.pageSize;
+            poste = poste.Skip(skip).Take(queryObject.pageSize);
+
             return Result<List<Poste>>.Success(await poste.ToListAsync());
         }
 
