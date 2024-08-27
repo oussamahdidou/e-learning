@@ -18,7 +18,7 @@ export class TeacherProfileComponent implements OnInit {
   objects: any[] = [];
 
   @ViewChild(MatSort) sort!: MatSort;
-
+  HisAccount: boolean = false;
   teacherid!: string;
   teacher: any;
   constructor(
@@ -65,8 +65,6 @@ export class TeacherProfileComponent implements OnInit {
             );
           },
           (error) => {
-            console.log(error);
-
             Swal.fire('Error!', `${error.error}`, 'error');
           }
         );
@@ -76,16 +74,17 @@ export class TeacherProfileComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
       this.teacherid = params['id'];
+      this.HisAccount = this.authservice.token.unique_name === this.teacherid;
+      console.log(this.HisAccount);
+
       this.dashboardservice.getTeacherbyid(this.teacherid).subscribe(
         (response) => {
           this.teacher = response;
-          console.log(response);
         },
         (error) => {}
       );
       this.dashboardservice.getteacherobjects(this.teacherid).subscribe(
         (response) => {
-          console.log(response);
           this.dataSource = new MatTableDataSource(response);
           this.dataSource.sortingDataAccessor = (item, property) => {
             switch (property) {
