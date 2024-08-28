@@ -12,8 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
-
-using Microsoft.Extensions.DependencyInjection;
 using Azure.Storage.Blobs;
 
 
@@ -134,6 +132,8 @@ builder.Services.AddScoped<IExamFinalRepository, ExamFinalRepository>();
 builder.Services.AddScoped<IUserCenterInterface, UserCenterRepository>();
 builder.Services.AddScoped<IResultExamRepository, ResultExamRepository>();
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
+builder.Services.AddScoped<IParagrapheRepository, ParagrapheRepository>();
+builder.Services.AddScoped<IPosteRepository, PosteRepository>();
 builder.Services.AddScoped<IElementPedagogiqueRepository, ElementPedagogiqueRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
