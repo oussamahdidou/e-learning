@@ -1,0 +1,27 @@
+<app-navbar></app-navbar>
+
+<br>
+<br>
+
+<div class="container">
+  <div class="search-container">
+    <h2>Results Results for all</h2>
+
+    <div class="search-bar">
+      <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="filterPosts()" placeholder="Search..." />
+      <button (click)="onSearch()">🔍</button>
+    </div>
+  </div>
+
+  <div class="results">
+    <h2>Results</h2>
+    <div *ngFor="let post of filteredPosts" class="post-card">
+      <h3>
+        <a [routerLink]="['/path-to-post', post.id]" class="post-link">
+          {{ post.title }}
+        </a>
+      </h3>
+      <p>{{ post.type }}</p>
+    </div>
+  </div>
+</div>

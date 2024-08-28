@@ -27,7 +27,14 @@ const routes: Routes = [
     loadChildren: () =>
       import('./espaceprof/espaceprof.module').then((m) => m.EspaceProfModule),
   },
-
+  //////
+  {
+    path: 'forum',
+    canActivate: [DashboardGuardService],
+    loadChildren: () =>
+      import('./forum/forum.module').then((m) => m.ForumModule),
+  },
+  
   {
     path: 'module-info',
     canActivate: [StudentGuardService],
