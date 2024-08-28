@@ -2,6 +2,9 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PostCreateComponent } from './forum/post-create/post-create.component'; // Importez vos composants
+
+
 import { MatStepperModule } from '@angular/material/stepper';
 import {
   MAT_DIALOG_DATA,
@@ -39,6 +42,11 @@ import { LearningComponent } from './profile/learning/learning.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
 import { LoginComponent } from './auth/login/login.component';
 import { EspaceProfModule } from './espaceprof/espaceprof.module';
+//import { ForumModule } from './Forum/Forum.module';
+import { ForumModule } from './forum/forum.module';
+
+
+
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   
@@ -71,6 +79,8 @@ import { EspaceProfModule } from './espaceprof/espaceprof.module';
     MatStepperModule,
     TruncatePipe,
     EspaceProfModule,
+    ForumModule,
+ 
    
     
   ],
