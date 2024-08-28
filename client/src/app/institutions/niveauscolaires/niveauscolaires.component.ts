@@ -29,7 +29,7 @@ export class NiveauScolairesComponent implements OnInit {
       },
       (error) => {
         console.error("Erreur lors du chargement de l'institution", error);
-      }
-    );
-  }
+   }
+);
+}
 }

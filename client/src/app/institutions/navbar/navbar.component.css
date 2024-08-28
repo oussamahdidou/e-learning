@@ -8,19 +8,24 @@
   height: 57px;
   padding: 0 20px;
 }
+
 ul li {
   color: white;
 }
+
 .container {
   margin: 0 auto;
 }
+
 .navbar-brand {
   margin-left: 60px;
 }
+
 .navbar-brand,
 .module-name {
   color: white;
 }
+
 .module-name {
   font-weight: bold;
   text-align: center;
@@ -32,11 +37,13 @@ ul li {
   aspect-ratio: 1;
   border-radius: 0;
 }
+
 .navbar-nav {
   width: 100%;
   display: flex;
   justify-content: space-between;
 }
+
 .profile-circle-btn:hover {
   background-color: #fff;
   border-color: #fff;
@@ -49,6 +56,7 @@ ul li {
   margin-top: 5px;
   margin-right: 1rem;
 }
+
 .account {
   color: white;
 }
@@ -58,8 +66,10 @@ ul li {
   position: absolute;
   top: 100%;
   left: 0;
-  transform: translateX(-50%); /* Centers the dropdown menu */
-  margin-top: 0.5rem; /* Adjust as needed */
+  transform: translateX(-50%);
+  /* Centers the dropdown menu */
+  margin-top: 0.5rem;
+  /* Adjust as needed */
 }
 
 .dropdown-item {
@@ -69,6 +79,7 @@ ul li {
 .dropdown-item:hover {
   background-color: #00b33c;
 }
+
 .nav-item.dropdown {
   position: relative;
 }

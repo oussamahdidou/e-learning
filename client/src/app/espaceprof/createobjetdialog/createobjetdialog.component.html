@@ -1,0 +1,29 @@
+<div class="p-5">
+    <div class="modal-header ">
+        <h5 class="modal-title">Ajouter un Objet</h5>
+    </div>
+
+    <div class="modal-body">
+        <div class="mb-3">
+            <label for="textInput" class="form-label">Enter Text</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-pencil"></i></span>
+                <input type="text" id="textInput" class="form-control" [(ngModel)]="textInput"
+                    placeholder="Enter your text here" />
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="fileInput" class="form-label">Upload File</label>
+            <div class="input-group">
+                <span class="input-group-text"><i class="bi bi-paperclip"></i></span>
+                <input type="file" id="fileInput" class="form-control" (change)="onFileSelected($event)" />
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+        <button type="button" class="btn btn-primary" (click)="onSave()">Save</button>
+    </div>
+</div>
