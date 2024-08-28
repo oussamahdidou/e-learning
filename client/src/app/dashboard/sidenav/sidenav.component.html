@@ -121,6 +121,7 @@ l-168 3 0 110 0 109 -630 0 -630 0 0 -110z" />
       </svg>
       <b> Institutions</b>
     </span>
+    @if (authservice.$IsAdmin|async) {
     <span routerLink="/dashboard/approbtionstable" class="mx-auto nav-items w-100 py-3 ps-3">
       <svg fill="Currentcolor" height="40px" width="40px" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511 511" xml:space="preserve">
@@ -164,6 +165,7 @@ l-168 3 0 110 0 109 -630 0 -630 0 0 -110z" />
 
       <b> Approbations</b>
     </span>
+    }
     <!--espace prof-->
 
     <span routerLink="/espaceprof" class="mx-auto nav-items w-100 py-3 ps-3">

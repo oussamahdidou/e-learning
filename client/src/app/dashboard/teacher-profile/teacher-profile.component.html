@@ -1,6 +1,9 @@
+<app-navbar></app-navbar>
 <div class="container-fluid">
     <app-sidenav></app-sidenav>
+
     <div class="profile-container">
+
         <mat-stepper>
             <mat-step>
                 <ng-template matStepLabel>Profile page</ng-template>
@@ -20,7 +23,7 @@
                                 <p>etablissement : {{teacher.etablissement}}</p>
                                 <p>Date de naissance : {{teacher.dateDeNaissance|date}}</p>
                                 <div class="d-flex flex-column gap-3 justify-content-end align-items-end">
-                                    @if ((authservice.$IsAdmin|async) || authservice.token.id==teacherid) {
+                                    @if ((authservice.$IsAdmin|async) || HisAccount) {
                                     <button mat-flat-button color="warn" class="w-100 " (click)="delete()">
                                         Supprimer</button>
                                     } @if (authservice.$IsAdmin|async) {
