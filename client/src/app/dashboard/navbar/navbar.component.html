@@ -9,6 +9,8 @@
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
             @if (authservice.$IsTeacher|async) {
             <li><a class="dropdown-item" href="/dashboard/profile/{{teacherId}}">Profile</a></li>
+            <li><a class="dropdown-item" href="/dashboard/forum/posts">Forum</a></li>
+
             }
             <li><a class="dropdown-item" href="/auth/reset-password">Changer Password</a></li>
             <li>

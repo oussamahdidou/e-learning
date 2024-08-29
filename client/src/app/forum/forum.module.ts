@@ -5,17 +5,22 @@ import { FormsModule } from '@angular/forms';
 import { PostListComponent } from './post-list/post-list.component';
 import { PostCreateComponent } from './post-create/post-create.component';
 import { PostDetailsComponent } from './post-details/post-details.component';
-import { MatIconModule } from '@angular/material/icon'; 
+import { MatIconModule } from '@angular/material/icon';
 
 import { NavbarComponent } from './navbar/navbar.component';
-
+import { TruncatePipe } from '../pipes/truncate.pipe';
 
 const routes: Routes = [
   {
     path: '',
     children: [
       {
-        path: '',
+        path: 'posts', // Define the route for PostListComponent
+        component: PostListComponent,
+        title: 'PostList',
+      },
+      {
+        path: ':query', // Route with query parameter
         component: PostListComponent,
         title: 'PostList',
       },
@@ -38,18 +43,16 @@ const routes: Routes = [
     PostListComponent,
     PostCreateComponent,
     PostDetailsComponent,
-    NavbarComponent
+    NavbarComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
     MatIconModule,
-    RouterModule.forChild(routes)
+    RouterModule.forChild(routes),
+    TruncatePipe,
   ],
   //////
-  exports: [
-    NavbarComponent,
-   
-  ]
+  exports: [NavbarComponent],
 })
-export class ForumModule { }
+export class ForumModule {}
