@@ -1,17 +1,36 @@
-<div class="d-flex justify-content-between navbar">
-    <div class="navbar-brand">E-learning</div>
-    <div class="" id="navbarSupportedContent">
-      <ul class="navbar-nav d-flex flex-row justify-content-center">
-        <li class="nav-item dropdown">
-          <button class="btn ml-2" type="button" data-bs-toggle="dropdown">
-            <mat-icon class="account">perm_identity</mat-icon>
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="userDropdown">
-            <li><a class="dropdown-item" [routerLink]="['/profile/mylearning']">My Learning</a></li>
-            <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
-            <li><a class="dropdown-item" href="auth/reset-password">Reset Password</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+<nav class="d-flex justify-content-end px-3 py-3 w-100 m-0 align-items-center">
+  <div class="dropdown">
+    <a class="btn  dropdown-toggle  p-0 m-0" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+      aria-expanded="false">
+      <mat-icon>person</mat-icon>
+    </a>
+
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+      @if (authservice.$isloggedin|async) {
+      @if (authservice.$IsTeacher|async) {
+      <li><a class="dropdown-item" href="/dashboard/profile/{{teacherId}}">Profile</a></li>
+
+
+      }
+      @if ((authservice.$IsAdmin|async )||(authservice.$IsTeacher|async)) {
+      <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+
+      }
+      <li><a class="dropdown-item" href="/forum/posts">Forum</a></li>
+      <li><a class="dropdown-item" href="/auth/reset-password">Changer Password</a></li>
+      @if (authservice.$IsStudent|async) {
+      <li><a class="dropdown-item" href="/profile/mylearning">My Learning</a></li>
+
+      }
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+      }
+      @else {
+      <li><a class="dropdown-item" href="/auth/login">Signin</a></li>
+      <li><a class="dropdown-item" href="/auth/register">Signup</a></li>
+      }
+    </ul>
   </div>
+</nav>

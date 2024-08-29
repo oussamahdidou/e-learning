@@ -30,11 +30,10 @@ const routes: Routes = [
   //////
   {
     path: 'forum',
-    canActivate: [DashboardGuardService],
     loadChildren: () =>
       import('./forum/forum.module').then((m) => m.ForumModule),
   },
-  
+
   {
     path: 'module-info',
     canActivate: [StudentGuardService],

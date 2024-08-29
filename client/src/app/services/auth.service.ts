@@ -91,7 +91,9 @@ export class AuthService {
     if (role === 'Admin') {
       window.location.href = `/dashboard`;
     } else if (role === 'Teacher') {
-      window.location.href = `/dashboard`;
+      this.jwt = localStorage.getItem('token') || '';
+      this.token = this.getUser(this.jwt);
+      window.location.href = `/dashboard/profile/${this.token.unique_name}`;
     } else if (role === 'Student') {
       window.location.href = `/institutions`;
     }

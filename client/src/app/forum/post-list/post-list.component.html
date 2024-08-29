@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-<div class="container-fluid">
+<div class="container-fluid m-0 px-0">
   <div class="container mx-auto forum-container pt-5 pb-4">
     <div class="d-flex justify-content-center mx-auto align-items-center search-container px-2 ">
       <input type="text" class="search w-100" placeholder="Search for posts">
@@ -7,39 +7,48 @@
         <mat-icon>search</mat-icon>
       </button>
     </div>
-    <h5 class="result-title pt-5">Result For All Posts</h5>
+    <div class="d-flex justify-content-between align-items-center pt-5">
+      <h5 class="result-title m-0 p-0">Result For All Posts</h5>
+      <mat-form-field appearance="fill">
+        <mat-label>Sort By</mat-label>
+        <mat-select>
+          <mat-option value="most-responses">Most Responses</mat-option>
+          <mat-option value="recent">Recent</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
   </div>
-  <div class="container-fluid posts-container py-3">
+  <div class="container-fluid posts-container py-3 px-0 mx-">
 
     <div class="container row justify-content-center align-items-center mx-auto gap-3">
       <div class="col-12 post py-3 px-3">
         <h6 class="post-titre">Microsoft .NET Framework 4.8 offline installer for Windows</h6>
-        <p class="Author align-items-center d-flex"><mat-icon>create</mat-icon>
-          Microsoft Support</p>
+        <p class="Author align-items-center d-flex"><mat-icon>create</mat-icon> Microsoft Support</p>
         <p>{{description|truncate:285}}</p>
-        <p>17 reponses</p>
+        <p class="align-items-center d-flex"><mat-icon>forum</mat-icon> 17 reponses</p>
+
       </div>
       <div class="col-12 post py-3 px-3">
         <h6 class="post-titre">Microsoft .NET Framework 4.8 offline installer for Windows</h6>
-        <p class="Author align-items-center d-flex"><mat-icon>create</mat-icon>
-          Microsoft Support</p>
+        <p class="Author align-items-center d-flex"><mat-icon>create</mat-icon> Microsoft Support</p>
         <p>{{description|truncate:285}}</p>
-        <p>17 reponses</p>
+        <p class="align-items-center d-flex"><mat-icon>forum</mat-icon> 17 reponses</p>
+
       </div>
       <div class="col-12 post py-3 px-3">
         <h6 class="post-titre">Microsoft .NET Framework 4.8 offline installer for Windows</h6>
-        <p class="Author align-items-center d-flex"><mat-icon>create</mat-icon>
-          Microsoft Support</p>
+        <p class="Author align-items-center d-flex"><mat-icon>create</mat-icon> Microsoft Support</p>
         <p>{{description|truncate:285}}</p>
-        <p>17 reponses</p>
+        <p class="align-items-center d-flex"><mat-icon>forum</mat-icon> 17 reponses</p>
+
       </div>
       <div class="col-12 post py-3 px-3">
         <h6 class="post-titre">Microsoft .NET Framework 4.8 offline installer for Windows</h6>
-        <p class="Author align-items-center d-flex"><mat-icon>create</mat-icon>
-          Microsoft Support</p>
+        <p class="Author align-items-center d-flex"><mat-icon>create</mat-icon> Microsoft Support</p>
         <p>{{description|truncate:285}}</p>
-        <p>17 reponses</p>
+        <p class="align-items-center d-flex"><mat-icon>forum</mat-icon> 17 reponses</p>
+
       </div>
     </div>
   </div>

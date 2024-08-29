@@ -9,9 +9,14 @@
         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
             @if (authservice.$IsTeacher|async) {
             <li><a class="dropdown-item" href="/dashboard/profile/{{teacherId}}">Profile</a></li>
-            <li><a class="dropdown-item" href="/dashboard/forum/posts">Forum</a></li>
+
 
             }
+            @if ((authservice.$IsAdmin|async )||(authservice.$IsTeacher|async)) {
+            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+
+            }
+            <li><a class="dropdown-item" href="/forum/posts">Forum</a></li>
             <li><a class="dropdown-item" href="/auth/reset-password">Changer Password</a></li>
             <li>
                 <hr class="dropdown-divider">

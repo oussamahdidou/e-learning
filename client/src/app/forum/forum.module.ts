@@ -9,6 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { TruncatePipe } from '../pipes/truncate.pipe';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 
 const routes: Routes = [
   {
@@ -51,6 +54,9 @@ const routes: Routes = [
     MatIconModule,
     RouterModule.forChild(routes),
     TruncatePipe,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
   ],
   //////
   exports: [NavbarComponent],
