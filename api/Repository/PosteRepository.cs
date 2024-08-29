@@ -23,7 +23,7 @@ namespace api.Repository
         {
             Poste? poste = await _context.postes.FirstOrDefaultAsync(x => x.Id == id);
 
-            if(poste == null)
+            if (poste == null)
             {
                 return Result<Poste>.Failure("Poste not found");
             }
@@ -33,30 +33,27 @@ namespace api.Repository
 
         public async Task<Result<List<Poste>>> GetAllPosts(QueryObject queryObject)
         {
-            var poste =  _context.postes.Include(p => p.Comments).AsQueryable();
+            var poste = _context.postes.Include(p => p.Comments).Include(x => x.AppUser).AsQueryable();
 
-            if(!string.IsNullOrWhiteSpace(queryObject.titre))
+            if (!string.IsNullOrWhiteSpace(queryObject.Query))
             {
-               poste = poste.Where(x => EF.Functions.Like(x.Titre, $"%{queryObject.titre}%"));
+                poste = poste.Where(x => EF.Functions.Like(x.Titre, $"%{queryObject.Query}%") || EF.Functions.Like(x.Content, $"%{queryObject.Query}%"));
             }
 
-            if(!string.IsNullOrWhiteSpace(queryObject.contenu))
-            {
-               poste = poste.Where(x => EF.Functions.Like(x.Content, $"%{queryObject.contenu}%"));
-            }
 
-            if (queryObject.sortByMostComments)
+
+            if (queryObject.SortBy == "most-responses")
             {
                 poste = poste.OrderByDescending(p => p.Comments.Count);
             }
 
-            if(queryObject.sortByResent)
+            if (queryObject.SortBy == "recent")
             {
                 poste = poste.OrderByDescending(p => p.CreatedAt);
             }
             // pagination
-            int skip = (queryObject.pageNumber - 1) * queryObject.pageSize;
-            poste = poste.Skip(skip).Take(queryObject.pageSize);
+            int skip = (queryObject.PageNumber - 1) * queryObject.PageSize;
+            poste = poste.Skip(skip).Take(queryObject.PageSize);
 
             return Result<List<Poste>>.Success(await poste.ToListAsync());
         }
