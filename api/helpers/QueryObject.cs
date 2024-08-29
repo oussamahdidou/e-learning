@@ -16,5 +16,6 @@ namespace api.helpers
         public int pageSize = 20;
 
         public bool sortByMostComments { get; set; } = false;
+        public bool sortByResent { get; set; } = false;
     }
 }

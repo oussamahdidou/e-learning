@@ -50,6 +50,10 @@ namespace api.Repository
                 poste = poste.OrderByDescending(p => p.Comments.Count);
             }
 
+            if(queryObject.sortByResent)
+            {
+                poste = poste.OrderByDescending(p => p.CreatedAt);
+            }
             // pagination
             int skip = (queryObject.pageNumber - 1) * queryObject.pageSize;
             poste = poste.Skip(skip).Take(queryObject.pageSize);
