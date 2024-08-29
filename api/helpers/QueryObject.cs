@@ -11,18 +11,10 @@ namespace api.helpers
 
 
         public string? contenu {get; set;} = null;
-        private int _pageNumber = 1;
-         public int pageNumber 
-        { 
-            get => _pageNumber; 
-            set => _pageNumber = (value < 1) ? 1 : value; 
-        }
+        public int pageNumber = 1;
 
-        private int _pageSize = 20;
-        public int pageSize 
-        { 
-            get => _pageSize; 
-            set => _pageSize = (value < 1) ? 20 : value; 
-        }
+        public int pageSize = 20;
+
+        public bool sortByMostComments { get; set; } = false;
     }
 }

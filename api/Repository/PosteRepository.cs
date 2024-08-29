@@ -33,7 +33,7 @@ namespace api.Repository
 
         public async Task<Result<List<Poste>>> GetAllPosts(QueryObject queryObject)
         {
-            var poste =  _context.postes.AsQueryable();
+            var poste =  _context.postes.Include(p => p.Comments).AsQueryable();
 
             if(!string.IsNullOrWhiteSpace(queryObject.titre))
             {
@@ -43,6 +43,11 @@ namespace api.Repository
             if(!string.IsNullOrWhiteSpace(queryObject.contenu))
             {
                poste = poste.Where(x => EF.Functions.Like(x.Content, $"%{queryObject.contenu}%"));
+            }
+
+            if (queryObject.sortByMostComments)
+            {
+                poste = poste.OrderByDescending(p => p.Comments.Count);
             }
 
             // pagination
