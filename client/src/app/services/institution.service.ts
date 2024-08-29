@@ -37,4 +37,10 @@ export class InstitutionService {
       elementDto
     );
   }
+
+  //////////////
+
+  getUserPosts(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/getuserposts`);
+  }
 }
