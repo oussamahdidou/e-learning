@@ -13,6 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 const routes: Routes = [
   {
@@ -55,6 +56,7 @@ const routes: Routes = [
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
+    NgxSkeletonLoaderModule,
   ],
   //////
   exports: [NavbarComponent],

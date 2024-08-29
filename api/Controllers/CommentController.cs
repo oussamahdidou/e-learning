@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Comment;
+using api.Extensions;
 using api.generique;
 using api.helpers;
 using api.interfaces;
 using api.Model;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -16,13 +19,20 @@ namespace api.Controllers
     public class CommentController : ControllerBase
     {
         private readonly ICommentRepository commentRepository;
-        public CommentController(ICommentRepository commentRepository)
+        private readonly UserManager<AppUser> userManager;
+
+        public CommentController(ICommentRepository commentRepository, UserManager<AppUser> userManager)
         {
             this.commentRepository = commentRepository;
+            this.userManager = userManager;
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateComment([FromBody] CreateCommentDto createCommentDto)
         {
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            createCommentDto.UserId = appUser.Id;
             Result<Comment> result = await commentRepository.CreateComment(createCommentDto);
             if (result.IsSuccess)
             {

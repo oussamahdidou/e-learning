@@ -67,7 +67,7 @@ namespace api.Repository
         {
             try
             {
-                List<Comment> comments = await apiDbContext.comments.Where(x => x.PosteId == id).Skip((commentQuery.Page - 1) * 10).Take(10).ToListAsync();
+                List<Comment> comments = await apiDbContext.comments.Include(x => x.AppUser).Where(x => x.PosteId == id).Skip((commentQuery.Page - 1) * 10).Take(10).ToListAsync();
                 return Result<List<Comment>>.Success(comments);
             }
             catch (System.Exception ex)

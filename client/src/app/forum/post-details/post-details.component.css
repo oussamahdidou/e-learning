@@ -1,0 +1,40 @@
+.post-titre,
+.post-description {
+    font-family: "nunito sans";
+    font-weight: 600;
+    text-align: justify;
+}
+
+.textarea {
+    width: 100%;
+    height: 100px;
+    outline: none;
+    border: none;
+    background-color: #f1f1f1;
+}
+
+.comment-field {
+    border: 1px solid rgb(0, 0, 0);
+
+    overflow: hidden;
+    background-color: #f1f1f1;
+}
+
+.comment-field button {
+    background: #fff;
+    width: 50px;
+    height: 100px;
+    aspect-ratio: 1;
+    outline: none;
+    border: 1px solid black;
+
+
+}
+
+.comment {
+    background-color: #f1f1f1;
+}
+
+.comment-content {
+    text-align: justify;
+}

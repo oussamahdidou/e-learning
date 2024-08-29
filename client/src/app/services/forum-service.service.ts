@@ -26,4 +26,17 @@ export class ForumServiceService {
       }
     );
   }
+  GetpostById(id: number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/Poste/getposte/${id}`, {
+      headers: this.authservice.headers,
+    });
+  }
+  GetPostComments(id: number, page: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Comment/${id}?Page=${page}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

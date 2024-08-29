@@ -21,6 +21,8 @@ export class PostListComponent implements OnInit {
   posts: any[] = [];
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
+      this.loading = true;
+
       this.queryParams = params;
       this.searchinput = this.queryParams.query;
       if (params) {
@@ -35,8 +37,11 @@ export class PostListComponent implements OnInit {
               this.posts = response;
               console.log(this.posts);
               this.page++;
+              this.loading = false;
             },
-            (error) => {}
+            (error) => {
+              this.loading = false;
+            }
           );
       }
     });
@@ -62,7 +67,17 @@ export class PostListComponent implements OnInit {
       this.searchinput || ''
     }`;
   }
+  loading = false;
+  skeletonTheme = {
+    height: '50px',
+    borderRadius: '4px',
+    width: '100%',
+    animation: 'pulse',
+  };
+
   onScroll() {
+    if (this.loading) return; // Prevent multiple requests
+    this.loading = true;
     this.forumservice
       .GetAllPosts(
         this.searchinput,
@@ -75,8 +90,11 @@ export class PostListComponent implements OnInit {
           this.posts = [...this.posts, ...newItems];
           this.page++;
           console.log(this.posts);
+          this.loading = false;
         },
-        (error) => {}
+        (error) => {
+          this.loading = false;
+        }
       );
   }
 }

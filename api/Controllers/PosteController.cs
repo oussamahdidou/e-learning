@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Comment;
 using api.Extensions;
 using api.generique;
 using api.helpers;
@@ -30,9 +31,9 @@ namespace api.Controllers
         // [Authorize]
         public async Task<IActionResult> getPosteById([FromRoute] int id)
         {
-            Result<Poste> result = await _posteRepo.GetPostById(id);
+            Result<PosteDto> result = await _posteRepo.GetPostById(id);
 
-            if(result.IsSuccess)
+            if (result.IsSuccess)
             {
                 return Ok(result.Value);
             }
@@ -45,9 +46,9 @@ namespace api.Controllers
         // [Authorize]
         public async Task<IActionResult> getAllPosts([FromQuery] QueryObject queryObject)
         {
-            Result<List<Poste>> result = await _posteRepo.GetAllPosts(queryObject);
+            Result<List<PosteDto>> result = await _posteRepo.GetAllPosts(queryObject);
 
-            if(result.IsSuccess)
+            if (result.IsSuccess)
             {
                 return Ok(result.Value);
             }
@@ -63,14 +64,14 @@ namespace api.Controllers
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
 
-            if(user == null)
+            if (user == null)
             {
                 return BadRequest("User not found");
             }
 
             Result<List<Poste>> result = await _posteRepo.GetUserPosts(user);
 
-            if(result.IsSuccess)
+            if (result.IsSuccess)
             {
                 return Ok(result.Value);
             }
