@@ -7,15 +7,11 @@ namespace api.helpers
 {
     public class QueryObject
     {
-        public string? titre { get; set; } = null;
+        public string? Query { get; set; }
+        public int PageNumber { get; set; } = 1;
 
+        public int PageSize { get; set; } = 20;
 
-        public string? contenu {get; set;} = null;
-        public int pageNumber = 1;
-
-        public int pageSize = 20;
-
-        public bool sortByMostComments { get; set; } = false;
-        public bool sortByResent { get; set; } = false;
+        public string SortBy { get; set; } = "recent";
     }
 }

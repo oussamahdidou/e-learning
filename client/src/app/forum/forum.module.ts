@@ -12,6 +12,7 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 const routes: Routes = [
   {
@@ -22,11 +23,7 @@ const routes: Routes = [
         component: PostListComponent,
         title: 'PostList',
       },
-      {
-        path: ':query', // Route with query parameter
-        component: PostListComponent,
-        title: 'PostList',
-      },
+
       {
         path: 'posts/:id',
         component: PostDetailsComponent,
@@ -51,6 +48,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
+    InfiniteScrollDirective,
     MatIconModule,
     RouterModule.forChild(routes),
     TruncatePipe,
