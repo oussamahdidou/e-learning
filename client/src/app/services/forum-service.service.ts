@@ -26,4 +26,12 @@ export class ForumServiceService {
       }
     );
   }
-}
+  /////////////////
+  GetUserPosts(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Poste/getuserposts`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+}}

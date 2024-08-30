@@ -12,6 +12,7 @@ import { TruncatePipe } from '../pipes/truncate.pipe';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
+import { UserpostComponent } from './userpost/userpost.component';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 
 const routes: Routes = [
@@ -19,13 +20,13 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'posts', // Define the route for PostListComponent
+        path: '', // Define the route for PostListComponent
         component: PostListComponent,
         title: 'PostList',
       },
 
       {
-        path: '',
+        path: 'posts/:id',
         component: PostDetailsComponent,
         title: 'PostDetails',
       },
@@ -33,6 +34,11 @@ const routes: Routes = [
         path: 'create',
         component: PostCreateComponent,
         title: 'createpost',
+      },
+      {
+        path: 'user',
+        component: UserpostComponent,
+        title: 'userpost',
       },
     ],
   },
@@ -44,6 +50,7 @@ const routes: Routes = [
     PostCreateComponent,
     PostDetailsComponent,
     NavbarComponent,
+    UserpostComponent,
   ],
   imports: [
     CommonModule,
