@@ -32,6 +32,9 @@ namespace api.Repository
             Titre = poste.Titre,
             CommentsNumber = poste.Comments.Count(),
             CreatedAt = poste.CreatedAt,
+            Image = poste.Image,
+            Fichier = poste.Fichier,
+            IsAdminPoste = poste.AppUser is Admin,
         })
         .FirstOrDefaultAsync();
             if (poste == null)
@@ -41,7 +44,6 @@ namespace api.Repository
 
             return Result<PosteDto>.Success(poste);
         }
-
         public async Task<Result<List<PosteDto>>> GetAllPosts(QueryObject queryObject)
         {
             var posteQuery = _context.postes
@@ -51,7 +53,8 @@ namespace api.Repository
 
             if (!string.IsNullOrWhiteSpace(queryObject.Query))
             {
-                posteQuery = posteQuery.Where(x => EF.Functions.Like(x.Titre, $"%{queryObject.Query}%") || EF.Functions.Like(x.Content, $"%{queryObject.Query}%"));
+                posteQuery = posteQuery.Where(x => EF.Functions.Like(x.Titre, $"%{queryObject.Query}%")
+                                                || EF.Functions.Like(x.Content, $"%{queryObject.Query}%"));
             }
 
             if (queryObject.SortBy == "most-responses")
@@ -68,23 +71,34 @@ namespace api.Repository
             int skip = (queryObject.PageNumber - 1) * queryObject.PageSize;
             posteQuery = posteQuery.Skip(skip).Take(queryObject.PageSize);
 
-            // Projection to DTO
+            // Step 1: Project data from the database excluding IsAdminPoste
             var result = await posteQuery
-                .Select(p => new PosteDto
+                .Select(p => new
                 {
                     Id = p.Id,
                     Titre = p.Titre,
                     Content = p.Content,
                     CreatedAt = p.CreatedAt,
                     CommentsNumber = p.Comments.Count,
-                    Author = p.AppUser.UserName
-                    // Map other properties as needed
+                    Author = p.AppUser.UserName,
+                    AppUser = p.AppUser  // Include AppUser to check if it's Admin later
                 })
                 .ToListAsync();
 
-            return Result<List<PosteDto>>.Success(result);
-        }
+            // Step 2: Perform in-memory mapping for IsAdminPoste
+            var mappedResult = result.Select(p => new PosteDto
+            {
+                Id = p.Id,
+                Titre = p.Titre,
+                Content = p.Content,
+                CreatedAt = p.CreatedAt,
+                CommentsNumber = p.CommentsNumber,
+                Author = p.Author,
+                IsAdminPoste = p.AppUser is Admin  // Perform the type check in memory
+            }).ToList();
 
+            return Result<List<PosteDto>>.Success(mappedResult);
+        }
 
         public async Task<Result<List<Poste>>> GetUserPosts(AppUser user)
         {

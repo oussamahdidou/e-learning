@@ -33,7 +33,7 @@ namespace api.Controllers
             string username = User.GetUsername();
             AppUser? appUser = await userManager.FindByNameAsync(username);
             createCommentDto.UserId = appUser.Id;
-            Result<Comment> result = await commentRepository.CreateComment(createCommentDto);
+            Result<CommentDto> result = await commentRepository.CreateComment(createCommentDto);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
@@ -43,7 +43,7 @@ namespace api.Controllers
         [HttpPut]
         public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentDto updateCommentDto)
         {
-            Result<Comment> result = await commentRepository.UpdateComment(updateCommentDto);
+            Result<CommentDto> result = await commentRepository.UpdateComment(updateCommentDto);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
@@ -53,7 +53,7 @@ namespace api.Controllers
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetPosteComments([FromRoute] int id, [FromQuery] CommentQuery commentQuery)
         {
-            Result<List<Comment>> result = await commentRepository.GetCommentsByPost(id, commentQuery);
+            Result<List<CommentDto>> result = await commentRepository.GetCommentsByPost(id, commentQuery);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);
@@ -63,7 +63,7 @@ namespace api.Controllers
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteComment([FromRoute] int id)
         {
-            Result<Comment> result = await commentRepository.DeleteComment(id);
+            Result<CommentDto> result = await commentRepository.DeleteComment(id);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);

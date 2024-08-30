@@ -5,13 +5,20 @@
         <h4 class="post-titre">{{poste.titre}}
         </h4>
         <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{poste.author}}</p>
+        @if (poste.isAdminPoste) {
+        <p class="d-flex align-items-center" color="primary"><mat-icon color="primary">check_circle</mat-icon>
+            Admin
+            Poste
+        </p> }
         <div class="row container">
             <div class="col-lg-8">
                 <p class="post-description">
                     {{poste.content}} </p>
+                <!-- <img src="{{poste.image}}" alt="" class="img-fluid"> -->
                 <img src="https://blog.coursify.me/wp-content/uploads/2018/08/plan-your-online-course.jpg" alt=""
                     class="img-fluid">
-                <a href="file" download>Telecharger fichier</a>
+
+                <a href="{{poste.fichier}}" download>Telecharger fichier</a>
                 <div class="d-flex gap-2">
                     <button (click)="Supprimer(poste.id)" class="btn btn-danger">Supprimer</button>
                     <button data-bs-toggle="modal"
@@ -21,9 +28,11 @@
             <div class="col-lg-4"></div>
         </div>
         <div class="container pt-5">
-            <form class="comment-field d-flex justify-content-center align-items-center ps-3 pe-0">
-                <textarea class="p-3 textarea" name="" placeholder="Ajouter un commentaire ..." id=""></textarea>
-                <button class="d-flex justify-content-center align-items-center">
+            <form (ngSubmit)="AddComment()"
+                class="comment-field d-flex justify-content-center align-items-center ps-3 pe-0">
+                <textarea class="p-3 textarea" name="comment" [(ngModel)]="comment"
+                    placeholder="Ajouter un commentaire ..." id=""></textarea>
+                <button type="submit" class="d-flex justify-content-center align-items-center">
                     <mat-icon>send</mat-icon>
                 </button>
             </form>
@@ -37,9 +46,15 @@
             @for (item of comments; track $index) {
             <div class="col-8 comment py-3 ">
                 <div class="d-flex justify-content-between">
-                    <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{item.appUser.userName}}</p>
+                    <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{item.author}}</p>
+
                     <p class="d-flex align-items-center">{{item.createdAt|date}}</p>
                 </div>
+                @if (item.isAdminComment) {
+                <p class="d-flex align-items-center" color="primary"><mat-icon color="primary">check_circle</mat-icon>
+                    Admin
+                    Comment
+                </p> }
                 <p class="ps-3 comment-content">
                     {{item.titre}}
                 </p>

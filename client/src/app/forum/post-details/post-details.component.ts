@@ -10,6 +10,36 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './post-details.component.css',
 })
 export class PostDetailsComponent implements OnInit {
+  AddComment() {
+    this.authservice.$isloggedin.subscribe(($isloggedin) => {
+      if ($isloggedin) {
+        this.forumservice.AddComment(this.posteid, this.comment).subscribe(
+          (response) => {
+            this.comments.unshift(response);
+            this.comment = '';
+          },
+          (error) => {}
+        );
+      } else {
+        this.comment = '';
+        Swal.fire({
+          title: 'Please login',
+          text: 'You need to be logged',
+          timer: 3000,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Login',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = '/auth/login';
+          }
+        });
+      }
+    });
+  }
+  comment: string = '';
   constructor(
     private readonly forumservice: ForumServiceService,
     private readonly route: ActivatedRoute,

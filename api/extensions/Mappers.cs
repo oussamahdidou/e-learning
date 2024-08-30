@@ -97,16 +97,15 @@ namespace api.extensions
                 Count = teacher.Chapitres.Count() + teacher.Controles.Count() + teacher.ExamFinals.Count(),
             };
         }
-        public static PosteDto FromPosteToPosteDto(this Poste poste)
+        public static CommentDto FromCommentToCommentDto(this Comment Comment)
         {
-            return new PosteDto()
+            return new CommentDto()
             {
-                Id = poste.Id,
-                Author = poste.AppUser.UserName,
-                Content = poste.Content,
-                Titre = poste.Titre,
-                CommentsNumber = poste.Comments.Count(),
-                CreatedAt = poste.CreatedAt,
+                Id = Comment.Id,
+                Author = Comment.AppUser.UserName,
+                Titre = Comment.Titre,
+                CreatedAt = Comment.CreatedAt,
+                IsAdminComment = Comment.AppUser is Admin
             };
         }
     }

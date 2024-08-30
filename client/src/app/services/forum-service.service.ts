@@ -76,6 +76,25 @@ export class ForumServiceService {
       {
         headers: this.authservice.headers,
       }
+    ).pipe(
+        tap<any>(
+          (response) => {},
+          (error) => {
+          }
+        )
+      );
+    }
+  AddComment(id: number, content: string): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Comment`,
+      {
+        text: content,
+        posteId: id,
+        userId: 'string',
+      },
+      {
+        headers: this.authservice.headers,
+      }
     );
   }
 }
