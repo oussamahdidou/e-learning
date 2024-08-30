@@ -2,22 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { InstitutionService } from '../../services/institution.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ForumServiceService } from '../../services/forum-service.service';
-
-
-interface Poste {
-  id: number;
-  titre: string;
-  content: string;
-  image?: string;
-  fichier?: string;
-  createdAt: Date;
-  appUserId?: string;
-  comments: Comment[];
-}
-interface Comment {
-  Titre:  string ;
- }
- 
  
 
 @Component({
@@ -61,4 +45,4 @@ export class UserpostComponent implements OnInit {
   
   }
 
-  // ... Autres méthodes existantes (search, onSortChange, onScroll) ...
+ 
