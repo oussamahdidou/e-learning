@@ -13,8 +13,9 @@
                     class="img-fluid">
                 <a href="file" download>Telecharger fichier</a>
                 <div class="d-flex gap-2">
-                    <button class="btn btn-danger">Supprimer</button>
-                    <button class="btn btn-dark">Modifier</button>
+                    <button (click)="Supprimer(poste.id)" class="btn btn-danger">Supprimer</button>
+                    <button data-bs-toggle="modal"
+                    data-bs-target="#updatePostModal" class="btn btn-dark">Modifier</button>
                 </div>
             </div>
             <div class="col-lg-4"></div>
@@ -48,5 +49,65 @@
             }
         </div>
     </div>
+
+    <ng-container >
+        <div
+          class="modal fade"
+          id="updatePostModal"
+          tabindex="-1"
+          aria-labelledby="updatePostLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content d-flex">
+              <div class="modal-header">
+                <h5 class="modal-title" id="updatePostLabel">Update Post</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div
+                class="modal-body text-center d-flex align-items-center flex-column"
+              >
+              <form (ngSubmit)="updatePost()" >
+                <div class="mb-3">
+                  <label for="titre" class="form-label">Title</label>
+                  <input id="titre" type="text" class="form-control" [(ngModel)]="titre" name="titre" required>
+                </div>
+                <div class="mb-3">
+                  <label for="content" class="form-label">Content</label>
+                  <textarea id="content" class="form-control" [(ngModel)]="content" name="content" rows="3" required></textarea>
+                  
+                </div>
+                <div *ngIf="poste.image" class="mb-3">
+                    <img src="{{poste.image}}" alt=""
+                    class="img-fluid">
+                    <label for="image" class="form-label">Image</label>
+                    <input id="image" type="file" class="form-control" (change)="onImageSelected($event)">
+                </div>
+                <div *ngIf="poste.image == null" class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input id="image" type="file" class="form-control" (change)="onImageSelected($event)">
+                  </div>
+                <div *ngIf="poste.file" class="mb-3">
+                    <a href="{{poste.file}}" download>Votre fichier</a>
+                    <label for="file" class="form-label">File</label>
+                  <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
+                </div>
+                <div *ngIf="poste.image == null" class="mb-3">
+                  <label for="file" class="form-label">File</label>
+                  <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Post</button>
+              </form>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
 </div>
 }

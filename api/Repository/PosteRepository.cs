@@ -92,5 +92,27 @@ namespace api.Repository
 
             return Result<List<Poste>>.Success(postes);
         }
+
+        public async Task AddAsync(Poste poste)
+        {
+            _context.postes.Add(poste);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateAsync(Poste poste)
+        {
+            _context.postes.Update(poste);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var poste = await _context.postes.FindAsync(id);
+            if (poste != null)
+            {
+                _context.postes.Remove(poste);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

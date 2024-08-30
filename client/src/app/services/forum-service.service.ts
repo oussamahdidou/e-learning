@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AuthService } from './auth.service';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 
@@ -31,9 +31,48 @@ export class ForumServiceService {
       headers: this.authservice.headers,
     });
   }
+  GetUserPosts():Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/Poste/getuserposts`, {
+      headers: this.authservice.headers,
+    });
+  }
   GetPostComments(id: number, page: number): Observable<any> {
     return this.http.get(
       `${environment.apiUrl}/api/Comment/${id}?Page=${page}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  Delete(id:number): Observable<any>{
+    return this.http.delete(
+      `${environment.apiUrl}/api/Poste/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  Add(formData: FormData): Observable<any>{
+    return this.http.post(
+      `${environment.apiUrl}/api/Poste`,formData,
+      {
+        headers: this.authservice.headers,
+      }
+    ).pipe(
+      tap<any>(
+        (response) => {},
+        (error) => {
+
+          console.log('error : 1111111' + error.message);
+          console.log('error : 2222222' + error.name);
+          console.log('error : 3333333' + error.stack);
+        }
+      )
+    );
+  }
+  Update(formData: FormData): Observable<any>{
+    return this.http.put(
+      `${environment.apiUrl}/api/Poste/`,formData,
       {
         headers: this.authservice.headers,
       }
