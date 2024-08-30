@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using api.Dtos.Comment;
 using api.Dtos.dashboard;
 using api.Dtos.RequiredModules;
 using api.Model;
@@ -94,6 +95,17 @@ namespace api.extensions
             {
                 Name = $"{teacher.Nom} {teacher.Prenom}",
                 Count = teacher.Chapitres.Count() + teacher.Controles.Count() + teacher.ExamFinals.Count(),
+            };
+        }
+        public static CommentDto FromCommentToCommentDto(this Comment Comment)
+        {
+            return new CommentDto()
+            {
+                Id = Comment.Id,
+                Author = Comment.AppUser.UserName,
+                Titre = Comment.Titre,
+                CreatedAt = Comment.CreatedAt,
+                IsAdminComment = Comment.AppUser is Admin
             };
         }
     }
