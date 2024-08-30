@@ -10,5 +10,7 @@ namespace api.interfaces
     public interface IParagrapheRepository
     {
         Task<Result<Paragraphe>> GetCourById(int id);
+        Task<bool> DeletePAragraphe(int id);
+
     }
 }

@@ -1,4 +1,27 @@
 <nav class="d-flex justify-content-end px-3 py-3 w-100 m-0 align-items-center"
     style="background-color: rgb(70, 38, 206);">
-    <p (click)="logout()" class="text-white p-0 m-0 ">Logout</p>
+    <div class="dropdown">
+        <a class="btn btn-secondary dropdown-toggle text-white p-0 m-0" href="#" role="button" id="dropdownMenuLink"
+            data-bs-toggle="dropdown" aria-expanded="false" style="background-color: rgb(70, 38, 206); border: none;">
+            Account
+        </a>
+
+        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuLink">
+            @if (authservice.$IsTeacher|async) {
+            <li><a class="dropdown-item" href="/dashboard/profile/{{teacherId}}">Profile</a></li>
+
+
+            }
+            @if ((authservice.$IsAdmin|async )||(authservice.$IsTeacher|async)) {
+            <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+
+            }
+            <li><a class="dropdown-item" href="/forum/posts">Forum</a></li>
+            <li><a class="dropdown-item" href="/auth/reset-password">Changer Password</a></li>
+            <li>
+                <hr class="dropdown-divider">
+            </li>
+            <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+        </ul>
+    </div>
 </nav>

@@ -44,6 +44,10 @@ import {
 import { AdminGuardService } from '../services/admin-guard.service';
 import { DashboardGuardService } from '../dashboard-guard.service';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SafeUrlPipe } from '../pipes/safe-url.pipe';
+import { ParagrapheComponent } from './paragraphe/paragraphe.component';
+import { TeacherProfileComponent } from './teacher-profile/teacher-profile.component';
+import { CreateNiveauScolaireModuleDialogComponent } from './create-niveau-scolaire-module-dialog/create-niveau-scolaire-module-dialog.component';
 const routes: Routes = [
   {
     path: '',
@@ -65,7 +69,7 @@ const routes: Routes = [
       },
       {
         path: 'teacherstable',
-        canActivate: [AdminGuardService],
+        canActivate: [DashboardGuardService],
         component: TeachersComponent,
       },
       {
@@ -99,9 +103,19 @@ const routes: Routes = [
         component: ControleComponent,
       },
       {
+        path: 'paragraphe/:id',
+        canActivate: [DashboardGuardService],
+        component: ParagrapheComponent,
+      },
+      {
         path: '',
         canActivate: [DashboardGuardService],
         component: DashboardtableComponent,
+      },
+      {
+        path: 'profile/:id',
+        canActivate: [DashboardGuardService],
+        component: TeacherProfileComponent,
       },
     ],
   },
@@ -116,7 +130,7 @@ const routes: Routes = [
     SidenavComponent,
     ApprobationTableComponent,
     CreatecontroleComponent,
-
+    SafeUrlPipe,
     CreateChapterQuizComponent,
     ChapterComponent,
     ModuleComponent,
@@ -125,6 +139,9 @@ const routes: Routes = [
     UpdateControleChaptersDialogComponent,
     DashboardtableComponent,
     NavbarComponent,
+    ParagrapheComponent,
+    TeacherProfileComponent,
+    CreateNiveauScolaireModuleDialogComponent,
   ],
   imports: [
     CommonModule,

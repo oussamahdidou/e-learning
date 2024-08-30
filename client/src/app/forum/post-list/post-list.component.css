@@ -1,0 +1,55 @@
+/* .forum-container {} */
+
+.result-title {
+  font-size: 45px;
+  font-family: "Lato";
+  font-weight: 600;
+}
+
+.search-container {
+  border: 1px solid #000;
+  width: 500px;
+}
+
+.search {
+  height: 40px;
+  outline: none;
+  border: none;
+}
+
+.search-container i {
+  font-size: 35px;
+  font-weight: 100;
+}
+
+.search-container button {
+  outline: none;
+
+}
+
+.post-titre {
+  font-family: Lato;
+  font-weight: 600;
+  cursor: pointer;
+  color: #1e22f3;
+}
+
+.post-titre:hover {
+  text-decoration: underline;
+}
+
+.posts-container {
+  background-color: #ddd9d9;
+}
+
+.post {
+  background-color: #fff;
+}
+
+.Author {
+  cursor: pointer;
+}
+
+.Author:hover {
+  text-decoration: underline;
+}

@@ -2,6 +2,9 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { PostCreateComponent } from './forum/post-create/post-create.component'; // Importez vos composants
+
+
 import { MatStepperModule } from '@angular/material/stepper';
 import {
   MAT_DIALOG_DATA,
@@ -21,7 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { InstitutionsModule } from './institutions/institutions.module';
 import { CourseModule } from './course/course.module';
@@ -37,8 +40,16 @@ import { VgBufferingModule } from '@videogular/ngx-videogular/buffering';
 import { ProfileModule } from './profile/profile.module';
 import { LearningComponent } from './profile/learning/learning.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { LoginComponent } from './auth/login/login.component';
+import { EspaceProfModule } from './espaceprof/espaceprof.module';
+//import { ForumModule } from './Forum/Forum.module';
+import { ForumModule } from './forum/forum.module';
+
+
+
 @NgModule({
   declarations: [AppComponent, HomeComponent],
+  
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -48,6 +59,7 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     MatFormFieldModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     NgxSkeletonLoaderModule,
@@ -66,6 +78,11 @@ import { TruncatePipe } from './pipes/truncate.pipe';
     VgBufferingModule,
     MatStepperModule,
     TruncatePipe,
+    EspaceProfModule,
+    ForumModule,
+ 
+   
+    
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],

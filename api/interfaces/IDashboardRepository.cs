@@ -14,6 +14,9 @@ namespace api.interfaces
         Task<Result<List<GetChaptersDashboardByModuleDto>>> GetChaptersDashboardbyModule(int id);
         Task<Result<Chapitre>> GetDashboardChapiter(int id);
         Task<Result<List<PendingObjectsDto>>> GetObjectspourApprouver();
+        Task<Result<List<PendingObjectsDto>>> GetTeacherObjects(string TeacherId);
+        Task<Result<List<BarChartsDto>>> TopContributerTeachers();
+        Task<Result<List<BarChartsDto>>> WorstContributersTeachers();
         Task<Result<Teacher>> GrantTeacherAccess(string id);
         Task<Result<Teacher>> RemoveGrantTeacherAccess(string id);
         Task<Result<List<GetChapitresToUpdateControlesDto>>> GetChapitresToUpdateControles(int id);
@@ -22,6 +25,7 @@ namespace api.interfaces
         Task<Result<List<BarChartsDto>>> GetLeastCheckedModules();
         Task<Result<List<BarChartsDto>>> GetTopTestNiveauModules();
         Task<Result<List<BarChartsDto>>> GetWorstTestNiveauModules();
+        Task<bool> TeacherProgress(string TeacherId, NewProgress newProgress);
         Task<Result<StatsDto>> GetStats();
     }
 }

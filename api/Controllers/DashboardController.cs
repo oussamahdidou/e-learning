@@ -90,6 +90,16 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpGet("GetTeacherObjects/{id}")]
+        public async Task<IActionResult> GetTeacherObjects([FromRoute] string id)
+        {
+            Result<List<PendingObjectsDto>> result = await dashboardRepository.GetTeacherObjects(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
         [HttpGet("GetChapitresToUpdateControles/{id:int}")]
         public async Task<IActionResult> GetChapitresToUpdateControles([FromRoute] int id)
         {
@@ -159,6 +169,51 @@ namespace api.Controllers
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
+        }
+        [HttpGet("Teacher/{id}")]
+        public async Task<IActionResult> GetTeacherByid([FromRoute] string id)
+        {
+            try
+            {
+                AppUser? appUser = await userManager.FindByIdAsync(id);
+                if (appUser != null && appUser is Teacher)
+                {
+                    return Ok(appUser);
+                }
+                return BadRequest("Teacher not found");
+            }
+            catch (System.Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("TopTeachersContributors")]
+        public async Task<IActionResult> TopTeachersContributors()
+        {
+            Result<List<BarChartsDto>> result = await dashboardRepository.TopContributerTeachers();
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpGet("WorstTeachersContributors")]
+        public async Task<IActionResult> WorstTeachersContributors()
+        {
+            Result<List<BarChartsDto>> result = await dashboardRepository.WorstContributersTeachers();
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("TeacherProgress/{Id}")]
+
+        public async Task<IActionResult> UpdateTeacherChapterProgressAsync([FromRoute] string Id, [FromBody] NewProgress newProgress)
+        {
+            // Find the teacher by their ID
+            return Ok(await dashboardRepository.TeacherProgress(Id, newProgress));
         }
     }
 }

@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "59ddd8be-0865-4252-9bd6-8db3c10251fb",
+                            Id = "82ebea51-500f-404b-9a74-0630e0a774bf",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "db40b7ad-ea34-4a4f-b0f4-90ab8b541cf3",
+                            Id = "ac136eea-5b93-498b-bdc3-bc5e52defb63",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "5e3769ca-fb18-4514-afcf-ac31c64be6e2",
+                            Id = "a202fa39-50c2-4a4e-a23a-8c315674f128",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -183,9 +183,15 @@ namespace api.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
+                    b.Property<string>("Branche")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("DateDeNaissance")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -199,11 +205,23 @@ namespace api.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Etablissement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("JustificatifDeLaProfession")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Niveaus")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -222,7 +240,22 @@ namespace api.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<string>("Prenom")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Teacher_DateDeNaissance")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Teacher_Etablissement")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Teacher_Nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Teacher_Prenom")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -321,6 +354,36 @@ namespace api.Migrations
                     b.HasIndex("ChapitreId");
 
                     b.ToTable("checkChapters");
+                });
+
+            modelBuilder.Entity("api.Model.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("PosteId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Titre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.HasIndex("PosteId");
+
+                    b.ToTable("comments");
                 });
 
             modelBuilder.Entity("api.Model.Controle", b =>
@@ -595,6 +658,41 @@ namespace api.Migrations
                     b.ToTable("paragraphes");
                 });
 
+            modelBuilder.Entity("api.Model.Poste", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Fichier")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titre")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("postes");
+                });
+
             modelBuilder.Entity("api.Model.Question", b =>
                 {
                     b.Property<int>("Id")
@@ -723,29 +821,6 @@ namespace api.Migrations
                 {
                     b.HasBaseType("api.Model.AppUser");
 
-                    b.Property<string>("Branche")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("DateDeNaissance")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Etablissement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Niveaus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Prenom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasDiscriminator().HasValue("Student");
                 });
 
@@ -753,42 +828,22 @@ namespace api.Migrations
                 {
                     b.HasBaseType("api.Model.AppUser");
 
-                    b.Property<DateTime>("DateDeNaissance")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Etablissement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ChapterProgress")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Granted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("JustificatifDeLaProfession")
+                    b.Property<DateTime>("LastChapterProgressUpdate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Specialite")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nom")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Prenom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.ToTable("AspNetUsers", t =>
-                        {
-                            t.Property("DateDeNaissance")
-                                .HasColumnName("Teacher_DateDeNaissance");
-
-                            t.Property("Etablissement")
-                                .HasColumnName("Teacher_Etablissement");
-
-                            t.Property("Nom")
-                                .HasColumnName("Teacher_Nom");
-
-                            t.Property("Prenom")
-                                .HasColumnName("Teacher_Prenom");
-                        });
 
                     b.HasDiscriminator().HasValue("Teacher");
                 });
@@ -861,7 +916,7 @@ namespace api.Migrations
                         .HasForeignKey("QuizId");
 
                     b.HasOne("api.Model.Teacher", "Teacher")
-                        .WithMany()
+                        .WithMany("Chapitres")
                         .HasForeignKey("TeacherId");
 
                     b.Navigation("Controle");
@@ -892,10 +947,27 @@ namespace api.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("api.Model.Comment", b =>
+                {
+                    b.HasOne("api.Model.AppUser", "AppUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("AppUserId");
+
+                    b.HasOne("api.Model.Poste", "Poste")
+                        .WithMany("Comments")
+                        .HasForeignKey("PosteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Poste");
+                });
+
             modelBuilder.Entity("api.Model.Controle", b =>
                 {
                     b.HasOne("api.Model.Teacher", "Teacher")
-                        .WithMany()
+                        .WithMany("Controles")
                         .HasForeignKey("TeacherId");
 
                     b.Navigation("Teacher");
@@ -915,7 +987,7 @@ namespace api.Migrations
             modelBuilder.Entity("api.Model.ElementPedagogique", b =>
                 {
                     b.HasOne("api.Model.NiveauScolaire", "NiveauScolaire")
-                        .WithMany()
+                        .WithMany("ElementPedagogiques")
                         .HasForeignKey("NiveauScolaireId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -926,7 +998,7 @@ namespace api.Migrations
             modelBuilder.Entity("api.Model.ExamFinal", b =>
                 {
                     b.HasOne("api.Model.Teacher", "Teacher")
-                        .WithMany()
+                        .WithMany("ExamFinals")
                         .HasForeignKey("TeacherId");
 
                     b.Navigation("Teacher");
@@ -1010,6 +1082,15 @@ namespace api.Migrations
                         .IsRequired();
 
                     b.Navigation("Cours");
+                });
+
+            modelBuilder.Entity("api.Model.Poste", b =>
+                {
+                    b.HasOne("api.Model.AppUser", "AppUser")
+                        .WithMany("Postes")
+                        .HasForeignKey("AppUserId");
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("api.Model.Question", b =>
@@ -1099,6 +1180,13 @@ namespace api.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("api.Model.AppUser", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Postes");
+                });
+
             modelBuilder.Entity("api.Model.Chapitre", b =>
                 {
                     b.Navigation("CheckChapters");
@@ -1143,7 +1231,14 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Model.NiveauScolaire", b =>
                 {
+                    b.Navigation("ElementPedagogiques");
+
                     b.Navigation("NiveauScolaireModules");
+                });
+
+            modelBuilder.Entity("api.Model.Poste", b =>
+                {
+                    b.Navigation("Comments");
                 });
 
             modelBuilder.Entity("api.Model.Question", b =>
@@ -1169,6 +1264,15 @@ namespace api.Migrations
                     b.Navigation("ResultExams");
 
                     b.Navigation("TestNiveaus");
+                });
+
+            modelBuilder.Entity("api.Model.Teacher", b =>
+                {
+                    b.Navigation("Chapitres");
+
+                    b.Navigation("Controles");
+
+                    b.Navigation("ExamFinals");
                 });
 #pragma warning restore 612, 618
         }

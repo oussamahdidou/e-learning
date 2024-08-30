@@ -260,6 +260,7 @@ export class CreateChapterQuizComponent {
                 icon: 'success',
               }).then(() => {
                 console.log(response);
+                window.location.href = `/dashboard/module/${this.moduleId}`;
               });
             },
             (error) => {

@@ -470,4 +470,114 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  createparagraphe(paragraphe: any): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Chapitre/CreateParagraphe`,
+      paragraphe,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateparagraphe(paragraphe: any): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateParagraphe`,
+      paragraphe,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getparagraphebyid(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Chapitre/Paragraphe/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getTeacherbyid(id: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/Dashboard/Teacher/${id}`, {
+      headers: this.authservice.headers,
+    });
+  }
+  getteacherobjects(id: string): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/GetTeacherObjects/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  gettopteachers(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/TopTeachersContributors`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getworstteachers(): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Dashboard/WorstTeachersContributors`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getmodulesniveauscolaires(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Module/GetModulesNiveauScolaire/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  createmoduleniveauscolaire(
+    moduleId: number,
+    niveauScolaireId: number
+  ): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Module/CreateModuleNiveauScolaire`,
+      {
+        moduleId: moduleId,
+        niveauScolaireId: niveauScolaireId,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  deletemoduleniveauscolaire(
+    moduleId: number,
+    niveauScolaireId: number
+  ): Observable<any> {
+    return this.http.delete(
+      `${environment.apiUrl}/api/Module/DeleteNiveauScolaireModule/${moduleId}/${niveauScolaireId}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updatechapitreVideoWithLink(id: number, link: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateChapitreVideoLink`,
+      {
+        chapitreId: id,
+        link: link,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  deleteparagraphe(id: number): Observable<any> {
+    return this.http.delete(
+      `${environment.apiUrl}/api/Paragraphes/${id}`,
+
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

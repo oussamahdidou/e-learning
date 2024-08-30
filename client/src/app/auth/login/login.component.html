@@ -19,19 +19,23 @@
 
         <div class="card bg-glass">
           <div class="card-body px-4 py-5 px-md-5">
-            <form (submit)="login()">
+
+            <form [formGroup]="loginForm" (submit)="login()">
+              <div class="text-danger" *ngIf="loginForm.controls['userNameV'].invalid && (loginForm.controls['userNameV'].touched || loginForm.controls['userNameV'].dirty )">
+                <span *ngIf="loginForm.controls['userNameV'].errors?.['required']">Required field</span>
+              </div>
               <div data-mdb-input-init class="form-outline mb-4">
-                <label class="form-label" for="form3Example1">Username</label>
-                <input type="text" id="form3Example1" name="username" [(ngModel)]="username" placeholder="Enter your username" class="form-control" />
+                <label class="form-label" for="userNameV">Username</label>
+                <input type="text" id="userNameV" formControlName="userNameV" placeholder="Enter your username" class="form-control" />
               </div>
 
-              <div data-mdb-input-init class="form-outline mb-4">
-                <label class="form-label" for="form3Example2">Password</label>
-                <input type="password" id="form3Example2" name="password" [(ngModel)]="password" placeholder="Enter your password" class="form-control" />
+              <div class="text-danger" *ngIf="loginForm.controls['PasswordV'].invalid && (loginForm.controls['PasswordV'].touched || loginForm.controls['PasswordV'].dirty )">
+                <span *ngIf="loginForm.controls['PasswordV'].errors?.['required']">Required field</span>
               </div>
-
-
-              
+              <div data-mdb-input-init class="form-outline mb-4">
+                <label class="form-label" for="PasswordV">Password</label>
+                <input type="password" id="PasswordV" formControlName="PasswordV"  placeholder="Enter your password" class="form-control" />
+              </div>
 
 
               <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">

@@ -64,6 +64,7 @@ namespace api.Repository
                     Solution = solutionleUrl,
                     Nom = createControleDto.Nom,
                     Status = createControleDto.Statue,
+                    TeacherId = createControleDto.TeacherId
 
                 };
                 await apiDbContext.controles.AddAsync(controle);
@@ -251,6 +252,11 @@ namespace api.Repository
             Controle? controle = await apiDbContext.controles.FirstOrDefaultAsync(x => x.Id == id);
             if (controle != null)
             {
+                var controleContainer = "controle-container";
+
+                await _blobStorageService.DeleteFileAsync(controleContainer, new Uri(controle.Ennonce).Segments.Last());
+                await _blobStorageService.DeleteFileAsync(controleContainer, new Uri(controle.Solution).Segments.Last());
+
                 foreach (var chapitre in chapitres)
                 {
                     chapitre.ControleId = null;

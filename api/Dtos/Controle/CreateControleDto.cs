@@ -13,5 +13,6 @@ namespace api.Dtos.Controle
         public required IFormFile Solution { get; set; }
         public string Statue { get; set; } = ObjectStatus.Pending;
         public List<int> Chapters { get; set; } = new List<int>();
+        public string? TeacherId { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace api.Controllers
 
 
         [HttpGet("{id}")]
-         public async Task<IActionResult> GetNiveauScolaireById([FromRoute] int id)
+        public async Task<IActionResult> GetCourById([FromRoute] int id)
         {
             Result<Paragraphe> result = await paragrapheRepository.GetCourById(id);
             if (result.IsSuccess)
@@ -30,6 +30,12 @@ namespace api.Controllers
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
+        }
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteParagraphe([FromRoute] int id)
+        {
+            return Ok(await paragrapheRepository.DeletePAragraphe(id));
+
         }
     }
 }

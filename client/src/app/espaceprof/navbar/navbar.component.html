@@ -1,0 +1,28 @@
+<div class="d-flex justify-content-between navbar">
+  <div class="navbar-brand">E-learning</div>
+  <div class="" id="navbarSupportedContent">
+    <ul class="navbar-nav d-flex flex-row justify-content-center">
+      <li class="nav-item dropdown">
+        <button class="btn ml-2" type="button" data-bs-toggle="dropdown">
+          <mat-icon class="account">perm_identity</mat-icon>
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="userDropdown">
+          @if (authservice.$IsTeacher|async) {
+          <li><a class="dropdown-item" href="/dashboard/profile/{{teacherId}}">Profile</a></li>
+          }
+          @if ((authservice.$IsAdmin|async )||(authservice.$IsTeacher|async)) {
+          <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
+
+          }
+          <li><a class="dropdown-item" href="/forum/posts">Forum</a></li>
+          <li><a class="dropdown-item" href="/auth/reset-password">Changer Password</a></li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#" (click)="logout()">Logout</a></li>
+
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

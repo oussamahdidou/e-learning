@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,19 +32,23 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Etablissement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Branche = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Niveaus = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Teacher_Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Teacher_Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Teacher_DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Teacher_Etablissement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JustificatifDeLaProfession = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Teacher_DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     Granted = table.Column<bool>(type: "bit", nullable: true),
+                    Specialite = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LastChapterProgressUpdate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ChapterProgress = table.Column<int>(type: "int", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -243,6 +247,29 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "postes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Titre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Fichier = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_postes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_postes_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "niveauScolaires",
                 columns: table => new
                 {
@@ -375,6 +402,33 @@ namespace api.Migrations
                         name: "FK_resultExams_examFinals_ExamFinalId",
                         column: x => x.ExamFinalId,
                         principalTable: "examFinals",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Titre = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    PosteId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_comments_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_comments_postes_PosteId",
+                        column: x => x.PosteId,
+                        principalTable: "postes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -611,9 +665,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "59ddd8be-0865-4252-9bd6-8db3c10251fb", null, "Admin", "ADMIN" },
-                    { "5e3769ca-fb18-4514-afcf-ac31c64be6e2", null, "Student", "STUDENT" },
-                    { "db40b7ad-ea34-4a4f-b0f4-90ab8b541cf3", null, "Teacher", "TEACHER" }
+                    { "82ebea51-500f-404b-9a74-0630e0a774bf", null, "Admin", "ADMIN" },
+                    { "a202fa39-50c2-4a4e-a23a-8c315674f128", null, "Student", "STUDENT" },
+                    { "ac136eea-5b93-498b-bdc3-bc5e52defb63", null, "Teacher", "TEACHER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -681,6 +735,16 @@ namespace api.Migrations
                 column: "ChapitreId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_comments_AppUserId",
+                table: "comments",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_comments_PosteId",
+                table: "comments",
+                column: "PosteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_controles_TeacherId",
                 table: "controles",
                 column: "TeacherId");
@@ -731,6 +795,11 @@ namespace api.Migrations
                 column: "CoursId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_postes_AppUserId",
+                table: "postes",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_questions_QuizId",
                 table: "questions",
                 column: "QuizId");
@@ -778,6 +847,9 @@ namespace api.Migrations
                 name: "checkChapters");
 
             migrationBuilder.DropTable(
+                name: "comments");
+
+            migrationBuilder.DropTable(
                 name: "elementPedagogiques");
 
             migrationBuilder.DropTable(
@@ -806,6 +878,9 @@ namespace api.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "postes");
 
             migrationBuilder.DropTable(
                 name: "niveauScolaires");

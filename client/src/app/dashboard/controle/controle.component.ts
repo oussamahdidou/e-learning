@@ -13,6 +13,29 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './controle.component.css',
 })
 export class ControleComponent implements OnInit {
+  getFileType(filePath: string): string {
+    const extension = filePath.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'pdf':
+        return 'pdf';
+      case 'doc':
+      case 'docx':
+        return 'word';
+      case 'ppt':
+      case 'pptx':
+        return 'powerpoint';
+      case 'jpg':
+      case 'jpeg':
+      case 'png':
+      case 'gif':
+        return 'image';
+      default:
+        return 'unknown';
+    }
+  }
+  getViewerUrl(filePath: string): string {
+    return `https://docs.google.com/viewer?url=${filePath}&embedded=true`;
+  }
   SelectSolution(event: any) {
     const file: File = event.target.files[0];
     if (file) {
