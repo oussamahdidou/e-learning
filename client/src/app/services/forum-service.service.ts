@@ -39,4 +39,17 @@ export class ForumServiceService {
       }
     );
   }
+  AddComment(id: number, content: string): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Comment`,
+      {
+        text: content,
+        posteId: id,
+        userId: 'string',
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

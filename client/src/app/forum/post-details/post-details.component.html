@@ -20,9 +20,11 @@
             <div class="col-lg-4"></div>
         </div>
         <div class="container pt-5">
-            <form class="comment-field d-flex justify-content-center align-items-center ps-3 pe-0">
-                <textarea class="p-3 textarea" name="" placeholder="Ajouter un commentaire ..." id=""></textarea>
-                <button class="d-flex justify-content-center align-items-center">
+            <form (ngSubmit)="AddComment()"
+                class="comment-field d-flex justify-content-center align-items-center ps-3 pe-0">
+                <textarea class="p-3 textarea" name="comment" [(ngModel)]="comment"
+                    placeholder="Ajouter un commentaire ..." id=""></textarea>
+                <button type="submit" class="d-flex justify-content-center align-items-center">
                     <mat-icon>send</mat-icon>
                 </button>
             </form>
