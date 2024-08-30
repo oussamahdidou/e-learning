@@ -31,14 +31,14 @@ namespace api.Repository
             _blobStorageService = blobStorageService;
         }
 
-        private Chapitre GenerateSasUrls(Chapitre chapitre)
-        {
-            chapitre.Synthese = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(new Uri(chapitre.Synthese).LocalPath), TimeSpan.FromMinutes(5));
-            chapitre.Schema = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(new Uri(chapitre.Schema).LocalPath), TimeSpan.FromMinutes(5));
-            chapitre.VideoPath = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath), TimeSpan.FromMinutes(5));
+        // private Chapitre GenerateSasUrls(Chapitre chapitre)
+        // {
+        //     chapitre.Synthese = _blobStorageService.GenerateSasToken(syntheseContainer, Path.GetFileName(new Uri(chapitre.Synthese).LocalPath), TimeSpan.FromMinutes(5));
+        //     chapitre.Schema = _blobStorageService.GenerateSasToken(schemaContainer, Path.GetFileName(new Uri(chapitre.Schema).LocalPath), TimeSpan.FromMinutes(5));
+        //     chapitre.VideoPath = _blobStorageService.GenerateSasToken(videoContainer, Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath), TimeSpan.FromMinutes(5));
 
-            return chapitre;
-        }
+        //     return chapitre;
+        // }
 
         public async Task<Result<Chapitre>> Approuver(int id)
         {
@@ -51,7 +51,7 @@ namespace api.Repository
                 }
                 chapitre.Statue = ObjectStatus.Approuver;
                 await apiDbContext.SaveChangesAsync();
-                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+                return Result<Chapitre>.Success(chapitre);
             }
             catch (System.Exception ex)
             {
@@ -218,7 +218,7 @@ namespace api.Repository
                 // chapitre.CoursPdfPath = newPdfUrl;
                 // await apiDbContext.SaveChangesAsync();
 
-                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+                return Result<Chapitre>.Success(chapitre);
             }
             catch (Exception ex)
             {
@@ -247,7 +247,7 @@ namespace api.Repository
 
             // await apiDbContext.SaveChangesAsync();
 
-            // return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+            // return Result<Chapitre>.Success(chapitre);
 
         }
 
@@ -274,7 +274,7 @@ namespace api.Repository
                 chapitre.Schema = newSchemaUrl;
                 await apiDbContext.SaveChangesAsync();
 
-                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+                return Result<Chapitre>.Success(chapitre);
             }
             catch (Exception ex)
             {
@@ -304,7 +304,7 @@ namespace api.Repository
                 chapitre.Synthese = newSyntheseUrl;
                 await apiDbContext.SaveChangesAsync();
 
-                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+                return Result<Chapitre>.Success(chapitre);
             }
             catch (Exception ex)
             {
@@ -336,7 +336,7 @@ namespace api.Repository
                 chapitre.VideoPath = newVideoUrl;
                 await apiDbContext.SaveChangesAsync();
 
-                return Result<Chapitre>.Success(GenerateSasUrls(chapitre));
+                return Result<Chapitre>.Success(chapitre);
             }
             catch (Exception ex)
             {

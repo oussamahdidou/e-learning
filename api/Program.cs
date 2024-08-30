@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 
 using Microsoft.Extensions.DependencyInjection;
 using Azure.Storage.Blobs;
+using CloudinaryDotNet;
 
 
 
@@ -136,6 +137,7 @@ builder.Services.AddScoped<IResultExamRepository, ResultExamRepository>();
 builder.Services.AddScoped<IBlobStorageService, BlobStorageService>();
 builder.Services.AddScoped<IParagrapheRepository, ParagrapheRepository>();
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
+builder.Services.AddSingleton(x => new Cloudinary(builder.Configuration["Cloudinary:CloudinaryUrl"]));
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")
