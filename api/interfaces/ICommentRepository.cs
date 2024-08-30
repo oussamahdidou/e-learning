@@ -11,10 +11,10 @@ namespace api.interfaces
 {
     public interface ICommentRepository
     {
-        Task<Result<List<Comment>>> GetCommentsByPost(int id, CommentQuery commentQuery);
-        Task<Result<Comment>> CreateComment(CreateCommentDto createCommentDto);
-        Task<Result<Comment>> UpdateComment(UpdateCommentDto updateCommentDto);
-        Task<Result<Comment>> DeleteComment(int Id);
+        Task<Result<List<CommentDto>>> GetCommentsByPost(int id, CommentQuery commentQuery);
+        Task<Result<CommentDto>> CreateComment(CreateCommentDto createCommentDto);
+        Task<Result<CommentDto>> UpdateComment(UpdateCommentDto updateCommentDto);
+        Task<Result<CommentDto>> DeleteComment(int Id);
 
     }
 }

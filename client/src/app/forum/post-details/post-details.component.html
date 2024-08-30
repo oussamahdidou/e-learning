@@ -9,9 +9,8 @@
             <div class="col-lg-8">
                 <p class="post-description">
                     {{poste.content}} </p>
-                <img src="https://blog.coursify.me/wp-content/uploads/2018/08/plan-your-online-course.jpg" alt=""
-                    class="img-fluid">
-                <a href="file" download>Telecharger fichier</a>
+                <img src="{{poste.image}}" alt="" class="img-fluid">
+                <a href="{{poste.fichier}}" download>Telecharger fichier</a>
                 <div class="d-flex gap-2">
                     <button class="btn btn-danger">Supprimer</button>
                     <button class="btn btn-dark">Modifier</button>
@@ -38,9 +37,15 @@
             @for (item of comments; track $index) {
             <div class="col-8 comment py-3 ">
                 <div class="d-flex justify-content-between">
-                    <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{item.appUser.userName}}</p>
+                    <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{item.author}}</p>
+
                     <p class="d-flex align-items-center">{{item.createdAt|date}}</p>
                 </div>
+                @if (item.isAdminComment) {
+                <p class="d-flex align-items-center" color="primary"><mat-icon color="primary">check_circle</mat-icon>
+                    Admin
+                    Comment
+                </p> }
                 <p class="ps-3 comment-content">
                     {{item.titre}}
                 </p>
