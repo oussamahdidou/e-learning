@@ -1,1 +1,132 @@
+<<<<<<< HEAD
 <h1></h1>
+=======
+@if (poste) {
+<app-navbar></app-navbar>
+<div class="container-fluid">
+    <div class="container">
+        <h4 class="post-titre">{{poste.titre}}
+        </h4>
+        <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{poste.author}}</p>
+        @if (poste.isAdminPoste) {
+        <p class="d-flex align-items-center" color="primary"><mat-icon color="primary">check_circle</mat-icon>
+            Admin
+            Poste
+        </p> }
+        <div class="row container">
+            <div class="col-lg-8">
+                <p class="post-description">
+                    {{poste.content}} </p>
+                <!-- <img src="{{poste.image}}" alt="" class="img-fluid"> -->
+                <img src="https://blog.coursify.me/wp-content/uploads/2018/08/plan-your-online-course.jpg" alt=""
+                    class="img-fluid">
+
+                <a href="{{poste.fichier}}" download>Telecharger fichier</a>
+                <div class="d-flex gap-2">
+                    <button (click)="Supprimer(poste.id)" class="btn btn-danger">Supprimer</button>
+                    <button data-bs-toggle="modal"
+                    data-bs-target="#updatePostModal" class="btn btn-dark">Modifier</button>
+                </div>
+            </div>
+            <div class="col-lg-4"></div>
+        </div>
+        <div class="container pt-5">
+            <form (ngSubmit)="AddComment()"
+                class="comment-field d-flex justify-content-center align-items-center ps-3 pe-0">
+                <textarea class="p-3 textarea" name="comment" [(ngModel)]="comment"
+                    placeholder="Ajouter un commentaire ..." id=""></textarea>
+                <button type="submit" class="d-flex justify-content-center align-items-center">
+                    <mat-icon>send</mat-icon>
+                </button>
+            </form>
+            <p class="text-secondary pt-4 d-flex align-items-center">
+                {{poste.commentsNumber}} commentaires <mat-icon>forum</mat-icon>
+            </p>
+        </div>
+
+        <div class="container row justify-content-start align-items-center py-3 gap-3" infiniteScroll
+            (scrolled)="onScroll()" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50">
+            @for (item of comments; track $index) {
+            <div class="col-8 comment py-3 ">
+                <div class="d-flex justify-content-between">
+                    <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{item.author}}</p>
+
+                    <p class="d-flex align-items-center">{{item.createdAt|date}}</p>
+                </div>
+                @if (item.isAdminComment) {
+                <p class="d-flex align-items-center" color="primary"><mat-icon color="primary">check_circle</mat-icon>
+                    Admin
+                    Comment
+                </p> }
+                <p class="ps-3 comment-content">
+                    {{item.titre}}
+                </p>
+
+            </div>
+
+            }
+        </div>
+    </div>
+
+    <ng-container >
+        <div
+          class="modal fade"
+          id="updatePostModal"
+          tabindex="-1"
+          aria-labelledby="updatePostLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content d-flex">
+              <div class="modal-header">
+                <h5 class="modal-title" id="updatePostLabel">Update Post</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div
+                class="modal-body text-center d-flex align-items-center flex-column"
+              >
+              <form (ngSubmit)="updatePost()" >
+                <div class="mb-3">
+                  <label for="titre" class="form-label">Title</label>
+                  <input id="titre" type="text" class="form-control" [(ngModel)]="titre" name="titre" required>
+                </div>
+                <div class="mb-3">
+                  <label for="content" class="form-label">Content</label>
+                  <textarea id="content" class="form-control" [(ngModel)]="content" name="content" rows="3" required></textarea>
+                  
+                </div>
+                <div *ngIf="poste.image" class="mb-3">
+                    <img src="{{poste.image}}" alt=""
+                    class="img-fluid">
+                    <label for="image" class="form-label">Image</label>
+                    <input id="image" type="file" class="form-control" (change)="onImageSelected($event)">
+                </div>
+                <div *ngIf="poste.image == null" class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input id="image" type="file" class="form-control" (change)="onImageSelected($event)">
+                  </div>
+                <div *ngIf="poste.file" class="mb-3">
+                    <a href="{{poste.file}}" download>Votre fichier</a>
+                    <label for="file" class="form-label">File</label>
+                  <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
+                </div>
+                <div *ngIf="poste.image == null" class="mb-3">
+                  <label for="file" class="form-label">File</label>
+                  <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
+                </div>
+                <button type="submit" class="btn btn-primary">Update Post</button>
+              </form>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+</div>
+}
+>>>>>>> 13996de9a25e236e8324c967a948697e97ea6a1c

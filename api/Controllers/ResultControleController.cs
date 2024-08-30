@@ -13,6 +13,7 @@ using System.IO;
 using api.Mappers;
 using api.generique;
 using api.Dtos.ResultControle;
+using api.helpers;
 
 namespace api.Controllers
 {
@@ -50,9 +51,9 @@ namespace api.Controllers
             if (!addResult.IsSuccess)
                 return BadRequest(addResult.Error);
             
-            string ControleResultSasUrl = _blobStorageService.GenerateSasToken(ControleResultContainer, Path.GetFileName(new Uri(ControleResultUrl).LocalPath), TimeSpan.FromMinutes(2));
+            // string ControleResultSasUrl = _blobStorageService.GenerateSasToken(ControleResultContainer, Path.GetFileName(new Uri(ControleResultUrl).LocalPath), TimeSpan.FromMinutes(2));
             
-            return Ok(ControleResultSasUrl);
+            return Ok(addResult.Value.Reponse);
         } 
         [HttpGet]
         [Authorize]
@@ -87,8 +88,8 @@ namespace api.Controllers
 
             if (!result.IsSuccess)
                 return BadRequest(result.Error);
-            string ControleResultSasUrl = _blobStorageService.GenerateSasToken(ControleResultContainer, Path.GetFileName(new Uri(result.Value.Reponse).LocalPath), TimeSpan.FromMinutes(2));
-            result.Value.Reponse = ControleResultSasUrl;
+            // string ControleResultSasUrl = _blobStorageService.GenerateSasToken(ControleResultContainer, Path.GetFileName(new Uri(result.Value.Reponse).LocalPath), TimeSpan.FromMinutes(2));
+            // result.Value.Reponse = ControleResultSasUrl;
 
             return Ok(result.Value.ToResultControleDto());
         }
@@ -110,7 +111,8 @@ namespace api.Controllers
             if (!string.IsNullOrEmpty(result.Value.Reponse))
                 {
                     string ControleResultContainer = "controle-result-container";
-                    var oldControleResultFileName = Path.GetFileName(new Uri(result.Value.Reponse).LocalPath);
+                    var oldControleResultFileName =  CloudinaryUrlHelper.ExtractFileName(result.Value.Reponse);
+                Console.WriteLine(oldControleResultFileName);
 
                     var deleteResult = await _blobStorageService.DeleteFileAsync(ControleResultContainer, oldControleResultFileName);
                     if (!deleteResult)

@@ -13,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Azure.Storage.Blobs;
+using CloudinaryDotNet;
 
 
 
@@ -138,6 +139,7 @@ builder.Services.AddScoped<IElementPedagogiqueRepository, ElementPedagogiqueRepo
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
+builder.Services.AddSingleton(x => new Cloudinary(builder.Configuration["Cloudinary:CloudinaryUrl"]));
 
 var app = builder.Build();
 if (args.Length >= 2 && args[0].Length == 1 && args[1].ToLower() == "seeddata")

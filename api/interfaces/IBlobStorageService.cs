@@ -10,6 +10,6 @@ namespace api.interfaces
         Task<string> UploadFileAsync(Stream fileStream, string containerName, string fileName);
         Task<bool> DeleteFileAsync(string containerName, string fileName);
 
-        string GenerateSasToken(string containerName, string fileName, TimeSpan tokenDuration);
+        // string GenerateSasToyken(string containerName, string fileName, TimeSpan tokenDuration);
     }
 }
