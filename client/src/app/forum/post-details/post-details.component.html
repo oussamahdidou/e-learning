@@ -5,11 +5,19 @@
         <h4 class="post-titre">{{poste.titre}}
         </h4>
         <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{poste.author}}</p>
+        @if (poste.isAdminPoste) {
+        <p class="d-flex align-items-center" color="primary"><mat-icon color="primary">check_circle</mat-icon>
+            Admin
+            Poste
+        </p> }
         <div class="row container">
             <div class="col-lg-8">
                 <p class="post-description">
                     {{poste.content}} </p>
-                <img src="{{poste.image}}" alt="" class="img-fluid">
+                <!-- <img src="{{poste.image}}" alt="" class="img-fluid"> -->
+                <img src="https://blog.coursify.me/wp-content/uploads/2018/08/plan-your-online-course.jpg" alt=""
+                    class="img-fluid">
+
                 <a href="{{poste.fichier}}" download>Telecharger fichier</a>
                 <div class="d-flex gap-2">
                     <button class="btn btn-danger">Supprimer</button>
