@@ -110,9 +110,9 @@
                 <div *ngIf="poste.file" class="mb-3">
                     <a href="{{poste.file}}" download>Votre fichier</a>
                     <label for="file" class="form-label">File</label>
-                  <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
+                    <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
                 </div>
-                <div *ngIf="poste.image == null" class="mb-3">
+                <div *ngIf="poste.file == null" class="mb-3">
                   <label for="file" class="form-label">File</label>
                   <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
                 </div>
