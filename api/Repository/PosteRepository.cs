@@ -9,6 +9,7 @@ using api.generique;
 using api.helpers;
 using api.interfaces;
 using api.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Repository
