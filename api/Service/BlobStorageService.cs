@@ -20,6 +20,7 @@ public class BlobStorageService : IBlobStorageService
 
     public async Task<string> UploadImageVideoAsync(Stream fileStream, string folderName, string fileName)
     {
+        Console.WriteLine(fileName);
         var uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
         var publicId = string.IsNullOrEmpty(folderName) ? fileName : $"{folderName}/{uniqueFileName}";
         var uploadParams = new ImageUploadParams
@@ -73,8 +74,10 @@ public class BlobStorageService : IBlobStorageService
     }
     public async Task<bool> DeleteImageVideoAsync(string folderName, string fileName)
     {
-        var publicId = string.IsNullOrEmpty(folderName) ? fileName : $"{folderName}/{fileName}";
+        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+        var publicId = string.IsNullOrEmpty(folderName) ? fileName : $"{folderName}/{fileNameWithoutExtension}";
         Console.WriteLine(publicId);
+        Console.WriteLine(fileNameWithoutExtension);
         var deletionParams = new DeletionParams(publicId){
             ResourceType = ResourceType.Image
         };
