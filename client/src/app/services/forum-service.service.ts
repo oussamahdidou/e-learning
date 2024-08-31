@@ -93,4 +93,21 @@ export class ForumServiceService {
       }
     );
   }
+  updatecomment(id: number, text: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Comment`,
+      {
+        text: text,
+        commentId: id,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  deletecomment(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/Comment/${id}`, {
+      headers: this.authservice.headers,
+    });
+  }
 }

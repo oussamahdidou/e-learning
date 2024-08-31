@@ -69,7 +69,7 @@ const routes: Routes = [
       },
       {
         path: 'teacherstable',
-        canActivate: [DashboardGuardService],
+        canActivate: [AdminGuardService],
         component: TeachersComponent,
       },
       {
