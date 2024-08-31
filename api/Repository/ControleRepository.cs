@@ -184,8 +184,8 @@ namespace api.Repository
                 var controleContainer = "controle-container";
                 string enonceUrl = await _blobStorageService.UploadFileAsync(updateControleEnnonceDto.Ennonce.OpenReadStream(), controleContainer, updateControleEnnonceDto.Ennonce.FileName);
 
-
-                await _blobStorageService.DeleteFileAsync(controleContainer, new Uri(controle.Ennonce).Segments.Last());
+                var oldControleEnnonce =  CloudinaryUrlHelper.ExtractFileName(controle.Ennonce);
+                await _blobStorageService.DeleteFileAsync(controleContainer, oldControleEnnonce);
                 controle.Ennonce = enonceUrl;
                 await apiDbContext.SaveChangesAsync();
                 return Result<Controle>.Success(controle);
@@ -232,8 +232,8 @@ namespace api.Repository
                 string solutionUrl = await _blobStorageService.UploadFileAsync(updateControleSolutionDto.Solution.OpenReadStream(), controleContainer, updateControleSolutionDto.Solution.FileName);
 
 
-
-                await _blobStorageService.DeleteFileAsync(controleContainer, new Uri(controle.Ennonce).Segments.Last());
+                var oldControleSolution =  CloudinaryUrlHelper.ExtractFileName(controle.Solution);
+                await _blobStorageService.DeleteFileAsync(controleContainer, oldControleSolution);
                 controle.Solution = solutionUrl;
                 await apiDbContext.SaveChangesAsync();
                 return Result<Controle>.Success(controle);
@@ -254,8 +254,8 @@ namespace api.Repository
             {
                 var controleContainer = "controle-container";
 
-                await _blobStorageService.DeleteFileAsync(controleContainer, new Uri(controle.Ennonce).Segments.Last());
-                await _blobStorageService.DeleteFileAsync(controleContainer, new Uri(controle.Solution).Segments.Last());
+                await _blobStorageService.DeleteFileAsync(controleContainer, CloudinaryUrlHelper.ExtractFileName(controle.Ennonce));
+                await _blobStorageService.DeleteFileAsync(controleContainer, CloudinaryUrlHelper.ExtractFileName(controle.Solution));
 
                 foreach (var chapitre in chapitres)
                 {

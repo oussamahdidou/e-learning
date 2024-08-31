@@ -2,8 +2,6 @@ import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { PostCreateComponent } from './forum/post-create/post-create.component'; // Importez vos composants
-
 
 import { MatStepperModule } from '@angular/material/stepper';
 import {
@@ -44,12 +42,11 @@ import { LoginComponent } from './auth/login/login.component';
 import { EspaceProfModule } from './espaceprof/espaceprof.module';
 //import { ForumModule } from './Forum/Forum.module';
 import { ForumModule } from './forum/forum.module';
-
-
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
-  
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -64,6 +61,7 @@ import { ForumModule } from './forum/forum.module';
     HttpClientModule,
     NgxSkeletonLoaderModule,
     InstitutionsModule,
+    InfiniteScrollModule,
     CourseModule,
     AuthModule,
     ProfileModule,
@@ -80,9 +78,6 @@ import { ForumModule } from './forum/forum.module';
     TruncatePipe,
     EspaceProfModule,
     ForumModule,
- 
-   
-    
   ],
   providers: [provideAnimationsAsync()],
   bootstrap: [AppComponent],
