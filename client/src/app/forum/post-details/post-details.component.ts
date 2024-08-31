@@ -129,7 +129,6 @@ export class PostDetailsComponent implements OnInit {
 
       formData.append('AppUserId', this.authservice.token.unique_name);
 
-      // Show loading modal
       Swal.fire({
         title: 'Updating Post...',
         text: 'Please wait while the post is being updated.',

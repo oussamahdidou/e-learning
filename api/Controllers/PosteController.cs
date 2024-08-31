@@ -165,6 +165,24 @@ namespace api.Controllers
         {
             var image = "";
             var fichier = "";
+            var result = await _posteRepo.GetPostById(updatePostDto.Id);
+            if (!result.IsSuccess) // Check if the result is successful
+            {
+                return NotFound(); // Handle the case where the post does not exist or error occurs
+            }
+            var existingPosteDto = result.Value; // Extract the PosteDto from the result
+
+            // Convert PosteDto to Poste entity
+            var old_poste = new Poste
+            {
+                Id = existingPosteDto.Id,
+                Titre = existingPosteDto.Titre,
+                Content = existingPosteDto.Content,
+                AppUserId = existingPosteDto.AuthorId,
+                Image = existingPosteDto.Image,
+                Fichier = existingPosteDto.Fichier
+            };
+            
             // AppUser? user = await _manager.FindByIdAsync(newPostDto.AppUserId);
             // if (user is null)
             //     return BadRequest("You should be logged in to create a poste");
@@ -180,54 +198,49 @@ namespace api.Controllers
             }
             if (updatePostDto.Fichier != null && updatePostDto.Image != null)
             {
-                var poste = new Poste
-                {
-                    Id = updatePostDto.Id,
-                    Titre = updatePostDto.Titre,
-                    Content = updatePostDto.Content,
-                    Image = image,
-                    Fichier = fichier,
-                    AppUserId = updatePostDto.AppUserId,
-                };
-                await _posteRepo.UpdateAsync(poste);
+                
+                    
+                old_poste.Titre = updatePostDto.Titre;
+                old_poste.Content = updatePostDto.Content;
+                old_poste.Image = image;
+                old_poste.Fichier = fichier;
+                    
+                
+                await _posteRepo.UpdateAsync(old_poste);
                 return NoContent();
             }
             else if (updatePostDto.Fichier == null && updatePostDto.Image == null)
             {
-                var poste = new Poste
-                {
-                    Id = updatePostDto.Id,
-                    Titre = updatePostDto.Titre,
-                    Content = updatePostDto.Content,
-                    AppUserId = updatePostDto.AppUserId,
-                };
-                await _posteRepo.UpdateAsync(poste);
+                
+                    
+                old_poste.Titre = updatePostDto.Titre;
+                old_poste.Content = updatePostDto.Content;
+                    
+                
+                await _posteRepo.UpdateAsync(old_poste);
                 return NoContent();
             }
             else if (updatePostDto.Fichier != null && updatePostDto.Image == null)
             {
-                var poste = new Poste
-                {
-                    Id = updatePostDto.Id,
-                    Titre = updatePostDto.Titre,
-                    Content = updatePostDto.Content,
-                    Fichier = fichier,
-                    AppUserId = updatePostDto.AppUserId,
-                };
-                await _posteRepo.UpdateAsync(poste);
+                
+                    
+                old_poste.Titre = updatePostDto.Titre;
+                old_poste.Content = updatePostDto.Content;
+                old_poste.Fichier = fichier;
+                    
+                
+                await _posteRepo.UpdateAsync(old_poste);
                 return NoContent();
             }
             else if (updatePostDto.Fichier == null && updatePostDto.Image != null)
             {
-                var poste = new Poste
-                {
-                    Id = updatePostDto.Id,
-                    Titre = updatePostDto.Titre,
-                    Content = updatePostDto.Content,
-                    Image = image,
-                    AppUserId = updatePostDto.AppUserId,
-                };
-                await _posteRepo.UpdateAsync(poste);
+                
+                    
+                old_poste.Titre = updatePostDto.Titre;
+                old_poste.Content = updatePostDto.Content;
+                old_poste.Image = image;
+                
+                await _posteRepo.UpdateAsync(old_poste);
                 return NoContent();
             }
             else

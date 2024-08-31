@@ -95,15 +95,17 @@
                 <label for="image" class="form-label">Image</label>
                 <input id="image" type="file" class="form-control" accept="Image/*" (change)="onImageSelected($event)">
               </div>
-
-              <a href="{{poste.fichier}}" download>Votre fichier</a>
-              <label for="file" class="form-label">File</label>
-              <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
-
-              <div *ngIf="poste.image == null" class="mb-3">
+              <div class="mb-3">
+              @if (poste.fichier) {
+                <a href="{{poste.fichier}}" download>Votre fichier</a>
+                }
                 <label for="file" class="form-label">File</label>
                 <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
               </div>
+              <!-- <div *ngIf="poste.image == null" class="mb-3">
+                <label for="file" class="form-label">File</label>
+                <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
+              </div> -->
               <button type="submit" class="btn btn-primary">Update Post</button>
             </form>
 
