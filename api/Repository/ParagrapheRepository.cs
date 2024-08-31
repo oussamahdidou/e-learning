@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Data;
 using api.generique;
+using api.helpers;
 using api.interfaces;
 using api.Model;
 using Microsoft.EntityFrameworkCore;
@@ -34,8 +35,7 @@ namespace api.Repository
             // Delete Paragraphe Contenu if exists
             if (!string.IsNullOrEmpty(paragraphe.Contenu))
             {
-                var oldParagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
-                await _blobStorageService.DeleteFileAsync(pdfContainer, oldParagrapheFileName);
+                await _blobStorageService.DeleteFileAsync(pdfContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Contenu));
             }
 
             // Remove the Paragraphe from the database

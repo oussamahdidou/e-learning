@@ -93,7 +93,7 @@ namespace api.Repository
                 var examContainer = "controle-container";
                 string enonceUrl = await blobStorageService.UploadFileAsync(updateExamFinalDto.File.OpenReadStream(), examContainer, updateExamFinalDto.File.FileName);
 
-                await blobStorageService.DeleteFileAsync(examContainer, new Uri(examFinal.Ennonce).Segments.Last());
+                await blobStorageService.DeleteFileAsync(examContainer, CloudinaryUrlHelper.ExtractFileName(examFinal.Ennonce));
 
                 examFinal.Ennonce = enonceUrl;
                 await apiDbContext.SaveChangesAsync();
@@ -121,7 +121,7 @@ namespace api.Repository
                 var examContainer = "controle-container";
                 string solutionUrl = await blobStorageService.UploadFileAsync(updateExamFinalDto.File.OpenReadStream(), examContainer, updateExamFinalDto.File.FileName);
 
-                await blobStorageService.DeleteFileAsync(examContainer, new Uri(examFinal.Solution).Segments.Last());
+                await blobStorageService.DeleteFileAsync(examContainer, CloudinaryUrlHelper.ExtractFileName(examFinal.Solution));
 
                 examFinal.Solution = solutionUrl;
                 await apiDbContext.SaveChangesAsync();
@@ -189,8 +189,8 @@ namespace api.Repository
                 }
                 var controleContainer = "controle-container";
 
-                await blobStorageService.DeleteFileAsync(controleContainer, new Uri(examFinal.Ennonce).Segments.Last());
-                await blobStorageService.DeleteFileAsync(controleContainer, new Uri(examFinal.Solution).Segments.Last());
+                await blobStorageService.DeleteFileAsync(controleContainer, CloudinaryUrlHelper.ExtractFileName(examFinal.Ennonce));
+                await blobStorageService.DeleteFileAsync(controleContainer, CloudinaryUrlHelper.ExtractFileName(examFinal.Solution));
 
                 module.ExamFinalId = null;
                 apiDbContext.examFinals.Remove(examFinal);

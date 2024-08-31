@@ -112,8 +112,6 @@ namespace api.Controllers
                 {
                     string ControleResultContainer = "controle-result-container";
                     var oldControleResultFileName =  CloudinaryUrlHelper.ExtractFileName(result.Value.Reponse);
-                Console.WriteLine(oldControleResultFileName);
-
                     var deleteResult = await _blobStorageService.DeleteFileAsync(ControleResultContainer, oldControleResultFileName);
                     if (!deleteResult)
                     {
