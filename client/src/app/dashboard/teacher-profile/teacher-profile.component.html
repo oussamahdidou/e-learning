@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-@if ((authservice.$IsAdmin|async) || HisAccount) {
+@if ((authservice.$IsAdmin|| HisAccount |async) ) {
 <div class="container-fluid">
     @if (authservice.$IsAdmin|async) {
     <app-sidenav></app-sidenav>

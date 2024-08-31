@@ -38,3 +38,9 @@
 .comment-content {
     text-align: justify;
 }
+
+.comment-button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+}

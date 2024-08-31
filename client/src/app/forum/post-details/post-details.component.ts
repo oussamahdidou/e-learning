@@ -27,6 +27,74 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './post-details.component.css',
 })
 export class PostDetailsComponent implements OnInit {
+  editcomment(comment: any) {
+    Swal.fire({
+      title: 'Edit comment Name',
+      input: 'textarea',
+      inputLabel: 'comment Name',
+      inputValue: comment.titre,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      preConfirm: (newName) => {
+        if (!newName) {
+          Swal.showValidationMessage('Please enter a valid name');
+        }
+        return newName;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.forumservice.updatecomment(comment.id, result.value).subscribe(
+          (response) => {
+            comment.titre = response.titre;
+            console.log(response);
+            Swal.fire('Saved!', 'comment name has been updated.', 'success');
+          },
+          (error) => {
+            console.log(error);
+
+            Swal.fire(`error`, `${error.error}`, `error`);
+          }
+        );
+      }
+    });
+  }
+  deletecomment(id: number) {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.forumservice.deletecomment(id).subscribe(
+          (response) => {
+            Swal.fire({
+              title: 'Deleted!',
+              text: 'Your file has been deleted.',
+              icon: 'success',
+            });
+            this.comments = this.comments.filter(
+              (comment: any) => comment.id !== id
+            );
+          },
+          (error) => {
+            console.log(error);
+
+            Swal.fire({
+              title: 'Deleted!',
+              text: error.error,
+              icon: 'error',
+            });
+          }
+        );
+      }
+    });
+  }
+  id: any;
   AddComment() {
     this.authservice.$isloggedin.subscribe(($isloggedin) => {
       if ($isloggedin) {

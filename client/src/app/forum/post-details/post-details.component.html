@@ -44,7 +44,7 @@
     <div class="container row justify-content-start align-items-center py-3 gap-3" infiniteScroll
       (scrolled)="onScroll()" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50">
       @for (item of comments; track $index) {
-      <div class="col-8 comment py-3 ">
+      <div class="col-8 comment pt-3 ">
         <div class="d-flex justify-content-between">
           <p class="d-flex align-items-center"><mat-icon>create</mat-icon> {{item.author}}</p>
 
@@ -58,7 +58,12 @@
         <p class="ps-3 comment-content">
           {{item.titre}}
         </p>
-
+        @if (authservice.token.unique_name=== item.authorId) {
+        <p class="d-flex align-items-end justify-content-end gap-2">
+          <mat-icon class="text-secondary comment-button" (click)="editcomment(item)">edit</mat-icon>
+          <mat-icon class="text-secondary comment-button" (click)="deletecomment(item.id)">delete</mat-icon>
+        </p>
+        }
       </div>
 
       }
