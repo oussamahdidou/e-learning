@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ForumServiceService } from '../../services/forum-service.service';
+import { AuthService } from '../../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-post-list',
@@ -12,10 +14,15 @@ export class PostListComponent implements OnInit {
   sortby!: string;
   query!: string;
   searchinput!: string;
+  selectedImage!: File;
+  selectedFile!: File;
+  titre: any;
+  content: any;
   constructor(
     private route: ActivatedRoute,
     private readonly router: Router,
-    private readonly forumservice: ForumServiceService
+    private readonly forumservice: ForumServiceService,
+    public authservice: AuthService
   ) {}
   page: number = 1;
   posts: any[] = [];
@@ -96,5 +103,51 @@ export class PostListComponent implements OnInit {
           this.loading = false;
         }
       );
+  }
+  onImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.selectedImage = input.files[0];
+    }
+  }
+
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length) {
+      this.selectedFile = input.files[0];
+    }
+  }
+  addPost(): void {
+    if (this.titre && this.content) {
+      const formData = new FormData();
+      formData.append('Titre', this.titre);
+      formData.append('Content', this.content);
+      if (this.selectedImage) formData.append('Image', this.selectedImage);
+      if (this.selectedFile) formData.append('Fichier', this.selectedFile);
+
+      formData.append('AppUserId', this.authservice.token.unique_name);
+      this.forumservice.Add(formData).subscribe(
+        (response) => {
+          console.log(formData);
+          console.log('Post added successful:', response);
+          Swal.fire({
+            title: 'Success',
+            text: `Post added successful `,
+            icon: 'success',
+          }).then(() => {
+            window.location.href = `/forum/create`;
+          });
+        },
+        (error) => {
+          console.log(formData);
+          console.error('Post added failed:', error.message);
+          Swal.fire({
+            title: 'Error',
+            text: 'Post added failed. Please try again.',
+            icon: 'error',
+          });
+        }
+      );
+    }
   }
 }

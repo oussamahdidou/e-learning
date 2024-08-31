@@ -1,12 +1,20 @@
 <app-navbar></app-navbar>
 <div class="container-fluid m-0 px-0">
   <div class="container mx-auto forum-container pt-5 pb-4">
-    <form (ngSubmit)="search()" class="d-flex justify-content-center mx-auto align-items-center search-container px-2">
-      <input [(ngModel)]="query" name="query" type="text" class="search w-100" placeholder="Search for posts">
-      <button type="submit" class="bg-white border-0 d-flex justify-content-center">
-        <mat-icon>search</mat-icon>
+    <div class="d-flex justify-content-center align-items-center">
+      <form (ngSubmit)="search()"
+        class="d-flex justify-content-center mx-auto align-items-center search-container px-2">
+        <input [(ngModel)]="query" name="query" type="text" class="search w-100" placeholder="Search for posts">
+        <button type="submit" class="bg-white border-0 d-flex justify-content-center">
+          <mat-icon>search</mat-icon>
+        </button>
+      </form>
+      @if (authservice.$isloggedin|async) {
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPostModal">
+        Ajouter Post
       </button>
-    </form>
+      }
+    </div>
 
     <div class="d-flex justify-content-between align-items-center pt-5">
       @if (searchinput && searchinput.length>=0) {
@@ -48,10 +56,38 @@
 
 
     </div>
-    <ngx-skeleton-loader *ngIf="loading" [theme]="skeletonTheme"></ngx-skeleton-loader>
-    <ngx-skeleton-loader *ngIf="loading" [theme]="skeletonTheme"></ngx-skeleton-loader>
-    <ngx-skeleton-loader *ngIf="loading" [theme]="skeletonTheme"></ngx-skeleton-loader>
-    <ngx-skeleton-loader *ngIf="loading" [theme]="skeletonTheme"></ngx-skeleton-loader>
-    <ngx-skeleton-loader *ngIf="loading" [theme]="skeletonTheme"></ngx-skeleton-loader>
+    <ngx-skeleton-loader *ngIf="loading" [theme]="skeletonTheme" count="5"></ngx-skeleton-loader>
+    <div class="modal fade" id="addPostModal" tabindex="-1" aria-labelledby="addPostLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="addPostLabel">Add New Post</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form (ngSubmit)="addPost()" #postForm="ngForm">
+              <div class="mb-3">
+                <label for="titre" class="form-label">Title</label>
+                <input id="titre" type="text" class="form-control" [(ngModel)]="titre" name="titre" required>
+              </div>
+              <div class="mb-3">
+                <label for="content" class="form-label">Content</label>
+                <textarea id="content" class="form-control" [(ngModel)]="content" name="content" rows="3"
+                  required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="image" class="form-label">Image</label>
+                <input id="image" type="file" class="form-control" (change)="onImageSelected($event)">
+              </div>
+              <div class="mb-3">
+                <label for="file" class="form-label">File</label>
+                <input id="file" type="file" class="form-control" (change)="onFileSelected($event)">
+              </div>
+              <button type="submit" class="btn btn-primary">Add Post</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

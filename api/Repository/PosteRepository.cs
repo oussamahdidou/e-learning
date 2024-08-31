@@ -35,6 +35,7 @@ namespace api.Repository
             Image = poste.Image,
             Fichier = poste.Fichier,
             IsAdminPoste = poste.AppUser is Admin,
+            AuthorId = poste.AppUser.Id,
         })
         .FirstOrDefaultAsync();
             if (poste == null)
@@ -81,6 +82,7 @@ namespace api.Repository
                     CreatedAt = p.CreatedAt,
                     CommentsNumber = p.Comments.Count,
                     Author = p.AppUser.UserName,
+
                     AppUser = p.AppUser  // Include AppUser to check if it's Admin later
                 })
                 .ToListAsync();
@@ -94,17 +96,49 @@ namespace api.Repository
                 CreatedAt = p.CreatedAt,
                 CommentsNumber = p.CommentsNumber,
                 Author = p.Author,
+                AuthorId = p.AppUser.Id,
                 IsAdminPoste = p.AppUser is Admin  // Perform the type check in memory
             }).ToList();
 
             return Result<List<PosteDto>>.Success(mappedResult);
         }
 
-        public async Task<Result<List<Poste>>> GetUserPosts(AppUser user)
+        public async Task<Result<List<PosteDto>>> GetUserPosts(AppUser user, CommentQuery commentQuery)
         {
-            List<Poste> postes = await _context.postes.Where(x => x.AppUserId == user.Id).ToListAsync();
+            var posteQuery = _context.postes.Where(x => x.AppUserId == user.Id).AsQueryable();
+            int skip = (commentQuery.Page - 1) * 20;
+            posteQuery = posteQuery.Skip(skip).Take(20);
 
-            return Result<List<Poste>>.Success(postes);
+            // Step 1: Project data from the database excluding IsAdminPoste
+            var result = await posteQuery
+                .Select(p => new
+                {
+                    Id = p.Id,
+                    Titre = p.Titre,
+                    Content = p.Content,
+                    CreatedAt = p.CreatedAt,
+                    CommentsNumber = p.Comments.Count,
+                    Author = p.AppUser.UserName,
+
+                    AppUser = p.AppUser  // Include AppUser to check if it's Admin later
+                })
+                .ToListAsync();
+
+            // Step 2: Perform in-memory mapping for IsAdminPoste
+            var mappedResult = result.Select(p => new PosteDto
+            {
+                Id = p.Id,
+                Titre = p.Titre,
+                Content = p.Content,
+                CreatedAt = p.CreatedAt,
+                CommentsNumber = p.CommentsNumber,
+                Author = p.Author,
+                AuthorId = p.AppUser.Id,
+                IsAdminPoste = p.AppUser is Admin  // Perform the type check in memory
+            }).ToList();
+
+            return Result<List<PosteDto>>.Success(mappedResult);
+
         }
 
         public async Task AddAsync(Poste poste)

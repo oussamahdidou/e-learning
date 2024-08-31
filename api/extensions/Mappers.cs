@@ -105,7 +105,8 @@ namespace api.extensions
                 Author = Comment.AppUser.UserName,
                 Titre = Comment.Titre,
                 CreatedAt = Comment.CreatedAt,
-                IsAdminComment = Comment.AppUser is Admin
+                IsAdminComment = Comment.AppUser is Admin,
+                AuthorId = Comment.AppUser.Id
             };
         }
     }

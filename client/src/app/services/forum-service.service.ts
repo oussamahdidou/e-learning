@@ -31,10 +31,13 @@ export class ForumServiceService {
       headers: this.authservice.headers,
     });
   }
-  GetUserPosts():Observable<any> {
-    return this.http.get(`${environment.apiUrl}/api/Poste/getuserposts`, {
-      headers: this.authservice.headers,
-    });
+  GetUserPosts(page: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Poste/getuserposts?Page=${page}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
   }
   GetPostComments(id: number, page: number): Observable<any> {
     return this.http.get(
@@ -44,46 +47,39 @@ export class ForumServiceService {
       }
     );
   }
-  Delete(id:number): Observable<any>{
-    return this.http.delete(
-      `${environment.apiUrl}/api/Poste/${id}`,
-      {
-        headers: this.authservice.headers,
-      }
-    );
+  Delete(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/Poste/${id}`, {
+      headers: this.authservice.headers,
+    });
   }
-  Add(formData: FormData): Observable<any>{
-    return this.http.post(
-      `${environment.apiUrl}/api/Poste`,formData,
-      {
+  Add(formData: FormData): Observable<any> {
+    return this.http
+      .post(`${environment.apiUrl}/api/Poste`, formData, {
         headers: this.authservice.headers,
-      }
-    ).pipe(
-      tap<any>(
-        (response) => {},
-        (error) => {
-
-          console.log('error : 1111111' + error.message);
-          console.log('error : 2222222' + error.name);
-          console.log('error : 3333333' + error.stack);
-        }
-      )
-    );
-  }
-  Update(formData: FormData): Observable<any>{
-    return this.http.put(
-      `${environment.apiUrl}/api/Poste/`,formData,
-      {
-        headers: this.authservice.headers,
-      }
-    ).pipe(
+      })
+      .pipe(
         tap<any>(
           (response) => {},
           (error) => {
+            console.log('error : 1111111' + error.message);
+            console.log('error : 2222222' + error.name);
+            console.log('error : 3333333' + error.stack);
           }
         )
       );
-    }
+  }
+  Update(formData: FormData): Observable<any> {
+    return this.http
+      .put(`${environment.apiUrl}/api/Poste/`, formData, {
+        headers: this.authservice.headers,
+      })
+      .pipe(
+        tap<any>(
+          (response) => {},
+          (error) => {}
+        )
+      );
+  }
   AddComment(id: number, content: string): Observable<any> {
     return this.http.post(
       `${environment.apiUrl}/api/Comment`,

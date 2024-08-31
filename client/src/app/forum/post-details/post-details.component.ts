@@ -14,7 +14,7 @@ interface Poste {
 }
 
 interface Comment {
- Titre:  string ;
+  Titre: string;
 }
 import { ForumServiceService } from '../../services/forum-service.service';
 import { ActivatedRoute } from '@angular/router';
@@ -60,12 +60,12 @@ export class PostDetailsComponent implements OnInit {
   constructor(
     private readonly forumservice: ForumServiceService,
     private readonly route: ActivatedRoute,
-    private readonly authservice: AuthService
+    public readonly authservice: AuthService
   ) {}
   selectedImage: File | null = null;
   selectedFile: File | null = null;
-  titre: string='';
-  content: string='';
+  titre: string = '';
+  content: string = '';
   posteid!: number;
   poste: any;
   page: number = 1;
@@ -77,9 +77,9 @@ export class PostDetailsComponent implements OnInit {
         (response) => {
           this.poste = response;
           console.log(this.poste);
-          
-          this.titre=this.poste.titre;
-          this.content=this.poste.content;
+
+          this.titre = this.poste.titre;
+          this.content = this.poste.content;
         },
         (error) => {}
       );
@@ -124,40 +124,49 @@ export class PostDetailsComponent implements OnInit {
       formData.append('Id', this.poste.id);
       formData.append('Titre', this.titre);
       formData.append('Content', this.content);
-      if(this.selectedImage)
-        formData.append('Image', this.selectedImage);
-      if(this.selectedFile)
-        formData.append('Fichier', this.selectedFile);
-      
+      if (this.selectedImage) formData.append('Image', this.selectedImage);
+      if (this.selectedFile) formData.append('Fichier', this.selectedFile);
+
       formData.append('AppUserId', this.authservice.token.unique_name);
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Updating Post...',
+        text: 'Please wait while the post is being updated.',
+        allowOutsideClick: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.forumservice.Update(formData).subscribe(
         (response) => {
           console.log(formData);
-          console.log('Post Updated successful:', response);
+          console.log('Post Updated successfully:', response);
           Swal.fire({
             title: 'Success',
-            text: `Post Updated successful `,
+            text: `Post updated successfully.`,
             icon: 'success',
           }).then(() => {
-            window.location.href = `/forum`;
+            window.location.href = `/forum/posts`;
           });
         },
         (error) => {
           console.log(formData);
-          console.error('Post Updated failed:', error.message);
+          console.error('Post update failed:', error.message);
           Swal.fire({
             title: 'Error',
-            text:  'Post updated failed. Please try again.' ,
+            text: 'Post update failed. Please try again.',
             icon: 'error',
           });
         }
       );
     }
   }
-  Supprimer(id: number){
+  Supprimer(id: number) {
     Swal.fire({
-      title: 'Vous etes sure?',
-      text: "Votre poste sera supprimer",
+      title: 'Vous êtes sûr?',
+      text: 'Votre poste sera supprimé',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -165,30 +174,37 @@ export class PostDetailsComponent implements OnInit {
       confirmButtonText: 'Oui',
       cancelButtonText: 'Non',
     }).then((result) => {
-
       if (result.isConfirmed) {
+        // Affiche la modal de chargement
         Swal.fire({
           title: 'Suppression...',
-          text: 'Attendez svp.',
+          text: 'Veuillez patienter svp.',
           allowOutsideClick: false,
           didOpen: () => {
             Swal.showLoading();
           },
         });
-      
+
         this.forumservice.Delete(id).subscribe(
           (response) => {
             Swal.fire({
-              title: 'Success',
-              text: 'Votre poste a ete supprimer',
+              title: 'Succès',
+              text: 'Votre poste a été supprimé',
               icon: 'success',
             }).then(() => {
-              window.location.href = `/forum`;
+              window.location.href = `/forum/posts`;
             });
           },
-          (error) => {}
-        )
+          (error) => {
+            console.error('Erreur de suppression:', error.message);
+            Swal.fire({
+              title: 'Erreur',
+              text: 'La suppression a échoué. Veuillez réessayer.',
+              icon: 'error',
+            });
+          }
+        );
       }
-    })
+    });
   }
 }

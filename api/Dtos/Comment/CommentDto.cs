@@ -10,6 +10,7 @@ namespace api.Dtos.Comment
         public int Id { get; set; }
         public string? Titre { get; set; }
         public string? Author { get; set; }
+        public string? AuthorId { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsAdminComment { get; set; }
     }
