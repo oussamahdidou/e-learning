@@ -1,8 +1,28 @@
 import { Component, OnInit } from '@angular/core';
+<<<<<<< HEAD
+
+import { InstitutionService } from '../../services/institution.service';
+
+interface Poste {
+  id: number;
+  titre: string;
+  content: string;
+  image?: string;
+  fichier?: string;
+  createdAt: Date;
+  appUserId?: string;
+  comments: Comment[];
+}
+
+interface Comment {
+ Titre:  string ;
+}
+=======
 import { ForumServiceService } from '../../services/forum-service.service';
 import { ActivatedRoute } from '@angular/router';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../services/auth.service';
+>>>>>>> 13996de9a25e236e8324c967a948697e97ea6a1c
 
 @Component({
   selector: 'app-post-details',
