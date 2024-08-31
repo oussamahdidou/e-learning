@@ -57,7 +57,7 @@ namespace api.Controllers
 
 
         [HttpGet("getuserposts")]
-        // [Authorize]
+        [Authorize]
         public async Task<IActionResult> getUserPosts()
         {
             string username = User.GetUsername();
