@@ -16,11 +16,11 @@
           <input type="number" id="number" class="form-control" formControlName="number" required />
         </div>
 
-        <!-- Student Course PDF Paragraphs -->
+        <!-- Student Course  Paragraphs -->
         <div formArrayName="studentCourseParagraphs">
           <div *ngFor="let paragraph of studentCourseParagraphs.controls; let i = index" [formGroupName]="i">
             <div class="form-group">
-              <label>Student Course PDF</label>
+              <label>Student Course </label>
               <input type="file" (change)="onFileChange($event, 'studentCourseParagraphs', i)" class="form-control" />
             </div>
             <button type="button" class="btn btn-danger" (click)="removeStudentParagraph(i)">Remove Paragraph</button>
@@ -28,11 +28,11 @@
           <button type="button" class="btn btn-primary" (click)="addStudentParagraph()">Add Student Paragraph</button>
         </div>
 
-        <!-- Professor Course PDF Paragraphs -->
+        <!-- Professor Course  Paragraphs -->
         <div formArrayName="professorCourseParagraphs">
           <div *ngFor="let paragraph of professorCourseParagraphs.controls; let i = index" [formGroupName]="i">
             <div class="form-group">
-              <label>Professor Course PDF</label>
+              <label>Professor Course </label>
               <input type="file" (change)="onFileChange($event, 'professorCourseParagraphs', i)"
                 class="form-control" /><button type="button" class="btn btn-danger"
                 (click)="removeProfessorParagraph(i)">Remove
@@ -55,8 +55,8 @@
 
         <div class="form-group" *ngIf="isVideoFile()">
           <label for="coursVideoFile">Course Video File</label>
-          <input type="file" id="coursVideoFile" class="form-control"
-            (change)="onFileChange($event, 'coursVideoFile')" />
+          <input type="file" id="coursVideoFile" class="form-control" (change)="onFileChange($event, 'coursVideoFile')"
+            accept="video/*" />
         </div>
 
         <div class="form-group" *ngIf="isVideoLink()">
@@ -66,8 +66,7 @@
 
         <div class="form-group">
           <label for="schema">Schema</label>
-          <input type="file" id="schema" class="form-control" accept="video/*"
-            (change)="onFileChange($event, 'schema')" />
+          <input type="file" id="schema" class="form-control" (change)="onFileChange($event, 'schema')" />
         </div>
 
         <div class="form-group">

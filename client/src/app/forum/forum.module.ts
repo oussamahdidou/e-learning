@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PostListComponent } from './post-list/post-list.component';
-import { PostCreateComponent } from './post-create/post-create.component';
 import { PostDetailsComponent } from './post-details/post-details.component';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -21,7 +20,7 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: '', // Define the route for PostListComponent
+        path: 'posts', // Define the route for PostListComponent
         component: PostListComponent,
         title: 'PostList',
       },
@@ -31,11 +30,7 @@ const routes: Routes = [
         component: PostDetailsComponent,
         title: 'PostDetails',
       },
-      {
-        path: 'create',
-        component: PostCreateComponent,
-        title: 'createpost',
-      },
+
       {
         path: 'user',
         component: UserpostComponent,
@@ -48,7 +43,6 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     PostListComponent,
-    PostCreateComponent,
     PostDetailsComponent,
     NavbarComponent,
     UserpostComponent,
