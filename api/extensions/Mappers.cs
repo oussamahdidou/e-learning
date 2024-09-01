@@ -97,17 +97,25 @@ namespace api.extensions
                 Count = teacher.Chapitres.Count() + teacher.Controles.Count() + teacher.ExamFinals.Count(),
             };
         }
-        public static CommentDto FromCommentToCommentDto(this Comment Comment)
+        public static CommentDto FromCommentToCommentDto(this Comment comment)
         {
+            if (comment == null)
+            {
+                throw new ArgumentNullException(nameof(comment), "Comment cannot be null");
+            }
+
+            var author = comment.AppUser;
+
             return new CommentDto()
             {
-                Id = Comment.Id,
-                Author = Comment.AppUser.UserName,
-                Titre = Comment.Titre,
-                CreatedAt = Comment.CreatedAt,
-                IsAdminComment = Comment.AppUser is Admin,
-                AuthorId = Comment.AppUser.Id
+                Id = comment.Id,
+                Author = author?.UserName ?? "Unknown", // Default value if AppUser is null
+                Titre = comment.Titre,
+                CreatedAt = comment.CreatedAt,
+                IsAdminComment = author is Admin,
+                AuthorId = author?.Id ?? "Unknown" // Default value if AppUser is null
             };
         }
+
     }
 }

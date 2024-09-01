@@ -1,5 +1,5 @@
 <app-navbar></app-navbar>
-@if ((authservice.$IsAdmin|async) || HisAccount) {
+@if ((authservice.$IsAdmin | async) || HisAccount) {
 <div class="container-fluid">
     @if (authservice.$IsAdmin|async) {
     <app-sidenav></app-sidenav>
@@ -26,6 +26,8 @@
                                 <p>mail : {{teacher.email}}</p>
                                 <p>etablissement : {{teacher.etablissement}}</p>
                                 <p>Date de naissance : {{teacher.dateDeNaissance|date}}</p>
+                                <p>Specialite : {{teacher.specialite}}</p>
+                                <p>Status : {{teacher.status}}</p>
                                 <div class="d-flex flex-column gap-3 justify-content-end align-items-end">
                                     @if ((authservice.$IsAdmin|async) || HisAccount) {
                                     <button mat-flat-button color="warn" class="w-100 " (click)="delete()">
