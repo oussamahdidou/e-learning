@@ -13,8 +13,6 @@ namespace api.Model
         public string Branche { get; set; } = "";
         public string Niveaus { get; set; } = "";
         public DateTime DateDeNaissance { get; set; }
-        public string? tuteurMail {get; set;}
-        public string? phoneNumber {get; set;}
         public List<TestNiveau> TestNiveaus { get; set; } = new List<TestNiveau>();
         public List<CheckChapter> CheckChapters = new List<CheckChapter>();
         public List<ResultControle> ResultControles = new List<ResultControle>();
