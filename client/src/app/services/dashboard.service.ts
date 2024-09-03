@@ -660,4 +660,52 @@ api/Dashboard/GetObjectspourApprouver`,
       headers: this.authservice.headers,
     });
   }
+  updateVideoName(id: number, nom: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateVideoName`,
+      {
+        id: id,
+        nom: nom,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateSyntheseName(id: number, nom: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateSyntheseName`,
+      {
+        id: id,
+        nom: nom,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateSchemaName(id: number, nom: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateSchemaName`,
+      {
+        id: id,
+        nom: nom,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateParagrapheName(id: number, nom: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateParagrapheName`,
+      {
+        id: id,
+        nom: nom,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }

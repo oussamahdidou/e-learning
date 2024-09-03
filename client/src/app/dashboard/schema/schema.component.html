@@ -1,21 +1,32 @@
-@if (schema) {
-<h4>
-    Schema @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Schema.click()">
-        Modifier Schema
-    </button>
-    }
-</h4>
-<input type="file" #Schema (change)="SelectSchema($event)" style="display: none" />
-@if (getFileType(schema.link)=="pdf") {
-<pdf-viewer src="{{ schema.link }}" [render-text]="true" [original-size]="false" style="width: 100%; height: 700px">
-</pdf-viewer>
-}
-@else if (getFileType(schema.link)=="word") {
-<iframe [src]="getViewerUrl(schema.link)  | safeUrl" width="100%" height="700px"></iframe>}
-@else if (getFileType(schema.link)=="image") {
-<img [src]="schema.link" width="100%" height="700px" />}
-@else if (getFileType(schema.link)=="powerpoint") {
-<iframe [src]="schema.link | safeUrl" width="100%" height="700px"></iframe>
+<div class="container-fluid">
+    <div class="container mx-auto pt-5  ">
+        @if (schema) {
+        <h4>
+            Schema ({{schema.nom}})@if (authservice.$IsAdmin|async) {
+            <button mat-raised-button color="primary" (click)="ModifierNom()">
+                Modifier Nom
+            </button>
+            }
+        </h4>
+        @if (authservice.$IsAdmin|async) {
+        <button mat-raised-button color="primary" (click)="Schema.click()">
+            Modifier Schema
+        </button>
+        }
+        <input type="file" #Schema (change)="SelectSchema($event)" style="display: none" />
+        @if (getFileType(schema.link)=="pdf") {
+        <pdf-viewer src="{{ schema.link }}" [render-text]="true" [original-size]="false"
+            style="width: 100%; height: 700px">
+        </pdf-viewer>
+        }
+        @else if (getFileType(schema.link)=="word") {
+        <iframe [src]="getViewerUrl(schema.link)  | safeUrl" width="100%" height="700px"></iframe>}
+        @else if (getFileType(schema.link)=="image") {
+        <img [src]="schema.link" width="100%" height="700px" />}
+        @else if (getFileType(schema.link)=="powerpoint") {
+        <iframe [src]="schema.link | safeUrl" width="100%" height="700px"></iframe>
 
-}
-}
+        }
+        }
+    </div>
+</div>

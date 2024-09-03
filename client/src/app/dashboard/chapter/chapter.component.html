@@ -41,7 +41,7 @@
         @for (item of studentCourse.paragraphes; track $index) {
         <div class=" col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
           <h5> Paragraphe{{ $index +1}}</h5>
-          <p>paragraphe du cours du chapitre {{chapitre.nom}}</p>
+          <p>{{item.nom}}</p>
           <div class="d-flex  align-items-center gap-1">
             <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
             @if (authservice.$IsAdmin|async) {
@@ -69,7 +69,7 @@
         @for (item of teacherCourse.paragraphes; track $index) {
         <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
           <h5> Paragraphe{{ $index +1}}</h5>
-          <p>paragraphe du cours du chapitre {{chapitre.nom}}</p>
+          <p>{{item.nom}}</p>
           <div class="d-flex  align-items-center gap-1">
             <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
             @if (authservice.$IsAdmin|async) {
@@ -100,15 +100,15 @@
         }
       </h4>
 
-      <section class="video px-5 mt-3 mx-auto d-flex justify-content-center align-items-center">
+      <section class="video px-5 mt-3 mx-auto ">
 
 
         <div class="row justify-content-center align-items-center gap-4 pt-5">
 
           @for (item of chapitre.videos; track $index) {
           <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
-            <h5> Paragraphe{{ $index +1}}</h5>
-            <p>cours video du chapitre {{chapitre.nom}}</p>
+            <h5> Video{{ $index +1}}</h5>
+            <p>{{item.nom}}</p>
             <div class="d-flex  align-items-center gap-1">
               <button class="btn  btn-secondary" routerLink="/dashboard/video/{{item.id}}">explore</button>
               @if (authservice.$IsAdmin|async) {
@@ -135,8 +135,8 @@
       <div class="pdf-container  mx-auto">
         @for (item of chapitre.schemas; track $index) {
         <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
-          <h5> video{{ $index +1}}</h5>
-          <p>cours Schema du chapitre {{chapitre.nom}}</p>
+          <h5> Schema{{ $index +1}}</h5>
+          <p>{{item.nom}}</p>
           <div class="d-flex  align-items-center gap-1">
             <button class="btn  btn-secondary" routerLink="/dashboard/schema/{{item.id}}">explore</button>
             @if (authservice.$IsAdmin|async) {
@@ -162,8 +162,8 @@
       <div class="pdf-container  mx-auto">
         @for (item of chapitre.syntheses; track $index) {
         <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
-          <h5> video{{ $index +1}}</h5>
-          <p>cours Synthese du chapitre {{chapitre.nom}}</p>
+          <h5> Synthese{{ $index +1}}</h5>
+          <p>{{item.nom}}</p>
           <div class="d-flex  align-items-center gap-1">
             <button class="btn  btn-secondary" routerLink="/dashboard/synthese/{{item.id}}">explore</button>
             @if (authservice.$IsAdmin|async) {

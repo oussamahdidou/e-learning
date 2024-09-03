@@ -111,4 +111,36 @@ export class VideoComponent implements OnInit {
       Swal.fire('Error', 'Please provide a valid video URL', 'error');
     }
   }
+  ModifierNom() {
+    Swal.fire({
+      title: 'Enter a new name',
+      input: 'text',
+      inputValue: this.video.nom,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to write something!';
+        }
+        return null;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice
+          .updateVideoName(this.video.id, result.value)
+          .subscribe(
+            (response) => {
+              this.video.nom = result.value;
+              Swal.fire(
+                'Updated!',
+                `The name has been changed to: ${this.video.nom}`,
+                'success'
+              );
+            },
+            (error) => {}
+          );
+      }
+    });
+  }
 }

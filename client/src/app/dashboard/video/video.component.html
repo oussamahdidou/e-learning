@@ -1,21 +1,32 @@
+@if (video) {
 <div class="container-fluid h-100">
-    <div class="container mx-auto justify-content-center  h-100">
-        <h4>
-            CoursVideo @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary"
-                (click)="Video.click()">
-                Modifier Video (Upload)
-            </button>
+    <div
+        class="container mx-auto pt-5 justify-content-center d-flex flex-column justify-content-center align-items-center  h-100">
+
+        <div class="w-100">
+            @if (authservice.$IsAdmin|async) {
+            <h4> CoursVideo ({{video.nom}})
+
+                <button mat-raised-button color="primary" (click)="ModifierNom()">
+                    Modifier Nom
+                </button>
+            </h4>
+
             <input type="file" #Video (change)="SelectVideo($event)" accept="video/*" style="display: none" />
 
-            <div>
+            <div class=" d-flex justify-content-center align-items-center gap-3 w-100">
                 <input class="form-control my-4" placeholder="Or enter video URL" [(ngModel)]="videoUrl" />
                 <button mat-raised-button color="primary" (click)="updateVideoWithLink()">
                     Update via Link
                 </button>
+                <button mat-raised-button color="primary" (click)="Video.click()">
+                    Modifier Video (Upload)
+                </button>
             </div>
 
             }
-        </h4>
+
+        </div>
         @if (video) {
         @if (isYoutubeLink) {
         <iframe width="1000" height="500" [src]="video.link | safeUrl" frameborder="0" allowfullscreen>
@@ -33,3 +44,4 @@
         }
     </div>
 </div>
+}

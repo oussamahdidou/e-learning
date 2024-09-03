@@ -81,4 +81,37 @@ export class ParagrapheComponent {
       );
     });
   }
+
+  ModifierNom() {
+    Swal.fire({
+      title: 'Enter a new name',
+      input: 'text',
+      inputValue: this.paragraphe.nom,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      inputValidator: (value) => {
+        if (!value) {
+          return 'You need to write something!';
+        }
+        return null;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.dashboardservice
+          .updateParagrapheName(this.paragraphe.id, result.value)
+          .subscribe(
+            (response) => {
+              this.paragraphe.nom = result.value;
+              Swal.fire(
+                'Updated!',
+                `The name has been changed to: ${this.paragraphe.nom}`,
+                'success'
+              );
+            },
+            (error) => {}
+          );
+      }
+    });
+  }
 }

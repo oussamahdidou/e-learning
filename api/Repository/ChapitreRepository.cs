@@ -730,5 +730,53 @@ namespace api.Repository
                 return true;
             }
         }
+
+        public async Task<Result<Paragraphe>> UpdateParagrapheName(UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Paragraphe? chapitre = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == updateChapitreNameDto.Id);
+            if (chapitre == null)
+            {
+                return Result<Paragraphe>.Failure("chapitre not found");
+            }
+            chapitre.Nom = updateChapitreNameDto.Nom;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Paragraphe>.Success(chapitre);
+        }
+
+        public async Task<Result<Video>> UpdateVideoName(UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Video? chapitre = await apiDbContext.videos.FirstOrDefaultAsync(x => x.Id == updateChapitreNameDto.Id);
+            if (chapitre == null)
+            {
+                return Result<Video>.Failure("chapitre not found");
+            }
+            chapitre.Nom = updateChapitreNameDto.Nom;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Video>.Success(chapitre);
+        }
+
+        public async Task<Result<Schema>> UpdateSchemaName(UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Schema? chapitre = await apiDbContext.schemas.FirstOrDefaultAsync(x => x.Id == updateChapitreNameDto.Id);
+            if (chapitre == null)
+            {
+                return Result<Schema>.Failure("chapitre not found");
+            }
+            chapitre.Nom = updateChapitreNameDto.Nom;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Schema>.Success(chapitre);
+        }
+
+        public async Task<Result<Synthese>> UpdateSyntheseName(UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Synthese? chapitre = await apiDbContext.syntheses.FirstOrDefaultAsync(x => x.Id == updateChapitreNameDto.Id);
+            if (chapitre == null)
+            {
+                return Result<Synthese>.Failure("chapitre not found");
+            }
+            chapitre.Nom = updateChapitreNameDto.Nom;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Synthese>.Success(chapitre);
+        }
     }
 }

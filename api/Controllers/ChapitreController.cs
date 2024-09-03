@@ -294,5 +294,47 @@ namespace api.Controllers
             return Ok(await chapitreRepository.DeleteSynthese(id));
 
         }
+
+        [HttpPut("UpdateVideoName")]
+        public async Task<IActionResult> UpdateVideoName([FromBody] UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Result<Video> result = await chapitreRepository.UpdateVideoName(updateChapitreNameDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateSchemaName")]
+        public async Task<IActionResult> UpdateSchemaName([FromBody] UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Result<Schema> result = await chapitreRepository.UpdateSchemaName(updateChapitreNameDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateSyntheseName")]
+        public async Task<IActionResult> UpdateSyntheseName([FromBody] UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Result<Synthese> result = await chapitreRepository.UpdateSyntheseName(updateChapitreNameDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateParagrapheName")]
+        public async Task<IActionResult> UpdateParagrapheName([FromBody] UpdateChapitreNameDto updateChapitreNameDto)
+        {
+            Result<Paragraphe> result = await chapitreRepository.UpdateParagrapheName(updateChapitreNameDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
+
 }

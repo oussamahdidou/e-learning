@@ -31,6 +31,11 @@ namespace api.interfaces
         Task<Result<Synthese>> UpdateChapitreSynthese(UpdateChapitreSyntheseDto updateChapitreSyntheseDto);
         Task<Result<Schema>> GetSchemaById(int Id);
         Task<Result<Chapitre>> UpdateChapterName(UpdateChapitreNameDto updateChapitreNameDto);
+        Task<Result<Paragraphe>> UpdateParagrapheName(UpdateChapitreNameDto updateChapitreNameDto);
+        Task<Result<Video>> UpdateVideoName(UpdateChapitreNameDto updateChapitreNameDto);
+        Task<Result<Schema>> UpdateSchemaName(UpdateChapitreNameDto updateChapitreNameDto);
+        Task<Result<Synthese>> UpdateSyntheseName(UpdateChapitreNameDto updateChapitreNameDto);
+
         Task<Result<Chapitre>> Approuver(int id);
         Task<Result<Chapitre>> Refuser(int id);
         Task<bool> DeleteChapitre(int id);
