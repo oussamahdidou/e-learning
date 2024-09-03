@@ -64,35 +64,46 @@ namespace api.Repository
                 List<Video> videos = new List<Video>();
                 List<Schema> schemas = new List<Schema>();
                 List<Synthese> syntheses = new List<Synthese>();
-
+                int index = 1;
                 foreach (var item in createChapitreDto.Schemas)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), schemaContainer, item.FileName);
-                    schemas.Add(new Schema() { Nom = $"Paragraphe {1}", Link = url });
+                    schemas.Add(new Schema() { Nom = $"Schema {index}", Link = url });
+                    index++;
                 }
+                index = 1;
                 foreach (var item in createChapitreDto.Syntheses)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), syntheseContainer, item.FileName);
-                    syntheses.Add(new Synthese() { Nom = $"Paragraphe {1}", Link = url });
+                    syntheses.Add(new Synthese() { Nom = $"Synthese {index}", Link = url });
+                    index++;
                 }
+                index = 1;
                 foreach (var item in createChapitreDto.Videos)
                 {
                     string url = await _blobStorageService.UploadImageVideoAsync(item.OpenReadStream(), videoContainer, item.FileName);
-                    videos.Add(new Video() { Nom = $"Paragraphe {1}", Link = url });
+                    videos.Add(new Video() { Nom = $"Video {index}", Link = url });
+                    index++;
                 }
+                index = 1;
                 foreach (var item in createChapitreDto.VideosLink)
                 {
-                    videos.Add(new Video() { Nom = $"Paragraphe {1}", Link = item });
+                    videos.Add(new Video() { Nom = $"Video {index}", Link = item });
+                    index++;
                 }
+                index = 1;
                 foreach (var item in createChapitreDto.ProfessorCourseParagraphs)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), pdfContainer, item.FileName);
-                    professeurscoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {1}", Contenu = url });
+                    professeurscoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {index}", Contenu = url });
+                    index++;
                 }
+                index = 1;
                 foreach (var item in createChapitreDto.StudentCourseParagraphs)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), pdfContainer, item.FileName);
-                    studentcoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {1}", Contenu = url });
+                    studentcoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {index}", Contenu = url });
+                    index++;
                 }
                 Chapitre chapitre = new Chapitre
                 {
