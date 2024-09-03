@@ -29,7 +29,7 @@ namespace api.Repository
             foreach(var ResultControle in ResultControles){
                 if(ResultControle.Reponse == ""){
                     Student? student = await _context.students.FirstOrDefaultAsync(s => s.Id == ResultControle.StudentId);
-                    string message = "";
+                    string message = "you checked chapter befor controle and you didn't add you homework yet ";
                         await _mailer.SendEmailAsync(student.Email, "Reminder", message);
                 }
             }
