@@ -188,7 +188,7 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseHangfireDashboard();
 RecurringJob.AddOrUpdate<IReminder>("send-reminder",
     x => x.SendReminder(),
-    "* * * * *");
+    "0 9 * * 1");
 
 app.UseRouting();
 app.UseHttpsRedirection();
