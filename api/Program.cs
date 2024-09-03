@@ -147,6 +147,7 @@ builder.Services.AddScoped<IParagrapheRepository, ParagrapheRepository>();
 builder.Services.AddScoped<IPosteRepository, PosteRepository>();
 builder.Services.AddScoped<IElementPedagogiqueRepository, ElementPedagogiqueRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IReminder, ReminderRepository>();
 
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
 builder.Services.AddSingleton(x => new Cloudinary(builder.Configuration["Cloudinary:CloudinaryUrl"]));
@@ -187,7 +188,7 @@ app.UseStaticFiles(new StaticFileOptions
 app.UseHangfireDashboard();
 RecurringJob.AddOrUpdate<IReminder>("send-reminder",
     x => x.SendReminder(),
-    "0 0 1 * *");
+    "* * * * *");
 
 app.UseRouting();
 app.UseHttpsRedirection();

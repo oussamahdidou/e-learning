@@ -29,8 +29,16 @@ namespace api.Repository
             foreach(var ResultControle in ResultControles){
                 if(ResultControle.Reponse == ""){
                     Student? student = await _context.students.FirstOrDefaultAsync(s => s.Id == ResultControle.StudentId);
-                    string message = "you checked chapter befor controle and you didn't add you homework yet ";
-                        await _mailer.SendEmailAsync(student.Email, "Reminder", message);
+                    Controle? controle = await _context.controles.FirstOrDefaultAsync(c => c.Id == ResultControle.ControleId);
+                    try
+                    {
+                        string message = "Vous avez vérifié le chapitre avant le contrôle " + controle.Nom + "  et vous n'avez pas encore ajouté vos devoirs.";
+                        await _mailer.SendEmailAsync("belkhiriyoussef33@gmail.com", "Reminder", message);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error sending email: {ex.Message}");
+                    }
                 }
             }
         }
