@@ -28,147 +28,158 @@
             <div class="card-body px-4 py-5 px-md-5">
               <form [formGroup]="registerForm" (submit)="register()">
 
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <div class="text-danger" *ngIf="registerForm.controls['nom'].invalid && (registerForm.controls['nom'].touched || registerForm.controls['nom'].dirty )">
-                      <span *ngIf="registerForm.controls['nom'].errors?.['required']">Required field</span>
+                <div *ngIf="currentStep === 1">
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="text-danger" *ngIf="registerForm.controls['nom'].invalid && (registerForm.controls['nom'].touched || registerForm.controls['nom'].dirty )">
+                        <span *ngIf="registerForm.controls['nom'].errors?.['required']">Required field</span>
+                      </div>
+                      <div data-mdb-input-init class="form-outline">
+                        <label class="form-label" for="nom">Nom</label>
+                        <input type="text" id="nom"  formControlName="nom" placeholder="Entrer votre nom" class="form-control" />
+                      </div>
                     </div>
-                    <div data-mdb-input-init class="form-outline">
-                      <label class="form-label" for="nom">Nom</label>
-                      <input type="text" id="nom"  formControlName="nom" placeholder="Entrer votre nom" class="form-control" />
+                    <div class="col-md-6 mb-4">
+                      <div class="text-danger" *ngIf="registerForm.controls['prenom'].invalid && (registerForm.controls['prenom'].touched || registerForm.controls['prenom'].dirty )">
+                        <span *ngIf="registerForm.controls['prenom'].errors?.['required']">Required field</span>
+                      </div>
+                      <div data-mdb-input-init class="form-outline">
+                        <label class="form-label" for="prenom">Prénom</label>
+                        <input type="text" id="prenom" formControlName="prenom" placeholder="Entrer votre prénom" class="form-control" />
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-6 mb-4">
-                    <div class="text-danger" *ngIf="registerForm.controls['prenom'].invalid && (registerForm.controls['prenom'].touched || registerForm.controls['prenom'].dirty )">
-                      <span *ngIf="registerForm.controls['prenom'].errors?.['required']">Required field</span>
-                    </div>
-                    <div data-mdb-input-init class="form-outline">
-                      <label class="form-label" for="prenom">Prénom</label>
-                      <input type="text" id="prenom" formControlName="prenom" placeholder="Entrer votre prénom" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-
-                <div class="text-danger" *ngIf="registerForm.controls['datenaissaince'].invalid && (registerForm.controls['datenaissaince'].touched || registerForm.controls['datenaissaince'].dirty )">
-                  <span *ngIf="registerForm.controls['datenaissaince'].errors?.['required']">Required field</span>
-                </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="datenaissaince">Date de naissance</label>
-                  <input type="date" id="datenaissaince"  formControlName="datenaissaince" placeholder="Entrer votre Date de naissance" class="form-control" />
-                </div>
-
-                <div class="text-danger" *ngIf="registerForm.controls['justification'].invalid && (registerForm.controls['justification'].touched || registerForm.controls['justification'].dirty )">
-                  <span *ngIf="registerForm.controls['justification'].errors?.['required']">Required field</span>
-                </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="justification">Justification de la profession <span style="color: hsl(218, 81%, 75%)">(Attestation ou CIN)</span></label>
-                  <input type="file" id="justification"  formControlName="justification" (change)="onFileChange($event)" placeholder="Entrer votre justification" class="form-control" />
-                </div>
-
-                <div class="text-danger" *ngIf="registerForm.controls['etablissement'].invalid && (registerForm.controls['etablissement'].touched || registerForm.controls['etablissement'].dirty )">
-                  <span *ngIf="registerForm.controls['etablissement'].errors?.['required']">Required field</span>
-                </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="etablissement">Etablissement</label>
-                  <input type="text" id="etablissement"  formControlName="etablissement" placeholder="Entrer votre etablissement" class="form-control" />
-                </div>
-
-                <div class="text-danger" *ngIf="registerForm.controls['specialite'].invalid && (registerForm.controls['specialite'].touched || registerForm.controls['specialite'].dirty )">
-                  <span *ngIf="registerForm.controls['specialite'].errors?.['required']">Required field</span>
-                </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="specialite">Specialite</label>
-                  <input type="text" id="specialite"  formControlName="specialite" placeholder="Entrer votre specialite" class="form-control" />
-                </div>
-
-                <div class="text-danger" *ngIf="registerForm.controls['status'].invalid && (registerForm.controls['status'].touched || registerForm.controls['status'].dirty )">
-                  <span *ngIf="registerForm.controls['status'].errors?.['required']">Required field</span>
-                </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="status">Status</label>
-                  <input type="text" id="status"  formControlName="status" placeholder="Entrer votre status" class="form-control" />
-                </div>
-
-                <div class="text-danger" *ngIf="registerForm.controls['phonenumber'].invalid && (registerForm.controls['phonenumber'].touched || registerForm.controls['phonenumber'].dirty )">
-                
-                  <span *ngIf="registerForm.controls['phonenumber'].errors?.['pattern']">Incorrect Moroccan Number</span>
-                </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="phonenumber">Phone number <span style="color: hsl(218, 81%, 75%)">(optional)</span></label>
-                  <input type="email" id="phonenumber"  formControlName="phonenumber" placeholder="Enter your Email" class="form-control" />
-                </div>
-
-                <div class="text-danger" *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty )">
-                  <span *ngIf="registerForm.controls['email'].errors?.['required']">Required field</span>
-                  <span *ngIf="registerForm.controls['email'].errors?.['email']">Incorrect email forme</span>
-                </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="email">Addresse mail</label>
-                  <input type="email" id="email" formControlName="email" placeholder="Enter your Email" class="form-control" />
-                </div>
-
-                <div class="text-danger" *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].touched || registerForm.controls['username'].dirty )">
-                  <span *ngIf="registerForm.controls['username'].errors?.['required']">Required field</span>
-                </div>
-                <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="username">Username</label>
-                  <input type="text" id="username" formControlName="username" placeholder="Enter a username" class="form-control" />
-                </div>
   
-                <div class="row">
-                  <div class="col-md-6 mb-4">
-                    <div class="text-danger" *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched || registerForm.controls['password'].dirty )">
-                      <span *ngIf="registerForm.controls['password'].errors?.['required']">Required field</span>
-                      
-                    </div>
-                    <div data-mdb-input-init class="form-outline">
-                      <label class="form-label" for="password">Password</label>
-                      <input type="password" id="password"   formControlName="password" placeholder="Enter a password" class="form-control" />
-                    </div>
+                  <div class="text-danger" *ngIf="registerForm.controls['datenaissaince'].invalid && (registerForm.controls['datenaissaince'].touched || registerForm.controls['datenaissaince'].dirty )">
+                    <span *ngIf="registerForm.controls['datenaissaince'].errors?.['required']">Required field</span>
                   </div>
-                  <div class="col-md-6 mb-4">
-                    <div class="text-danger" *ngIf="registerForm.controls['confirmpassword'].invalid && (registerForm.controls['confirmpassword'].touched || registerForm.controls['confirmpassword'].dirty )">
-                      <span *ngIf="registerForm.controls['confirmpassword'].errors?.['required']">Required field</span>
-                    </div>
-                    <div data-mdb-input-init class="form-outline">
-                      <label class="form-label" for="confirmpassword">Confirm Password</label>
-                      <input type="password" id="confirmpassword"  formControlName="confirmpassword" placeholder="confirm the  password" class="form-control" />
-                    </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="datenaissaince">Date de naissance</label>
+                    <input type="date" id="datenaissaince"  formControlName="datenaissaince" placeholder="Entrer votre Date de naissance" class="form-control" />
                   </div>
-                </div>
-                <div class="text-danger" *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched || registerForm.controls['password'].dirty )">
-                
-                  <span *ngIf="registerForm.controls['password'].errors?.['minlength']">
-                    Password must be at least 8 characters long. 
-                  </span><br>
-                  <span *ngIf="registerForm.controls['password'].errors?.['special']">
-                    Password must include at least one special character. 
-                  </span><br>
-                  <span *ngIf="registerForm.controls['password'].errors?.['digit']">
-                    Password must include at least one digit.
-                  </span><br>
-                  <span *ngIf="registerForm.controls['password'].errors?.['lowercase']">
-                    Password must include at least one lowercase letter.
-                  </span><br>
-                  <span *ngIf="registerForm.controls['password'].errors?.['uppercase']">
-                    Password must include at least one uppercase letter. 
-                  </span>
-                  
-                </div>
-           
-  <!--          <div class="form-check d-flex justify-content-center mb-4">
-                  
-                </div> -->
-                 
-                <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
-                  Sign up
-                </button>
   
-                <div class="text-center">
-                  <p>Already have an account?
-                    <a routerLink="/auth/login" class="signup-link link"> Login now</a></p>
-                  
+                  <div class="text-danger" *ngIf="registerForm.controls['justification'].invalid && (registerForm.controls['justification'].touched || registerForm.controls['justification'].dirty )">
+                    <span *ngIf="registerForm.controls['justification'].errors?.['required']">Required field</span>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="justification">Justification de la profession <span style="color: hsl(218, 81%, 75%)">(Attestation ou CIN)</span></label>
+                    <input type="file" id="justification"  formControlName="justification" (change)="onFileChange($event)" placeholder="Entrer votre justification" class="form-control" />
+                  </div>
+  
+                  <div class="text-danger" *ngIf="registerForm.controls['etablissement'].invalid && (registerForm.controls['etablissement'].touched || registerForm.controls['etablissement'].dirty )">
+                    <span *ngIf="registerForm.controls['etablissement'].errors?.['required']">Required field</span>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="etablissement">Etablissement</label>
+                    <input type="text" id="etablissement"  formControlName="etablissement" placeholder="Entrer votre etablissement" class="form-control" />
+                  </div>
+  
+                  <div class="text-danger" *ngIf="registerForm.controls['specialite'].invalid && (registerForm.controls['specialite'].touched || registerForm.controls['specialite'].dirty )">
+                    <span *ngIf="registerForm.controls['specialite'].errors?.['required']">Required field</span>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="specialite">Specialite</label>
+                    <input type="text" id="specialite"  formControlName="specialite" placeholder="Entrer votre specialite" class="form-control" />
+                  </div>
+  
+                  <div class="text-danger" *ngIf="registerForm.controls['status'].invalid && (registerForm.controls['status'].touched || registerForm.controls['status'].dirty )">
+                    <span *ngIf="registerForm.controls['status'].errors?.['required']">Required field</span>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="status">Status</label>
+                    <input type="text" id="status"  formControlName="status" placeholder="Entrer votre status" class="form-control" />
+                  </div>
+                  <div class="text-center">
+                    <button type="button" (click)="goToNextStep()" class="btn btn-primary btn-block mb-4">
+                      Next
+                    </button>
+                  </div>
                 </div>
+                
+
+                <div *ngIf="currentStep === 2">
+                  <div class="text-danger" *ngIf="registerForm.controls['phonenumber'].invalid && (registerForm.controls['phonenumber'].touched || registerForm.controls['phonenumber'].dirty )">
+                
+                    <span *ngIf="registerForm.controls['phonenumber'].errors?.['pattern']">Incorrect Moroccan Number</span>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="phonenumber">Phone number <span style="color: hsl(218, 81%, 75%)">(optional)</span></label>
+                    <input type="email" id="phonenumber"  formControlName="phonenumber" placeholder="Enter your Email" class="form-control" />
+                  </div>
+  
+                  <div class="text-danger" *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty )">
+                    <span *ngIf="registerForm.controls['email'].errors?.['required']">Required field</span>
+                    <span *ngIf="registerForm.controls['email'].errors?.['email']">Incorrect email forme</span>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="email">Addresse mail</label>
+                    <input type="email" id="email" formControlName="email" placeholder="Enter your Email" class="form-control" />
+                  </div>
+  
+                  <div class="text-danger" *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].touched || registerForm.controls['username'].dirty )">
+                    <span *ngIf="registerForm.controls['username'].errors?.['required']">Required field</span>
+                  </div>
+                  <div data-mdb-input-init class="form-outline mb-4">
+                    <label class="form-label" for="username">Username</label>
+                    <input type="text" id="username" formControlName="username" placeholder="Enter a username" class="form-control" />
+                  </div>
+    
+                  <div class="row">
+                    <div class="col-md-6 mb-4">
+                      <div class="text-danger" *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched || registerForm.controls['password'].dirty )">
+                        <span *ngIf="registerForm.controls['password'].errors?.['required']">Required field</span>
+                        
+                      </div>
+                      <div data-mdb-input-init class="form-outline">
+                        <label class="form-label" for="password">Password</label>
+                        <input type="password" id="password"   formControlName="password" placeholder="Enter a password" class="form-control" />
+                      </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                      <div class="text-danger" *ngIf="registerForm.controls['confirmpassword'].invalid && (registerForm.controls['confirmpassword'].touched || registerForm.controls['confirmpassword'].dirty )">
+                        <span *ngIf="registerForm.controls['confirmpassword'].errors?.['required']">Required field</span>
+                      </div>
+                      <div data-mdb-input-init class="form-outline">
+                        <label class="form-label" for="confirmpassword">Confirm Password</label>
+                        <input type="password" id="confirmpassword"  formControlName="confirmpassword" placeholder="confirm the  password" class="form-control" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-danger" *ngIf="registerForm.controls['password'].invalid && (registerForm.controls['password'].touched || registerForm.controls['password'].dirty )">
+                  
+                    <span *ngIf="registerForm.controls['password'].errors?.['minlength']">
+                      Password must be at least 8 characters long. 
+                    </span><br>
+                    <span *ngIf="registerForm.controls['password'].errors?.['special']">
+                      Password must include at least one special character. 
+                    </span><br>
+                    <span *ngIf="registerForm.controls['password'].errors?.['digit']">
+                      Password must include at least one digit.
+                    </span><br>
+                    <span *ngIf="registerForm.controls['password'].errors?.['lowercase']">
+                      Password must include at least one lowercase letter.
+                    </span><br>
+                    <span *ngIf="registerForm.controls['password'].errors?.['uppercase']">
+                      Password must include at least one uppercase letter. 
+                    </span>
+                    
+                  </div>
+             
+    <!--          <div class="form-check d-flex justify-content-center mb-4">
+                    
+                  </div> -->
+                   
+                  <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">
+                    Sign up
+                  </button>
+    
+                  <div class="text-center">
+                    <p>Already have an account?
+                      <a routerLink="/auth/login" class="signup-link link"> Login now</a></p>
+                    
+                  </div>
+                </div>
+                
               </form>
             </div>
           </div>

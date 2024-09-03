@@ -11,6 +11,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 })
 export class TeacherRegisterComponent {
   isLoading = false;
+  currentStep = 1;
   registerForm: FormGroup;
 
   constructor(private authService: AuthService) {
@@ -26,7 +27,7 @@ export class TeacherRegisterComponent {
       justification: new FormControl('',[Validators.required]),
       status: new FormControl('',[Validators.required]),
       specialite: new FormControl('',[Validators.required]),
-      phonenumber: new FormControl('',Validators.pattern("^[0-9]")),
+      phonenumber: new FormControl('',[Validators.pattern(/^(?:\+2127\d{8}|\+2126\d{8}|07\d{8}|06\d{8})$/)]),
     })
   }
   fileJustification: File| null = null;
@@ -65,6 +66,22 @@ export class TeacherRegisterComponent {
     const file = event.target.files[0];
     this.registerForm.patchValue({ justification: file });
     this.registerForm.get('justification')?.updateValueAndValidity();
+  }
+
+  isFirstStepValid() {
+    return this.registerForm.get('nom')?.valid &&
+           this.registerForm.get('prenom')?.valid &&
+           this.registerForm.get('datenaissaince')?.valid &&
+           this.registerForm.get('etablissement')?.valid &&
+           this.registerForm.get('justification')?.valid &&
+           this.registerForm.get('status')?.valid &&
+           this.registerForm.get('specialite')?.valid;
+  }
+
+  goToNextStep() {
+    if (this.isFirstStepValid()) {
+      this.currentStep = 2;
+    }
   }
 
   register() {
