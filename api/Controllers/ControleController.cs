@@ -37,7 +37,7 @@ namespace api.Controllers
             if (appUser == null)
             {
 
-                return Unauthorized("u need to logging");
+                return Unauthorized("Attend que l`admin te donne l`acces pour ajouter");
 
             }
             IList<string> roles = await userManager.GetRolesAsync(appUser);
