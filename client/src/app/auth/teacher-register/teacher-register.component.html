@@ -61,7 +61,7 @@
                   <span *ngIf="registerForm.controls['justification'].errors?.['required']">Required field</span>
                 </div>
                 <div data-mdb-input-init class="form-outline mb-4">
-                  <label class="form-label" for="justification">Justification de la proffesion</label>
+                  <label class="form-label" for="justification">Justification de la profession <span style="color: hsl(218, 81%, 75%)">(Attestation ou CIN)</span></label>
                   <input type="file" id="justification"  formControlName="justification" (change)="onFileChange($event)" placeholder="Entrer votre justification" class="form-control" />
                 </div>
 
@@ -71,6 +71,31 @@
                 <div data-mdb-input-init class="form-outline mb-4">
                   <label class="form-label" for="etablissement">Etablissement</label>
                   <input type="text" id="etablissement"  formControlName="etablissement" placeholder="Entrer votre etablissement" class="form-control" />
+                </div>
+
+                <div class="text-danger" *ngIf="registerForm.controls['specialite'].invalid && (registerForm.controls['specialite'].touched || registerForm.controls['specialite'].dirty )">
+                  <span *ngIf="registerForm.controls['specialite'].errors?.['required']">Required field</span>
+                </div>
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="specialite">Specialite</label>
+                  <input type="text" id="specialite"  formControlName="specialite" placeholder="Entrer votre specialite" class="form-control" />
+                </div>
+
+                <div class="text-danger" *ngIf="registerForm.controls['status'].invalid && (registerForm.controls['status'].touched || registerForm.controls['status'].dirty )">
+                  <span *ngIf="registerForm.controls['status'].errors?.['required']">Required field</span>
+                </div>
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="status">Status</label>
+                  <input type="text" id="status"  formControlName="status" placeholder="Entrer votre status" class="form-control" />
+                </div>
+
+                <div class="text-danger" *ngIf="registerForm.controls['phonenumber'].invalid && (registerForm.controls['phonenumber'].touched || registerForm.controls['phonenumber'].dirty )">
+                
+                  <span *ngIf="registerForm.controls['phonenumber'].errors?.['pattern']">Incorrect Moroccan Number</span>
+                </div>
+                <div data-mdb-input-init class="form-outline mb-4">
+                  <label class="form-label" for="phonenumber">Phone number <span style="color: hsl(218, 81%, 75%)">(optional)</span></label>
+                  <input type="email" id="phonenumber"  formControlName="phonenumber" placeholder="Enter your Email" class="form-control" />
                 </div>
 
                 <div class="text-danger" *ngIf="registerForm.controls['email'].invalid && (registerForm.controls['email'].touched || registerForm.controls['email'].dirty )">

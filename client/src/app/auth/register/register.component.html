@@ -67,6 +67,7 @@
                 <input type="text" id="etablissement" formControlName="etablissement" placeholder="Entrer votre etablissement" class="form-control" />
               </div>
 
+              
               <div class="row">
                 <div class="col-md-6 mb-4">
                   <div class="text-danger" *ngIf="registerForm.controls['branche'].invalid && (registerForm.controls['branche'].touched || registerForm.controls['branche'].dirty )">
@@ -95,6 +96,23 @@
               <div data-mdb-input-init class="form-outline mb-4">
                 <label class="form-label" for="email">Addresse mail</label>
                 <input type="email" id="email"  formControlName="email" placeholder="Enter your Email" class="form-control" />
+              </div>
+
+              <div class="text-danger" *ngIf="registerForm.controls['tuteuremail'].invalid && (registerForm.controls['tuteuremail'].touched || registerForm.controls['tuteuremail'].dirty )">
+                
+                <span *ngIf="registerForm.controls['tuteuremail'].errors?.['email']">Incorrect email forme</span>
+              </div>
+              <div data-mdb-input-init class="form-outline mb-4">
+                <label class="form-label" for="tuteuremail">Tuteur addresse mail <span style="color: hsl(218, 81%, 75%)">(optional)</span></label>
+                <input type="email" id="tuteuremail"  formControlName="tuteuremail" placeholder="Enter your Email" class="form-control" />
+              </div>
+              <div class="text-danger" *ngIf="registerForm.controls['phonenumber'].invalid && (registerForm.controls['phonenumber'].touched || registerForm.controls['phonenumber'].dirty )">
+                
+                <span *ngIf="registerForm.controls['phonenumber'].errors?.['pattern']">Incorrect Moroccan Number</span>
+              </div>
+              <div data-mdb-input-init class="form-outline mb-4">
+                <label class="form-label" for="phonenumber">Phone number <span style="color: hsl(218, 81%, 75%)">(optional)</span></label>
+                <input type="email" id="phonenumber"  formControlName="phonenumber" placeholder="Enter your Email" class="form-control" />
               </div>
 
               <div class="text-danger" *ngIf="registerForm.controls['username'].invalid && (registerForm.controls['username'].touched || registerForm.controls['username'].dirty )">

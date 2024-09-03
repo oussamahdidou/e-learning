@@ -71,7 +71,7 @@ namespace api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest("Incorrect Fields Format, Try Again");
 
-                var user = new AppUser
+                var user = new Student
                 {
                     Nom = registerDto.Nom,
                     Prenom = registerDto.Prenom,
@@ -81,6 +81,8 @@ namespace api.Controllers
                     Niveaus = registerDto.Niveaus,
                     UserName = registerDto.UserName,
                     Email = registerDto.Email,
+                    TuteurMail = registerDto.TuteurMail,
+                    PhoneNumber= registerDto.PhoneNumber,
                 };
 
                 var userCreation = await userManager.CreateAsync(user, registerDto.Password);
@@ -105,7 +107,7 @@ namespace api.Controllers
                         string message = "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Confirm Your Email Address</title><style>body {font-family: sans-serif;margin: 0;padding: 0;}.container {padding: 20px;max-width: 600px;margin: 0 auto;border: 1px solid #ddd;border-radius: 5px;}header {text-align: center;margin-bottom: 20px;}h1 {font-size: 24px;}p {line-height: 1.5;}a.confirm-button {display: block;padding: 10px 20px;background-color: #4CAF50;color: white;text-decoration: none;border: none;border-radius: 5px;text-align: center;}.confirm-button:hover {background-color: #3e8e41;}</style></head><body><div class='container'><header><h1>Welcome to E-Learning Plateform</h1></header><p>Hi " + user.UserName + " ,</p><p>Welcome to in E-Learning plateform we sent this email for your account activation . To complete your email confirmation, please click the button below:</p><center><a href=" + callback + " class='confirm-button'>Confirm Email</a></center><p>If you can't click the button, please copy and paste the following link into your web browser:</p><p>" + callback + "</p><p>**Please note:** This link will expire in 2 hours.</p><p>Thanks,</p><p>The E-Learning Team</p></div></body></html>";
 
 
-                        await mailer.SendEmailAsync(user.Email, "Email Confirmation Token", message);
+                        // await mailer.SendEmailAsync(user.Email, "Email Confirmation Token", message);
 
                         return Ok(
                             new NewUserDto()
@@ -118,19 +120,26 @@ namespace api.Controllers
                     }
                     else
                     {
-                        return StatusCode(500, userRole.Errors);
+                        var errors = string.Join(", ", userRole.Errors.Select(e => e.Description));
+                        Console.WriteLine("User role failed: " + errors);
+                        return BadRequest( "User role failed: " + errors);
+                        // return StatusCode(500, userRole.Errors);
                     }
 
                 }
                 else
                 {
-                    return StatusCode(500, userCreation.Errors);
+                    var errors = string.Join(", ", userCreation.Errors.Select(e => e.Description));
+                    Console.WriteLine("User creation failed: " + errors);
+                    return BadRequest("User creation failed: " + errors);
+                    // return StatusCode(500, userCreation.Errors);
                 }
 
             }
             catch (Exception e)
             {
-                return StatusCode(500, e);
+                return BadRequest("An Error Occured");
+                // return StatusCode(500, e);
             }
         }
 
@@ -142,10 +151,7 @@ namespace api.Controllers
                 var justification = "";
 
                 if (!ModelState.IsValid)
-                    return BadRequest(new AuthNotificationDto()
-                    {
-                        Message = "Incorrect Fields Format, Try Again"
-                    });
+                    return BadRequest("Incorrect Fields Format, Try Again");
 
                 if (teacherRegisterDto.JustificatifDeLaProfession != null)
                 {
@@ -156,15 +162,19 @@ namespace api.Controllers
 
                 Console.WriteLine("222222222222222222222222222222222222222222222222");
 
-                var user = new AppUser
+                var user = new Teacher
                 {
-                    Teacher_Nom = teacherRegisterDto.Teacher_Nom,
-                    Teacher_Prenom = teacherRegisterDto.Teacher_Prenom,
-                    Teacher_DateDeNaissance = (DateTime)(teacherRegisterDto.Teacher_DateDeNaissance),
-                    Teacher_Etablissement = teacherRegisterDto.Teacher_Etablissement,
+                    Nom = teacherRegisterDto.Teacher_Nom,
+                    Prenom = teacherRegisterDto.Teacher_Prenom,
+                    DateDeNaissance = (DateTime)(teacherRegisterDto.Teacher_DateDeNaissance),
+                    Etablissement = teacherRegisterDto.Teacher_Etablissement,
                     JustificatifDeLaProfession = justification,
                     UserName = teacherRegisterDto.UserName,
                     Email = teacherRegisterDto.Email,
+                    Granted=false,
+                    Status=teacherRegisterDto.Status,
+                    Specialite=teacherRegisterDto.Specialite,
+                    PhoneNumber= teacherRegisterDto.PhoneNumber,
                 };
 
                 var userCreation = await userManager.CreateAsync(user, teacherRegisterDto.Password);
@@ -192,7 +202,7 @@ namespace api.Controllers
                         string message = "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Confirm Your Email Address</title><style>body {font-family: sans-serif;margin: 0;padding: 0;}.container {padding: 20px;max-width: 600px;margin: 0 auto;border: 1px solid #ddd;border-radius: 5px;}header {text-align: center;margin-bottom: 20px;}h1 {font-size: 24px;}p {line-height: 1.5;}a.confirm-button {display: block;padding: 10px 20px;background-color: #4CAF50;color: white;text-decoration: none;border: none;border-radius: 5px;text-align: center;}.confirm-button:hover {background-color: #3e8e41;}</style></head><body><div class='container'><header><h1>Welcome to E-Learning Plateform</h1></header><p>Hi " + user.UserName + " ,</p><p>Welcome to in E-Learning plateform we sent this email for your account activation . To complete your email confirmation, please click the button below:</p><center><a href=" + callback + " class='confirm-button'>Confirm Email</a></center><p>If you can't click the button, please copy and paste the following link into your web browser:</p><p>" + callback + "</p><p>**Please note:** This link will expire in 2 hours.</p><p>Thanks,</p><p>The E-Learning Team</p></div></body></html>";
 
 
-                        await mailer.SendEmailAsync(user.Email, "Email Confirmation Token", message);
+                        // await mailer.SendEmailAsync(user.Email, "Email Confirmation Token", message);
 
                         return Ok(
                             new NewUserDto()
@@ -205,7 +215,10 @@ namespace api.Controllers
                     }
                     else
                     {
-                        return StatusCode(500, userRole.Errors);
+                        var errors = string.Join(", ", userRole.Errors.Select(e => e.Description));
+                        Console.WriteLine("User role failed: " + errors);
+                        return BadRequest( "User role failed: " + errors );
+                        // return StatusCode(500, userRole.Errors);
                     }
 
                 }
@@ -213,14 +226,15 @@ namespace api.Controllers
                 {
                     var errors = string.Join(", ", userCreation.Errors.Select(e => e.Description));
                     Console.WriteLine("User creation failed: " + errors);
-                    return StatusCode(500, new AuthNotificationDto { Message = "User creation failed: " + errors });
+                    return BadRequest("User creation failed: " + errors );
                     // return StatusCode(500, userCreation.Errors);
                 }
 
             }
             catch (Exception e)
             {
-                return StatusCode(500, e);
+                return BadRequest("An Error Occured");
+                // return StatusCode(500, e);
             }
         }
 

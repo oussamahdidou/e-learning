@@ -25,6 +25,8 @@ export class RegisterComponent {
       etablissement: new FormControl('',[Validators.required]),
       branche: new FormControl('',[Validators.required]),
       niveau: new FormControl('',[Validators.required]),
+      tuteuremail: new FormControl('',[Validators.email]),
+      phonenumber: new FormControl('',Validators.pattern("^[0-9]")),
     })
   }
 
@@ -44,7 +46,7 @@ export class RegisterComponent {
   register() {
     this.isLoading = true; 
     if (this.registerForm.valid) {
-      const { nom, prenom,datenaissaince,etablissement,branche,niveau,email,username,password,confirmpassword, } = this.registerForm.value;
+      const { nom, prenom,datenaissaince,etablissement,branche,niveau,email,tuteuremail,phonenumber,username,password,confirmpassword, } = this.registerForm.value;
       this.authService
         .registeruser(
           nom,
@@ -55,6 +57,8 @@ export class RegisterComponent {
           niveau,
           username,
           email,
+          tuteuremail,
+          phonenumber,
           password,
           confirmpassword
         )
@@ -75,7 +79,7 @@ export class RegisterComponent {
             );
             Swal.fire({
               title: 'Error',
-              text: `${error.message}`,
+              text: `Registration failed. ${error.error}`,
               icon: 'error',
             });
           }

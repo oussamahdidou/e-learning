@@ -108,6 +108,8 @@ export class AuthService {
     Niveaus: string,
     userName: string,
     email: string,
+    tuteuremail: string,
+    phonenumber: string,
     password: string,
     confirmPassword: string
   ): Observable<any> {
@@ -121,6 +123,8 @@ export class AuthService {
         Niveaus,
         userName,
         email,
+        tuteuremail,
+        phonenumber,
         password,
         confirmPassword,
       })
@@ -128,7 +132,7 @@ export class AuthService {
         tap<any>(
           (response) => {},
           (error) => {
-            console.log('error : 1111111' + error.message);
+            console.log('error : 1111111' + error.error);
           }
         )
       );

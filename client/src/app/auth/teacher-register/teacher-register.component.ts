@@ -24,6 +24,9 @@ export class TeacherRegisterComponent {
       datenaissaince: new FormControl('',[Validators.required]),
       etablissement: new FormControl('',[Validators.required]),
       justification: new FormControl('',[Validators.required]),
+      status: new FormControl('',[Validators.required]),
+      specialite: new FormControl('',[Validators.required]),
+      phonenumber: new FormControl('',Validators.pattern("^[0-9]")),
     })
   }
   fileJustification: File| null = null;
@@ -67,7 +70,7 @@ export class TeacherRegisterComponent {
   register() {
     this.isLoading = true; 
     if (this.registerForm.valid) {
-      const { nom, prenom, datenaissaince, etablissement, email, username, password, confirmpassword } = this.registerForm.value;
+      const { nom, prenom, datenaissaince, etablissement,phonenumber ,email,status, specialite,username, password, confirmpassword } = this.registerForm.value;
       const justification = this.registerForm.get('justification')?.value;
       const formattedDate = new Date(datenaissaince).toISOString(); 
 
@@ -101,8 +104,12 @@ export class TeacherRegisterComponent {
 
       formData.append('UserName', username);
       formData.append('Email', email);
+      formData.append('Status', status);
+      formData.append('Specialite', specialite);
+      formData.append('PhoneNumber', phonenumber);
       formData.append('Password', password);
       formData.append('ConfirmPassword', confirmpassword);
+      formData.append('PhoneNumber ',phonenumber)
 
       this.authService.teacherregisteruser(formData)
         .subscribe(
@@ -120,7 +127,7 @@ export class TeacherRegisterComponent {
             console.error('Registration failed:', error.message);
             Swal.fire({
               title: 'Error',
-              text:  'Registration failed. Please try again.' ,
+              text:  `Registration failed. ${error.error}`,
               icon: 'error',
             });
           }
