@@ -89,6 +89,12 @@ namespace api.Repository
                                 .ThenInclude(c => c.Paragraphes)
                         .Include(m => m.Chapitres)
                             .ThenInclude(c => c.Controle)
+                        .Include(m => m.Chapitres)
+                            .ThenInclude(c => c.Videos)
+                        .Include(m => m.Chapitres)
+                            .ThenInclude(c => c.Schemas)
+                                .Include(m => m.Chapitres)
+                            .ThenInclude(c => c.Syntheses)
                         .Include(m => m.ExamFinal)
                         .Where(m => !apiDbContext.niveauScolaireModules.Any(nsm => nsm.ModuleId == m.Id))
                         .ToListAsync();
@@ -120,17 +126,26 @@ namespace api.Repository
                         // Delete Chapitre files
                         foreach (var chapitre in module.Chapitres)
                         {
-                            if (!string.IsNullOrEmpty(chapitre.VideoPath))
+                            foreach (var paragraphe in chapitre.Videos)
                             {
-                                await blobStorageService.DeleteImageVideoAsync(videoContainer, CloudinaryUrlHelper.ExtractFileName(chapitre.VideoPath));
+                                if (!string.IsNullOrEmpty(paragraphe.Link))
+                                {
+                                    await blobStorageService.DeleteImageVideoAsync(videoContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
+                                }
                             }
-                            if (!string.IsNullOrEmpty(chapitre.Schema))
+                            foreach (var paragraphe in chapitre.Syntheses)
                             {
-                                await blobStorageService.DeleteFileAsync(schemaContainer, CloudinaryUrlHelper.ExtractFileName(chapitre.Schema));
+                                if (!string.IsNullOrEmpty(paragraphe.Link))
+                                {
+                                    await blobStorageService.DeleteFileAsync(syntheseContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
+                                }
                             }
-                            if (!string.IsNullOrEmpty(chapitre.Synthese))
+                            foreach (var paragraphe in chapitre.Schemas)
                             {
-                                await blobStorageService.DeleteFileAsync(syntheseContainer, CloudinaryUrlHelper.ExtractFileName(chapitre.Synthese));
+                                if (!string.IsNullOrEmpty(paragraphe.Link))
+                                {
+                                    await blobStorageService.DeleteFileAsync(schemaContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
+                                }
                             }
 
                             // Delete Cours Paragraphes files

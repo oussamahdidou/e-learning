@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class initialCreate : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -484,9 +484,6 @@ namespace api.Migrations
                     ChapitreNum = table.Column<int>(type: "int", nullable: false),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Statue = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    VideoPath = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Synthese = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Schema = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Premium = table.Column<bool>(type: "bit", nullable: false),
                     QuizId = table.Column<int>(type: "int", nullable: true),
                     ModuleId = table.Column<int>(type: "int", nullable: false),
@@ -640,6 +637,69 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "schemas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChapitreId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_schemas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_schemas_chapitres_ChapitreId",
+                        column: x => x.ChapitreId,
+                        principalTable: "chapitres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "syntheses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChapitreId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_syntheses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_syntheses_chapitres_ChapitreId",
+                        column: x => x.ChapitreId,
+                        principalTable: "chapitres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "videos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Link = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChapitreId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_videos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_videos_chapitres_ChapitreId",
+                        column: x => x.ChapitreId,
+                        principalTable: "chapitres",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "paragraphes",
                 columns: table => new
                 {
@@ -665,9 +725,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "0e5ef71b-fcac-45ea-ae5c-465a2d5b935b", null, "Teacher", "TEACHER" },
-                    { "936910fa-3ca7-4e41-ba7d-ac0fea7169fe", null, "Student", "STUDENT" },
-                    { "e2f125f4-fbdf-4e92-a0e3-5e6e6ac20753", null, "Admin", "ADMIN" }
+                    { "b285c6ba-0d9c-41bf-9415-41f6ff837229", null, "Student", "STUDENT" },
+                    { "e7859627-6df3-4276-999c-552b3ca458d5", null, "Teacher", "TEACHER" },
+                    { "e99ef8dd-27ad-403f-bff8-a46ef1e9e571", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -820,9 +880,24 @@ namespace api.Migrations
                 column: "ExamFinalId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_schemas_ChapitreId",
+                table: "schemas",
+                column: "ChapitreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_syntheses_ChapitreId",
+                table: "syntheses",
+                column: "ChapitreId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_testNiveaus_ModuleId",
                 table: "testNiveaus",
                 column: "ModuleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_videos_ChapitreId",
+                table: "videos",
+                column: "ChapitreId");
         }
 
         /// <inheritdoc />
@@ -874,7 +949,16 @@ namespace api.Migrations
                 name: "resultExams");
 
             migrationBuilder.DropTable(
+                name: "schemas");
+
+            migrationBuilder.DropTable(
+                name: "syntheses");
+
+            migrationBuilder.DropTable(
                 name: "testNiveaus");
+
+            migrationBuilder.DropTable(
+                name: "videos");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

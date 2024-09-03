@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    [Migration("20240831130154_initialCreate")]
-    partial class initialCreate
+    [Migration("20240902133830_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e2f125f4-fbdf-4e92-a0e3-5e6e6ac20753",
+                            Id = "e99ef8dd-27ad-403f-bff8-a46ef1e9e571",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "0e5ef71b-fcac-45ea-ae5c-465a2d5b935b",
+                            Id = "e7859627-6df3-4276-999c-552b3ca458d5",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "936910fa-3ca7-4e41-ba7d-ac0fea7169fe",
+                            Id = "b285c6ba-0d9c-41bf-9415-41f6ff837229",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -312,21 +312,12 @@ namespace api.Migrations
                     b.Property<int?>("QuizId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Schema")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Statue")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Synthese")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("TeacherId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("VideoPath")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -795,6 +786,54 @@ namespace api.Migrations
                     b.ToTable("resultExams");
                 });
 
+            modelBuilder.Entity("api.Model.Schema", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChapitreId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapitreId");
+
+                    b.ToTable("schemas");
+                });
+
+            modelBuilder.Entity("api.Model.Synthese", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChapitreId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapitreId");
+
+                    b.ToTable("syntheses");
+                });
+
             modelBuilder.Entity("api.Model.TestNiveau", b =>
                 {
                     b.Property<string>("StudentId")
@@ -811,6 +850,30 @@ namespace api.Migrations
                     b.HasIndex("ModuleId");
 
                     b.ToTable("testNiveaus");
+                });
+
+            modelBuilder.Entity("api.Model.Video", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChapitreId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChapitreId");
+
+                    b.ToTable("videos");
                 });
 
             modelBuilder.Entity("api.Model.Admin", b =>
@@ -1164,6 +1227,28 @@ namespace api.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("api.Model.Schema", b =>
+                {
+                    b.HasOne("api.Model.Chapitre", "Chapitre")
+                        .WithMany("Schemas")
+                        .HasForeignKey("ChapitreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chapitre");
+                });
+
+            modelBuilder.Entity("api.Model.Synthese", b =>
+                {
+                    b.HasOne("api.Model.Chapitre", "Chapitre")
+                        .WithMany("Syntheses")
+                        .HasForeignKey("ChapitreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chapitre");
+                });
+
             modelBuilder.Entity("api.Model.TestNiveau", b =>
                 {
                     b.HasOne("api.Model.Module", "Module")
@@ -1183,6 +1268,17 @@ namespace api.Migrations
                     b.Navigation("Student");
                 });
 
+            modelBuilder.Entity("api.Model.Video", b =>
+                {
+                    b.HasOne("api.Model.Chapitre", "Chapitre")
+                        .WithMany("Videos")
+                        .HasForeignKey("ChapitreId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chapitre");
+                });
+
             modelBuilder.Entity("api.Model.AppUser", b =>
                 {
                     b.Navigation("Comments");
@@ -1195,6 +1291,12 @@ namespace api.Migrations
                     b.Navigation("CheckChapters");
 
                     b.Navigation("Cours");
+
+                    b.Navigation("Schemas");
+
+                    b.Navigation("Syntheses");
+
+                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("api.Model.Controle", b =>

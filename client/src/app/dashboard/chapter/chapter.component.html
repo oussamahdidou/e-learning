@@ -86,14 +86,14 @@
       <ng-template matStepLabel> CoursVideo </ng-template>
       <h4>
         CoursVideo @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Video.click()">
-          Modifier Video (Upload)
+          Add Video (Upload)
         </button>
-        <input type="file" #Video (change)="SelectVideo($event)" accept="video/*" style="display: none" />
+        <input type="file" #Video (change)="AddVideo($event)" accept="video/*" style="display: none" />
 
         <div>
           <input class="form-control my-4" placeholder="Or enter video URL" [(ngModel)]="videoUrl" />
-          <button mat-raised-button color="primary" (click)="updateVideoWithLink()">
-            Update via Link
+          <button mat-raised-button color="primary" (click)="AddVideoWithLink()">
+            Add via Link
           </button>
         </div>
 
@@ -101,20 +101,24 @@
       </h4>
 
       <section class="video px-5 mt-3 mx-auto d-flex justify-content-center align-items-center">
-        @if (isYoutubeLink) {
-        <iframe width="560" height="315" [src]="chapitre.videoPath | safeUrl" frameborder="0" allowfullscreen>
-        </iframe>
-        }
-        @else {
 
-        <video class="img-fluid" controls>
-          <source src="{{ chapitre.videoPath }}" type="video/mp4" />
-          <source src="{{ chapitre.videoPath }}" type="video/webm" />
-          <source src="{{ chapitre.videoPath }}" type="video/ogg" />
-          <source src="{{ chapitre.videoPath }}" type="video/ts" />
-        </video>
-        }
 
+        <div class="row justify-content-center align-items-center gap-4 pt-5">
+
+          @for (item of chapitre.videos; track $index) {
+          <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
+            <h5> Paragraphe{{ $index +1}}</h5>
+            <p>cours video du chapitre {{chapitre.nom}}</p>
+            <div class="d-flex  align-items-center gap-1">
+              <button class="btn  btn-secondary" routerLink="/dashboard/video/{{item.id}}">explore</button>
+              @if (authservice.$IsAdmin|async) {
+              <button class="btn  btn-danger" (click)="supprimervideo(item.id)">Supprimer</button>
+
+              }
+            </div>
+          </div>
+          }
+        </div>
       </section>
     </mat-step>
 
@@ -126,22 +130,23 @@
         </button>
         }
       </h4>
-      <input type="file" #Schema (change)="SelectSchema($event)" style="display: none" />
+      <input type="file" #Schema (change)="AddSchema($event)" style="display: none" />
 
-      <div class="pdf-container w-75 mx-auto">
-        @if (getFileType(chapitre.schema)=="pdf") {
-        <pdf-viewer src="{{ chapitre.schema }}" [render-text]="true" [original-size]="false"
-          style="width: 100%; height: 700px">
-        </pdf-viewer>
-        }
-        @else if (getFileType(chapitre.schema)=="word") {
-        <iframe [src]="getViewerUrl(chapitre.schema)  | safeUrl" width="100%" height="700px"></iframe>}
-        @else if (getFileType(chapitre.schema)=="image") {
-        <img [src]="chapitre.schema" width="100%" height="700px" />}
-        @else if (getFileType(chapitre.schema)=="powerpoint") {
-        <iframe [src]="chapitre.schema | safeUrl" width="100%" height="700px"></iframe>
+      <div class="pdf-container  mx-auto">
+        @for (item of chapitre.schemas; track $index) {
+        <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
+          <h5> video{{ $index +1}}</h5>
+          <p>cours Schema du chapitre {{chapitre.nom}}</p>
+          <div class="d-flex  align-items-center gap-1">
+            <button class="btn  btn-secondary" routerLink="/dashboard/schema/{{item.id}}">explore</button>
+            @if (authservice.$IsAdmin|async) {
+            <button class="btn  btn-danger" (click)="supprimerschema(item.id)">Supprimer</button>
 
+            }
+          </div>
+        </div>
         }
+
       </div>
     </mat-step>
 
@@ -153,21 +158,22 @@
         </button>
         }
       </h4>
-      <input type="file" #Synthese (change)="SelectSynthese($event)" style="display: none" />
-      <div class="pdf-container w-75 mx-auto">
-        @if (getFileType(chapitre.synthese)=="pdf") {
-        <pdf-viewer src="{{ chapitre.synthese }}" [render-text]="true" [original-size]="false"
-          style="width: 100%; height: 700px">
-        </pdf-viewer>
-        }
-        @else if (getFileType(chapitre.synthese)=="word") {
-        <iframe [src]="getViewerUrl(chapitre.synthese)  | safeUrl" width="100%" height="700px"></iframe>}
-        @else if (getFileType(chapitre.synthese)=="image") {
-        <img [src]="chapitre.synthese" width="100%" height="700px" />}
-        @else if (getFileType(chapitre.synthese)=="powerpoint") {
-        <iframe [src]="chapitre.synthese | safeUrl" width="100%" height="700px"></iframe>
+      <input type="file" #Synthese (change)="AddSynthese($event)" style="display: none" />
+      <div class="pdf-container  mx-auto">
+        @for (item of chapitre.syntheses; track $index) {
+        <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
+          <h5> video{{ $index +1}}</h5>
+          <p>cours Synthese du chapitre {{chapitre.nom}}</p>
+          <div class="d-flex  align-items-center gap-1">
+            <button class="btn  btn-secondary" routerLink="/dashboard/synthese/{{item.id}}">explore</button>
+            @if (authservice.$IsAdmin|async) {
+            <button class="btn  btn-danger" (click)="supprimersynthese(item.id)">Supprimer</button>
 
+            }
+          </div>
+        </div>
         }
+
       </div>
     </mat-step>
 

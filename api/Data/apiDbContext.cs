@@ -40,6 +40,9 @@ namespace api.Data
         public DbSet<ElementPedagogique> elementPedagogiques { get; set; }
         public DbSet<Comment> comments { get; set; }
         public DbSet<Poste> postes { get; set; }
+        public DbSet<Video> videos { get; set; }
+        public DbSet<Synthese> syntheses { get; set; }
+        public DbSet<Schema> schemas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

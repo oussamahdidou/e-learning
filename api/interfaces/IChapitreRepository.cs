@@ -18,15 +18,25 @@ namespace api.interfaces
         Task<Result<Paragraphe>> UpdateParagraphe(UpdateParagrapheDto updateParagrapheDto);
 
         Task<Result<Chapitre>> UpdateChapitrePdf(UpdateChapitrePdfDto updateChapitrePdfDto);
-        Task<Result<Chapitre>> UpdateChapitreVideo(UpdateChapitreVideoDto updateChapitreVideoDto);
-        Task<Result<Chapitre>> UpdateChapitreVideoLink(UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto);
+        Task<Result<Video>> UpdateChapitreVideo(UpdateChapitreVideoDto updateChapitreVideoDto);
+        Task<Result<Video>> UpdateChapitreVideoLink(UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto);
+        Task<Result<Video>> AddVideo(UpdateChapitreVideoDto updateChapitreVideoDto);
+        Task<Result<Video>> AddVideoLink(UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto);
+        Task<Result<Schema>> AddChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto);
+        Task<Result<Synthese>> AddChapitreSynthese(UpdateChapitreSyntheseDto updateChapitreSyntheseDto);
 
-        Task<Result<Chapitre>> UpdateChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto);
-        Task<Result<Chapitre>> UpdateChapitreSynthese(UpdateChapitreSyntheseDto updateChapitreSyntheseDto);
+        Task<Result<Video>> GetVideoById(int Id);
+        Task<Result<Schema>> UpdateChapitreSchema(UpdateChapitreSchemaDto updateChapitreSchemaDto);
+        Task<Result<Synthese>> GetSyntheseById(int Id);
+        Task<Result<Synthese>> UpdateChapitreSynthese(UpdateChapitreSyntheseDto updateChapitreSyntheseDto);
+        Task<Result<Schema>> GetSchemaById(int Id);
         Task<Result<Chapitre>> UpdateChapterName(UpdateChapitreNameDto updateChapitreNameDto);
         Task<Result<Chapitre>> Approuver(int id);
         Task<Result<Chapitre>> Refuser(int id);
         Task<bool> DeleteChapitre(int id);
+        Task<bool> DeleteVideo(int id);
+        Task<bool> DeleteSchema(int id);
+        Task<bool> DeleteSynthese(int id);
 
     }
 }

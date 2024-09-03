@@ -88,7 +88,7 @@ namespace api.Repository
 
         public async Task<Result<Chapitre>> GetDashboardChapiter(int id)
         {
-            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.Cours).ThenInclude(x => x.Paragraphes).Include(x => x.Quiz).ThenInclude(x => x.Questions).ThenInclude(x => x.Options).FirstOrDefaultAsync(x => x.Id == id);
+            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.Videos).Include(x => x.Syntheses).Include(x => x.Schemas).Include(x => x.Cours).ThenInclude(x => x.Paragraphes).Include(x => x.Quiz).ThenInclude(x => x.Questions).ThenInclude(x => x.Options).FirstOrDefaultAsync(x => x.Id == id);
             if (chapitre == null)
             {
                 return Result<Chapitre>.Failure("chapitre not found");

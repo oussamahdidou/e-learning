@@ -580,4 +580,84 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  getschema(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Chapitre/Schema/${id}`,
+
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getvideo(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Chapitre/Video/${id}`,
+
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  getsynthese(id: number): Observable<any> {
+    return this.http.get(
+      `${environment.apiUrl}/api/Chapitre/Synthese/${id}`,
+
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  addschema(form: any): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Chapitre/AddSchema`,
+      form,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  addvideo(form: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/api/Chapitre/AddVideo`, form, {
+      headers: this.authservice.headers,
+    });
+  }
+  addvideolink(chapterid: number, videoUrl: string): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Chapitre/AddVideoLink`,
+      {
+        chapitreId: chapterid,
+        link: videoUrl,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  addsynthese(form: any): Observable<any> {
+    return this.http.post(
+      `${environment.apiUrl}/api/Chapitre/AddSynthese`,
+      form,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  deletesynthese(id: number): Observable<any> {
+    return this.http.delete(
+      `${environment.apiUrl}/api/Chapitre/Synthese/${id}`,
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  deleteschema(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/Chapitre/Schema/${id}`, {
+      headers: this.authservice.headers,
+    });
+  }
+  deletevideo(id: number): Observable<any> {
+    return this.http.delete(`${environment.apiUrl}/api/Chapitre/Video/${id}`, {
+      headers: this.authservice.headers,
+    });
+  }
 }

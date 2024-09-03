@@ -48,6 +48,9 @@ import { SafeUrlPipe } from '../pipes/safe-url.pipe';
 import { ParagrapheComponent } from './paragraphe/paragraphe.component';
 import { TeacherProfileComponent } from './teacher-profile/teacher-profile.component';
 import { CreateNiveauScolaireModuleDialogComponent } from './create-niveau-scolaire-module-dialog/create-niveau-scolaire-module-dialog.component';
+import { VideoComponent } from './video/video.component';
+import { SchemaComponent } from './schema/schema.component';
+import { SyntheseComponent } from './synthese/synthese.component';
 const routes: Routes = [
   {
     path: '',
@@ -108,6 +111,21 @@ const routes: Routes = [
         component: ParagrapheComponent,
       },
       {
+        path: 'video/:id',
+        canActivate: [DashboardGuardService],
+        component: VideoComponent,
+      },
+      {
+        path: 'schema/:id',
+        canActivate: [DashboardGuardService],
+        component: SchemaComponent,
+      },
+      {
+        path: 'synthese/:id',
+        canActivate: [DashboardGuardService],
+        component: SyntheseComponent,
+      },
+      {
         path: '',
         canActivate: [DashboardGuardService],
         component: DashboardtableComponent,
@@ -142,6 +160,9 @@ const routes: Routes = [
     ParagrapheComponent,
     TeacherProfileComponent,
     CreateNiveauScolaireModuleDialogComponent,
+    VideoComponent,
+    SchemaComponent,
+    SyntheseComponent,
   ],
   imports: [
     CommonModule,
