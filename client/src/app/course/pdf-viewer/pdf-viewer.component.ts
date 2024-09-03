@@ -170,8 +170,10 @@ export class PdfViewerComponent {
   // Methods for Exam
   private isDevoirExists(id: number) {
     this.courseService.isDevoirUploaded(id).subscribe((res) => {
-      this.devoirePdfUrl = res.reponse;
-      this.devoirExists = true;
+      if (res.reponse != '') {
+        this.devoirePdfUrl = res.reponse;
+        this.devoirExists = true;
+      }
       console.log(this.devoirePdfUrl);
     });
   }

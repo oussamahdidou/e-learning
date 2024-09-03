@@ -22,7 +22,7 @@ export interface Chapitre {
   nom: string;
   statue: boolean;
   coursPdfPath: string | null;
-  studentCoursParagraphes : number[] | null
+  studentCoursParagraphes: number[] | null;
   videoPath: string | null;
   synthese: string | null;
   schema: string | null;
@@ -74,4 +74,12 @@ export interface InfoCard {
   nom: string;
   numberOfChapter: number;
   moduleImg: string;
+}
+export interface CheckChapterRequest {
+  Id: number;
+  ControleId: number;
+  ExamId: number;
+  lastChapter: boolean;
+  lastChapterExam: boolean;
+  avis: string;
 }

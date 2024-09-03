@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 using api.interfaces;
 
 using api.generique;
+using api.Dtos.CheckChapter;
 
 namespace api.Controllers
 {
@@ -21,10 +22,12 @@ namespace api.Controllers
     {
         private readonly ICheckChapterRepository _check;
         private readonly UserManager<AppUser> _manager;
-        public CheckChapterController(ICheckChapterRepository check, UserManager<AppUser> manager)
+        private readonly IResultControleRepository _result;
+        public CheckChapterController(ICheckChapterRepository check, UserManager<AppUser> manager,IResultControleRepository result)
         {
             _check = check;
             _manager = manager;
+            _result = result;
         }
 
         [HttpGet]
@@ -38,15 +41,16 @@ namespace api.Controllers
             if (!result.IsSuccess) return BadRequest(result.Error);
             return Ok(result.Value);
         }
-        [HttpGet("{id:int}/{avis}")]
+        [HttpPost()]
         [Authorize]
-        public async Task<IActionResult> CreateCheckChapter([FromRoute] int id , string avis)
+        public async Task<IActionResult> CreateCheckChapter([FromBody] CheckChapterDto checkChapterDto )
         {
             string username = User.GetUsername();
             AppUser? user = await _manager.FindByNameAsync(username);
             if (user == null) return BadRequest();
-            Result<CheckChapter> result = await _check.CreateCheckChapter(user, id , avis);
+            Result<CheckChapter> result = await _check.CreateCheckChapter(user, checkChapterDto.Id , checkChapterDto.avis);
             if (!result.IsSuccess) return BadRequest(result.Error);
+            if (checkChapterDto.lastChapter) await _result.AddResult(user, checkChapterDto.ControleId , "");
             return Ok(result.Value);
         }
         [HttpDelete("{chapterId}")]

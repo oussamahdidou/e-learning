@@ -26,7 +26,7 @@
       <a class="chap">{{ chapitre.nom }}</a>
       <div
         class="checkbox-wrapper"
-        (click)="openModel(chapitre.id)"
+        (click)="openModel(chapitre.id, chapitre.chapitreNum)"
         [class.disabled]="chapitre.statue"
         [style.pointer-events]="chapitre.statue ? 'none' : 'auto'"
       >
@@ -171,18 +171,21 @@
     </h5>
 
     <div class="d-flex justify-content-around">
-      <button class="buttona" (click)="CheckChapter(chapterId, $event, 'mal')">
+      <button
+        class="buttona"
+        (click)="CheckChapter(chapterId, $event, 'mal', chapitreNum)"
+      >
         Mal
       </button>
       <button
         class="buttona"
-        (click)="CheckChapter(chapterId, $event, 'Pas Mal')"
+        (click)="CheckChapter(chapterId, $event, 'Pas Mal', chapitreNum)"
       >
         Pas Mal
       </button>
       <button
         class="buttona"
-        (click)="CheckChapter(chapterId, $event, 'Excellent')"
+        (click)="CheckChapter(chapterId, $event, 'Excellent', chapitreNum)"
       >
         Excellent
       </button>

@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Azure.Storage.Blobs;
 using CloudinaryDotNet;
+using Hangfire;
 
 
 
@@ -80,6 +81,15 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 // builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
 //     opt.TokenLifespan = TimeSpan.FromHours(2));
+
+
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHangfireServer();
 
 builder.Services.AddAuthentication(options =>
 {
@@ -173,6 +183,12 @@ app.UseStaticFiles(new StaticFileOptions
         ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
     }
 });
+
+app.UseHangfireDashboard();
+RecurringJob.AddOrUpdate<IReminder>("send-reminder",
+    x => x.SendReminder(),
+    "0 0 1 * *");
+
 app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigin");
