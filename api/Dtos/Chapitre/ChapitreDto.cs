@@ -16,9 +16,9 @@ namespace api.Dtos.Chapitre
         public bool Statue { get; set; } = false;
         public List<int?>? StudentCoursParagraphes { get; set; }
 
-        public List<Video> Videos { get; set; } = new List<Video>();
-        public List<Synthese> Syntheses { get; set; } = new List<Synthese>();
-        public List<Schema> Schemas { get; set; } = new List<Schema>();
+        public List<int>? Videos { get; set; }
+        public List<int> Syntheses { get; set; } 
+        public List<int> Schemas { get; set; }
         public bool Premium { get; set; }
         public QuizDto Quiz { get; set; } = new QuizDto();
     }

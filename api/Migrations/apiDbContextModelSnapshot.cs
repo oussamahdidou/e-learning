@@ -51,31 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-<<<<<<< HEAD
-                            Id = "d776d91f-9611-46b8-bc9a-7400b77b749c",
-=======
-                            Id = "9f575f77-b29c-4889-8114-e49a15de58ce",
->>>>>>> main
+                            Id = "60af8af0-53cb-47c5-abfa-c6d825320352",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-<<<<<<< HEAD
-                            Id = "a24cfdd0-b7d7-4943-b74b-0eb417dee6b3",
-=======
-                            Id = "fdf44b45-07de-4310-9ded-e0d0ebd4263f",
->>>>>>> main
+                            Id = "df302663-a3eb-413a-9638-7a109aa788a7",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-<<<<<<< HEAD
-                            Id = "6c1e0052-a854-4307-bd81-33931b2515a9",
-=======
-                            Id = "3a5e9cf0-5777-4cc6-970a-68a494e939ae",
->>>>>>> main
+                            Id = "361d3f80-1503-4bad-ba5a-6ceeee0e8d99",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -195,15 +183,9 @@ namespace api.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<string>("Branche")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("DateDeNaissance")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("Discriminator")
                         .IsRequired()
@@ -217,23 +199,11 @@ namespace api.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Etablissement")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("JustificatifDeLaProfession")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("Niveaus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Nom")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -252,22 +222,7 @@ namespace api.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Prenom")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Teacher_DateDeNaissance")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Teacher_Etablissement")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Teacher_Nom")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Teacher_Prenom")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -896,12 +851,32 @@ namespace api.Migrations
                 {
                     b.HasBaseType("api.Model.AppUser");
 
-<<<<<<< HEAD
-=======
+                    b.Property<string>("Branche")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DateDeNaissance")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Etablissement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Niveaus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Prenom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("TuteurMail")
                         .HasColumnType("nvarchar(max)");
 
->>>>>>> main
                     b.HasDiscriminator().HasValue("Student");
                 });
 
@@ -912,11 +887,30 @@ namespace api.Migrations
                     b.Property<int>("ChapterProgress")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("DateDeNaissance")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Etablissement")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Granted")
                         .HasColumnType("bit");
 
+                    b.Property<string>("JustificatifDeLaProfession")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("LastChapterProgressUpdate")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Nom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Prenom")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Specialite")
                         .IsRequired()
@@ -925,6 +919,21 @@ namespace api.Migrations
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("AspNetUsers", t =>
+                        {
+                            t.Property("DateDeNaissance")
+                                .HasColumnName("Teacher_DateDeNaissance");
+
+                            t.Property("Etablissement")
+                                .HasColumnName("Teacher_Etablissement");
+
+                            t.Property("Nom")
+                                .HasColumnName("Teacher_Nom");
+
+                            t.Property("Prenom")
+                                .HasColumnName("Teacher_Prenom");
+                        });
 
                     b.HasDiscriminator().HasValue("Teacher");
                 });

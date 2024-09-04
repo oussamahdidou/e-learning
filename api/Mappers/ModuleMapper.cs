@@ -26,9 +26,9 @@ namespace api.Mappers
                         .SelectMany(cour => cour.Paragraphes)    // Flatten the list of Paragraphes
                         .Select(p => p?.Id)                  // Select only the Contenu of each Paragraphe
                         .ToList(),
-                    Schemas = c.Schemas,
-                    Videos = c.Videos,
-                    Syntheses = c.Syntheses,
+                    Schemas = c.Schemas.Select(p => p.Id).ToList(),
+                    Videos = c.Videos.Select(p => p.Id).ToList(),
+                    Syntheses = c.Syntheses.Select(p => p.Id).ToList(),
 
                     Premium = c.Premium,
                     Quiz = c.Quiz.ToQuizDto()

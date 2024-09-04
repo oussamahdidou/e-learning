@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class tuteur : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,19 +32,19 @@ namespace api.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Etablissement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Branche = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Niveaus = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TuteurMail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Teacher_Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Teacher_Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Teacher_DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Teacher_Etablissement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JustificatifDeLaProfession = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
-                    TuteurMail = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Teacher_DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Granted = table.Column<bool>(type: "bit", nullable: true),
                     Specialite = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -726,9 +726,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "3a5e9cf0-5777-4cc6-970a-68a494e939ae", null, "Student", "STUDENT" },
-                    { "9f575f77-b29c-4889-8114-e49a15de58ce", null, "Admin", "ADMIN" },
-                    { "fdf44b45-07de-4310-9ded-e0d0ebd4263f", null, "Teacher", "TEACHER" }
+                    { "361d3f80-1503-4bad-ba5a-6ceeee0e8d99", null, "Student", "STUDENT" },
+                    { "60af8af0-53cb-47c5-abfa-c6d825320352", null, "Admin", "ADMIN" },
+                    { "df302663-a3eb-413a-9638-7a109aa788a7", null, "Teacher", "TEACHER" }
                 });
 
             migrationBuilder.CreateIndex(
