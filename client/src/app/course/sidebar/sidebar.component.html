@@ -37,71 +37,68 @@
     </div>
 
     <div
-    *ngFor="let cour of chapitre.studentCoursParagraphes"
-    class="items"
-    [ngClass]="{ onit: part1 === 'cour' && part2 === cour.id }"
-  >
-    <a
-      [routerLink]="['/course', module?.id, 'cour', cour.id]"
-      class="d-flex align-items-center w-100 text-decoration-none"
+      *ngFor="let cour of chapitre.studentCoursParagraphes"
+      class="items"
+      [ngClass]="{ onit: part1 === 'cour' && part2 === cour.id }"
     >
-      <span class="flex-grow-1">Cour: {{ cour.nom }}</span>
-      <button mat-icon-button color="primary" aria-label="Course PDF">
-        <mat-icon>picture_as_pdf</mat-icon>
-      </button>
-    </a>
-  </div>
-
+      <a
+        [routerLink]="['/course', module?.id, 'cour', cour.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+      >
+        <span class="flex-grow-1">Cour: {{ cour.nom }}</span>
+        <button mat-icon-button color="primary" aria-label="Course PDF">
+          <mat-icon>picture_as_pdf</mat-icon>
+        </button>
+      </a>
+    </div>
 
     <div
-    *ngFor="let video of chapitre.videos"
-    class="items"
-    [ngClass]="{ onit: part1 === 'lecture' && part2 === video.id }"
-  >
-    <a
-      class="d-flex align-items-center w-100 text-decoration-none"
-      [routerLink]="['/course', module?.id, 'lecture', video.id]"
+      *ngFor="let video of chapitre.videos"
+      class="items"
+      [ngClass]="{ onit: part1 === 'lecture' && part2 === video.id }"
     >
-      <span class="flex-grow-1">Video: {{ video.nom }}</span>
-      <button mat-icon-button color="primary" aria-label="Video">
-        <mat-icon>videocam</mat-icon>
-      </button>
-    </a>
-  </div>
+      <a
+        class="d-flex align-items-center w-100 text-decoration-none"
+        [routerLink]="['/course', module?.id, 'lecture', video.id]"
+      >
+        <span class="flex-grow-1">Video: {{ video.nom }}</span>
+        <button mat-icon-button color="primary" aria-label="Video">
+          <mat-icon>videocam</mat-icon>
+        </button>
+      </a>
+    </div>
 
+    <div
+      *ngFor="let schema of chapitre.schemas"
+      class="items"
+      [ngClass]="{ onit: part1 === 'schema' && part2 === schema.id }"
+    >
+      <a
+        class="d-flex align-items-center w-100 text-decoration-none"
+        [routerLink]="['/course', module?.id, 'schema', schema.id]"
+      >
+        <span class="flex-grow-1">Schema: {{ schema.nom }}</span>
+        <button mat-icon-button color="primary">
+          <mat-icon>insert_drive_file</mat-icon>
+        </button>
+      </a>
+    </div>
 
-  <div
-  *ngFor="let schema of chapitre.schemas"
-  class="items"
-  [ngClass]="{ onit: part1 === 'schema' && part2 === schema.id }"
->
-  <a
-    class="d-flex align-items-center w-100 text-decoration-none"
-    [routerLink]="['/course', module?.id, 'schema', schema.id]"
-  >
-    <span class="flex-grow-1">Schema: {{ schema.nom }}</span>
-    <button mat-icon-button color="primary">
-      <mat-icon>insert_drive_file</mat-icon>
-    </button>
-  </a>
-</div>
-
-
-<div
-  class="items"
-  [ngClass]="{ onit: part1 === 'synthese' && part2 === chapitre.id }"
-  *ngFor="let schema of chapitre.syntheses"
->
-  <a
-    [routerLink]="['/course', module?.id, 'synthese', schema.id]"
-    class="d-flex align-items-center w-100 text-decoration-none"
-  >
-    <span class="flex-grow-1">Synthese: {{ schema.nom }}</span>
-    <button mat-icon-button color="primary" aria-label="Synthese">
-      <mat-icon>description</mat-icon>
-    </button>
-  </a>
-</div>
+    <div
+      *ngFor="let synthese of chapitre.syntheses"
+      class="items"
+      [ngClass]="{ onit: part1 === 'synthese' && part2 === synthese.id }"
+    >
+      <a
+        [routerLink]="['/course', module?.id, 'synthese', synthese.id]"
+        class="d-flex align-items-center w-100 text-decoration-none"
+      >
+        <span class="flex-grow-1">Synthese: {{ synthese.nom }}</span>
+        <button mat-icon-button color="primary" aria-label="Synthese">
+          <mat-icon>description</mat-icon>
+        </button>
+      </a>
+    </div>
 
     <div
       class="items"
