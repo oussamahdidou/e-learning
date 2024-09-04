@@ -98,6 +98,7 @@ export class PdfViewerComponent {
     this.courseService.getSyntheseById(this.id).subscribe(
       (url) => {
         if (url) {
+          console.log(url);
           this.pdfUrl = url;
           this.urls = url.split('.').length;
           this.extension = url.split('.')[this.urls - 1];
