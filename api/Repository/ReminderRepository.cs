@@ -33,7 +33,7 @@ namespace api.Repository
                     try
                     {
                         string message = "Vous avez vérifié le chapitre avant le contrôle " + controle.Nom + "  et vous n'avez pas encore ajouté vos devoirs.";
-                        await _mailer.SendEmailAsync("belkhiriyoussef33@gmail.com", "Reminder", message);
+                        await _mailer.SendEmailAsync(student.TuteurMail, "Reminder", message);
                     }
                     catch (Exception ex)
                     {
