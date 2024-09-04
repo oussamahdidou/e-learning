@@ -157,6 +157,12 @@ namespace api.Repository
                     .Include(m => m.Chapitres)
                         .ThenInclude(x => x.Cours)
                         .ThenInclude(x => x.Paragraphes)
+                             .Include(m => m.Chapitres)
+                        .ThenInclude(x => x.Videos)
+                        .Include(m => m.Chapitres)
+                        .ThenInclude(x => x.Schemas)
+                        .Include(m => m.Chapitres)
+                        .ThenInclude(x => x.Syntheses)
                     .Include(m => m.Chapitres)
                         .ThenInclude(c => c.Controle).ThenInclude(x => x.ResultControles)
                     .Include(m => m.Chapitres)
@@ -171,15 +177,13 @@ namespace api.Repository
                 // Delete Module Image if exists
                 if (!string.IsNullOrEmpty(module.ModuleImg))
                 {
-                    var oldImageFileName = Path.GetFileName(new Uri(module.ModuleImg).LocalPath);
-                    await blobStorageService.DeleteFileAsync(imageContainer, oldImageFileName);
+                    await blobStorageService.DeleteImageVideoAsync(imageContainer, CloudinaryUrlHelper.ExtractFileName(module.ModuleImg));
                 }
 
                 // Delete Course Program if exists
                 if (!string.IsNullOrEmpty(module.CourseProgram))
                 {
-                    var oldProgramFileName = Path.GetFileName(new Uri(module.CourseProgram).LocalPath);
-                    await blobStorageService.DeleteFileAsync(programContainer, oldProgramFileName);
+                    await blobStorageService.DeleteFileAsync(programContainer, CloudinaryUrlHelper.ExtractFileName(module.CourseProgram));
                 }
 
                 // Delete Exam Final if exists
@@ -187,14 +191,12 @@ namespace api.Repository
                 {
                     if (!string.IsNullOrEmpty(module.ExamFinal.Ennonce))
                     {
-                        var oldEnnonceFileName = Path.GetFileName(new Uri(module.ExamFinal.Ennonce).LocalPath);
-                        await blobStorageService.DeleteFileAsync(controleContainer, oldEnnonceFileName);
+                        await blobStorageService.DeleteFileAsync(controleContainer, CloudinaryUrlHelper.ExtractFileName(module.ExamFinal.Ennonce));
                     }
 
                     if (!string.IsNullOrEmpty(module.ExamFinal.Solution))
                     {
-                        var oldSolutionFileName = Path.GetFileName(new Uri(module.ExamFinal.Solution).LocalPath);
-                        await blobStorageService.DeleteFileAsync(controleContainer, oldSolutionFileName);
+                        await blobStorageService.DeleteFileAsync(controleContainer, CloudinaryUrlHelper.ExtractFileName(module.ExamFinal.Solution));
                     }
                 }
 
@@ -202,25 +204,28 @@ namespace api.Repository
                 foreach (var chapitre in module.Chapitres)
                 {
                     // Delete Video if exists
-                    if (!string.IsNullOrEmpty(chapitre.VideoPath))
+                    foreach (var paragraphe in chapitre.Videos)
                     {
-                        var oldVideoFileName = Path.GetFileName(new Uri(chapitre.VideoPath).LocalPath);
-                        await blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
+                        if (!string.IsNullOrEmpty(paragraphe.Link))
+                        {
+                            await blobStorageService.DeleteImageVideoAsync(videoContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
+                        }
+                    }
+                    foreach (var paragraphe in chapitre.Syntheses)
+                    {
+                        if (!string.IsNullOrEmpty(paragraphe.Link))
+                        {
+                            await blobStorageService.DeleteFileAsync(syntheseContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
+                        }
+                    }
+                    foreach (var paragraphe in chapitre.Schemas)
+                    {
+                        if (!string.IsNullOrEmpty(paragraphe.Link))
+                        {
+                            await blobStorageService.DeleteFileAsync(schemaContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
+                        }
                     }
 
-                    // Delete Schema if exists
-                    if (!string.IsNullOrEmpty(chapitre.Schema))
-                    {
-                        var oldSchemaFileName = Path.GetFileName(new Uri(chapitre.Schema).LocalPath);
-                        await blobStorageService.DeleteFileAsync(schemaContainer, oldSchemaFileName);
-                    }
-
-                    // Delete Synthese if exists
-                    if (!string.IsNullOrEmpty(chapitre.Synthese))
-                    {
-                        var oldSyntheseFileName = Path.GetFileName(new Uri(chapitre.Synthese).LocalPath);
-                        await blobStorageService.DeleteFileAsync(syntheseContainer, oldSyntheseFileName);
-                    }
 
                     // Delete Paragraphe Contenu if exists
                     foreach (var cours in chapitre.Cours)
@@ -229,8 +234,7 @@ namespace api.Repository
                         {
                             if (!string.IsNullOrEmpty(paragraphe.Contenu))
                             {
-                                var oldParagrapheFileName = Path.GetFileName(new Uri(paragraphe.Contenu).LocalPath);
-                                await blobStorageService.DeleteFileAsync(pdfContainer, oldParagrapheFileName);
+                                await blobStorageService.DeleteFileAsync(pdfContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Contenu));
                             }
                         }
                     }
@@ -240,14 +244,13 @@ namespace api.Repository
                     {
                         if (!string.IsNullOrEmpty(chapitre.Controle.Ennonce))
                         {
-                            var oldEnnonceFileName = Path.GetFileName(new Uri(chapitre.Controle.Ennonce).LocalPath);
-                            await blobStorageService.DeleteFileAsync(controleContainer, oldEnnonceFileName);
+                            await blobStorageService.DeleteFileAsync(controleContainer, CloudinaryUrlHelper.ExtractFileName(chapitre.Controle.Ennonce));
                         }
 
                         if (!string.IsNullOrEmpty(chapitre.Controle.Solution))
                         {
                             var oldSolutionFileName = Path.GetFileName(new Uri(chapitre.Controle.Solution).LocalPath);
-                            await blobStorageService.DeleteFileAsync(controleContainer, oldSolutionFileName);
+                            await blobStorageService.DeleteFileAsync(controleContainer, CloudinaryUrlHelper.ExtractFileName(chapitre.Controle.Solution));
                         }
                     }
                 }
@@ -275,9 +278,9 @@ namespace api.Repository
                     return Result<Module>.Failure("module not found");
                 }
                 var imageContainer = "image-container";
-                string imageUrl = await blobStorageService.UploadFileAsync(updateModuleImageDto.ImageFile.OpenReadStream(), imageContainer, updateModuleImageDto.ImageFile.FileName);
+                string imageUrl = await blobStorageService.UploadImageVideoAsync(updateModuleImageDto.ImageFile.OpenReadStream(), imageContainer, updateModuleImageDto.ImageFile.FileName);
 
-                await blobStorageService.DeleteFileAsync(imageContainer, new Uri(module.ModuleImg).Segments.Last());
+                await blobStorageService.DeleteImageVideoAsync(imageContainer, CloudinaryUrlHelper.ExtractFileName(module.ModuleImg));
 
 
                 module.ModuleImg = imageUrl;
@@ -305,7 +308,7 @@ namespace api.Repository
                 if (!module.CourseProgram.IsNullOrEmpty())
                 {
 
-                    await blobStorageService.DeleteFileAsync(programContainer, new Uri(module.CourseProgram).Segments.Last());
+                    await blobStorageService.DeleteFileAsync(programContainer, CloudinaryUrlHelper.ExtractFileName(module.CourseProgram));
 
                 }
 

@@ -18,14 +18,36 @@ public class BlobStorageService : IBlobStorageService
         _configuration = configuration;
     }
 
+    public async Task<string> UploadImageVideoAsync(Stream fileStream, string folderName, string fileName)
+    {
+        Console.WriteLine(fileName);
+        var uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
+        var publicId = string.IsNullOrEmpty(folderName) ? fileName : $"{folderName}/{uniqueFileName}";
+        var uploadParams = new ImageUploadParams
+        {
+            File = new FileDescription(fileName, fileStream),
+            UseFilename = true,
+            UniqueFilename = false,
+            Overwrite = true,
+            PublicId = publicId
+        };
+
+        var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+        if (uploadResult.StatusCode == System.Net.HttpStatusCode.OK)
+        {
+            Console.WriteLine(uploadResult.JsonObj);
+            return uploadResult.SecureUrl.ToString();
+        }
+        throw new Exception("File upload failed: " + uploadResult.Error?.Message);
+    }
     public async Task<string> UploadFileAsync(Stream fileStream, string folderName, string fileName)
     {
-        // var uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
-        var publicId = string.IsNullOrEmpty(folderName) ? fileName : $"{folderName}/{fileName}";
+        var uniqueFileName = Guid.NewGuid().ToString() + "_" + fileName;
+        var publicId = string.IsNullOrEmpty(folderName) ? fileName : $"{folderName}/{uniqueFileName}";
         Console.WriteLine(publicId);
         var uploadParams = new RawUploadParams()
         {
-            File = new FileDescription(@fileName, fileStream),
+            File = new FileDescription(@uniqueFileName, fileStream),
             UseFilename = true,
             UniqueFilename = false,
             Overwrite = true,
@@ -46,6 +68,18 @@ public class BlobStorageService : IBlobStorageService
         Console.WriteLine(publicId);
         var deletionParams = new DeletionParams(publicId){
             ResourceType = ResourceType.Raw
+        };
+        var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
+        return deletionResult.Result == "ok";
+    }
+    public async Task<bool> DeleteImageVideoAsync(string folderName, string fileName)
+    {
+        var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fileName);
+        var publicId = string.IsNullOrEmpty(folderName) ? fileName : $"{folderName}/{fileNameWithoutExtension}";
+        Console.WriteLine(publicId);
+        Console.WriteLine(fileNameWithoutExtension);
+        var deletionParams = new DeletionParams(publicId){
+            ResourceType = ResourceType.Image
         };
         var deletionResult = await _cloudinary.DestroyAsync(deletionParams);
         return deletionResult.Result == "ok";

@@ -1,4 +1,3 @@
-<!-- stepper.component.html -->
 <app-sidenav></app-sidenav>
 <div class="chapter-container">
   <mat-horizontal-stepper [linear]="isLinear" #stepper class="pt-5">
@@ -16,26 +15,25 @@
           <input type="number" id="number" class="form-control" formControlName="number" required />
         </div>
 
-        <!-- Student Course PDF Paragraphs -->
+        <!-- Student Course Paragraphs -->
         <div formArrayName="studentCourseParagraphs">
           <div *ngFor="let paragraph of studentCourseParagraphs.controls; let i = index" [formGroupName]="i">
             <div class="form-group">
-              <label>Student Course PDF</label>
-              <input type="file" (change)="onFileChange($event, 'studentCourseParagraphs', i)" class="form-control" />
+              <label>Student Course </label>
+              <input type="file" (change)="onStudentCourseFileChange($event, i)" class="form-control" />
             </div>
             <button type="button" class="btn btn-danger" (click)="removeStudentParagraph(i)">Remove Paragraph</button>
           </div>
           <button type="button" class="btn btn-primary" (click)="addStudentParagraph()">Add Student Paragraph</button>
         </div>
 
-        <!-- Professor Course PDF Paragraphs -->
+        <!-- Professor Course Paragraphs -->
         <div formArrayName="professorCourseParagraphs">
           <div *ngFor="let paragraph of professorCourseParagraphs.controls; let i = index" [formGroupName]="i">
             <div class="form-group">
-              <label>Professor Course PDF</label>
-              <input type="file" (change)="onFileChange($event, 'professorCourseParagraphs', i)"
-                class="form-control" /><button type="button" class="btn btn-danger"
-                (click)="removeProfessorParagraph(i)">Remove
+              <label>Professor Course </label>
+              <input type="file" (change)="onProfessorCourseFileChange($event,i)" class="form-control" /><button
+                type="button" class="btn btn-danger" (click)="removeProfessorParagraph(i)">Remove
                 Paragraph</button>
 
             </div>
@@ -44,35 +42,55 @@
             Paragraph</button>
         </div>
 
-        <!-- Video Upload -->
-        <div class="form-group">
-          <label for="videoType">Video Type</label>
-          <select id="videoType" class="form-control" formControlName="videoType" (change)="onVideoTypeChange($event)">
-            <option value="file">File</option>
-            <option value="link">Link</option>
-          </select>
+        <!-- Video Uploads -->
+        <div formArrayName="videos">
+          <div *ngFor="let video of videos.controls; let i = index" [formGroupName]="i">
+            <div class="form-group">
+              <label for="videoType{{i}}">Video Type</label>
+              <select id="videoType{{i}}" class="form-control" formControlName="videoType"
+                (change)="onVideoTypeChange($event, i)">
+                <option value="file">File</option>
+                <option value="link">Link</option>
+              </select>
+            </div>
+
+            <div class="form-group" *ngIf="isVideoFile(i)">
+              <label for="coursVideoFile{{i}}">Course Video File</label>
+              <input type="file" id="coursVideoFile{{i}}" class="form-control" (change)="onVideoFileChange($event,  i)"
+                accept="video/*" />
+            </div>
+
+            <div class="form-group" *ngIf="isVideoLink(i)">
+              <label for="coursVideoLink{{i}}">Course Video Link</label>
+              <input type="text" id="coursVideoLink{{i}}" class="form-control" formControlName="coursVideoLink" />
+            </div>
+            <button type="button" class="btn btn-danger" (click)="removeVideo(i)">Remove Video</button>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="addVideo()">Add Video</button>
         </div>
 
-        <div class="form-group" *ngIf="isVideoFile()">
-          <label for="coursVideoFile">Course Video File</label>
-          <input type="file" id="coursVideoFile" class="form-control"
-            (change)="onFileChange($event, 'coursVideoFile')" />
+        <!-- Schema Uploads -->
+        <div formArrayName="schemas">
+          <div *ngFor="let schema of schemas.controls; let i = index" [formGroupName]="i">
+            <div class="form-group">
+              <label for="schema{{i}}">Schema</label>
+              <input type="file" id="schema{{i}}" class="form-control" (change)="onSchemaFileChange($event, i)" />
+            </div>
+            <button type="button" class="btn btn-danger" (click)="removeSchema(i)">Remove Schema</button>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="addSchema()">Add Schema</button>
         </div>
 
-        <div class="form-group" *ngIf="isVideoLink()">
-          <label for="coursVideoLink">Course Video Link</label>
-          <input type="text" id="coursVideoLink" class="form-control" formControlName="coursVideoLink" />
-        </div>
-
-        <div class="form-group">
-          <label for="schema">Schema</label>
-          <input type="file" id="schema" class="form-control" accept="video/*"
-            (change)="onFileChange($event, 'schema')" />
-        </div>
-
-        <div class="form-group">
-          <label for="synthese">Synthese</label>
-          <input type="file" id="synthese" class="form-control" (change)="onFileChange($event, 'synthese')" />
+        <!-- Synthese Uploads -->
+        <div formArrayName="syntheses">
+          <div *ngFor="let synthese of syntheses.controls; let i = index" [formGroupName]="i">
+            <div class="form-group">
+              <label for="synthese{{i}}">Synthese</label>
+              <input type="file" id="synthese{{i}}" class="form-control" (change)="onSyntheseFileChange($event, i)" />
+            </div>
+            <button type="button" class="btn btn-danger" (click)="removeSynthese(i)">Remove Synthese</button>
+          </div>
+          <button type="button" class="btn btn-primary" (click)="addSynthese()">Add Synthese</button>
         </div>
 
         <button mat-raised-button color="primary" matStepperNext>Next</button>

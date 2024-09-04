@@ -10,6 +10,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
   
 })
 export class TeacherRegisterComponent {
+  isLoading = false;
   registerForm: FormGroup;
 
   constructor(private authService: AuthService) {
@@ -64,12 +65,14 @@ export class TeacherRegisterComponent {
   }
 
   register() {
+    this.isLoading = true; 
     if (this.registerForm.valid) {
       const { nom, prenom, datenaissaince, etablissement, email, username, password, confirmpassword } = this.registerForm.value;
       const justification = this.registerForm.get('justification')?.value;
       const formattedDate = new Date(datenaissaince).toISOString(); 
 
       if (!justification) {
+        this.isLoading = false; 
         Swal.fire({
           title: 'Error',
           text: 'No File Selected',
@@ -87,6 +90,7 @@ export class TeacherRegisterComponent {
       if (justification instanceof File && this.isValidFileType(justification)) {
         formData.append('JustificatifDeLaProfession', justification, justification.name);
       } else {
+        this.isLoading = false; 
         Swal.fire({
           title: 'Error',
           text: 'Invalid File Type. Please select an image (JPEG, PNG, etc.)',
@@ -103,6 +107,7 @@ export class TeacherRegisterComponent {
       this.authService.teacherregisteruser(formData)
         .subscribe(
           (response) => {
+            this.isLoading = false; 
             console.log('Registration successful:', response);
             Swal.fire({
               title: 'Confirm email',
@@ -111,6 +116,7 @@ export class TeacherRegisterComponent {
             });
           },
           (error) => {
+            this.isLoading = false; 
             console.error('Registration failed:', error.message);
             Swal.fire({
               title: 'Error',

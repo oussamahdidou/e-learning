@@ -37,7 +37,8 @@ namespace api.Repository
                                            .Take(20)
                                            .ToListAsync();
 
-                    Quiz quiz = new Quiz{
+                    Quiz quiz = new Quiz
+                    {
                         Nom = "Test De Niveau",
                         Questions = questions
                     };
@@ -61,7 +62,8 @@ namespace api.Repository
             .Where(x => x.ModuleId == moduleId && x.StudentId == studentId)
             .Select(x => x.Note)
             .FirstOrDefaultAsync();
-            if(note == null){
+            if (note == null)
+            {
                 return Result<double>.Failure("Not found");
             }
             return Result<double>.Success(note);

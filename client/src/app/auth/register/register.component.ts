@@ -10,6 +10,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
+  isLoading = false;
   registerForm: FormGroup;
 
   constructor(private authService: AuthService) {
@@ -41,6 +42,7 @@ export class RegisterComponent {
 
 
   register() {
+    this.isLoading = true; 
     if (this.registerForm.valid) {
       const { nom, prenom,datenaissaince,etablissement,branche,niveau,email,username,password,confirmpassword, } = this.registerForm.value;
       this.authService
@@ -58,6 +60,7 @@ export class RegisterComponent {
         )
         .subscribe(
           (response) => {
+            this.isLoading = false; 
             Swal.fire({
               title: 'Confirm email',
               text: `A confirmation link sent to your email adress email : ${response.token}`,
@@ -65,7 +68,7 @@ export class RegisterComponent {
             });
           },
           (error) => {
-            
+            this.isLoading = false; 
             console.log(error);
             console.log(
               '1111111111111111111111111111111111111111111111111111111111'
@@ -78,6 +81,7 @@ export class RegisterComponent {
           }
         );
     }else{
+      this.isLoading = false; 
       Swal.fire({
         title: 'Error',
         text: `One or all Field(s) doesn't respect fields format or are empty .`,

@@ -13,6 +13,7 @@ namespace api.Dtos.Comment
         public string? Image { get; set; }
         public string? Fichier { get; set; }
         public string? Author { get; set; }
+        public string? AuthorId { get; set; }
         public int CommentsNumber { get; set; }
         public DateTime CreatedAt { get; set; }
         public bool IsAdminPoste { get; set; }

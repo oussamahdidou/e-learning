@@ -15,10 +15,10 @@ namespace api.Dtos.Chapitre
         public string Nom { get; set; } = "";
         public List<IFormFile> StudentCourseParagraphs { get; set; } = new List<IFormFile>();
         public List<IFormFile> ProfessorCourseParagraphs { get; set; } = new List<IFormFile>();
-        public IFormFile? CoursVideoFile { get; set; }
-        public string? CoursVideoLink { get; set; }
-        public IFormFile? Synthese { get; set; }
-        public IFormFile? Schema { get; set; }
+        public List<IFormFile> Videos { get; set; } = new List<IFormFile>();
+        public List<string> VideosLink { get; set; } = new List<string>();
+        public List<IFormFile> Syntheses { get; set; } = new List<IFormFile>();
+        public List<IFormFile> Schemas { get; set; } = new List<IFormFile>();
         public bool Premium { get; set; } = true;
         public string Statue { get; set; } = ObjectStatus.Pending;
         public int ModuleId { get; set; }

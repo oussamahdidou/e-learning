@@ -1,16 +1,13 @@
 <div class="d-flex justify-content-between navbar">
-  <a [routerLink]="['/profile/mylearning']" style="text-decoration: none"
-    ><div class="navbar-brand">E-learning</div></a
-  >
+  <a [routerLink]="['/institutions']" style="text-decoration: none">
+    <div class="navbar-brand">E-learning</div>
+  </a>
   <div class="module-name">{{ courseName }}</div>
 
   <div class="" id="navbarSupportedContent">
     <ul class="navbar-nav d-flex flex-row justify-content-center">
-      <button
-        class="btn btn-danger d-flex justify-content-center"
-        style="height: 40px"
-        [routerLink]="['/institutions']"
-      >
+      <button class="btn btn-danger d-flex justify-content-center" style="height: 40px"
+        [routerLink]="['/institutions']">
         <mat-icon>exit_to_app</mat-icon>
         <p>Quitter</p>
       </button>
@@ -20,15 +17,12 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="userDropdown">
           <li>
-            <a class="dropdown-item" [routerLink]="['/profile/mylearning']"
-              >My Learning</a
-            >
+            <a class="dropdown-item" [routerLink]="['/profile/mylearning']">My Learning</a>
           </li>
+          <li><a class="dropdown-item" href="/forum/posts">Forum</a></li>
           <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
           <li>
-            <a class="dropdown-item" href="auth/reset-password"
-              >Reset Password</a
-            >
+            <a class="dropdown-item" href="auth/reset-password">Reset Password</a>
           </li>
         </ul>
       </li>

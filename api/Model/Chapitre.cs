@@ -14,9 +14,10 @@ namespace api.Model
         public string Nom { get; set; } = "";
         public string Statue { get; set; } = "";
         public List<Cours> Cours { get; set; } = new List<Cours>();
-        public string? VideoPath { get; set; }
-        public string? Synthese { get; set; }
-        public string? Schema { get; set; }
+        public List<Video> Videos { get; set; } = new List<Video>();
+        public List<Synthese> Syntheses { get; set; } = new List<Synthese>();
+        public List<Schema> Schemas { get; set; } = new List<Schema>();
+
         public bool Premium { get; set; } = true;
         public int? QuizId { get; set; }
         public int ModuleId { get; set; }

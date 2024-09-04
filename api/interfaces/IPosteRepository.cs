@@ -15,12 +15,12 @@ namespace api.interfaces
 
         Task<Result<List<PosteDto>>> GetAllPosts(QueryObject queryObject);
 
-        Task<Result<List<Poste>>> GetUserPosts(AppUser user);
+        Task<Result<List<PosteDto>>> GetUserPosts(AppUser user, CommentQuery commentQuery);
 
         Task AddAsync(Poste poste);
 
         Task UpdateAsync(Poste poste);
-        
+
         Task DeleteAsync(int id);
     }
 }

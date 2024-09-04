@@ -29,11 +29,10 @@ export class CreateChapterQuizComponent {
       number: [''],
       studentCourseParagraphs: this._formBuilder.array([]),
       professorCourseParagraphs: this._formBuilder.array([]),
-      videoType: ['file'],
-      coursVideoFile: [null],
-      coursVideoLink: [''],
-      schema: [null],
-      synthese: [null],
+      videos: this._formBuilder.array([]),
+
+      schemas: this._formBuilder.array([]),
+      syntheses: this._formBuilder.array([]),
     });
 
     this.quizFormGroup = this._formBuilder.group({
@@ -42,69 +41,194 @@ export class CreateChapterQuizComponent {
     });
   }
 
-  get questions(): FormArray {
+  get questions() {
     return this.quizFormGroup.get('questions') as FormArray;
   }
 
   addQuestion() {
-    this.questions.push(
-      this._formBuilder.group({
-        nom: [''],
-        options: this._formBuilder.array([
-          this._formBuilder.group({
-            nom: [''],
-            truth: [false],
-          }),
-        ]),
-      })
-    );
+    const questionForm = this._formBuilder.group({
+      nom: '',
+      options: this._formBuilder.array([
+        this._formBuilder.group({
+          nom: '',
+          truth: false,
+        }),
+        this._formBuilder.group({
+          nom: '',
+          truth: false,
+        }),
+      ]),
+    });
+
+    this.questions.push(questionForm);
   }
 
   removeQuestion(index: number) {
     this.questions.removeAt(index);
   }
 
-  getOptions(questionIndex: number): FormArray {
-    return this.questions.at(questionIndex)?.get('options') as FormArray;
+  getOptions(questionIndex: number) {
+    return this.questions.at(questionIndex).get('options') as FormArray;
   }
 
   addOption(questionIndex: number) {
-    this.getOptions(questionIndex).push(
-      this._formBuilder.group({
-        nom: [''],
-        truth: [false],
-      })
-    );
+    const optionForm = this._formBuilder.group({
+      nom: '',
+      truth: false,
+    });
+
+    this.getOptions(questionIndex).push(optionForm);
   }
 
   removeOption(questionIndex: number, optionIndex: number) {
     this.getOptions(questionIndex).removeAt(optionIndex);
   }
 
-  onFileChange(event: any, field: string, index?: number) {
+  get studentCourseParagraphs() {
+    return this.chapterFormGroup.get('studentCourseParagraphs') as FormArray;
+  }
+
+  addStudentParagraph() {
+    const paragraphForm = this._formBuilder.group({
+      fileData: [null],
+    });
+
+    this.studentCourseParagraphs.push(paragraphForm);
+  }
+
+  removeStudentParagraph(index: number) {
+    this.studentCourseParagraphs.removeAt(index);
+  }
+
+  get professorCourseParagraphs() {
+    return this.chapterFormGroup.get('professorCourseParagraphs') as FormArray;
+  }
+
+  addProfessorParagraph() {
+    const paragraphForm = this._formBuilder.group({
+      fileData: [null],
+    });
+
+    this.professorCourseParagraphs.push(paragraphForm);
+  }
+
+  removeProfessorParagraph(index: number) {
+    this.professorCourseParagraphs.removeAt(index);
+  }
+
+  get videos() {
+    return this.chapterFormGroup.get('videos') as FormArray;
+  }
+
+  addVideo() {
+    const videoForm = this._formBuilder.group({
+      videoType: ['file'], // Default to 'file'
+      coursVideoFile: [null],
+      coursVideoLink: [null],
+    });
+
+    this.videos.push(videoForm);
+  }
+
+  removeVideo(index: number) {
+    this.videos.removeAt(index);
+  }
+
+  isVideoFile(index: number): boolean {
+    const videoType = this.videos.at(index).get('videoType')?.value;
+    return videoType === 'file';
+  }
+
+  isVideoLink(index: number): boolean {
+    const videoType = this.videos.at(index).get('videoType')?.value;
+    return videoType === 'link';
+  }
+
+  onVideoTypeChange(event: any, index: number) {
+    const videoType = event.target.value;
+    this.videos.at(index).get('videoType')?.setValue(videoType);
+  }
+
+  get schemas() {
+    return this.chapterFormGroup.get('schemas') as FormArray;
+  }
+
+  addSchema() {
+    const schemaForm = this._formBuilder.group({
+      file: [''],
+    });
+
+    this.schemas.push(schemaForm);
+  }
+
+  removeSchema(index: number) {
+    this.schemas.removeAt(index);
+  }
+
+  get syntheses() {
+    return this.chapterFormGroup.get('syntheses') as FormArray;
+  }
+
+  addSynthese() {
+    const syntheseForm = this._formBuilder.group({
+      file: [''],
+    });
+
+    this.syntheses.push(syntheseForm);
+  }
+
+  removeSynthese(index: number) {
+    this.syntheses.removeAt(index);
+  }
+
+  onStudentCourseFileChange(event: any, index: number) {
     const file = event.target.files[0];
     if (file) {
-      // Check if field refers to an array of form controls
-      if (
-        field === 'studentCourseParagraphs' ||
-        field === 'professorCourseParagraphs'
-      ) {
-        if (index !== undefined) {
-          const formArray = this.chapterFormGroup.get(field) as FormArray;
-          if (formArray && formArray.at(index)) {
-            // Safely update form control value
-            formArray.at(index).patchValue({ fileData: file });
-          }
-        }
-      } else {
-        const control = this.chapterFormGroup.get(field);
-        if (control) {
-          control.setValue(file); // Safely set the value of the control
-        }
-      }
+      const formArray = this.chapterFormGroup.get(
+        'studentCourseParagraphs'
+      ) as FormArray;
+      formArray.at(index).get('fileData')?.setValue(file);
+      console.log(`Student Course Paragraph ${index}:`, file);
     }
   }
 
+  onProfessorCourseFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    if (file) {
+      const formArray = this.chapterFormGroup.get(
+        'professorCourseParagraphs'
+      ) as FormArray;
+      formArray.at(index).get('fileData')?.setValue(file);
+      console.log(`Professor Course Paragraph ${index}:`, file);
+    }
+  }
+
+  onVideoFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    if (file) {
+      const formArray = this.chapterFormGroup.get('videos') as FormArray;
+      formArray.at(index).get('coursVideoFile')?.setValue(file);
+      console.log(`Video File ${index}:`, file);
+    }
+  }
+
+  onSchemaFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    if (file) {
+      const formArray = this.chapterFormGroup.get('schemas') as FormArray;
+      formArray.at(index).get('file')?.setValue(file);
+      console.log(`Schema File ${index}:`, file);
+    }
+  }
+
+  onSyntheseFileChange(event: any, index: number) {
+    const file = event.target.files[0];
+    if (file) {
+      const formArray = this.chapterFormGroup.get('syntheses') as FormArray;
+      formArray.at(index).get('file')?.setValue(file);
+      console.log(`Synthese File ${index}:`, file);
+    }
+  }
   validateQuizData(quizData: any) {
     // Ensure that truth is a boolean
     quizData.questions.forEach((question: any) => {
@@ -114,113 +238,54 @@ export class CreateChapterQuizComponent {
     });
     return quizData;
   }
-
-  get studentCourseParagraphs() {
-    return this.chapterFormGroup.get('studentCourseParagraphs') as FormArray;
-  }
-
-  get professorCourseParagraphs() {
-    return this.chapterFormGroup.get('professorCourseParagraphs') as FormArray;
-  }
-
-  // Methods to add/remove paragraphs
-  addStudentParagraph() {
-    this.studentCourseParagraphs.push(
-      this._formBuilder.group({
-        file: [''],
-        fileData: [null], // Added to store the file
-      })
-    );
-  }
-
-  removeStudentParagraph(index: number) {
-    this.studentCourseParagraphs.removeAt(index);
-  }
-
-  addProfessorParagraph() {
-    this.professorCourseParagraphs.push(
-      this._formBuilder.group({
-        file: [''],
-        fileData: [null], // Added to store the file
-      })
-    );
-  }
-
-  removeProfessorParagraph(index: number) {
-    this.professorCourseParagraphs.removeAt(index);
-  }
-
-  // Method to handle video type change
-  onVideoTypeChange(event: any) {
-    const value = event.target.value;
-    if (value === 'file') {
-      this.chapterFormGroup.get('coursVideoLink')!.clearValidators();
-    } else {
-      this.chapterFormGroup.get('coursVideoFile')!.clearValidators();
-    }
-    this.chapterFormGroup.get('coursVideoFile')!.updateValueAndValidity();
-    this.chapterFormGroup.get('coursVideoLink')!.updateValueAndValidity();
-  }
-
-  // Methods to check video type
-  isVideoFile() {
-    return this.chapterFormGroup.get('videoType')?.value === 'file';
-  }
-
-  isVideoLink() {
-    return this.chapterFormGroup.get('videoType')?.value === 'link';
-  }
-
   onSubmit() {
+    // Append chapter data
     const formData = new FormData();
 
-    // Append text fields if they are provided
-    if (this.chapterFormGroup.get('nom')!.value) {
-      formData.append('Nom', this.chapterFormGroup.get('nom')!.value);
-    }
-
-    if (this.chapterFormGroup.get('number')!.value) {
-      formData.append(
-        'Number',
-        this.chapterFormGroup.get('number')!.value.toString()
-      );
-    }
+    // Append text fields
+    formData.append('Nom', this.chapterFormGroup.get('nom')?.value);
+    formData.append('Number', this.chapterFormGroup.get('number')?.value);
 
     // Append student course paragraphs
-    this.studentCourseParagraphs.controls.forEach((control) => {
-      if (control.get('fileData')!.value) {
-        const file = control.get('fileData')!.value;
-        formData.append('StudentCourseParagraphs', file);
-      }
-    });
+    this.chapterFormGroup
+      .get('studentCourseParagraphs')
+      ?.value.forEach((paragraph: any, index: number) => {
+        formData.append(`StudentCourseParagraphs`, paragraph.fileData);
+      });
 
     // Append professor course paragraphs
-    this.professorCourseParagraphs.controls.forEach((control) => {
-      if (control.get('fileData')!.value) {
-        const file = control.get('fileData')!.value;
-        formData.append('ProfessorCourseParagraphs', file);
-      }
-    });
+    this.chapterFormGroup
+      .get('professorCourseParagraphs')
+      ?.value.forEach((paragraph: any, index: number) => {
+        formData.append(`ProfessorCourseParagraphs`, paragraph.fileData);
+      });
 
-    // Append video file or link if provided
-    const videoFile = this.chapterFormGroup.get('coursVideoFile')!.value;
-    if (videoFile) {
-      formData.append('CoursVideoFile', videoFile);
-    }
+    // Append video files
+    this.chapterFormGroup
+      .get('videos')
+      ?.value.forEach((video: any, index: number) => {
+        if (video.coursVideoFile) {
+          formData.append(`Videos`, video.coursVideoFile);
+        }
+        if (video.coursVideoLink) {
+          formData.append(`VideosLink`, video.coursVideoLink);
+        }
+      });
 
-    const videoLink = this.chapterFormGroup.get('coursVideoLink')!.value;
-    if (videoLink) {
-      formData.append('CoursVideoLink', videoLink);
-    }
+    // Append schemas
+    this.chapterFormGroup
+      .get('schemas')
+      ?.value.forEach((schema: any, index: number) => {
+        formData.append(`Schemas`, schema.file);
+      });
 
-    // Append schema and synthese files if provided
-    if (this.chapterFormGroup.get('schema')!.value) {
-      formData.append('Schema', this.chapterFormGroup.get('schema')!.value);
-    }
-
-    if (this.chapterFormGroup.get('synthese')!.value) {
-      formData.append('Synthese', this.chapterFormGroup.get('synthese')!.value);
-    }
+    // Append syntheses
+    this.chapterFormGroup
+      .get('syntheses')
+      ?.value.forEach((synthese: any, index: number) => {
+        formData.append(`Syntheses`, synthese.file);
+      });
+    formData.append('ModuleId', this.moduleId.toString());
 
     console.log('Form Data Entries:');
     formData.forEach((value, key) => {
@@ -230,8 +295,6 @@ export class CreateChapterQuizComponent {
     // Append quiz data
     let quizData = this.quizFormGroup.value;
     quizData = this.validateQuizData(quizData); // Ensure data is valid
-
-    formData.append('ModuleId', this.moduleId.toString());
 
     // Show loading modal
     Swal.fire({

@@ -10,6 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginComponent {
 
+  isLoading = false;
   loginForm: FormGroup;
 
   constructor(private authService: AuthService) {
@@ -23,12 +24,14 @@ export class LoginComponent {
   password: string = '';
 
   login() {
+    this.isLoading = true;  
     console.log(this.loginForm.controls);
     console.log('Form Value:', this.loginForm.value);
     if (this.loginForm.valid) {
       const { userNameV, PasswordV } = this.loginForm.value;
       this.authService.login(userNameV, PasswordV).subscribe(
         (response) => {
+          this.isLoading = false;
           Swal.fire({
             title: 'Welcome!',
             text: `${response.username}`,
@@ -36,6 +39,7 @@ export class LoginComponent {
           });
         },
         (error) => {
+          this.isLoading = false;
           Swal.fire({
             title: 'Error',
             text: `${error.error}`,
@@ -44,6 +48,7 @@ export class LoginComponent {
         }
       );
     }else{
+      this.isLoading = false;
       const { userNamev, Passwordv } = this.loginForm.value;
       console.log("1111111111111111111111111111111111111111111111111111111111111"+userNamev.value);
     }

@@ -88,13 +88,39 @@ namespace api.Repository
 
         public async Task<Result<Chapitre>> GetDashboardChapiter(int id)
         {
-            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.Cours).ThenInclude(x => x.Paragraphes).Include(x => x.Quiz).ThenInclude(x => x.Questions).ThenInclude(x => x.Options).FirstOrDefaultAsync(x => x.Id == id);
+            // Step 1: Load the main entity (Chapitre)
+            Chapitre? chapitre = await apiDbContext.chapitres.Include(x => x.Quiz).ThenInclude(q => q.Questions) // Load Questions with Quiz
+                    .ThenInclude(q => q.Options)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
             if (chapitre == null)
             {
                 return Result<Chapitre>.Failure("chapitre not found");
             }
-            return Result<Chapitre>.Success(chapitre);
 
+            // Step 2: Load related entities in separate queries
+            chapitre.Videos = await apiDbContext.videos
+                .Where(v => v.ChapitreId == id)
+                .ToListAsync();
+
+            chapitre.Syntheses = await apiDbContext.syntheses
+                .Where(s => s.ChapitreId == id)
+                .ToListAsync();
+
+            chapitre.Schemas = await apiDbContext.schemas
+                .Where(s => s.ChapitreId == id)
+                .ToListAsync();
+
+            // Load Cours and related Paragraphes separately
+            chapitre.Cours = await apiDbContext.cours
+                .Where(c => c.ChapitreId == id)
+                .Include(c => c.Paragraphes) // Load Paragraphes with Cours
+                .ToListAsync();
+
+            // Load Quiz and related Questions and Options separately
+
+
+            return Result<Chapitre>.Success(chapitre);
         }
 
         public async Task<Result<List<BarChartsDto>>> GetLeastCheckedModules()
