@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    partial class apiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240903084405_tuteur")]
+    partial class tuteur
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,31 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-<<<<<<< HEAD
-                            Id = "d776d91f-9611-46b8-bc9a-7400b77b749c",
-=======
                             Id = "9f575f77-b29c-4889-8114-e49a15de58ce",
->>>>>>> main
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-<<<<<<< HEAD
-                            Id = "a24cfdd0-b7d7-4943-b74b-0eb417dee6b3",
-=======
                             Id = "fdf44b45-07de-4310-9ded-e0d0ebd4263f",
->>>>>>> main
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-<<<<<<< HEAD
-                            Id = "6c1e0052-a854-4307-bd81-33931b2515a9",
-=======
                             Id = "3a5e9cf0-5777-4cc6-970a-68a494e939ae",
->>>>>>> main
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -896,12 +887,9 @@ namespace api.Migrations
                 {
                     b.HasBaseType("api.Model.AppUser");
 
-<<<<<<< HEAD
-=======
                     b.Property<string>("TuteurMail")
                         .HasColumnType("nvarchar(max)");
 
->>>>>>> main
                     b.HasDiscriminator().HasValue("Student");
                 });
 
