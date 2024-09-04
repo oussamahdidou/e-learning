@@ -22,13 +22,13 @@ export interface Chapitre {
   nom: string;
   statue: boolean;
   coursPdfPath: string | null;
-  studentCoursParagraphes: number[] | null;
+  studentCoursParagraphes: any[] | null;
   videoPath: string | null;
-  videos: string | null;
+  videos: any | null;
   synthese: string | null;
-  syntheses: string | null;
+  syntheses: any | null;
   schema: string | null;
-  schemas: string | null;
+  schemas: any | null;
   premium: boolean;
   quizId: number;
   quiz: Quiz;
