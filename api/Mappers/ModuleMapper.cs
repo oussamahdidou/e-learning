@@ -2,6 +2,7 @@
 
 using api.Dtos.Chapitre;
 using api.Dtos.Control;
+using api.Dtos.File;
 using api.Dtos.Module;
 using api.Model;
 
@@ -22,13 +23,26 @@ namespace api.Mappers
                     Nom = c.Nom,
                     Statue = checkedChapters.Contains(c.Id),
                     StudentCoursParagraphes = c.Cours
-                        .Where(cour => cour.Type == "Student")  // Filter Cours by Type "Etudiant"
-                        .SelectMany(cour => cour.Paragraphes)    // Flatten the list of Paragraphes
-                        .Select(p => p?.Id)                  // Select only the Contenu of each Paragraphe
-                        .ToList(),
-                    Schemas = c.Schemas.Select(p => p.Id).ToList(),
-                    Videos = c.Videos.Select(p => p.Id).ToList(),
-                    Syntheses = c.Syntheses.Select(p => p.Id).ToList(),
+                    .Where(cour => cour.Type == "Student")
+                    .SelectMany(cour => cour.Paragraphes)
+                    .Select(p => new FileDto
+                    {
+                        Id = p.Id,
+                        Nom = p.Nom
+                    })
+                    .ToList(),
+                    Schemas = c.Schemas.Select(p => new FileDto{
+                        Id = p.Id,
+                        Nom = p.Nom,
+                    }).ToList(),
+                    Videos = c.Videos.Select(p => new FileDto{
+                        Id = p.Id,
+                        Nom = p.Nom,
+                    }).ToList(),
+                    Syntheses = c.Syntheses.Select(p => new FileDto{
+                        Id = p.Id,
+                        Nom = p.Nom,
+                    }).ToList(),
 
                     Premium = c.Premium,
                     Quiz = c.Quiz.ToQuizDto()

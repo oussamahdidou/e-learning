@@ -24,8 +24,11 @@ export interface Chapitre {
   coursPdfPath: string | null;
   studentCoursParagraphes: number[] | null;
   videoPath: string | null;
+  videos: string | null;
   synthese: string | null;
+  syntheses: string | null;
   schema: string | null;
+  schemas: string | null;
   premium: boolean;
   quizId: number;
   quiz: Quiz;
