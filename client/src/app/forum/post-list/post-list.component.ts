@@ -151,7 +151,7 @@ export class PostListComponent implements OnInit {
             icon: 'success',
             confirmButtonText: 'OK',
           }).then(() => {
-            window.location.href = `/forum/create`;
+            window.location.href = `/forum/posts`;
           });
         },
         (error) => {
