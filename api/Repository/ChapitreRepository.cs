@@ -81,7 +81,7 @@ namespace api.Repository
                 index = 1;
                 foreach (var item in createChapitreDto.Videos)
                 {
-                    string url = await _blobStorageService.UploadImageVideoAsync(item.OpenReadStream(), videoContainer, item.FileName);
+                    string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), videoContainer, item.FileName);
                     videos.Add(new Video() { Nom = $"Video {index}", Link = url });
                     index++;
                 }
@@ -297,7 +297,7 @@ namespace api.Repository
                 {
 
                     var oldVideoFileName = CloudinaryUrlHelper.ExtractFileName(chapitre.Link);
-                    var deleteResult = await _blobStorageService.DeleteImageVideoAsync(videoContainer, oldVideoFileName);
+                    var deleteResult = await _blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
 
                 }
 
@@ -344,7 +344,7 @@ namespace api.Repository
             {
                 if (!string.IsNullOrEmpty(paragraphe.Link))
                 {
-                    await _blobStorageService.DeleteImageVideoAsync(pdfContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
+                    await _blobStorageService.DeleteFileAsync(pdfContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
                 }
             }
             foreach (var paragraphe in chapitre.Syntheses)
@@ -482,7 +482,7 @@ namespace api.Repository
                     if (!string.IsNullOrEmpty(chapitre.Link))
                     {
                         var oldVideoFileName = CloudinaryUrlHelper.ExtractFileName(chapitre.Link);
-                        var deleteResult = await _blobStorageService.DeleteImageVideoAsync(videoContainer, oldVideoFileName);
+                        var deleteResult = await _blobStorageService.DeleteFileAsync(videoContainer, oldVideoFileName);
 
                     }
 
@@ -660,7 +660,7 @@ namespace api.Repository
                 {
                     if (!string.IsNullOrEmpty(video.Link))
                     {
-                        await _blobStorageService.DeleteImageVideoAsync(videoContainer, CloudinaryUrlHelper.ExtractFileName(video.Link));
+                        await _blobStorageService.DeleteFileAsync(videoContainer, CloudinaryUrlHelper.ExtractFileName(video.Link));
                     }
                     apiDbContext.videos.Remove(video);
                     await apiDbContext.SaveChangesAsync();
@@ -688,7 +688,7 @@ namespace api.Repository
                 {
                     if (!string.IsNullOrEmpty(schema.Link))
                     {
-                        await _blobStorageService.DeleteImageVideoAsync(schemaContainer, CloudinaryUrlHelper.ExtractFileName(schema.Link));
+                        await _blobStorageService.DeleteFileAsync(schemaContainer, CloudinaryUrlHelper.ExtractFileName(schema.Link));
                     }
                     apiDbContext.schemas.Remove(schema);
                     await apiDbContext.SaveChangesAsync();
@@ -716,7 +716,7 @@ namespace api.Repository
                 {
                     if (!string.IsNullOrEmpty(synthese.Link))
                     {
-                        await _blobStorageService.DeleteImageVideoAsync(syntheseContainer, CloudinaryUrlHelper.ExtractFileName(synthese.Link));
+                        await _blobStorageService.DeleteFileAsync(syntheseContainer, CloudinaryUrlHelper.ExtractFileName(synthese.Link));
                     }
                     apiDbContext.syntheses.Remove(synthese);
                     await apiDbContext.SaveChangesAsync();

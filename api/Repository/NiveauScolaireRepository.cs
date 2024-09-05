@@ -204,7 +204,7 @@ namespace api.Repository
                             {
                                 if (!string.IsNullOrEmpty(paragraphe.Link))
                                 {
-                                    await blobStorageService.DeleteImageVideoAsync(videoContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
+                                    await blobStorageService.DeleteFileAsync(videoContainer, CloudinaryUrlHelper.ExtractFileName(paragraphe.Link));
                                 }
                             }
                             foreach (var paragraphe in chapitre.Syntheses)

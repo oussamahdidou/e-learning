@@ -182,10 +182,8 @@ namespace api.Controllers
                 Image = existingPosteDto.Image,
                 Fichier = existingPosteDto.Fichier
             };
-            
-            // AppUser? user = await _manager.FindByIdAsync(newPostDto.AppUserId);
-            // if (user is null)
-            //     return BadRequest("You should be logged in to create a poste");
+
+
             if (updatePostDto.Image != null)
             {
                 image = await _blobStorageService.UploadImageVideoAsync(updatePostDto.Image.OpenReadStream(), "schema-container", updatePostDto.Image.FileName);
@@ -198,48 +196,48 @@ namespace api.Controllers
             }
             if (updatePostDto.Fichier != null && updatePostDto.Image != null)
             {
-                
-                    
+
+
                 old_poste.Titre = updatePostDto.Titre;
                 old_poste.Content = updatePostDto.Content;
                 old_poste.Image = image;
                 old_poste.Fichier = fichier;
-                    
-                
+
+
                 await _posteRepo.UpdateAsync(old_poste);
                 return NoContent();
             }
             else if (updatePostDto.Fichier == null && updatePostDto.Image == null)
             {
-                
-                    
+
+
                 old_poste.Titre = updatePostDto.Titre;
                 old_poste.Content = updatePostDto.Content;
-                    
-                
+
+
                 await _posteRepo.UpdateAsync(old_poste);
                 return NoContent();
             }
             else if (updatePostDto.Fichier != null && updatePostDto.Image == null)
             {
-                
-                    
+
+
                 old_poste.Titre = updatePostDto.Titre;
                 old_poste.Content = updatePostDto.Content;
                 old_poste.Fichier = fichier;
-                    
-                
+
+
                 await _posteRepo.UpdateAsync(old_poste);
                 return NoContent();
             }
             else if (updatePostDto.Fichier == null && updatePostDto.Image != null)
             {
-                
-                    
+
+
                 old_poste.Titre = updatePostDto.Titre;
                 old_poste.Content = updatePostDto.Content;
                 old_poste.Image = image;
-                
+
                 await _posteRepo.UpdateAsync(old_poste);
                 return NoContent();
             }
