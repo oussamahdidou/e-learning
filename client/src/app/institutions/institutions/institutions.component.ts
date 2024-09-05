@@ -28,7 +28,7 @@ export class InstitutionsComponent implements OnInit {
   }
 
   loadInstitutions(): void {
-    this.institutionService.getInstitutions().subscribe(
+    this.institutionService.getStudentInstitutions().subscribe(
       (data) => {
         this.institutions = data;
         console.log(data);

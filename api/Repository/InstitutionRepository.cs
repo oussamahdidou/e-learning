@@ -222,6 +222,24 @@ namespace api.Repository
             }
         }
 
+        public async Task<Result<List<Institution>>> GetStudentInstitutions(string StudentId)
+        {
+            try
+            {
+                List<Institution?> institutions = await apiDbContext.institutionStudents
+                                                                    .Include(x => x.Institution)
+                                                                    .Where(x => x.StudentId == StudentId)
+                                                                    .Select(x => x.Institution)
+                                                                    .ToListAsync();
+                return Result<List<Institution>>.Success(institutions);
+            }
+            catch (Exception ex)
+            {
+
+                return Result<List<Institution>>.Failure($"{ex.Message}");
+            }
+        }
+
         public async Task<Result<Institution>> UpdateInstitution(UpdateInstitutionDto updateInstitutionDto)
         {
             try

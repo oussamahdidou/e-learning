@@ -15,5 +15,7 @@ namespace api.interfaces
         Task<Result<Institution>> CreateInstitution(string InstitutionName);
         Task<Result<Institution>> UpdateInstitution(UpdateInstitutionDto updateInstitutionDto);
         Task<bool> DeleteInstitution(int institutionId);
+        Task<Result<List<Institution>>> GetStudentInstitutions(string StudentId);
+
     }
 }

@@ -9,7 +9,6 @@ namespace api.Model
     {
         public string Nom { get; set; } = "Doe";
         public string Prenom { get; set; } = "Jhon";
-        public string Etablissement { get; set; } = "";
         public string Branche { get; set; } = "";
         public string Niveaus { get; set; } = "";
         public string? TuteurMail { get; set; }

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using api.Dtos.Account;
 using api.interfaces;
+using api.Dtos.Institution;
+using api.generique;
 using api.Model;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +23,12 @@ namespace api.Controllers
         private readonly SignInManager<AppUser> signInManager;
         private readonly IBlobStorageService _blobStorageService;
         private readonly ITokenService tokenService;
+        private readonly IinstitutionRepository institutionRepository;
+        private readonly IInstitutionStudentRepository institutionStudentRepository;
 
 
         private readonly IMailer mailer;
-        public AccountController(IMailer mailer, ITokenService tokenService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IBlobStorageService blobStorageService)
+        public AccountController(IMailer mailer, ITokenService tokenService, UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IBlobStorageService blobStorageService, IInstitutionStudentRepository institutionStudentRepository, IinstitutionRepository institutionRepository)
 
         {
             this.tokenService = tokenService;
@@ -32,6 +36,8 @@ namespace api.Controllers
             this.signInManager = signInManager;
             this._blobStorageService = blobStorageService;
             this.mailer = mailer;
+            this.institutionStudentRepository = institutionStudentRepository;
+            this.institutionRepository = institutionRepository;
 
         }
         [HttpPost("Login")]
@@ -76,7 +82,6 @@ namespace api.Controllers
                     Nom = registerDto.Nom,
                     Prenom = registerDto.Prenom,
                     DateDeNaissance = (DateTime)registerDto.DateDeNaissance,
-                    Etablissement = registerDto.Etablissement,
                     Branche = registerDto.Branche,
                     Niveaus = registerDto.Niveaus,
                     UserName = registerDto.UserName,
@@ -93,6 +98,14 @@ namespace api.Controllers
                     var userRole = await userManager.AddToRoleAsync(user, "Student");
                     if (userRole.Succeeded)
                     {
+                        var userStudent = await userManager.FindByEmailAsync(registerDto.Email);
+                        var objInstitutionStudent = new InstitutionStudent
+                        {
+                            InstitutionId = registerDto.Etablissement,
+                            StudentId = userStudent.Id,
+
+                        };
+                        await institutionStudentRepository.Add(objInstitutionStudent);
                         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
                         var param = new Dictionary<string, string?>
                         {

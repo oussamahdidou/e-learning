@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { InstitutionService } from '../../services/institution.service';
 import Swal from 'sweetalert2';
 import { Time } from '@angular/common';
 import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +16,7 @@ export class RegisterComponent {
   currentStep = 1;
   registerForm: FormGroup;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,private route: ActivatedRoute,private institutionService: InstitutionService,) {
     this.registerForm= new FormGroup({
       username: new FormControl('',[Validators.required]),
       email: new FormControl('',[Validators.required,Validators.email]),
@@ -29,6 +31,27 @@ export class RegisterComponent {
       tuteuremail: new FormControl('',[Validators.email]),
       phonenumber: new FormControl('',[Validators.pattern(/^(?:\+2127\d{8}|\+2126\d{8}|07\d{8}|06\d{8})$/)]),
     })
+  }
+  institutions: any[] = [];
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.isLoading = true;
+
+      if (params) {
+        this.institutionService
+          .getInstitutions()
+          .subscribe(
+            (response) => {
+              this.institutions = response;
+              console.log(this.institutions);
+              this.isLoading = false;
+            },
+            (error) => {
+              this.isLoading = false;
+            }
+          );
+      }
+    });
   }
 
 

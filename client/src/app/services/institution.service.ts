@@ -19,34 +19,48 @@ export interface Post {
   providedIn: 'root',
 })
 export class InstitutionService {
-  constructor(private http: HttpClient,private authService: AuthService) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   getInstitutions(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/api/Institution`);
+    return this.http.get<any[]>(`${environment.apiUrl}/api/Institution`, {
+      headers: this.authService.headers,
+    });
   }
-
+  getStudentInstitutions(): Observable<any[]> {
+    return this.http.get<any[]>(`${environment.apiUrl}/api/UserInstitutions`, {
+      headers: this.authService.headers,
+    });
+  }
   //niveaux scolaire
   getNiveauScolaire(id: number): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/Institution/${id}`);
+    return this.http.get<any>(`${environment.apiUrl}/api/Institution/${id}`, {
+      headers: this.authService.headers,
+    });
   }
 
   getModules(id: number): Observable<any> {
-    return this.http.get<any>(`${environment.apiUrl}/api/NiveauScolaire/${id}`);
+    return this.http.get<any>(
+      `${environment.apiUrl}/api/NiveauScolaire/${id}`,
+      { headers: this.authService.headers }
+    );
   }
 
   getObjetsPedagogiques(id: number): Observable<any> {
     console.log(
-      `Calling API: ${environment.apiUrl}/api/ElementPedagogique/${id}`
+      `Calling API: ${environment.apiUrl}/api/ElementPedagogique/${id}`,
+      { headers: this.authService.headers }
     );
     return this.http.get<any>(
-      `${environment.apiUrl}/api/ElementPedagogique/${id}`
+      `${environment.apiUrl}/api/ElementPedagogique/${id}`,
+      { headers: this.authService.headers }
     );
   }
 
   createElementPedagogique(elementDto: any): Observable<any> {
     return this.http.post<any>(
       `${environment.apiUrl}/api/ElementPedagogique`,
-      elementDto
+      elementDto,
+      { headers: this.authService.headers }
     );
   }
 }
