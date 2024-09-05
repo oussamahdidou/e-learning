@@ -148,6 +148,7 @@ builder.Services.AddScoped<IPosteRepository, PosteRepository>();
 builder.Services.AddScoped<IElementPedagogiqueRepository, ElementPedagogiqueRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 builder.Services.AddScoped<IReminder, ReminderRepository>();
+builder.Services.AddScoped<IInstitutionStudentRepository, InstitutionStudentRepository>();
 
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
 builder.Services.AddSingleton(x => new Cloudinary(builder.Configuration["Cloudinary:CloudinaryUrl"]));

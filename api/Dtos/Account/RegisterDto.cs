@@ -15,7 +15,7 @@ namespace api.Dtos.Account
         
         public DateTime? DateDeNaissance {get; set;} 
         [Required]
-        public string? Etablissement {get; set;} 
+        public int Etablissement {get; set;} 
         [Required]
         public string? Branche {get; set;} 
         [Required]

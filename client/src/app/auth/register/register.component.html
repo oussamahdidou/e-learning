@@ -64,7 +64,13 @@
                 </div>
                 <div data-mdb-input-init class="form-outline mb-4">
                   <label class="form-label" for="etablissement">Etablissement</label>
-                  <input type="text" id="etablissement" formControlName="etablissement" placeholder="Entrer votre etablissement" class="form-control" />
+                  <select class="form-control" placeholder="Entrer votre etablissement"  id="etablissement" formControlName="etablissement">
+                    <option value="" disabled selected>Entrer votre établissement</option>
+                    @for (institution of institutions; track $index) {
+                      <option value="{{institution.id}}">{{institution.nom}}</option>
+                    }
+                  </select>
+                  <!-- <input type="text" id="etablissement" formControlName="etablissement" placeholder="Entrer votre etablissement" class="form-control" /> -->
                 </div>
   
                 
