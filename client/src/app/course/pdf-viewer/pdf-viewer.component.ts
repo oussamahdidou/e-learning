@@ -98,6 +98,7 @@ export class PdfViewerComponent {
     this.courseService.getSyntheseById(this.id).subscribe(
       (url) => {
         if (url) {
+          console.log(url);
           this.pdfUrl = url;
           this.urls = url.split('.').length;
           this.extension = url.split('.')[this.urls - 1];
@@ -170,8 +171,10 @@ export class PdfViewerComponent {
   // Methods for Exam
   private isDevoirExists(id: number) {
     this.courseService.isDevoirUploaded(id).subscribe((res) => {
-      this.devoirePdfUrl = res.reponse;
-      this.devoirExists = true;
+      if (res.reponse != '') {
+        this.devoirePdfUrl = res.reponse;
+        this.devoirExists = true;
+      }
       console.log(this.devoirePdfUrl);
     });
   }

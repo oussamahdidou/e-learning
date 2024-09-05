@@ -37,7 +37,7 @@ export class LectureComponent {
               this.vdUrl = url.split('v=').pop();
               const youtubeUrl = 'https://www.youtube.com/embed/' + this.vdUrl;
               this.safeUrl =
-              this.sanitizer.bypassSecurityTrustResourceUrl(youtubeUrl);
+                this.sanitizer.bypassSecurityTrustResourceUrl(youtubeUrl);
               this.isFromYtb = true;
               console.log(this.vdUrl);
             } else {

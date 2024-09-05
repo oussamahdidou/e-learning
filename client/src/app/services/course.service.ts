@@ -5,6 +5,7 @@ import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import {
   Chapitre,
+  CheckChapterRequest,
   Controle,
   IsEligible,
   Module,
@@ -73,9 +74,9 @@ export class CourseService {
     return throwError('Something went wrong; please try again later.');
   }
 
-  checkChapter(id: number, avis: string): Observable<boolean> {
+  checkChapter(checkRequest: CheckChapterRequest): Observable<boolean> {
     return this.http
-      .get<any>(`${environment.apiUrl}/api/checkChapter/${id}/${avis}`, {
+      .post<any>(`${environment.apiUrl}/api/checkChapter`, checkRequest, {
         headers: this.authservice.headers,
       })
       .pipe(
@@ -102,12 +103,12 @@ export class CourseService {
 
   getVdUrlById(id: number): Observable<string> {
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+      .get<any>(`${environment.apiUrl}/api/Chapitre/Video/${id}`, {
         headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
-          return data.videoPath;
+          return data.link;
         }),
         catchError(this.handleError)
       );
@@ -128,12 +129,12 @@ export class CourseService {
 
   getSyntheseById(id: number): Observable<string | undefined> {
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+      .get<any>(`${environment.apiUrl}/api/Chapitre/Synthese/${id}`, {
         headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
-          return data.synthese;
+          return data.link;
         }),
         catchError(this.handleError)
       );
@@ -154,12 +155,12 @@ export class CourseService {
 
   getSchemaById(id: number): Observable<string | undefined> {
     return this.http
-      .get<any>(`${environment.apiUrl}/api/Chapitre?id=${id}`, {
+      .get<any>(`${environment.apiUrl}/api/Chapitre/Schema/${id}`, {
         headers: this.authservice.headers,
       })
       .pipe(
         map((data) => {
-          return data.schema;
+          return data.link;
         }),
         catchError(this.handleError)
       );

@@ -8,7 +8,12 @@ import {
 } from '@angular/core';
 import { CourseService } from '../../services/course.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Chapitre, Module } from '../../interfaces/dashboard';
+import {
+  Chapitre,
+  CheckChapterRequest,
+  Controle,
+  Module,
+} from '../../interfaces/dashboard';
 import { ErrorHandlingService } from '../../services/error-handling.service';
 import { SharedDataService } from '../../services/shared-data.service';
 
@@ -26,6 +31,7 @@ export class SidebarComponent implements OnInit {
   part2: number = 0;
   showModal: boolean = false;
   chapterId: number = 0;
+  chapitreNum: number = 0;
 
   constructor(
     private courseService: CourseService,
@@ -86,7 +92,7 @@ export class SidebarComponent implements OnInit {
       this.module?.controles?.filter((controle) => {
         const maxNum = Math.max(...controle.chapitreNum);
         return maxNum === chapitreNum;
-      }) || []
+      }) || null
     );
   }
 
@@ -100,9 +106,26 @@ export class SidebarComponent implements OnInit {
       this.activeElement = target;
     }
   }
-  CheckChapter(Id: number, event: Event, avis: string) {
+  CheckChapter(Id: number, event: Event, avis: string, chapitreNum: number) {
     console.log('This is the module before checking ', this.module);
-    this.courseService.checkChapter(Id, avis).subscribe(
+    console.log('chapitreid ', Id);
+    console.log('chapitreNum ', chapitreNum);
+    const controle: Controle[] | null = this.getControles(chapitreNum);
+    console.log(controle);
+    var checkRequest: CheckChapterRequest = {
+      Id: Id,
+      avis: avis,
+      lastChapter: false,
+      lastChapterExam: false,
+      ControleId: 0,
+      ExamId: 0,
+    };
+    if (controle?.length === 1) {
+      checkRequest.ControleId = controle[0].id;
+      checkRequest.lastChapter = true;
+    }
+    console.log(checkRequest)
+    this.courseService.checkChapter(checkRequest).subscribe(
       (state) => {
         console.log(state);
         if (state && this.module) {
@@ -120,9 +143,10 @@ export class SidebarComponent implements OnInit {
       }
     );
   }
-  openModel(chapiteId: number) {
+  openModel(chapiteId: number, chapitreNum: number) {
     this.showModal = true;
     this.chapterId = chapiteId;
+    this.chapitreNum = chapitreNum;
   }
   closeModal(): void {
     this.showModal = false;

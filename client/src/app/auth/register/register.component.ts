@@ -11,6 +11,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 })
 export class RegisterComponent {
   isLoading = false;
+  currentStep = 1;
   registerForm: FormGroup;
 
   constructor(private authService: AuthService) {
@@ -25,6 +26,8 @@ export class RegisterComponent {
       etablissement: new FormControl('',[Validators.required]),
       branche: new FormControl('',[Validators.required]),
       niveau: new FormControl('',[Validators.required]),
+      tuteuremail: new FormControl('',[Validators.email]),
+      phonenumber: new FormControl('',[Validators.pattern(/^(?:\+2127\d{8}|\+2126\d{8}|07\d{8}|06\d{8})$/)]),
     })
   }
 
@@ -41,10 +44,25 @@ export class RegisterComponent {
   // niveau: string= '';
 
 
+  isFirstStepValid() {
+    return this.registerForm.get('nom')?.valid &&
+           this.registerForm.get('prenom')?.valid &&
+           this.registerForm.get('datenaissaince')?.valid &&
+           this.registerForm.get('etablissement')?.valid &&
+           this.registerForm.get('niveau')?.valid &&
+           this.registerForm.get('branche')?.valid;
+  }
+
+  goToNextStep() {
+    if (this.isFirstStepValid()) {
+      this.currentStep = 2;
+    }
+  }
+
   register() {
     this.isLoading = true; 
     if (this.registerForm.valid) {
-      const { nom, prenom,datenaissaince,etablissement,branche,niveau,email,username,password,confirmpassword, } = this.registerForm.value;
+      const { nom, prenom,datenaissaince,etablissement,branche,niveau,email,tuteuremail,phonenumber,username,password,confirmpassword, } = this.registerForm.value;
       this.authService
         .registeruser(
           nom,
@@ -55,6 +73,8 @@ export class RegisterComponent {
           niveau,
           username,
           email,
+          tuteuremail,
+          phonenumber,
           password,
           confirmpassword
         )
@@ -75,7 +95,7 @@ export class RegisterComponent {
             );
             Swal.fire({
               title: 'Error',
-              text: `${error.message}`,
+              text: `Registration failed. ${error.error}`,
               icon: 'error',
             });
           }

@@ -19,6 +19,14 @@ namespace api.Repository
         }
         public async Task<Result<ResultControle>> AddResult(AppUser user, int controleId, string filePath)
         {
+           ResultControle? result = await _context.resultControles
+                .FirstOrDefaultAsync(rc => rc.ControleId == controleId && rc.StudentId == user.Id);
+
+            if (result != null)
+                {_context.resultControles.Remove(result);
+            await _context.SaveChangesAsync();}
+
+            
             ResultControle resultControle = new ResultControle
             {
                 StudentId = user.Id,

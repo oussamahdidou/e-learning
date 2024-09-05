@@ -79,6 +79,12 @@ namespace api.Repository
                         .ThenInclude(e => e.Paragraphes)
                     .Include(z => z.Chapitres)
                         .ThenInclude(w => w.Controle)
+                    .Include(z => z.Chapitres)
+                        .ThenInclude(w => w.Syntheses)
+                    .Include(z => z.Chapitres)
+                        .ThenInclude(w => w.Schemas)
+                    .Include(z => z.Chapitres)
+                        .ThenInclude(w => w.Videos)
                     .Where(x => x.Id == id)
                     .Select(x => new Module
                     {

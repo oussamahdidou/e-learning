@@ -71,7 +71,7 @@ namespace api.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest("Incorrect Fields Format, Try Again");
 
-                var user = new AppUser
+                var user = new Student
                 {
                     Nom = registerDto.Nom,
                     Prenom = registerDto.Prenom,
@@ -81,6 +81,8 @@ namespace api.Controllers
                     Niveaus = registerDto.Niveaus,
                     UserName = registerDto.UserName,
                     Email = registerDto.Email,
+                    TuteurMail = registerDto.TuteurMail,
+                    PhoneNumber= registerDto.PhoneNumber,
                 };
 
                 var userCreation = await userManager.CreateAsync(user, registerDto.Password);
@@ -118,19 +120,26 @@ namespace api.Controllers
                     }
                     else
                     {
-                        return StatusCode(500, userRole.Errors);
+                        var errors = string.Join(", ", userRole.Errors.Select(e => e.Description));
+                        Console.WriteLine("User role failed: " + errors);
+                        return BadRequest( "User role failed: " + errors);
+                        // return StatusCode(500, userRole.Errors);
                     }
 
                 }
                 else
                 {
-                    return StatusCode(500, userCreation.Errors);
+                    var errors = string.Join(", ", userCreation.Errors.Select(e => e.Description));
+                    Console.WriteLine("User creation failed: " + errors);
+                    return BadRequest("User creation failed: " + errors);
+                    // return StatusCode(500, userCreation.Errors);
                 }
 
             }
             catch (Exception e)
             {
-                return StatusCode(500, e);
+                return BadRequest("An Error Occured");
+                // return StatusCode(500, e);
             }
         }
 
@@ -142,10 +151,7 @@ namespace api.Controllers
                 var justification = "";
 
                 if (!ModelState.IsValid)
-                    return BadRequest(new AuthNotificationDto()
-                    {
-                        Message = "Incorrect Fields Format, Try Again"
-                    });
+                    return BadRequest("Incorrect Fields Format, Try Again");
 
                 if (teacherRegisterDto.JustificatifDeLaProfession != null)
                 {
@@ -156,15 +162,19 @@ namespace api.Controllers
 
                 Console.WriteLine("222222222222222222222222222222222222222222222222");
 
-                var user = new AppUser
+                var user = new Teacher
                 {
-                    Teacher_Nom = teacherRegisterDto.Teacher_Nom,
-                    Teacher_Prenom = teacherRegisterDto.Teacher_Prenom,
-                    Teacher_DateDeNaissance = (DateTime)(teacherRegisterDto.Teacher_DateDeNaissance),
-                    Teacher_Etablissement = teacherRegisterDto.Teacher_Etablissement,
+                    Nom = teacherRegisterDto.Teacher_Nom,
+                    Prenom = teacherRegisterDto.Teacher_Prenom,
+                    DateDeNaissance = (DateTime)(teacherRegisterDto.Teacher_DateDeNaissance),
+                    Etablissement = teacherRegisterDto.Teacher_Etablissement,
                     JustificatifDeLaProfession = justification,
                     UserName = teacherRegisterDto.UserName,
                     Email = teacherRegisterDto.Email,
+                    Granted=false,
+                    Status=teacherRegisterDto.Status,
+                    Specialite=teacherRegisterDto.Specialite,
+                    PhoneNumber= teacherRegisterDto.PhoneNumber,
                 };
 
                 var userCreation = await userManager.CreateAsync(user, teacherRegisterDto.Password);
@@ -205,7 +215,10 @@ namespace api.Controllers
                     }
                     else
                     {
-                        return StatusCode(500, userRole.Errors);
+                        var errors = string.Join(", ", userRole.Errors.Select(e => e.Description));
+                        Console.WriteLine("User role failed: " + errors);
+                        return BadRequest( "User role failed: " + errors );
+                        // return StatusCode(500, userRole.Errors);
                     }
 
                 }
@@ -213,14 +226,15 @@ namespace api.Controllers
                 {
                     var errors = string.Join(", ", userCreation.Errors.Select(e => e.Description));
                     Console.WriteLine("User creation failed: " + errors);
-                    return StatusCode(500, new AuthNotificationDto { Message = "User creation failed: " + errors });
+                    return BadRequest("User creation failed: " + errors );
                     // return StatusCode(500, userCreation.Errors);
                 }
 
             }
             catch (Exception e)
             {
-                return StatusCode(500, e);
+                return BadRequest("An Error Occured");
+                // return StatusCode(500, e);
             }
         }
 

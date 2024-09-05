@@ -26,7 +26,7 @@
       <a class="chap">{{ chapitre.nom }}</a>
       <div
         class="checkbox-wrapper"
-        (click)="openModel(chapitre.id)"
+        (click)="openModel(chapitre.id, chapitre.chapitreNum)"
         [class.disabled]="chapitre.statue"
         [style.pointer-events]="chapitre.statue ? 'none' : 'auto'"
       >
@@ -37,15 +37,15 @@
     </div>
 
     <div
-      *ngFor="let pdfPath of chapitre.studentCoursParagraphes; let i = index"
+      *ngFor="let cour of chapitre.studentCoursParagraphes"
       class="items"
-      [ngClass]="{ onit: part1 === 'cour' && part2 === pdfPath }"
+      [ngClass]="{ onit: part1 === 'cour' && part2 === cour.id }"
     >
       <a
-        [routerLink]="['/course', module?.id, 'cour', pdfPath]"
+        [routerLink]="['/course', module?.id, 'cour', cour.id]"
         class="d-flex align-items-center w-100 text-decoration-none"
       >
-        <span class="flex-grow-1">Cour: Partie {{ i + 1 }}</span>
+        <span class="flex-grow-1">Cour: {{ cour.nom }}</span>
         <button mat-icon-button color="primary" aria-label="Course PDF">
           <mat-icon>picture_as_pdf</mat-icon>
         </button>
@@ -53,15 +53,15 @@
     </div>
 
     <div
+      *ngFor="let video of chapitre.videos"
       class="items"
-      *ngIf="chapitre.videoPath"
-      [ngClass]="{ onit: part1 === 'lecture' && part2 === chapitre.id }"
+      [ngClass]="{ onit: part1 === 'lecture' && part2 === video.id }"
     >
       <a
         class="d-flex align-items-center w-100 text-decoration-none"
-        [routerLink]="['/course', module?.id, 'lecture', chapitre.id]"
+        [routerLink]="['/course', module?.id, 'lecture', video.id]"
       >
-        <span class="flex-grow-1">Video</span>
+        <span class="flex-grow-1">Video: {{ video.nom }}</span>
         <button mat-icon-button color="primary" aria-label="Video">
           <mat-icon>videocam</mat-icon>
         </button>
@@ -69,15 +69,15 @@
     </div>
 
     <div
+      *ngFor="let schema of chapitre.schemas"
       class="items"
-      *ngIf="chapitre.schema"
-      [ngClass]="{ onit: part1 === 'schema' && part2 === chapitre.id }"
+      [ngClass]="{ onit: part1 === 'schema' && part2 === schema.id }"
     >
       <a
         class="d-flex align-items-center w-100 text-decoration-none"
-        [routerLink]="['/course', module?.id, 'schema', chapitre.id]"
+        [routerLink]="['/course', module?.id, 'schema', schema.id]"
       >
-        <span class="flex-grow-1">Schema</span>
+        <span class="flex-grow-1">Schema: {{ schema.nom }}</span>
         <button mat-icon-button color="primary">
           <mat-icon>insert_drive_file</mat-icon>
         </button>
@@ -85,20 +85,21 @@
     </div>
 
     <div
+      *ngFor="let synthese of chapitre.syntheses"
       class="items"
-      [ngClass]="{ onit: part1 === 'synthese' && part2 === chapitre.id }"
-      *ngIf="chapitre.synthese"
+      [ngClass]="{ onit: part1 === 'synthese' && part2 === synthese.id }"
     >
       <a
-        [routerLink]="['/course', module?.id, 'synthese', chapitre.id]"
+        [routerLink]="['/course', module?.id, 'synthese', synthese.id]"
         class="d-flex align-items-center w-100 text-decoration-none"
       >
-        <span class="flex-grow-1">Synthese</span>
+        <span class="flex-grow-1">Synthese: {{ synthese.nom }}</span>
         <button mat-icon-button color="primary" aria-label="Synthese">
           <mat-icon>description</mat-icon>
         </button>
       </a>
     </div>
+
     <div
       class="items"
       [ngClass]="{ onit: part1 === 'quiz' && part2 === chapitre.quiz.id }"
@@ -171,18 +172,21 @@
     </h5>
 
     <div class="d-flex justify-content-around">
-      <button class="buttona" (click)="CheckChapter(chapterId, $event, 'mal')">
+      <button
+        class="buttona"
+        (click)="CheckChapter(chapterId, $event, 'mal', chapitreNum)"
+      >
         Mal
       </button>
       <button
         class="buttona"
-        (click)="CheckChapter(chapterId, $event, 'Pas Mal')"
+        (click)="CheckChapter(chapterId, $event, 'Pas Mal', chapitreNum)"
       >
         Pas Mal
       </button>
       <button
         class="buttona"
-        (click)="CheckChapter(chapterId, $event, 'Excellent')"
+        (click)="CheckChapter(chapterId, $event, 'Excellent', chapitreNum)"
       >
         Excellent
       </button>

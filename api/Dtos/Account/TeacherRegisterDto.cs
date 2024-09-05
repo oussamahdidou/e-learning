@@ -23,8 +23,12 @@ namespace api.Dtos.Account
         [Required]
         [EmailAddress]
         public string? Email {get; set;}
-
         [Required]
+        public string?Status {get; set;}
+        [Required]
+        public string? Specialite {get; set;}
+        [Required]
+        public string? PhoneNumber {get; set;}
         public string? Password {get; set;}
 
         [Compare ("Password", ErrorMessage ="The password and confirmation password are not the same.")]

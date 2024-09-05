@@ -22,10 +22,13 @@ export interface Chapitre {
   nom: string;
   statue: boolean;
   coursPdfPath: string | null;
-  studentCoursParagraphes : number[] | null
+  studentCoursParagraphes: any[] | null;
   videoPath: string | null;
+  videos: any | null;
   synthese: string | null;
+  syntheses: any | null;
   schema: string | null;
+  schemas: any | null;
   premium: boolean;
   quizId: number;
   quiz: Quiz;
@@ -74,4 +77,12 @@ export interface InfoCard {
   nom: string;
   numberOfChapter: number;
   moduleImg: string;
+}
+export interface CheckChapterRequest {
+  Id: number;
+  ControleId: number;
+  ExamId: number;
+  lastChapter: boolean;
+  lastChapterExam: boolean;
+  avis: string;
 }

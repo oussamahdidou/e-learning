@@ -25,13 +25,15 @@ namespace api.Controllers
         private readonly IResultControleRepository _resultRepo;
         private readonly IWebHostEnvironment _environment;
         private readonly IBlobStorageService _blobStorageService;
+        private readonly IReminder _reminder;
         private string ControleResultContainer = "controle-result-container";
-        public ResultControleController(UserManager<AppUser> manager, IResultControleRepository resultRepo, IWebHostEnvironment environment , IBlobStorageService blobStorageService)
+        public ResultControleController(UserManager<AppUser> manager, IResultControleRepository resultRepo, IWebHostEnvironment environment , IBlobStorageService blobStorageService , IReminder reminder)
         {
             _manager = manager;
             _resultRepo = resultRepo;
             _environment = environment;
             _blobStorageService = blobStorageService;
+            _reminder = reminder;
         }
         [HttpPost("{id:int}")]
         public async Task<IActionResult> UploadSolution(IFormFile file, [FromRoute] int id)  
@@ -120,5 +122,10 @@ namespace api.Controllers
                 }
 
             return Ok(result.Value);
+        }
+        [HttpGet("sendreminder")]
+        public async Task<IActionResult> SendReminder(){
+            await _reminder.SendReminder();
+            return Ok();
         }
 }}

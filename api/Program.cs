@@ -14,6 +14,7 @@ using Microsoft.OpenApi.Models;
 using Newtonsoft.Json;
 using Azure.Storage.Blobs;
 using CloudinaryDotNet;
+using Hangfire;
 
 
 
@@ -81,6 +82,15 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 // builder.Services.Configure<DataProtectionTokenProviderOptions>(opt =>
 //     opt.TokenLifespan = TimeSpan.FromHours(2));
 
+
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_180)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseRecommendedSerializerSettings()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddHangfireServer();
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -137,6 +147,7 @@ builder.Services.AddScoped<IParagrapheRepository, ParagrapheRepository>();
 builder.Services.AddScoped<IPosteRepository, PosteRepository>();
 builder.Services.AddScoped<IElementPedagogiqueRepository, ElementPedagogiqueRepository>();
 builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+builder.Services.AddScoped<IReminder, ReminderRepository>();
 
 builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
 builder.Services.AddSingleton(x => new Cloudinary(builder.Configuration["Cloudinary:CloudinaryUrl"]));
@@ -173,6 +184,12 @@ app.UseStaticFiles(new StaticFileOptions
         ctx.Context.Response.Headers.Append("Access-Control-Allow-Headers", "Content-Type");
     }
 });
+
+app.UseHangfireDashboard();
+RecurringJob.AddOrUpdate<IReminder>("send-reminder",
+    x => x.SendReminder(),
+    "0 9 * * 1");
+
 app.UseRouting();
 app.UseHttpsRedirection();
 app.UseCors("AllowSpecificOrigin");

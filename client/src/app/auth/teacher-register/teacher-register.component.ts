@@ -11,6 +11,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 })
 export class TeacherRegisterComponent {
   isLoading = false;
+  currentStep = 1;
   registerForm: FormGroup;
 
   constructor(private authService: AuthService) {
@@ -24,6 +25,9 @@ export class TeacherRegisterComponent {
       datenaissaince: new FormControl('',[Validators.required]),
       etablissement: new FormControl('',[Validators.required]),
       justification: new FormControl('',[Validators.required]),
+      status: new FormControl('',[Validators.required]),
+      specialite: new FormControl('',[Validators.required]),
+      phonenumber: new FormControl('',[Validators.pattern(/^(?:\+2127\d{8}|\+2126\d{8}|07\d{8}|06\d{8})$/)]),
     })
   }
   fileJustification: File| null = null;
@@ -64,10 +68,26 @@ export class TeacherRegisterComponent {
     this.registerForm.get('justification')?.updateValueAndValidity();
   }
 
+  isFirstStepValid() {
+    return this.registerForm.get('nom')?.valid &&
+           this.registerForm.get('prenom')?.valid &&
+           this.registerForm.get('datenaissaince')?.valid &&
+           this.registerForm.get('etablissement')?.valid &&
+           this.registerForm.get('justification')?.valid &&
+           this.registerForm.get('status')?.valid &&
+           this.registerForm.get('specialite')?.valid;
+  }
+
+  goToNextStep() {
+    if (this.isFirstStepValid()) {
+      this.currentStep = 2;
+    }
+  }
+
   register() {
     this.isLoading = true; 
     if (this.registerForm.valid) {
-      const { nom, prenom, datenaissaince, etablissement, email, username, password, confirmpassword } = this.registerForm.value;
+      const { nom, prenom, datenaissaince, etablissement,phonenumber ,email,status, specialite,username, password, confirmpassword } = this.registerForm.value;
       const justification = this.registerForm.get('justification')?.value;
       const formattedDate = new Date(datenaissaince).toISOString(); 
 
@@ -101,8 +121,12 @@ export class TeacherRegisterComponent {
 
       formData.append('UserName', username);
       formData.append('Email', email);
+      formData.append('Status', status);
+      formData.append('Specialite', specialite);
+      formData.append('PhoneNumber', phonenumber);
       formData.append('Password', password);
       formData.append('ConfirmPassword', confirmpassword);
+      formData.append('PhoneNumber ',phonenumber)
 
       this.authService.teacherregisteruser(formData)
         .subscribe(
@@ -120,7 +144,7 @@ export class TeacherRegisterComponent {
             console.error('Registration failed:', error.message);
             Swal.fire({
               title: 'Error',
-              text:  'Registration failed. Please try again.' ,
+              text:  `Registration failed. ${error.error}`,
               icon: 'error',
             });
           }
