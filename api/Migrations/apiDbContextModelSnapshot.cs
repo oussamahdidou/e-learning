@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "37de3f71-6a97-407c-a998-819ede6715a9",
+                            Id = "690a8c72-b74d-4c12-be58-b1da3c655f56",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c65f217d-97a4-4c30-9945-893c3f226467",
+                            Id = "4957c14c-85bc-440a-8a01-bfb9e1c7224f",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "d0848524-42f8-43ab-9660-a1c9d25fdc7f",
+                            Id = "f25f5098-cbfb-4b93-a21d-f1d51418203e",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -477,6 +477,21 @@ namespace api.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("institutions");
+                });
+
+            modelBuilder.Entity("api.Model.InstitutionStudent", b =>
+                {
+                    b.Property<int>("InstitutionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StudentId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("InstitutionId", "StudentId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("institutionStudents");
                 });
 
             modelBuilder.Entity("api.Model.Module", b =>
@@ -1094,6 +1109,25 @@ namespace api.Migrations
                     b.Navigation("Teacher");
                 });
 
+            modelBuilder.Entity("api.Model.InstitutionStudent", b =>
+                {
+                    b.HasOne("api.Model.Institution", "Institution")
+                        .WithMany("InstitutionStudents")
+                        .HasForeignKey("InstitutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Model.Student", "Student")
+                        .WithMany("InstitutionStudents")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Institution");
+
+                    b.Navigation("Student");
+                });
+
             modelBuilder.Entity("api.Model.Module", b =>
                 {
                     b.HasOne("api.Model.ExamFinal", "ExamFinal")
@@ -1342,6 +1376,8 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Model.Institution", b =>
                 {
+                    b.Navigation("InstitutionStudents");
+
                     b.Navigation("NiveauScolaires");
                 });
 
@@ -1385,6 +1421,8 @@ namespace api.Migrations
             modelBuilder.Entity("api.Model.Student", b =>
                 {
                     b.Navigation("CheckChapters");
+
+                    b.Navigation("InstitutionStudents");
 
                     b.Navigation("QuizResults");
 

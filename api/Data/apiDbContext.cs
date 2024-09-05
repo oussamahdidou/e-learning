@@ -43,6 +43,7 @@ namespace api.Data
         public DbSet<Video> videos { get; set; }
         public DbSet<Synthese> syntheses { get; set; }
         public DbSet<Schema> schemas { get; set; }
+        public DbSet<InstitutionStudent> institutionStudents { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -155,6 +156,16 @@ namespace api.Data
                               .WithMany(u => u.Comments)
                               .HasForeignKey(p => p.PosteId);
                       });
+            //*************************************************************************************************
+            builder.Entity<InstitutionStudent>(x => x.HasKey(p => new { p.InstitutionId, p.StudentId }));
+            builder.Entity<InstitutionStudent>()
+            .HasOne(u => u.Institution)
+            .WithMany(u => u.InstitutionStudents)
+            .HasForeignKey(p => p.InstitutionId);
+            builder.Entity<InstitutionStudent>()
+            .HasOne(u => u.Student)
+            .WithMany(u => u.InstitutionStudents)
+            .HasForeignKey(p => p.StudentId);
         }
     }
 }

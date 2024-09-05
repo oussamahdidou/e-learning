@@ -12,5 +12,7 @@ namespace api.Model
         public int Id { get; set; }
         public string Nom { get; set; } = "";
         public List<NiveauScolaire> NiveauScolaires { get; set; } = new List<NiveauScolaire>();
+        public List<InstitutionStudent> InstitutionStudents { get; set; } = new List<InstitutionStudent>();
+
     }
 }

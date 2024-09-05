@@ -82,7 +82,7 @@ namespace api.Controllers
                     UserName = registerDto.UserName,
                     Email = registerDto.Email,
                     TuteurMail = registerDto.TuteurMail,
-                    PhoneNumber= registerDto.PhoneNumber,
+                    PhoneNumber = registerDto.PhoneNumber,
                 };
 
                 var userCreation = await userManager.CreateAsync(user, registerDto.Password);
@@ -122,7 +122,7 @@ namespace api.Controllers
                     {
                         var errors = string.Join(", ", userRole.Errors.Select(e => e.Description));
                         Console.WriteLine("User role failed: " + errors);
-                        return BadRequest( "User role failed: " + errors);
+                        return BadRequest("User role failed: " + errors);
                         // return StatusCode(500, userRole.Errors);
                     }
 
@@ -171,10 +171,10 @@ namespace api.Controllers
                     JustificatifDeLaProfession = justification,
                     UserName = teacherRegisterDto.UserName,
                     Email = teacherRegisterDto.Email,
-                    Granted=false,
-                    Status=teacherRegisterDto.Status,
-                    Specialite=teacherRegisterDto.Specialite,
-                    PhoneNumber= teacherRegisterDto.PhoneNumber,
+                    Granted = false,
+                    Status = teacherRegisterDto.Status,
+                    Specialite = teacherRegisterDto.Specialite,
+                    PhoneNumber = teacherRegisterDto.PhoneNumber,
                 };
 
                 var userCreation = await userManager.CreateAsync(user, teacherRegisterDto.Password);
@@ -217,7 +217,7 @@ namespace api.Controllers
                     {
                         var errors = string.Join(", ", userRole.Errors.Select(e => e.Description));
                         Console.WriteLine("User role failed: " + errors);
-                        return BadRequest( "User role failed: " + errors );
+                        return BadRequest("User role failed: " + errors);
                         // return StatusCode(500, userRole.Errors);
                     }
 
@@ -226,7 +226,7 @@ namespace api.Controllers
                 {
                     var errors = string.Join(", ", userCreation.Errors.Select(e => e.Description));
                     Console.WriteLine("User creation failed: " + errors);
-                    return BadRequest("User creation failed: " + errors );
+                    return BadRequest("User creation failed: " + errors);
                     // return StatusCode(500, userCreation.Errors);
                 }
 
