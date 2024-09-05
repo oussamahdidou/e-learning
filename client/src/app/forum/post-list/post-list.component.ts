@@ -126,14 +126,30 @@ export class PostListComponent implements OnInit {
       if (this.selectedFile) formData.append('Fichier', this.selectedFile);
 
       formData.append('AppUserId', this.authservice.token.unique_name);
+
+      // Show loading modal
+      Swal.fire({
+        title: 'Processing...',
+        text: 'Please wait while your post is being added.',
+        icon: 'info',
+        allowOutsideClick: false,
+        showConfirmButton: false,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+      });
+
       this.forumservice.Add(formData).subscribe(
         (response) => {
           console.log(formData);
           console.log('Post added successful:', response);
+
+          // Update modal to show success message
           Swal.fire({
             title: 'Success',
-            text: `Post added successful `,
+            text: 'Post added successfully!',
             icon: 'success',
+            confirmButtonText: 'OK',
           }).then(() => {
             window.location.href = `/forum/create`;
           });
@@ -141,10 +157,13 @@ export class PostListComponent implements OnInit {
         (error) => {
           console.log(formData);
           console.error('Post added failed:', error.message);
+
+          // Update modal to show error message
           Swal.fire({
             title: 'Error',
             text: 'Post added failed. Please try again.',
             icon: 'error',
+            confirmButtonText: 'OK',
           });
         }
       );
