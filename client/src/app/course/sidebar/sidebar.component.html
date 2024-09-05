@@ -2,14 +2,8 @@
   <div class="title p-3 bg-white">
     {{ module?.nom }}
     <div class="progress mt-3">
-      <div
-        class="progress-bar bg-success"
-        role="progressbar"
-        [style.width.%]="progress"
-        aria-valuenow="progress"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      >
+      <div class="progress-bar bg-success" role="progressbar" [style.width.%]="progress" aria-valuenow="progress"
+        aria-valuemin="0" aria-valuemax="100">
         {{ progress }}%
       </div>
     </div>
@@ -19,32 +13,20 @@
   </div>
 
   <div *ngFor="let chapitre of module?.chapitres">
-    <div
-      class="d-flex align-items-center py-2"
-      [ngClass]="chapitre.statue ? 'items checked' : 'items chapitre'"
-    >
+    <div class="d-flex align-items-center py-2" [ngClass]="chapitre.statue ? 'items checked' : 'items chapitre'">
       <a class="chap">{{ chapitre.nom }}</a>
-      <div
-        class="checkbox-wrapper"
-        (click)="openModel(chapitre.id, chapitre.chapitreNum)"
-        [class.disabled]="chapitre.statue"
-        [style.pointer-events]="chapitre.statue ? 'none' : 'auto'"
-      >
+      <div class="checkbox-wrapper" (click)="openModel(chapitre.id, chapitre.chapitreNum)"
+        [class.disabled]="chapitre.statue" [style.pointer-events]="chapitre.statue ? 'none' : 'auto'">
         <div class="checkbox" [ngClass]="chapitre.statue ? 'checked' : ''">
           <span *ngIf="chapitre.statue">✔</span>
         </div>
       </div>
     </div>
 
-    <div
-      *ngFor="let cour of chapitre.studentCoursParagraphes"
-      class="items"
-      [ngClass]="{ onit: part1 === 'cour' && part2 === cour.id }"
-    >
-      <a
-        [routerLink]="['/course', module?.id, 'cour', cour.id]"
-        class="d-flex align-items-center w-100 text-decoration-none"
-      >
+    <div *ngFor="let cour of chapitre.studentCoursParagraphes" class="items"
+      [ngClass]="{ onit: part1 === 'cour' && part2 === cour.id }">
+      <a [routerLink]="['/course', module?.id, 'cour', cour.id]"
+        class="d-flex align-items-center w-100 text-decoration-none">
         <span class="flex-grow-1">Cour: {{ cour.nom }}</span>
         <button mat-icon-button color="primary" aria-label="Course PDF">
           <mat-icon>picture_as_pdf</mat-icon>
@@ -52,15 +34,10 @@
       </a>
     </div>
 
-    <div
-      *ngFor="let video of chapitre.videos"
-      class="items"
-      [ngClass]="{ onit: part1 === 'lecture' && part2 === video.id }"
-    >
-      <a
-        class="d-flex align-items-center w-100 text-decoration-none"
-        [routerLink]="['/course', module?.id, 'lecture', video.id]"
-      >
+    <div *ngFor="let video of chapitre.videos" class="items"
+      [ngClass]="{ onit: part1 === 'lecture' && part2 === video.id }">
+      <a class="d-flex align-items-center w-100 text-decoration-none"
+        [routerLink]="['/course', module?.id, 'lecture', video.id]">
         <span class="flex-grow-1">Video: {{ video.nom }}</span>
         <button mat-icon-button color="primary" aria-label="Video">
           <mat-icon>videocam</mat-icon>
@@ -68,15 +45,10 @@
       </a>
     </div>
 
-    <div
-      *ngFor="let schema of chapitre.schemas"
-      class="items"
-      [ngClass]="{ onit: part1 === 'schema' && part2 === schema.id }"
-    >
-      <a
-        class="d-flex align-items-center w-100 text-decoration-none"
-        [routerLink]="['/course', module?.id, 'schema', schema.id]"
-      >
+    <div *ngFor="let schema of chapitre.schemas" class="items"
+      [ngClass]="{ onit: part1 === 'schema' && part2 === schema.id }">
+      <a class="d-flex align-items-center w-100 text-decoration-none"
+        [routerLink]="['/course', module?.id, 'schema', schema.id]">
         <span class="flex-grow-1">Schema: {{ schema.nom }}</span>
         <button mat-icon-button color="primary">
           <mat-icon>insert_drive_file</mat-icon>
@@ -84,15 +56,10 @@
       </a>
     </div>
 
-    <div
-      *ngFor="let synthese of chapitre.syntheses"
-      class="items"
-      [ngClass]="{ onit: part1 === 'synthese' && part2 === synthese.id }"
-    >
-      <a
-        [routerLink]="['/course', module?.id, 'synthese', synthese.id]"
-        class="d-flex align-items-center w-100 text-decoration-none"
-      >
+    <div *ngFor="let synthese of chapitre.syntheses" class="items"
+      [ngClass]="{ onit: part1 === 'synthese' && part2 === synthese.id }">
+      <a [routerLink]="['/course', module?.id, 'synthese', synthese.id]"
+        class="d-flex align-items-center w-100 text-decoration-none">
         <span class="flex-grow-1">Synthese: {{ synthese.nom }}</span>
         <button mat-icon-button color="primary" aria-label="Synthese">
           <mat-icon>description</mat-icon>
@@ -100,15 +67,9 @@
       </a>
     </div>
 
-    <div
-      class="items"
-      [ngClass]="{ onit: part1 === 'quiz' && part2 === chapitre.quiz.id }"
-      *ngIf="chapitre?.quiz"
-    >
-      <a
-        [routerLink]="['/course', module?.id, 'quiz', chapitre.quiz.id]"
-        class="d-flex align-items-center w-100 text-decoration-none"
-      >
+    <div class="items" [ngClass]="{ onit: part1 === 'quiz' && part2 === chapitre.quiz.id }" *ngIf="chapitre?.quiz">
+      <a [routerLink]="['/course', module?.id, 'quiz', chapitre.quiz.id]"
+        class="d-flex align-items-center w-100 text-decoration-none">
         <span class="flex-grow-1">Quiz</span>
         <button mat-icon-button color="primary" aria-label="Quiz">
           <mat-icon>quiz</mat-icon>
@@ -116,16 +77,11 @@
       </a>
     </div>
 
-    <div
-      *ngFor="let controle of getControles(chapitre.chapitreNum)"
-      class="controle"
-      [ngClass]="{ onit: part1 === 'exam' && part2 === controle.id }"
-    >
+    <div *ngFor="let controle of getControles(chapitre.chapitreNum)" class="controle"
+      [ngClass]="{ onit: part1 === 'exam' && part2 === controle.id }">
       <div class="items">
-        <a
-          [routerLink]="['/course', module?.id, 'exam', controle.id]"
-          class="d-flex align-items-center w-100 text-decoration-none"
-        >
+        <a [routerLink]="['/course', module?.id, 'exam', controle.id]"
+          class="d-flex align-items-center w-100 text-decoration-none">
           <span class="flex-grow-1">Controle : {{ controle.nom }}</span>
           <button mat-icon-button color="primary" aria-label="Controle">
             <mat-icon>assessment</mat-icon>
@@ -134,15 +90,10 @@
       </div>
     </div>
   </div>
-  <div
-    class="items controle"
-    [ngClass]="{ onit: part1 === 'ControleFinal' && part2 === examFinal?.id }"
-    *ngIf="examFinal"
-  >
-    <a
-      [routerLink]="['/course', module?.id, 'ControleFinal', examFinal?.id]"
-      class="d-flex align-items-center w-100 text-decoration-none"
-    >
+  <div class="items controle" [ngClass]="{ onit: part1 === 'ControleFinal' && part2 === examFinal?.id }"
+    *ngIf="examFinal">
+    <a [routerLink]="['/course', module?.id, 'ControleFinal', examFinal?.id]"
+      class="d-flex align-items-center w-100 text-decoration-none">
       <span class="flex-grow-1">Exam Final</span>
       <button mat-icon-button color="primary" aria-label="Quiz">
         <mat-icon>quiz</mat-icon>
@@ -150,10 +101,8 @@
     </a>
   </div>
   <div class="items controle" (click)="setActive($event)">
-    <a
-      [routerLink]="['/course', module?.id, 'testniveau', module?.id]"
-      class="d-flex align-items-center w-100 text-decoration-none"
-    >
+    <a [routerLink]="['/course', module?.id, 'testniveau', module?.id]"
+      class="d-flex align-items-center w-100 text-decoration-none">
       <span class="flex-grow-1">Test De Niveau</span>
       <button mat-icon-button color="primary" aria-label="Quiz">
         <mat-icon>quiz</mat-icon>
@@ -163,31 +112,18 @@
   <!-- avis model -->
   <div class="modal-backdrop" *ngIf="showModal" (click)="closeModal()"></div>
   <div class="modal" *ngIf="showModal">
-    <h5
-      class="modal-title"
-      id="reviewModalLabel"
-      style="text-align: center; padding: 10px"
-    >
-      Comment était ce chapitre ?
+    <h5 class="modal-title" id="reviewModalLabel" style="text-align: center; padding: 10px">
+      Comment vous avez trouvee le contenu du chapitre ?
     </h5>
 
     <div class="d-flex justify-content-around">
-      <button
-        class="buttona"
-        (click)="CheckChapter(chapterId, $event, 'mal', chapitreNum)"
-      >
+      <button class="buttona" (click)="CheckChapter(chapterId, $event, 'mal', chapitreNum)">
         Mal
       </button>
-      <button
-        class="buttona"
-        (click)="CheckChapter(chapterId, $event, 'Pas Mal', chapitreNum)"
-      >
+      <button class="buttona" (click)="CheckChapter(chapterId, $event, 'Pas Mal', chapitreNum)">
         Pas Mal
       </button>
-      <button
-        class="buttona"
-        (click)="CheckChapter(chapterId, $event, 'Excellent', chapitreNum)"
-      >
+      <button class="buttona" (click)="CheckChapter(chapterId, $event, 'Excellent', chapitreNum)">
         Excellent
       </button>
     </div>

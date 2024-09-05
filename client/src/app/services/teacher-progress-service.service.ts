@@ -33,8 +33,8 @@ export class TeacherProgressServiceService {
 
       if (currentDate.getTime() - lastFeedbackDate.getTime() > oneMonth) {
         Swal.fire({
-          title: 'Ton avancement dans le cours',
-          text: 'tu peux nous donner ton avancement dans votre cours dans quelle chapitre t`es  maintenant',
+          title: 'Avancement dans le cours',
+          text: ' À quel chapitre es-tu maintenant ?',
           icon: 'question',
           input: 'number',
 
