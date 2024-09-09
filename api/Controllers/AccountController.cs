@@ -151,7 +151,7 @@ namespace api.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("An Error Occured");
+                return BadRequest(e.Message);
                 // return StatusCode(500, e);
             }
         }

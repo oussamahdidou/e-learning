@@ -51,19 +51,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "690a8c72-b74d-4c12-be58-b1da3c655f56",
+                            Id = "bad5f867-2e90-4b92-9eaa-3c2612f226a4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "4957c14c-85bc-440a-8a01-bfb9e1c7224f",
+                            Id = "31a85b88-9ec6-4e87-86eb-202161af3b5b",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "f25f5098-cbfb-4b93-a21d-f1d51418203e",
+                            Id = "f804da27-8195-441c-983f-0941dcc8db30",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -873,10 +873,6 @@ namespace api.Migrations
                     b.Property<DateTime>("DateDeNaissance")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Etablissement")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Niveaus")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -939,9 +935,6 @@ namespace api.Migrations
                         {
                             t.Property("DateDeNaissance")
                                 .HasColumnName("Teacher_DateDeNaissance");
-
-                            t.Property("Etablissement")
-                                .HasColumnName("Teacher_Etablissement");
 
                             t.Property("Nom")
                                 .HasColumnName("Teacher_Nom");
