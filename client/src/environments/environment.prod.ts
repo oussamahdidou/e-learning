@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://elearingwebapi.azurewebsites.net',
+  apiUrl: 'https://localhost:5062',
 };

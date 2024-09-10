@@ -115,7 +115,7 @@ namespace api.Controllers
 
 
                         // var callback = QueryHelpers.AddQueryString("http://localhost:4200/auth/verify-email", param);
-                        var callback = QueryHelpers.AddQueryString("https://elearningwebclient.azurewebsites.net/auth/verify-email", param);
+                        var callback = QueryHelpers.AddQueryString("http://srv596673.hstgr.cloud//auth/verify-email", param);
 
                         string message = "<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Confirm Your Email Address</title><style>body {font-family: sans-serif;margin: 0;padding: 0;}.container {padding: 20px;max-width: 600px;margin: 0 auto;border: 1px solid #ddd;border-radius: 5px;}header {text-align: center;margin-bottom: 20px;}h1 {font-size: 24px;}p {line-height: 1.5;}a.confirm-button {display: block;padding: 10px 20px;background-color: #4CAF50;color: white;text-decoration: none;border: none;border-radius: 5px;text-align: center;}.confirm-button:hover {background-color: #3e8e41;}</style></head><body><div class='container'><header><h1>Welcome to E-Learning Plateform</h1></header><p>Hi " + user.UserName + " ,</p><p>Welcome to in E-Learning plateform we sent this email for your account activation . To complete your email confirmation, please click the button below:</p><center><a href=" + callback + " class='confirm-button'>Confirm Email</a></center><p>If you can't click the button, please copy and paste the following link into your web browser:</p><p>" + callback + "</p><p>**Please note:** This link will expire in 2 hours.</p><p>Thanks,</p><p>The E-Learning Team</p></div></body></html>";
 
