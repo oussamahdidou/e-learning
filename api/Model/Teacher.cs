@@ -12,7 +12,6 @@ namespace api.Model
         public string Etablissement { get; set; } = "";
         public string JustificatifDeLaProfession { get; set; } = "";
         public DateTime DateDeNaissance { get; set; }
-        public bool Granted { get; set; } = false;
         public string Specialite { get; set; } = "";
         public string Status { get; set; } = "";
         public DateTime LastChapterProgressUpdate { get; set; }

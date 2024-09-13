@@ -23,6 +23,8 @@ export class AuthService {
   $IsTeacher = this._$IsTeacher.asObservable();
   private _$IsStudent = new BehaviorSubject(false);
   $IsStudent = this._$IsStudent.asObservable();
+  private _$IsGranted = new BehaviorSubject(false);
+  $IsGranted = this._$IsGranted.asObservable();
   jwt: string = '';
   token: any;
   headers: any | undefined;
@@ -35,7 +37,9 @@ export class AuthService {
       this._$isLoggedin.next(true);
       this.jwt = localStorage.getItem('token') || '';
       this.token = this.getUser(this.jwt);
-      console.log(this.token);
+      
+      this._$IsGranted.next(this.token.Granted);
+      console.log("Is USer Granted : " +this._$IsGranted.value);
       this.updateRoleStates(this.token.role);
       this.headers = new HttpHeaders().set(
         'Authorization',
