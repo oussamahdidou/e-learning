@@ -224,8 +224,7 @@
         @else if (getFileType(exam.ennonce)=="image") {
         <img [src]="exam.ennonce" width="100%" height="700px" />}
         @else if (getFileType(exam.ennonce)=="powerpoint") {
-        <iframe [src]="exam.ennonce | safeUrl" width="100%" height="700px"></iframe>
-
+        <iframe [src]="getViewerUrl(exam.ennonce)  | safeUrl" width="100%" height="700px"></iframe>
         }
       </div>
     </mat-step>
@@ -247,8 +246,7 @@
         @else if (getFileType(exam.solution)=="image") {
         <img [src]="exam.solution" width="100%" height="700px" />}
         @else if (getFileType(exam.solution)=="powerpoint") {
-        <iframe [src]="exam.solution | safeUrl" width="100%" height="700px"></iframe>
-
+        <iframe [src]="getViewerUrl(exam.solution)  | safeUrl" width="100%" height="700px"></iframe>
         }
       </div>
     </mat-step>

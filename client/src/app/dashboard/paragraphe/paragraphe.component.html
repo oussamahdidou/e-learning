@@ -24,7 +24,7 @@
     @else if (getFileType( paragraphe.contenu)=="image") {
     <img [src]=" paragraphe.contenu" width="100%" height="700px" />}
     @else if (getFileType( paragraphe.contenu)=="powerpoint") {
-    <iframe [src]=" paragraphe.contenu | safeUrl" width="100%" height="700px"></iframe>
+    <iframe [src]=" getViewerUrl( paragraphe.contenu)  | safeUrl" width="100%" height="700px"></iframe>
 
     }
 </div>

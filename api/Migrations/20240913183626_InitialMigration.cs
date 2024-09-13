@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,14 +35,13 @@ namespace api.Migrations
                     Discriminator = table.Column<string>(type: "nvarchar(8)", maxLength: 8, nullable: false),
                     Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Etablissement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Branche = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Niveaus = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TuteurMail = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Teacher_Nom = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Teacher_Prenom = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Teacher_Etablissement = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Etablissement = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     JustificatifDeLaProfession = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Teacher_DateDeNaissance = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Granted = table.Column<bool>(type: "bit", nullable: true),
@@ -750,9 +749,9 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "4957c14c-85bc-440a-8a01-bfb9e1c7224f", null, "Teacher", "TEACHER" },
-                    { "690a8c72-b74d-4c12-be58-b1da3c655f56", null, "Admin", "ADMIN" },
-                    { "f25f5098-cbfb-4b93-a21d-f1d51418203e", null, "Student", "STUDENT" }
+                    { "9014365e-0097-46b0-b394-aeedb54548e1", null, "Teacher", "TEACHER" },
+                    { "a1c5686f-c27a-456e-985e-03d7f322dd1c", null, "Student", "STUDENT" },
+                    { "c12e10de-c71f-43e5-a493-fd283844cbcf", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

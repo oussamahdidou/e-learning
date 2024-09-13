@@ -80,6 +80,7 @@ export class TeacherProfileComponent implements OnInit {
       this.dashboardservice.getTeacherbyid(this.teacherid).subscribe(
         (response) => {
           this.teacher = response;
+          console.log(response);
         },
         (error) => {}
       );

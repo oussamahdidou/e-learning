@@ -33,6 +33,9 @@ export class ParagrapheComponent {
   getViewerUrl(filePath: string): string {
     return `https://docs.google.com/viewer?url=${filePath}&embedded=true`;
   }
+  getpptviewrUrl(filePath: string): string {
+    return `https://view.officeapps.live.com/op/embed.aspx?src=${filePath}`;
+  }
   SelectParagraphe(event: any) {
     const file: File = event.target.files[0];
     if (file) {

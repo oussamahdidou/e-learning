@@ -53,7 +53,7 @@
         @else if (getFileType(controle.ennonce)=="image") {
         <img [src]="controle.ennonce" width="100%" height="700px" />}
         @else if (getFileType(controle.ennonce)=="powerpoint") {
-        <iframe [src]="controle.ennonce | safeUrl" width="100%" height="700px"></iframe>
+        <iframe [src]="getViewerUrl(controle.ennonce)  | safeUrl" width="100%" height="700px"></iframe>
 
         }
       </div>
@@ -79,8 +79,7 @@
         @else if (getFileType(controle.solution)=="image") {
         <img [src]="controle.solution" width="100%" height="700px" />}
         @else if (getFileType(controle.solution)=="powerpoint") {
-        <iframe [src]="controle.solution | safeUrl" width="100%" height="700px"></iframe>
-
+        <iframe [src]="getViewerUrl(controle.solution)  | safeUrl" width="100%" height="700px"></iframe>
         }
       </section>
     </mat-step>
