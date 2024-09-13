@@ -40,7 +40,7 @@ namespace api.Controllers
         {
             string username = User.GetUsername();
             AppUser? appUser = await userManager.FindByNameAsync(username);
-            if (appUser != null && appUser is Admin)
+            if (appUser != null && appUser is Student)
             {
                 Result<List<Institution>> result = await institutionRepository.GetStudentInstitutions(appUser.Id);
 

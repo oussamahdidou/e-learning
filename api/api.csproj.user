@@ -2,6 +2,6 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <ActiveDebugProfile>Container (Dockerfile)</ActiveDebugProfile>
-    <NameOfLastUsedPublishProfile>C:\Users\ali\Desktop\learning\e-learning\api\Properties\PublishProfiles\elearingwebapi - Web Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\pc\Downloads\projects\e-learning\api\Properties\PublishProfiles\learningmaroc - Zip Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

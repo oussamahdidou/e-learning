@@ -27,9 +27,12 @@ export class InstitutionService {
     });
   }
   getStudentInstitutions(): Observable<any[]> {
-    return this.http.get<any[]>(`${environment.apiUrl}/api/UserInstitutions`, {
-      headers: this.authService.headers,
-    });
+    return this.http.get<any[]>(
+      `${environment.apiUrl}/api/Institution/UserInstitutions`,
+      {
+        headers: this.authService.headers,
+      }
+    );
   }
   //niveaux scolaire
   getNiveauScolaire(id: number): Observable<any> {
