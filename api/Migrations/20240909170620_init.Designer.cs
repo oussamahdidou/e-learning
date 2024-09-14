@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using api.Data;
 
@@ -11,9 +12,11 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    partial class apiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240909170620_init")]
+    partial class init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b2ff96de-e1f0-4492-937d-7b37a4c846b9",
+                            Id = "bad5f867-2e90-4b92-9eaa-3c2612f226a4",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "a0f698b9-336e-4ee9-be70-9a9fc9ceac0f",
+                            Id = "31a85b88-9ec6-4e87-86eb-202161af3b5b",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "b8406ce6-bd5b-4554-af65-f682377dd393",
+                            Id = "f804da27-8195-441c-983f-0941dcc8db30",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -197,9 +200,6 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Granted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -907,6 +907,9 @@ namespace api.Migrations
                     b.Property<string>("Etablissement")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Granted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("JustificatifDeLaProfession")
                         .IsRequired()

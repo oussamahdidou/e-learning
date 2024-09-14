@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://learningmaroc.azurewebsites.net',
+  apiUrl: 'http://localhost:5062',
 };

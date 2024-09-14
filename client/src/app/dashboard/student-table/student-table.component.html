@@ -1,0 +1,59 @@
+<div class="d-flex h-100">
+  <app-sidenav></app-sidenav>
+  <div class="container-fluid p-0 table-container">
+    <app-navbar></app-navbar>
+    <div class="container mt-5 pt-5">
+      <div class="mb-4 d-flex justify-content-between align-items-center px-4">
+        <mat-form-field>
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. UserName" />
+        </mat-form-field>
+
+      </div>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+        <!-- UserName Column -->
+        <ng-container matColumnDef="userName">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>UserName</th>
+          <td mat-cell *matCellDef="let element">{{ element.userName }}</td>
+        </ng-container>
+
+        <!-- Email Column -->
+        <ng-container matColumnDef="email">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+          <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+        </ng-container>
+
+        <!-- Action Column -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+          <td mat-cell *matCellDef="let element">
+            <button routerLink="/dashboard/profile/{{element.id}}" mat-raised-button color="primary">
+              plus
+            </button>
+            <!-- <ng-container [ngSwitch]="element.granted">
+              <div *ngSwitchCase="false">
+                <button (click)="toggleApproval(element)" mat-raised-button color="primary">
+                  <mat-icon color="primary">check_circle</mat-icon> Accepté
+                </button>
+              </div>
+              <div *ngSwitchCase="true">
+                <button (click)="toggleApproval(element)" mat-raised-button color="warn">
+                  <mat-icon color="warn">cancel</mat-icon> Refusé
+                </button>
+              </div>
+              <div *ngSwitchCase="'Approuver'" class="status-icon">
+                <mat-icon color="primary">check_circle</mat-icon> Accepté
+              </div>
+              <div *ngSwitchCase="'Refuser'" class="status-icon">
+                <mat-icon color="warn">cancel</mat-icon> Refusé
+              </div>
+            </ng-container> -->
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+    </div>
+  </div>
+</div>

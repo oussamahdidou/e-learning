@@ -149,6 +149,11 @@ export class DashboardService {
       headers: this.authservice.headers,
     });
   }
+  getstudents(): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/Dashboard/Students`, {
+      headers: this.authservice.headers,
+    });
+  }
   grantaccess(id: string): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}
@@ -161,6 +166,22 @@ export class DashboardService {
     return this.http.put(
       `${environment.apiUrl}
 /api/Dashboard/RemoveGrant/${id}`,
+      {},
+      { headers: this.authservice.headers }
+    );
+  }
+  grantaccessstudent(id: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}
+/api/Dashboard/GrantStudent/${id}`,
+      {},
+      { headers: this.authservice.headers }
+    );
+  }
+  removeaccessgrantstudent(id: string): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}
+/api/Dashboard/RemoveGrantStudent/${id}`,
       {},
       { headers: this.authservice.headers }
     );
@@ -498,6 +519,11 @@ api/Dashboard/GetObjectspourApprouver`,
   }
   getTeacherbyid(id: string): Observable<any> {
     return this.http.get(`${environment.apiUrl}/api/Dashboard/Teacher/${id}`, {
+      headers: this.authservice.headers,
+    });
+  }
+  getStudentbyid(id: string): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/api/Dashboard/Student/${id}`, {
       headers: this.authservice.headers,
     });
   }

@@ -51,6 +51,7 @@ import { CreateNiveauScolaireModuleDialogComponent } from './create-niveau-scola
 import { VideoComponent } from './video/video.component';
 import { SchemaComponent } from './schema/schema.component';
 import { SyntheseComponent } from './synthese/synthese.component';
+import { StudentTableComponent } from './student-table/student-table.component';
 const routes: Routes = [
   {
     path: '',
@@ -74,6 +75,11 @@ const routes: Routes = [
         path: 'teacherstable',
         canActivate: [AdminGuardService],
         component: TeachersComponent,
+      },
+      {
+        path: 'studentstable',
+        canActivate: [AdminGuardService],
+        component: StudentTableComponent,
       },
       {
         path: 'approbtionstable',
@@ -163,6 +169,7 @@ const routes: Routes = [
     VideoComponent,
     SchemaComponent,
     SyntheseComponent,
+    StudentTableComponent,
   ],
   imports: [
     CommonModule,

@@ -31,7 +31,8 @@ namespace api.Service
             {
                 new Claim(JwtRegisteredClaimNames.Email,appUser.Email ),
                 new Claim(JwtRegisteredClaimNames.GivenName,appUser.UserName),
-                new Claim(JwtRegisteredClaimNames.UniqueName,appUser.Id)
+                new Claim(JwtRegisteredClaimNames.UniqueName,appUser.Id),
+                new Claim("Granted", appUser.Granted.ToString())
             };
             foreach (var role in roles)
             {

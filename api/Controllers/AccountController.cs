@@ -184,7 +184,6 @@ namespace api.Controllers
                     JustificatifDeLaProfession = justification,
                     UserName = teacherRegisterDto.UserName,
                     Email = teacherRegisterDto.Email,
-                    Granted = false,
                     Status = teacherRegisterDto.Status,
                     Specialite = teacherRegisterDto.Specialite,
                     PhoneNumber = teacherRegisterDto.PhoneNumber,

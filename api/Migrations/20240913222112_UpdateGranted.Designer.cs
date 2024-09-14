@@ -12,8 +12,8 @@ using api.Data;
 namespace api.Migrations
 {
     [DbContext(typeof(apiDbContext))]
-    [Migration("20240913183626_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240913222112_UpdateGranted")]
+    partial class UpdateGranted
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,19 +54,19 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c12e10de-c71f-43e5-a493-fd283844cbcf",
+                            Id = "b2ff96de-e1f0-4492-937d-7b37a4c846b9",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "9014365e-0097-46b0-b394-aeedb54548e1",
+                            Id = "a0f698b9-336e-4ee9-be70-9a9fc9ceac0f",
                             Name = "Teacher",
                             NormalizedName = "TEACHER"
                         },
                         new
                         {
-                            Id = "a1c5686f-c27a-456e-985e-03d7f322dd1c",
+                            Id = "b8406ce6-bd5b-4554-af65-f682377dd393",
                             Name = "Student",
                             NormalizedName = "STUDENT"
                         });
@@ -200,6 +200,9 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Granted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -907,9 +910,6 @@ namespace api.Migrations
                     b.Property<string>("Etablissement")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Granted")
-                        .HasColumnType("bit");
 
                     b.Property<string>("JustificatifDeLaProfession")
                         .IsRequired()

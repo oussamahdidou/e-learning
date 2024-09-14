@@ -285,6 +285,27 @@ namespace api.Repository
 
         }
 
+        public async Task<Result<Student>> GrantStudentAccess(string id)
+        {
+            try
+            {
+                Student? student = await apiDbContext.students.FirstOrDefaultAsync(x => x.Id == id);
+                if (student == null)
+                {
+                    return Result<Student>.Failure("Student not found");
+                }
+                student.Granted = true;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Student>.Success(student);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Student>.Failure(ex.Message);
+
+            }
+        }
+
         public async Task<Result<Teacher>> GrantTeacherAccess(string id)
         {
             try
@@ -305,6 +326,27 @@ namespace api.Repository
 
             }
 
+        }
+
+        public async Task<Result<Student>> RemoveGrantStudentAccess(string id)
+        {
+            try
+            {
+                Student? student = await apiDbContext.students.FirstOrDefaultAsync(x => x.Id == id);
+                if (student == null)
+                {
+                    return Result<Student>.Failure("Student not found");
+                }
+                student.Granted = false;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Student>.Success(student);
+            }
+            catch (System.Exception ex)
+            {
+
+                return Result<Student>.Failure(ex.Message);
+
+            }
         }
 
         public async Task<Result<Teacher>> RemoveGrantTeacherAccess(string id)

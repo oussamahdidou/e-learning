@@ -19,6 +19,8 @@ namespace api.interfaces
         Task<Result<List<BarChartsDto>>> WorstContributersTeachers();
         Task<Result<Teacher>> GrantTeacherAccess(string id);
         Task<Result<Teacher>> RemoveGrantTeacherAccess(string id);
+        Task<Result<Student>> GrantStudentAccess(string id);
+        Task<Result<Student>> RemoveGrantStudentAccess(string id);
         Task<Result<List<GetChapitresToUpdateControlesDto>>> GetChapitresToUpdateControles(int id);
         Task<bool> UpdateControleChapitres(List<GetChapitresToUpdateControlesDto> getChapitresToUpdateControlesDtos, int controleId);
         Task<Result<List<BarChartsDto>>> GetMostCheckedModules();

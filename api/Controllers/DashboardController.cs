@@ -60,6 +60,12 @@ namespace api.Controllers
             IList<AppUser> teachers = await userManager.GetUsersInRoleAsync(UserRoles.Teacher);
             return Ok(teachers);
         }
+        [HttpGet("Students")]
+        public async Task<IActionResult> GetAllStudents()
+        {
+            IList<AppUser> students = await userManager.GetUsersInRoleAsync(UserRoles.Student);
+            return Ok(students);
+        }
         [HttpPut("Grant/{id}")]
         public async Task<IActionResult> GrantTeacherAccess([FromRoute] string id)
         {
@@ -80,6 +86,27 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [HttpPut("GrantStudent/{id}")]
+        public async Task<IActionResult> GrantStudentAccess([FromRoute] string id)
+        {
+            Result<Student> result = await dashboardRepository.GrantStudentAccess(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("RemoveGrantStudent/{id}")]
+        public async Task<IActionResult> RemoveGrantStudentAccess([FromRoute] string id)
+        {
+            Result<Student> result = await dashboardRepository.RemoveGrantStudentAccess(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+
         [HttpGet("GetObjectspourApprouver")]
         public async Task<IActionResult> GetObjectspourApprouver()
         {
@@ -181,6 +208,24 @@ namespace api.Controllers
                     return Ok(appUser);
                 }
                 return BadRequest("Teacher not found");
+            }
+            catch (System.Exception ex)
+            {
+
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet("Student/{id}")]
+        public async Task<IActionResult> GetStudentByid([FromRoute] string id)
+        {
+            try
+            {
+                AppUser? appUser = await userManager.FindByIdAsync(id);
+                if (appUser != null && appUser is Student)
+                {
+                    return Ok(appUser);
+                }
+                return BadRequest("Student not found");
             }
             catch (System.Exception ex)
             {
