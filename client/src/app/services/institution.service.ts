@@ -66,4 +66,11 @@ export class InstitutionService {
       { headers: this.authService.headers }
     );
   }
+  DeleteElementPedagogique(id: number): Observable<any> {
+    return this.http.delete<any>(
+      `${environment.apiUrl}/api/ElementPedagogique/${id}`,
+
+      { headers: this.authService.headers }
+    );
+  }
 }

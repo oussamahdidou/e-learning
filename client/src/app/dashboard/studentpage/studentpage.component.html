@@ -1,0 +1,39 @@
+<div class="">
+    <div class="container row justify-content-center align-items-center mx-auto">
+        <div class="col-8">
+            <img src="img/Student.png" class="img-fluid" style="height: 700px" alt="">
+            <!-- <pdf-viewer src="{{teacher.justificatifDeLaProfession}}" [render-text]="true"
+                                [original-size]="false" style="width: 100%; height: 700px">
+                            </pdf-viewer> -->
+        </div>
+        <div class="col-4">
+            @if (student) {
+            <div class="teacher-card px-4 py-4 ">
+                <p>nom :{{student.nom}}</p>
+                <p>prenom : {{student.prenom}}</p>
+                <p>mail : {{student.email}}</p>
+
+                <p>Date de naissance : {{student.dateDeNaissance|date}}</p>
+                <p>email du tuteur : {{student.tuteurMail||"le mail du tuteur n`est pas mentionner"}}</p>
+                <p>Telephone du tuteur : {{student.phoneNumber||"le num telephone n`est pas mentionner"}}</p>
+                <div class="d-flex flex-column gap-3 justify-content-end align-items-end">
+                    @if ((authservice.$IsAdmin|async) ) {
+                    <button mat-flat-button color="warn" class="w-100 " (click)="delete()">
+                        Supprimer</button>
+                    } @if (authservice.$IsAdmin|async) {
+                    @if (!student.granted) {
+                    <button (click)="toggleApproval()" mat-raised-button color="primary" class="w-100 ">
+                        <mat-icon color="primary">check_circle</mat-icon> Donner L`access</button>
+                    }
+                    @else {<button (click)="toggleApproval()" mat-raised-button color="warn" class="w-100 "><mat-icon
+                            color="warn">cancel</mat-icon> restreindre
+                        l'accès</button>
+                    }<!-- <button mat-raised-button color="primary" class="w-100 "></button> -->
+                    }
+                </div>
+
+            </div>
+            }
+        </div>
+    </div>
+</div>

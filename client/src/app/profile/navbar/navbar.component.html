@@ -8,9 +8,11 @@
         </button>
         <ul class="dropdown-menu" aria-labelledby="userDropdown">
           <li><a class="dropdown-item" [routerLink]="['/profile/mylearning']">My Learning</a></li>
+          <li><a href="/institutions" class="dropdown-item">Explore Courses</a></li>
           <li><a class="dropdown-item" href="/forum/posts">Forum</a></li>
           <li><a class="dropdown-item" (click)="logout()">Logout</a></li>
           <li><a class="dropdown-item" href="auth/reset-password">Reset Password</a></li>
+
         </ul>
       </li>
     </ul>

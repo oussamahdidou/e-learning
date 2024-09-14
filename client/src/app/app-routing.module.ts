@@ -5,6 +5,8 @@ import { AuthService } from './services/auth.service';
 import { AdminGuardService } from './services/admin-guard.service';
 import { DashboardGuardService } from './dashboard-guard.service';
 import { StudentGuardService } from './services/student-guard.service';
+import { GranteddashboardService } from './services/granteddashboard.service';
+import { GrantedstudentService } from './services/grantedstudent.service';
 
 const routes: Routes = [
   {
@@ -13,8 +15,8 @@ const routes: Routes = [
   },
 
   {
+    canActivate: [GrantedstudentService],
     path: 'institutions',
-    canActivate: [StudentGuardService],
     loadChildren: () =>
       import('./institutions/institutions.module').then(
         (m) => m.InstitutionsModule
@@ -23,7 +25,7 @@ const routes: Routes = [
 
   {
     path: 'espaceprof',
-    canActivate: [DashboardGuardService],
+    canActivate: [GranteddashboardService],
     loadChildren: () =>
       import('./espaceprof/espaceprof.module').then((m) => m.EspaceProfModule),
   },
@@ -36,7 +38,7 @@ const routes: Routes = [
 
   {
     path: 'module-info',
-    canActivate: [StudentGuardService],
+    canActivate: [GrantedstudentService],
     loadChildren: () =>
       import('./module-info/module-info.module').then(
         (m) => m.ModuleInfoModule
@@ -44,13 +46,13 @@ const routes: Routes = [
   },
   {
     path: 'course',
-    canActivate: [StudentGuardService],
+    canActivate: [GrantedstudentService],
     loadChildren: () =>
       import('./course/course.module').then((m) => m.CourseModule),
   },
   {
     path: 'dashboard',
-    canActivate: [DashboardGuardService],
+
     loadChildren: () =>
       import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
@@ -60,6 +62,7 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   {
+    canActivate: [StudentGuardService],
     path: 'profile',
     loadChildren: () =>
       import('./profile/profile.module').then((m) => m.ProfileModule),

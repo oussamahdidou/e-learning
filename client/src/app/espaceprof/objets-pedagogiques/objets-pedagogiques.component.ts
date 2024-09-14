@@ -2,6 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { InstitutionService } from './../../services/institution.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-objets-pedagogiques',
@@ -14,7 +15,8 @@ export class ObjetsPedagogiquesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private objetsPedagogiquesService: InstitutionService
+    private objetsPedagogiquesService: InstitutionService,
+    public authservice: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -30,6 +32,16 @@ export class ObjetsPedagogiquesComponent implements OnInit {
       (error) => {
         console.error('Error fetching pedagogical objects', error);
       }
+    );
+  }
+  Delete(id: number) {
+    this.objetsPedagogiquesService.DeleteElementPedagogique(id).subscribe(
+      (response) => {
+        this.objetsPedagogiques = this.objetsPedagogiques.filter(
+          (item) => item.id !== id
+        );
+      },
+      (error) => {}
     );
   }
 }

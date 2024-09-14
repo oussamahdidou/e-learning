@@ -16,6 +16,11 @@
               Download
             </button>
           </a>
+          @if (authservice.$IsAdmin|async) {
+          <button mat-flat-button color="warn" (click)="Delete(item.id)">
+            Delete
+          </button>
+          }
         </div>
       </div>
     </div>

@@ -52,23 +52,25 @@ import { VideoComponent } from './video/video.component';
 import { SchemaComponent } from './schema/schema.component';
 import { SyntheseComponent } from './synthese/synthese.component';
 import { StudentTableComponent } from './student-table/student-table.component';
+import { StudentpageComponent } from './studentpage/studentpage.component';
+import { GranteddashboardService } from '../services/granteddashboard.service';
 const routes: Routes = [
   {
     path: '',
     children: [
       {
         path: 'institutionstable',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: InstitutionsTableComponent,
       },
       {
         path: 'niveautable/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: NiveauScolairesTableComponent,
       },
       {
         path: 'moduletable/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: ModulesTableComponent,
       },
       {
@@ -88,58 +90,63 @@ const routes: Routes = [
       },
       {
         path: 'createcontrole/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: CreatecontroleComponent,
       },
       {
         path: 'chapter/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: ChapterComponent,
       },
       {
         path: 'createchapter/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: CreateChapterQuizComponent,
       },
       {
         path: 'module/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: ModuleComponent,
       },
       {
         path: 'controle/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: ControleComponent,
       },
       {
         path: 'paragraphe/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: ParagrapheComponent,
       },
       {
         path: 'video/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: VideoComponent,
       },
       {
         path: 'schema/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: SchemaComponent,
       },
       {
         path: 'synthese/:id',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: SyntheseComponent,
       },
       {
         path: '',
-        canActivate: [DashboardGuardService],
+        canActivate: [GranteddashboardService],
         component: DashboardtableComponent,
       },
       {
         path: 'profile/:id',
         canActivate: [DashboardGuardService],
         component: TeacherProfileComponent,
+      },
+      {
+        path: 'student/:id',
+        canActivate: [AdminGuardService],
+        component: StudentpageComponent,
       },
     ],
   },
@@ -170,6 +177,7 @@ const routes: Routes = [
     SchemaComponent,
     SyntheseComponent,
     StudentTableComponent,
+    StudentpageComponent,
   ],
   imports: [
     CommonModule,
