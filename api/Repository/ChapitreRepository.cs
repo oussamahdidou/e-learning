@@ -31,8 +31,6 @@ namespace api.Repository
             this.webHostEnvironment = webHostEnvironment;
             _blobStorageService = blobStorageService;
         }
-
-
         public async Task<Result<Chapitre>> Approuver(int id)
         {
             try
@@ -777,6 +775,43 @@ namespace api.Repository
             chapitre.Nom = updateChapitreNameDto.Nom;
             await apiDbContext.SaveChangesAsync();
             return Result<Synthese>.Success(chapitre);
+        }
+
+        public async Task<Result<Chapitre>> UpdateChapitreNumero(UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            // Fetch the targeted chapitre
+            var chapitreToUpdate = await apiDbContext.chapitres
+                .Include(c => c.Module) // Ensure the Module is included for filtering
+                .FirstOrDefaultAsync(c => c.Id == updateChapitreNumeroDto.ChapitreId);
+
+            if (chapitreToUpdate == null)
+            {
+                return Result<Chapitre>.Failure("chapitre notfound");
+            }
+
+            var moduleId = chapitreToUpdate.ModuleId;
+
+            // Fetch all chapitres in the same module
+            var chapitresInModule = await apiDbContext.chapitres
+                .Where(c => c.ModuleId == moduleId)
+                .ToListAsync();
+
+            // Adjust ChapitreNum values for other chapitres in the same module
+            var conflictingChapitres = chapitresInModule
+                .Where(c => c.ChapitreNum >= updateChapitreNumeroDto.ChapitreNumero && c.Id != updateChapitreNumeroDto.ChapitreId)
+                .ToList();
+
+            // Increment ChapitreNum for conflicting chapitres
+            foreach (var chapitre in conflictingChapitres)
+            {
+                chapitre.ChapitreNum++;
+            }
+
+            // Update the ChapitreNum for the targeted chapitre
+            chapitreToUpdate.ChapitreNum = updateChapitreNumeroDto.ChapitreNumero;
+
+            await apiDbContext.SaveChangesAsync();
+            return Result<Chapitre>.Success(chapitreToUpdate);
         }
     }
 }

@@ -46,35 +46,18 @@ namespace api.Controllers
             if (appUser == null)
             {
 
-                return Unauthorized("Attend que l`admin te donne l`acces pour ajouter");
+                return Unauthorized("T`es pas authoriser");
 
             }
-            IList<string> roles = await userManager.GetRolesAsync(appUser);
-            if (roles.Contains(UserRoles.Admin))
+            createChapitreDto.Statue = ObjectStatus.Approuver;
+            Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
+            if (!result.IsSuccess)
             {
-                createChapitreDto.Statue = ObjectStatus.Approuver;
-                Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
-                if (!result.IsSuccess)
-                {
-                    return BadRequest(result.Error);
-                }
-                return Ok(result.Value);
+                return BadRequest(result.Error);
             }
-            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
-            {
-                createChapitreDto.TeacherId = appUser.Id;
-                Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
-                if (!result.IsSuccess)
-                {
-                    return BadRequest(result.Error);
-                }
-                return Ok(result.Value);
-            }
-            else
-            {
-                return Unauthorized("u need to logging");
+            return Ok(result.Value);
 
-            }
+
         }
         [HttpPut("UpdateChapitrePdf")]
         public async Task<IActionResult> UpdateChapitrePdf([FromForm] UpdateChapitrePdfDto updateChapitrePdfDto)
@@ -329,6 +312,16 @@ namespace api.Controllers
         public async Task<IActionResult> UpdateParagrapheName([FromBody] UpdateChapitreNameDto updateChapitreNameDto)
         {
             Result<Paragraphe> result = await chapitreRepository.UpdateParagrapheName(updateChapitreNameDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateChapitreNumero")]
+        public async Task<IActionResult> UpdateChapitreNumero([FromBody] UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            Result<Chapitre> result = await chapitreRepository.UpdateChapitreNumero(updateChapitreNumeroDto);
             if (result.IsSuccess)
             {
                 return Ok(result.Value);

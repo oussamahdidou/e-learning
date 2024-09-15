@@ -16,6 +16,7 @@ namespace api.interfaces
         Task<Result<Paragraphe>> CreateParagraphe(CreateParagrapheDto createParagrapheDto);
         Task<Result<Paragraphe>> GetParagrapheByid(int id);
         Task<Result<Paragraphe>> UpdateParagraphe(UpdateParagrapheDto updateParagrapheDto);
+        Task<Result<Chapitre>> UpdateChapitreNumero(UpdateChapitreNumeroDto updateChapitreNumeroDto);
 
         Task<Result<Chapitre>> UpdateChapitrePdf(UpdateChapitrePdfDto updateChapitrePdfDto);
         Task<Result<Video>> UpdateChapitreVideo(UpdateChapitreVideoDto updateChapitreVideoDto);

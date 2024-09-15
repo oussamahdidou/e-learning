@@ -47,9 +47,19 @@ namespace api.Repository
             }
         }
 
-        public Task<Result<bool>> DeleteElementPedagogique(int id)
+        public async Task<Result<bool>> DeleteElementPedagogique(int id)
         {
-            throw new NotImplementedException();
+            ElementPedagogique? elementPedagogique = await _context.elementPedagogiques.FirstOrDefaultAsync(x => x.Id == id);
+            if (elementPedagogique == null)
+            {
+                return Result<bool>.Success(false);
+            }
+            else
+            {
+                _context.elementPedagogiques.Remove(elementPedagogique);
+                await _context.SaveChangesAsync();
+                return Result<bool>.Success(true);
+            }
         }
         public async Task<Result<List<ElementPedagogique>>> GetElementsById(int Id)
         {
