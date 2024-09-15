@@ -12,7 +12,8 @@ namespace api.Model
         public int Id { get; set; }
         public string? Nom { get; set; }
         public string? Contenu { get; set; }
-
+        public string? TeacherId { get; set; }
+        public Teacher? Teacher { get; set; }
         public int CoursId { get; set; }
         public Cours? Cours { get; set; }
     }

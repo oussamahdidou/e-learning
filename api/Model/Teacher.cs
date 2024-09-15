@@ -19,5 +19,12 @@ namespace api.Model
         public List<ExamFinal> ExamFinals { get; set; } = new List<ExamFinal>();
         public List<Controle> Controles { get; set; } = new List<Controle>();
         public List<Chapitre> Chapitres { get; set; } = new List<Chapitre>();
+        public List<Paragraphe> Paragraphes { get; set; } = new List<Paragraphe>();
+
+        public List<Schema> Schemas { get; set; } = new List<Schema>();
+
+        public List<Synthese> Syntheses { get; set; } = new List<Synthese>();
+        public List<Video> Videos { get; set; } = new List<Video>();
+
     }
 }
