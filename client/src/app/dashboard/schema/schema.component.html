@@ -12,6 +12,26 @@
         <button mat-raised-button color="primary" (click)="Schema.click()">
             Modifier Schema
         </button>
+        @if (schema.status==='Pending') {
+        <button mat-flat-button color="primary" (click)="approuver()">
+            <mat-icon>check_circle</mat-icon>
+            Approuver
+        </button>
+        <button mat-flat-button color="warn" (click)="refuser()">
+            <mat-icon>cancel</mat-icon>
+            Refuser
+        </button>
+        } @else if (schema.status==='Approuver') {
+        <button mat-flat-button color="warn" (click)="refuser()">
+            <mat-icon>cancel</mat-icon>
+            Refuser
+        </button>
+        } @else {
+        <button mat-flat-button color="primary" (click)="approuver()">
+            <mat-icon>check_circle</mat-icon>
+            Approuver
+        </button>
+        }
         }
         <input type="file" #Schema (change)="SelectSchema($event)" style="display: none" />
         @if (getFileType(schema.link)=="pdf") {

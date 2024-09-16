@@ -121,7 +121,6 @@ export class DashboardService {
       { headers: this.authservice.headers }
     );
   }
-
   CreateControle(controle: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/Controle`, controle, {
       headers: this.authservice.headers,
@@ -193,7 +192,6 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
-  //********************************************** controle ************************* */
   getcontrolebyid(id: number): Observable<any> {
     return this.http.get(
       `${environment.apiUrl}/api/Controle/GetControleById/${id}`,
@@ -250,7 +248,6 @@ api/Dashboard/GetObjectspourApprouver`,
       {}
     );
   }
-  //**************************************** chapitre ********************************** */
   updatechapitrePdf(Pdf: any): Observable<any> {
     return this.http.put(
       `${environment.apiUrl}/api/Chapitre/UpdateChapitrePdf`,
@@ -302,7 +299,6 @@ api/Dashboard/GetObjectspourApprouver`,
       { headers: this.authservice.headers }
     );
   }
-  //********************************************** exam ************************* */
   createexam(exam: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/api/ExamFinal`, exam, {
       headers: this.authservice.headers,
@@ -729,6 +725,93 @@ api/Dashboard/GetObjectspourApprouver`,
         id: id,
         nom: nom,
       },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateChapitreNumero(
+    chapitreId: number,
+    chapitreNumero: number
+  ): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateChapitreNumero`,
+      {
+        chapitreId: chapitreId,
+        chapitreNumero: chapitreNumero,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  RefuserVideo(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/RefuserVideo/${id}`,
+      {},
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  ApprouverVideo(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/ApprouverVideo/${id}`,
+      {},
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  RefuserSynthese(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/RefuserSynthese/${id}`,
+      {},
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  ApprouverSynthese(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/ApprouverSynthese/${id}`,
+      {},
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  RefuserSchema(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/RefuserSchema/${id}`,
+      {},
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  ApprouverSchema(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/ApprouverSchema/${id}`,
+      {},
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  RefuserParagraphe(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/RefuserParagraphe/${id}`,
+      {},
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  ApprouverParagraphe(id: number): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/ApprouverParagraphe/${id}`,
+      {},
       {
         headers: this.authservice.headers,
       }

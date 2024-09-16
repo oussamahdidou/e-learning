@@ -69,7 +69,7 @@ export class AuthService {
             const userRole = this.getUser(response['token']).role;
             const granted = this.getUser(response['token']).Granted;
             this.updateRoleStates(userRole, granted);
-            this.redirectUser(userRole);
+            this.redirectUser(userRole, granted);
           },
           (error) => {
             console.log(error);
@@ -93,7 +93,7 @@ export class AuthService {
     this._$IsGranted.next(false);
   }
 
-  private redirectUser(role: string) {
+  private redirectUser(role: string, granted: string) {
     if (role === 'Admin') {
       window.location.href = `/dashboard`;
     } else if (role === 'Teacher') {
@@ -101,7 +101,11 @@ export class AuthService {
       this.token = this.getUser(this.jwt);
       window.location.href = `/dashboard/profile/${this.token.unique_name}`;
     } else if (role === 'Student') {
-      window.location.href = `/institutions`;
+      if (granted === 'True') {
+        window.location.href = `/institutions`;
+      } else {
+        window.location.href = `/profile/mylearning`;
+      }
     }
   }
 

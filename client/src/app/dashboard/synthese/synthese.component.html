@@ -6,6 +6,26 @@
             <button mat-raised-button color="primary" (click)="ModifierNom()">
                 Modifier Nom
             </button>
+            @if (synthese.status==='Pending') {
+            <button mat-flat-button color="primary" (click)="approuver()">
+                <mat-icon>check_circle</mat-icon>
+                Approuver
+            </button>
+            <button mat-flat-button color="warn" (click)="refuser()">
+                <mat-icon>cancel</mat-icon>
+                Refuser
+            </button>
+            } @else if (synthese.status==='Approuver') {
+            <button mat-flat-button color="warn" (click)="refuser()">
+                <mat-icon>cancel</mat-icon>
+                Refuser
+            </button>
+            } @else {
+            <button mat-flat-button color="primary" (click)="approuver()">
+                <mat-icon>check_circle</mat-icon>
+                Approuver
+            </button>
+            }
             }
         </h4>
         @if (authservice.$IsAdmin|async) {

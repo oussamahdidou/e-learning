@@ -10,6 +10,80 @@ import Swal from 'sweetalert2';
   styleUrl: './paragraphe.component.css',
 })
 export class ParagrapheComponent {
+  refuser() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice.RefuserParagraphe(this.paragrapheid).subscribe(
+          (response) => {
+            this.paragraphe.status = response.status;
+            Swal.fire({
+              title: 'Accepted!',
+              text: 'The chapter has been accepted.',
+              icon: 'success',
+            });
+          },
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+      }
+    });
+  }
+  approuver() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice.ApprouverParagraphe(this.paragrapheid).subscribe(
+          (response) => {
+            this.paragraphe.status = response.status;
+            Swal.fire({
+              title: 'Accepted!',
+              text: 'The chapter has been accepted.',
+              icon: 'success',
+            });
+          },
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+      }
+    });
+  }
   getFileType(filePath: string): string {
     const extension = filePath.split('.').pop()?.toLowerCase();
     switch (extension) {

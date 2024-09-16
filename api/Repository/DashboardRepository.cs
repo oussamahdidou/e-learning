@@ -179,7 +179,12 @@ namespace api.Repository
                 List<PendingObjectsDto> chapitres = await apiDbContext.chapitres.Where(x => x.Statue == ObjectStatus.Pending).Select(x => x.FromChapitreToPendingObjectsDto()).ToListAsync();
                 List<PendingObjectsDto> controles = await apiDbContext.controles.Where(x => x.Status == ObjectStatus.Pending).Select(x => x.FromControleToPendingObjectsDto()).ToListAsync();
                 List<PendingObjectsDto> exams = await apiDbContext.modules.Include(x => x.ExamFinal).Where(x => x.ExamFinal.Status == ObjectStatus.Pending).Select(x => x.FromExamToPendingObjectsDto()).ToListAsync();
-                return Result<List<PendingObjectsDto>>.Success(chapitres.Concat(controles).Concat(exams).ToList());
+                List<PendingObjectsDto> Paragraphes = await apiDbContext.paragraphes.Where(x => x.Status == ObjectStatus.Pending).Select(x => x.FromParagrapheToPendingObjectDto()).ToListAsync();
+                List<PendingObjectsDto> videos = await apiDbContext.videos.Where(x => x.Status == ObjectStatus.Pending).Select(x => x.FromVideoToPendingObjectDto()).ToListAsync();
+                List<PendingObjectsDto> syntheses = await apiDbContext.syntheses.Where(x => x.Status == ObjectStatus.Pending).Select(x => x.FromSyntheseToPendingObjectDto()).ToListAsync();
+                List<PendingObjectsDto> schemas = await apiDbContext.schemas.Where(x => x.Status == ObjectStatus.Pending).Select(x => x.FromSchemaToPendingObjectDto()).ToListAsync();
+
+                return Result<List<PendingObjectsDto>>.Success(chapitres.Concat(controles).Concat(exams).Concat(Paragraphes).Concat(videos).Concat(syntheses).Concat(schemas).ToList());
             }
             catch (System.Exception ex)
             {

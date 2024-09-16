@@ -3,38 +3,25 @@
 <div class="quiz-container">
   <mat-horizontal-stepper [linear]="isLinear" #stepper class="pt-5 px-3">
     <mat-step>
+      <h4>Chapitre {{chapitre.chapitreNum}}
+      </h4>
       <h4>
+
         {{ chapitre.nom }} @if (authservice.$IsAdmin|async) {
         <button mat-button color="primary" (click)="modifierNom()">
           Modifier Chapitre Nom
         </button>
-        <button mat-button color="warn" (click)="delete()">Supprimer</button>
-        @if (chapitre.statue==='Pending') {
-        <button mat-flat-button color="primary" (click)="approuver()">
-          <mat-icon>check_circle</mat-icon>
-          Approuver
+        <button mat-flat-button color="warn" (click)="delete()">Supprimer</button>
+        <button mat-button color="primary" (click)="modifierNumero()">
+          Modifier Chapitre Numero
         </button>
-        <button mat-flat-button color="warn" (click)="refuser()">
-          <mat-icon>cancel</mat-icon>
-          Refuser
-        </button>
-        } @else if (chapitre.statue==='Approuver') {
-        <button mat-flat-button color="warn" (click)="refuser()">
-          <mat-icon>cancel</mat-icon>
-          Refuser
-        </button>
-        } @else {
-        <button mat-flat-button color="primary" (click)="approuver()">
-          <mat-icon>check_circle</mat-icon>
-          Approuver
-        </button>
-        }}
+        }
       </h4>
       <ng-template matStepLabel> Cours Etudiant </ng-template>
-      @if (authservice.$IsAdmin|async) {
+
       <input type="file" name="" #courseparagraphe id="" class="d-none" (change)="SelectStudentParagraphe($event)">
       <button mat-raised-button color="primary" (click)="courseparagraphe.click()">Ajouter
-        Paragraphe</button>}
+        Paragraphe</button>
       <h4>Cours Etudiant</h4>
       <div class=" row justify-content-center align-items-center gap-4 pt-5">
         @if (studentCourse) {

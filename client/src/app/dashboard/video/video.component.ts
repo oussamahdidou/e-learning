@@ -10,6 +10,80 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './video.component.css',
 })
 export class VideoComponent implements OnInit {
+  refuser() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice.RefuserVideo(this.videoId).subscribe(
+          (response) => {
+            this.video.status = response.status;
+            Swal.fire({
+              title: 'Accepted!',
+              text: 'The chapter has been accepted.',
+              icon: 'success',
+            });
+          },
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+      }
+    });
+  }
+  approuver() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice.ApprouverVideo(this.videoId).subscribe(
+          (response) => {
+            this.video.status = response.status;
+            Swal.fire({
+              title: 'Accepted!',
+              text: 'The chapter has been accepted.',
+              icon: 'success',
+            });
+          },
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+      }
+    });
+  }
   constructor(
     private readonly route: ActivatedRoute,
     private readonly dashboardservice: DashboardService,

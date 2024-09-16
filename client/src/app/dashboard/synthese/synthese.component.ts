@@ -10,6 +10,80 @@ import { DashboardService } from '../../services/dashboard.service';
   styleUrl: './synthese.component.css',
 })
 export class SyntheseComponent implements OnInit {
+  refuser() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice.RefuserSynthese(this.syntheseId).subscribe(
+          (response) => {
+            this.synthese.status = response.status;
+            Swal.fire({
+              title: 'Accepted!',
+              text: 'The chapter has been accepted.',
+              icon: 'success',
+            });
+          },
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+      }
+    });
+  }
+  approuver() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Processing...',
+          text: 'Please wait while your request is being processed.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice.ApprouverSynthese(this.syntheseId).subscribe(
+          (response) => {
+            this.synthese.status = response.status;
+            Swal.fire({
+              title: 'Accepted!',
+              text: 'The chapter has been accepted.',
+              icon: 'success',
+            });
+          },
+          (error) => {
+            Swal.fire('Error', `${error.error}`, 'error');
+          }
+        );
+      }
+    });
+  }
   constructor(
     private readonly route: ActivatedRoute,
     private readonly dashboardservice: DashboardService,

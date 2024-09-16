@@ -18,6 +18,51 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrl: './chapter.component.css',
 })
 export class ChapterComponent implements OnInit {
+  modifierNumero() {
+    Swal.fire({
+      title: 'Edit Chapitre Numero',
+      input: 'number',
+      inputLabel: 'Chapitre Numero',
+      inputValue: this.chapitre.chapitreNum,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      preConfirm: (newName) => {
+        if (!newName) {
+          Swal.showValidationMessage('Please enter a valid Numero');
+        }
+        return newName;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Saving...',
+          text: 'Please wait while the numero is being updated.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardService
+          .updateChapitreNumero(this.chapterid, result.value)
+          .subscribe(
+            (response) => {
+              this.chapitre.chapitreNum = response.chapitreNum;
+              Swal.fire(
+                'Saved!',
+                'Chapitre numero has been updated.',
+                'success'
+              );
+            },
+            (error) => {
+              Swal.fire('Error', `${error.error}`, 'error');
+            }
+          );
+      }
+    });
+  }
   delete() {
     Swal.fire({
       title: 'Are you sure?',

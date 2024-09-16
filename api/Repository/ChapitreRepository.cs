@@ -31,8 +31,6 @@ namespace api.Repository
             this.webHostEnvironment = webHostEnvironment;
             _blobStorageService = blobStorageService;
         }
-
-
         public async Task<Result<Chapitre>> Approuver(int id)
         {
             try
@@ -417,7 +415,9 @@ namespace api.Repository
                 {
                     Nom = "Paragraphe",
                     Contenu = url,
-                    CoursId = createParagrapheDto.CoursId
+                    CoursId = createParagrapheDto.CoursId,
+                    Status = createParagrapheDto.Statue,
+                    TeacherId = createParagrapheDto.TeacherId,
                 };
                 await apiDbContext.paragraphes.AddAsync(paragraphe);
                 await apiDbContext.SaveChangesAsync();
@@ -565,7 +565,9 @@ namespace api.Repository
                 {
                     Nom = "Video 1",
                     Link = url,
-                    ChapitreId = updateChapitreVideoDto.Id
+                    ChapitreId = updateChapitreVideoDto.Id,
+                    Status = updateChapitreVideoDto.Statue,
+                    TeacherId = updateChapitreVideoDto.TeacherId,
                 };
                 await apiDbContext.videos.AddAsync(video);
                 await apiDbContext.SaveChangesAsync();
@@ -587,7 +589,9 @@ namespace api.Repository
                 {
                     Nom = "Video 1",
                     Link = updateChapitreVideoLinkDto.Link,
-                    ChapitreId = updateChapitreVideoLinkDto.chapitreId
+                    ChapitreId = updateChapitreVideoLinkDto.chapitreId,
+                    Status = updateChapitreVideoLinkDto.Statue,
+                    TeacherId = updateChapitreVideoLinkDto.TeacherId,
                 };
                 await apiDbContext.videos.AddAsync(video);
                 await apiDbContext.SaveChangesAsync();
@@ -610,7 +614,9 @@ namespace api.Repository
                 {
                     Nom = "Video 1",
                     Link = url,
-                    ChapitreId = updateChapitreSchemaDto.Id
+                    ChapitreId = updateChapitreSchemaDto.Id,
+                    Status = updateChapitreSchemaDto.Statue,
+                    TeacherId = updateChapitreSchemaDto.TeacherId,
                 };
                 await apiDbContext.schemas.AddAsync(schema);
                 await apiDbContext.SaveChangesAsync();
@@ -633,7 +639,9 @@ namespace api.Repository
                 {
                     Nom = "Video 1",
                     Link = url,
-                    ChapitreId = updateChapitreSyntheseDto.Id
+                    ChapitreId = updateChapitreSyntheseDto.Id,
+                    Status = updateChapitreSyntheseDto.Statue,
+                    TeacherId = updateChapitreSyntheseDto.TeacherId,
                 };
                 await apiDbContext.syntheses.AddAsync(synthese);
                 await apiDbContext.SaveChangesAsync();
@@ -777,6 +785,140 @@ namespace api.Repository
             chapitre.Nom = updateChapitreNameDto.Nom;
             await apiDbContext.SaveChangesAsync();
             return Result<Synthese>.Success(chapitre);
+        }
+
+        public async Task<Result<Chapitre>> UpdateChapitreNumero(UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            // Fetch the targeted chapitre
+            var chapitreToUpdate = await apiDbContext.chapitres
+                .Include(c => c.Module) // Ensure the Module is included for filtering
+                .FirstOrDefaultAsync(c => c.Id == updateChapitreNumeroDto.ChapitreId);
+
+            if (chapitreToUpdate == null)
+            {
+                return Result<Chapitre>.Failure("chapitre notfound");
+            }
+
+            var moduleId = chapitreToUpdate.ModuleId;
+
+            // Fetch all chapitres in the same module
+            var chapitresInModule = await apiDbContext.chapitres
+                .Where(c => c.ModuleId == moduleId)
+                .ToListAsync();
+
+            // Adjust ChapitreNum values for other chapitres in the same module
+            var conflictingChapitres = chapitresInModule
+                .Where(c => c.ChapitreNum >= updateChapitreNumeroDto.ChapitreNumero && c.Id != updateChapitreNumeroDto.ChapitreId)
+                .ToList();
+
+            // Increment ChapitreNum for conflicting chapitres
+            foreach (var chapitre in conflictingChapitres)
+            {
+                chapitre.ChapitreNum++;
+            }
+
+            // Update the ChapitreNum for the targeted chapitre
+            chapitreToUpdate.ChapitreNum = updateChapitreNumeroDto.ChapitreNumero;
+
+            await apiDbContext.SaveChangesAsync();
+            return Result<Chapitre>.Success(chapitreToUpdate);
+        }
+
+        public async Task<Result<Paragraphe>> ApprouverParagraphe(int id)
+        {
+            Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
+            if (paragraphe != null)
+            {
+                paragraphe.Status = ObjectStatus.Approuver;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Paragraphe>.Success(paragraphe);
+            }
+            return Result<Paragraphe>.Failure("paragraphe notfound");
+        }
+
+        public async Task<Result<Paragraphe>> RefuserParagraphe(int id)
+        {
+            Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
+            if (paragraphe != null)
+            {
+                paragraphe.Status = ObjectStatus.Denied;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Paragraphe>.Success(paragraphe);
+            }
+            return Result<Paragraphe>.Failure("paragraphe notfound");
+
+        }
+
+        public async Task<Result<Video>> ApprouverVideo(int id)
+        {
+            Video? video = await apiDbContext.videos.FirstOrDefaultAsync(x => x.Id == id);
+            if (video != null)
+            {
+                video.Status = ObjectStatus.Approuver;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Video>.Success(video);
+            }
+            return Result<Video>.Failure("video notfound");
+        }
+
+        public async Task<Result<Video>> RefuserVideo(int id)
+        {
+            Video? video = await apiDbContext.videos.FirstOrDefaultAsync(x => x.Id == id);
+            if (video != null)
+            {
+                video.Status = ObjectStatus.Denied;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Video>.Success(video);
+            }
+            return Result<Video>.Failure("video notfound");
+        }
+
+        public async Task<Result<Synthese>> ApprouverSynthese(int id)
+        {
+            Synthese? synthese = await apiDbContext.syntheses.FirstOrDefaultAsync(x => x.Id == id);
+            if (synthese != null)
+            {
+                synthese.Status = ObjectStatus.Approuver;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Synthese>.Success(synthese);
+            }
+            return Result<Synthese>.Failure("synthese notfound");
+        }
+
+        public async Task<Result<Synthese>> RefuserSynthese(int id)
+        {
+            Synthese? synthese = await apiDbContext.syntheses.FirstOrDefaultAsync(x => x.Id == id);
+            if (synthese != null)
+            {
+                synthese.Status = ObjectStatus.Denied;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Synthese>.Success(synthese);
+            }
+            return Result<Synthese>.Failure("synthese notfound");
+        }
+
+        public async Task<Result<Schema>> ApprouverSchema(int id)
+        {
+            Schema? schema = await apiDbContext.schemas.FirstOrDefaultAsync(x => x.Id == id);
+            if (schema != null)
+            {
+                schema.Status = ObjectStatus.Approuver;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Schema>.Success(schema);
+            }
+            return Result<Schema>.Failure("Schema notfound");
+        }
+
+        public async Task<Result<Schema>> RefuserSchema(int id)
+        {
+            Schema? schema = await apiDbContext.schemas.FirstOrDefaultAsync(x => x.Id == id);
+            if (schema != null)
+            {
+                schema.Status = ObjectStatus.Denied;
+                await apiDbContext.SaveChangesAsync();
+                return Result<Schema>.Success(schema);
+            }
+            return Result<Schema>.Failure("Schema notfound");
         }
     }
 }

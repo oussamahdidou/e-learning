@@ -89,6 +89,46 @@ namespace api.extensions
 
             };
         }
+        public static PendingObjectsDto FromParagrapheToPendingObjectDto(this Paragraphe paragraphe)
+        {
+            return new PendingObjectsDto()
+            {
+                Id = paragraphe.Id,
+                Nom = paragraphe.Nom,
+                Type = "Paragraphe"
+
+            };
+        }
+        public static PendingObjectsDto FromVideoToPendingObjectDto(this Video Video)
+        {
+            return new PendingObjectsDto()
+            {
+                Id = Video.Id,
+                Nom = Video.Nom,
+                Type = "Video"
+
+            };
+        }
+        public static PendingObjectsDto FromSyntheseToPendingObjectDto(this Synthese Synthese)
+        {
+            return new PendingObjectsDto()
+            {
+                Id = Synthese.Id,
+                Nom = Synthese.Nom,
+                Type = "Synthese"
+
+            };
+        }
+        public static PendingObjectsDto FromSchemaToPendingObjectDto(this Schema Schema)
+        {
+            return new PendingObjectsDto()
+            {
+                Id = Schema.Id,
+                Nom = Schema.Nom,
+                Type = "Schema"
+
+            };
+        }
         public static BarChartsDto FromTeacherToBarChartsDto(this Teacher teacher)
         {
             return new BarChartsDto()

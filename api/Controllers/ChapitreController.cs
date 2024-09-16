@@ -37,7 +37,6 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
-        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
         [HttpPost]
         public async Task<IActionResult> CreateChapitre([FromForm] CreateChapitreDto createChapitreDto)
         {
@@ -46,35 +45,18 @@ namespace api.Controllers
             if (appUser == null)
             {
 
-                return Unauthorized("Attend que l`admin te donne l`acces pour ajouter");
+                return Unauthorized("T`es pas authoriser");
 
             }
-            IList<string> roles = await userManager.GetRolesAsync(appUser);
-            if (roles.Contains(UserRoles.Admin))
+            createChapitreDto.Statue = ObjectStatus.Approuver;
+            Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
+            if (!result.IsSuccess)
             {
-                createChapitreDto.Statue = ObjectStatus.Approuver;
-                Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
-                if (!result.IsSuccess)
-                {
-                    return BadRequest(result.Error);
-                }
-                return Ok(result.Value);
+                return BadRequest(result.Error);
             }
-            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
-            {
-                createChapitreDto.TeacherId = appUser.Id;
-                Result<Chapitre> result = await chapitreRepository.CreateChapitre(createChapitreDto);
-                if (!result.IsSuccess)
-                {
-                    return BadRequest(result.Error);
-                }
-                return Ok(result.Value);
-            }
-            else
-            {
-                return Unauthorized("u need to logging");
+            return Ok(result.Value);
 
-            }
+
         }
         [HttpPut("UpdateChapitrePdf")]
         public async Task<IActionResult> UpdateChapitrePdf([FromForm] UpdateChapitrePdfDto updateChapitrePdfDto)
@@ -131,45 +113,165 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
         [HttpPost("AddSynthese")]
         public async Task<IActionResult> AddSynthese([FromForm] UpdateChapitreSyntheseDto updateChapitreSyntheseDto)
         {
-            Result<Synthese> result = await chapitreRepository.AddChapitreSynthese(updateChapitreSyntheseDto);
-            if (result.IsSuccess)
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if (appUser == null)
             {
-                return Ok(result.Value);
+
+                return Unauthorized("Attend que l`admin te donne l`acces pour ajouter");
+
             }
-            return BadRequest(result.Error);
+            IList<string> roles = await userManager.GetRolesAsync(appUser);
+            if (roles.Contains(UserRoles.Admin))
+            {
+                updateChapitreSyntheseDto.Statue = ObjectStatus.Approuver;
+                Result<Synthese> result = await chapitreRepository.AddChapitreSynthese(updateChapitreSyntheseDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
+            {
+                updateChapitreSyntheseDto.TeacherId = appUser.Id;
+                Result<Synthese> result = await chapitreRepository.AddChapitreSynthese(updateChapitreSyntheseDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else
+            {
+                return Unauthorized("u need to logging");
+
+            }
+
         }
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
         [HttpPost("AddSchema")]
         public async Task<IActionResult> AddSchema([FromForm] UpdateChapitreSchemaDto updateChapitreSchemaDto)
         {
-            Result<Schema> result = await chapitreRepository.AddChapitreSchema(updateChapitreSchemaDto);
-            if (result.IsSuccess)
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if (appUser == null)
             {
-                return Ok(result.Value);
+
+                return Unauthorized("Attend que l`admin te donne l`acces pour ajouter");
+
             }
-            return BadRequest(result.Error);
+            IList<string> roles = await userManager.GetRolesAsync(appUser);
+            if (roles.Contains(UserRoles.Admin))
+            {
+                updateChapitreSchemaDto.Statue = ObjectStatus.Approuver;
+                Result<Schema> result = await chapitreRepository.AddChapitreSchema(updateChapitreSchemaDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
+            {
+                updateChapitreSchemaDto.TeacherId = appUser.Id;
+                Result<Schema> result = await chapitreRepository.AddChapitreSchema(updateChapitreSchemaDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else
+            {
+                return Unauthorized("u need to logging");
+
+            }
+
         }
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
         [HttpPost("AddVideo")]
         public async Task<IActionResult> AddVideo([FromForm] UpdateChapitreVideoDto updateChapitreVideoDto)
         {
-            Result<Video> result = await chapitreRepository.AddVideo(updateChapitreVideoDto);
-            if (result.IsSuccess)
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if (appUser == null)
             {
-                return Ok(result.Value);
+
+                return Unauthorized("Attend que l`admin te donne l`acces pour ajouter");
+
             }
-            return BadRequest(result.Error);
+            IList<string> roles = await userManager.GetRolesAsync(appUser);
+            if (roles.Contains(UserRoles.Admin))
+            {
+                updateChapitreVideoDto.Statue = ObjectStatus.Approuver;
+                Result<Video> result = await chapitreRepository.AddVideo(updateChapitreVideoDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
+            {
+                updateChapitreVideoDto.TeacherId = appUser.Id;
+                Result<Video> result = await chapitreRepository.AddVideo(updateChapitreVideoDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else
+            {
+                return Unauthorized("u need to logging");
+
+            }
+
         }
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
         [HttpPost("AddVideoLink")]
         public async Task<IActionResult> AddVideoLink([FromBody] UpdateChapitreVideoLinkDto updateChapitreVideoLinkDto)
         {
-            Result<Video> result = await chapitreRepository.AddVideoLink(updateChapitreVideoLinkDto);
-            if (result.IsSuccess)
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if (appUser == null)
             {
-                return Ok(result.Value);
+
+                return Unauthorized("Attend que l`admin te donne l`acces pour ajouter");
+
             }
-            return BadRequest(result.Error);
+            IList<string> roles = await userManager.GetRolesAsync(appUser);
+            if (roles.Contains(UserRoles.Admin))
+            {
+                updateChapitreVideoLinkDto.Statue = ObjectStatus.Approuver;
+                Result<Video> result = await chapitreRepository.AddVideoLink(updateChapitreVideoLinkDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
+            {
+                updateChapitreVideoLinkDto.TeacherId = appUser.Id;
+                Result<Video> result = await chapitreRepository.AddVideoLink(updateChapitreVideoLinkDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else
+            {
+                return Unauthorized("u need to logging");
+
+            }
+
         }
         [HttpPut("Approuver/{id:int}")]
         public async Task<IActionResult> ApprouverChapitre([FromRoute] int id)
@@ -208,15 +310,45 @@ namespace api.Controllers
             }
             return BadRequest(result.Error);
         }
+        [Authorize(Roles = $"{UserRoles.Admin},{UserRoles.Teacher}")]
         [HttpPost("CreateParagraphe")]
         public async Task<IActionResult> CreateParagraphe([FromForm] CreateParagrapheDto createParagrapheDto)
         {
-            Result<Paragraphe> result = await chapitreRepository.CreateParagraphe(createParagrapheDto);
-            if (result.IsSuccess)
+            string username = User.GetUsername();
+            AppUser? appUser = await userManager.FindByNameAsync(username);
+            if (appUser == null)
             {
-                return Ok(result.Value);
+
+                return Unauthorized("Attend que l`admin te donne l`acces pour ajouter");
+
             }
-            return BadRequest(result.Error);
+            IList<string> roles = await userManager.GetRolesAsync(appUser);
+            if (roles.Contains(UserRoles.Admin))
+            {
+                createParagrapheDto.Statue = ObjectStatus.Approuver;
+                Result<Paragraphe> result = await chapitreRepository.CreateParagraphe(createParagrapheDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else if (!roles.Contains(UserRoles.Admin) && roles.Contains(UserRoles.Teacher) && appUser is Teacher teacher && teacher.Granted)
+            {
+                createParagrapheDto.TeacherId = appUser.Id;
+                Result<Paragraphe> result = await chapitreRepository.CreateParagraphe(createParagrapheDto);
+                if (result.IsSuccess)
+                {
+                    return Ok(result.Value);
+                }
+                return BadRequest(result.Error);
+            }
+            else
+            {
+                return Unauthorized("u need to logging");
+
+            }
+
         }
         [HttpGet("Paragraphe/{id:int}")]
         public async Task<IActionResult> Paragraphe([FromRoute] int id)
@@ -334,6 +466,105 @@ namespace api.Controllers
                 return Ok(result.Value);
             }
             return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateChapitreNumero")]
+        public async Task<IActionResult> UpdateChapitreNumero([FromBody] UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            Result<Chapitre> result = await chapitreRepository.UpdateChapitreNumero(updateChapitreNumeroDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+
+        [HttpPut("ApprouverParagraphe/{id:int}")]
+        public async Task<IActionResult> ApprouverParagraphe([FromRoute] int id)
+        {
+            Result<Paragraphe> result = await chapitreRepository.ApprouverParagraphe(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("RefuserParagraphe/{id:int}")]
+        public async Task<IActionResult> RefuserParagraphe([FromRoute] int id)
+        {
+            Result<Paragraphe> result = await chapitreRepository.RefuserParagraphe(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("ApprouverVideo/{id:int}")]
+        public async Task<IActionResult> ApprouverVideo([FromRoute] int id)
+        {
+            Result<Video> result = await chapitreRepository.ApprouverVideo(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("RefuserVideo/{id:int}")]
+        public async Task<IActionResult> RefuserVideo([FromRoute] int id)
+        {
+            Result<Video> result = await chapitreRepository.RefuserVideo(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("ApprouverSynthese/{id:int}")]
+        public async Task<IActionResult> ApprouverSynthese([FromRoute] int id)
+        {
+            Result<Synthese> result = await chapitreRepository.ApprouverSynthese(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("RefuserSynthese/{id:int}")]
+        public async Task<IActionResult> RefuserSynthese([FromRoute] int id)
+        {
+            Result<Synthese> result = await chapitreRepository.RefuserSynthese(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("ApprouverSchema/{id:int}")]
+        public async Task<IActionResult> ApprouverSchema([FromRoute] int id)
+        {
+            Result<Schema> result = await chapitreRepository.ApprouverSchema(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
+        }
+        [HttpPut("RefuserSchema/{id:int}")]
+        public async Task<IActionResult> RefuserSchema([FromRoute] int id)
+        {
+            Result<Schema> result = await chapitreRepository.RefuserSchema(id);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+
         }
     }
 

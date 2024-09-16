@@ -10,6 +10,26 @@
                 <button mat-raised-button color="primary" (click)="ModifierNom()">
                     Modifier Nom
                 </button>
+                @if (video.status==='Pending') {
+                <button mat-flat-button color="primary" (click)="approuver()">
+                    <mat-icon>check_circle</mat-icon>
+                    Approuver
+                </button>
+                <button mat-flat-button color="warn" (click)="refuser()">
+                    <mat-icon>cancel</mat-icon>
+                    Refuser
+                </button>
+                } @else if (video.status==='Approuver') {
+                <button mat-flat-button color="warn" (click)="refuser()">
+                    <mat-icon>cancel</mat-icon>
+                    Refuser
+                </button>
+                } @else {
+                <button mat-flat-button color="primary" (click)="approuver()">
+                    <mat-icon>check_circle</mat-icon>
+                    Approuver
+                </button>
+                }
             </h4>
 
             <input type="file" #Video (change)="SelectVideo($event)" accept="video/*" style="display: none" />

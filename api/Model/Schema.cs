@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using api.helpers;
 
 namespace api.Model
 {
@@ -16,5 +17,7 @@ namespace api.Model
         public int ChapitreId { get; set; }
         public string? TeacherId { get; set; }
         public Teacher? Teacher { get; set; }
+        public string Status { get; set; } = ObjectStatus.Pending;
+
     }
 }
