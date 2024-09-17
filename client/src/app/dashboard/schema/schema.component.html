@@ -2,9 +2,12 @@
     <div class="container mx-auto pt-5  ">
         @if (schema) {
         <h4>
-            Schema ({{schema.nom}})@if (authservice.$IsAdmin|async) {
+            Schema {{schema.objetNumber}} ({{schema.nom}})@if (authservice.$IsAdmin|async) {
             <button mat-raised-button color="primary" (click)="ModifierNom()">
                 Modifier Nom
+            </button>
+            <button mat-button color="primary" (click)="modifierNumero()">
+                Modifier Chapitre Numero
             </button>
             }
         </h4>

@@ -30,7 +30,7 @@
         <div class="col-lg-6 px-3">
           <div class="moduleinfo-item">
             @if (descriptionfield) {
-            <p>{{ description }}</p>
+            <h6>{{ description }}</h6>
             @if (authservice.$IsAdmin|async) {
             <button (click)="descriptionfield = !descriptionfield" mat-raised-button>
               modifier description</button>} } @else { @if (authservice.$IsAdmin|async) {
@@ -84,10 +84,12 @@
             <mat-label>Search</mat-label>
             <input matInput (keyup)="applyChapitresFilter($event)" placeholder="Ex. UserName" />
           </mat-form-field>
+          @if (authservice.$IsAdmin|async) {
           <button routerLink="/dashboard/createchapter/{{ moduleId }}" mat-raised-button color="primary">
             <mat-icon>add</mat-icon>
             Ajouter Chapitre
           </button>
+          }
         </div>
         <table mat-table [dataSource]="chapitressource" class="mat-elevation-z8" matSort>
           <ng-container matColumnDef="id">

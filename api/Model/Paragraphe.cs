@@ -11,6 +11,7 @@ namespace api.Model
         {
                 [Key]
                 public int Id { get; set; }
+                public int ObjetNumber { get; set; }
                 public string? Nom { get; set; }
                 public string? Contenu { get; set; }
                 public string? TeacherId { get; set; }

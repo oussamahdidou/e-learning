@@ -2,9 +2,12 @@
 
 <div class="container-fluid w-75 mx-auto pt-5  align-items-center">
     <h4>
-        Paragraphe ({{paragraphe.nom}})@if (authservice.$IsAdmin|async) {
+        Paragraphe {{paragraphe.objetNumber}} ({{paragraphe.nom}})@if (authservice.$IsAdmin|async) {
         <button mat-raised-button color="primary" (click)="ModifierNom()">
             Modifier Nom
+        </button>
+        <button mat-button color="primary" (click)="modifierNumero()">
+            Modifier Chapitre Numero
         </button>
         @if (paragraphe.status==='Pending') {
         <button mat-flat-button color="primary" (click)="approuver()">
@@ -26,12 +29,14 @@
             Approuver
         </button>
         }
+
         }
     </h4>
     @if (authservice.$IsAdmin|async) {
     <button mat-raised-button color="primary" (click)="Paragraphe.click()">
         Modifier Paragraphe
     </button>
+
     }
     <input type="file" #Paragraphe (change)="SelectParagraphe($event)" style="display: none" />
     @if (getFileType(paragraphe.contenu)=="pdf") {

@@ -566,6 +566,46 @@ namespace api.Controllers
             return BadRequest(result.Error);
 
         }
+        [HttpPut("UpdateParagrapheNumero")]
+        public async Task<IActionResult> UpdateParagrapheNumero([FromBody] UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            Result<Paragraphe> result = await chapitreRepository.UpdateParagrapheNumero(updateChapitreNumeroDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateVideoNumero")]
+        public async Task<IActionResult> UpdateVideoNumero([FromBody] UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            Result<Video> result = await chapitreRepository.UpdateVideoNumero(updateChapitreNumeroDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateSchemaNumero")]
+        public async Task<IActionResult> UpdateSchemaNumero([FromBody] UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            Result<Schema> result = await chapitreRepository.UpdateSchemaNumero(updateChapitreNumeroDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
+        [HttpPut("UpdateSyntheseNumero")]
+        public async Task<IActionResult> UpdateSyntheseNumero([FromBody] UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            Result<Synthese> result = await chapitreRepository.UpdateSyntheseNumero(updateChapitreNumeroDto);
+            if (result.IsSuccess)
+            {
+                return Ok(result.Value);
+            }
+            return BadRequest(result.Error);
+        }
     }
 
 }

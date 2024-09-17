@@ -66,41 +66,41 @@ namespace api.Repository
                 foreach (var item in createChapitreDto.Schemas)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), schemaContainer, item.FileName);
-                    schemas.Add(new Schema() { Nom = $"Schema {index}", Link = url });
+                    schemas.Add(new Schema() { Nom = $"Schema {index}", Link = url, ObjetNumber = index });
                     index++;
                 }
                 index = 1;
                 foreach (var item in createChapitreDto.Syntheses)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), syntheseContainer, item.FileName);
-                    syntheses.Add(new Synthese() { Nom = $"Synthese {index}", Link = url });
+                    syntheses.Add(new Synthese() { Nom = $"Synthese {index}", Link = url, ObjetNumber = index });
                     index++;
                 }
                 index = 1;
                 foreach (var item in createChapitreDto.Videos)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), videoContainer, item.FileName);
-                    videos.Add(new Video() { Nom = $"Video {index}", Link = url });
+                    videos.Add(new Video() { Nom = $"Video {index}", Link = url, ObjetNumber = index });
                     index++;
                 }
-                index = 1;
+
                 foreach (var item in createChapitreDto.VideosLink)
                 {
-                    videos.Add(new Video() { Nom = $"Video {index}", Link = item });
+                    videos.Add(new Video() { Nom = $"Video {index}", Link = item, ObjetNumber = index });
                     index++;
                 }
                 index = 1;
                 foreach (var item in createChapitreDto.ProfessorCourseParagraphs)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), pdfContainer, item.FileName);
-                    professeurscoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {index}", Contenu = url });
+                    professeurscoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {index}", Contenu = url, ObjetNumber = index });
                     index++;
                 }
                 index = 1;
                 foreach (var item in createChapitreDto.StudentCourseParagraphs)
                 {
                     string url = await _blobStorageService.UploadFileAsync(item.OpenReadStream(), pdfContainer, item.FileName);
-                    studentcoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {index}", Contenu = url });
+                    studentcoursparagraphes.Add(new Paragraphe() { Nom = $"Paragraphe {index}", Contenu = url, ObjetNumber = index });
                     index++;
                 }
                 Chapitre chapitre = new Chapitre
@@ -411,13 +411,16 @@ namespace api.Repository
             try
             {
                 string url = await _blobStorageService.UploadFileAsync(createParagrapheDto.ParagrapheContenu.OpenReadStream(), pdfContainer, createParagrapheDto.ParagrapheContenu.FileName);
+                var maxValue = await apiDbContext.paragraphes.Where(x => x.CoursId == createParagrapheDto.CoursId).MaxAsync(e => (int?)e.ObjetNumber) ?? 0;
+
                 Paragraphe paragraphe = new Paragraphe()
                 {
-                    Nom = "Paragraphe",
+                    Nom = $"Paragraphe {maxValue + 1}",
                     Contenu = url,
                     CoursId = createParagrapheDto.CoursId,
                     Status = createParagrapheDto.Statue,
                     TeacherId = createParagrapheDto.TeacherId,
+                    ObjetNumber = maxValue + 1
                 };
                 await apiDbContext.paragraphes.AddAsync(paragraphe);
                 await apiDbContext.SaveChangesAsync();
@@ -561,13 +564,18 @@ namespace api.Repository
             try
             {
                 string url = await _blobStorageService.UploadFileAsync(updateChapitreVideoDto.File.OpenReadStream(), videoContainer, updateChapitreVideoDto.File.FileName);
+                var maxValue = await apiDbContext.videos.Where(x => x.ChapitreId == updateChapitreVideoDto.Id).MaxAsync(e => (int?)e.ObjetNumber) ?? 0;
+
+                // Set the next value
                 Video video = new Video()
                 {
-                    Nom = "Video 1",
+                    Nom = $"Video {maxValue + 1}",
                     Link = url,
                     ChapitreId = updateChapitreVideoDto.Id,
                     Status = updateChapitreVideoDto.Statue,
                     TeacherId = updateChapitreVideoDto.TeacherId,
+                    ObjetNumber = maxValue + 1
+
                 };
                 await apiDbContext.videos.AddAsync(video);
                 await apiDbContext.SaveChangesAsync();
@@ -585,13 +593,16 @@ namespace api.Repository
         {
             try
             {
+                var maxValue = await apiDbContext.videos.Where(x => x.ChapitreId == updateChapitreVideoLinkDto.chapitreId).MaxAsync(e => (int?)e.ObjetNumber) ?? 0;
+
                 Video video = new Video()
                 {
-                    Nom = "Video 1",
+                    Nom = $"Video {maxValue + 1}",
                     Link = updateChapitreVideoLinkDto.Link,
                     ChapitreId = updateChapitreVideoLinkDto.chapitreId,
                     Status = updateChapitreVideoLinkDto.Statue,
                     TeacherId = updateChapitreVideoLinkDto.TeacherId,
+                    ObjetNumber = maxValue + 1
                 };
                 await apiDbContext.videos.AddAsync(video);
                 await apiDbContext.SaveChangesAsync();
@@ -609,14 +620,17 @@ namespace api.Repository
         {
             try
             {
+                var maxValue = await apiDbContext.schemas.Where(x => x.ChapitreId == updateChapitreSchemaDto.Id).MaxAsync(e => (int?)e.ObjetNumber) ?? 0;
+
                 string url = await _blobStorageService.UploadFileAsync(updateChapitreSchemaDto.File.OpenReadStream(), schemaContainer, updateChapitreSchemaDto.File.FileName);
                 Schema schema = new Schema()
                 {
-                    Nom = "Video 1",
+                    Nom = $"Schema {maxValue + 1}",
                     Link = url,
                     ChapitreId = updateChapitreSchemaDto.Id,
                     Status = updateChapitreSchemaDto.Statue,
                     TeacherId = updateChapitreSchemaDto.TeacherId,
+                    ObjetNumber = maxValue + 1
                 };
                 await apiDbContext.schemas.AddAsync(schema);
                 await apiDbContext.SaveChangesAsync();
@@ -634,14 +648,17 @@ namespace api.Repository
         {
             try
             {
-                string url = await _blobStorageService.UploadFileAsync(updateChapitreSyntheseDto.File.OpenReadStream(), schemaContainer, updateChapitreSyntheseDto.File.FileName);
+                var maxValue = await apiDbContext.syntheses.Where(x => x.ChapitreId == updateChapitreSyntheseDto.Id).MaxAsync(e => (int?)e.ObjetNumber) ?? 0;
+
+                string url = await _blobStorageService.UploadFileAsync(updateChapitreSyntheseDto.File.OpenReadStream(), syntheseContainer, updateChapitreSyntheseDto.File.FileName);
                 Synthese synthese = new Synthese()
                 {
-                    Nom = "Video 1",
+                    Nom = $"Synthese {maxValue + 1}",
                     Link = url,
                     ChapitreId = updateChapitreSyntheseDto.Id,
                     Status = updateChapitreSyntheseDto.Statue,
                     TeacherId = updateChapitreSyntheseDto.TeacherId,
+                    ObjetNumber = maxValue + 1
                 };
                 await apiDbContext.syntheses.AddAsync(synthese);
                 await apiDbContext.SaveChangesAsync();
@@ -790,40 +807,15 @@ namespace api.Repository
         public async Task<Result<Chapitre>> UpdateChapitreNumero(UpdateChapitreNumeroDto updateChapitreNumeroDto)
         {
             // Fetch the targeted chapitre
-            var chapitreToUpdate = await apiDbContext.chapitres
-                .Include(c => c.Module) // Ensure the Module is included for filtering
-                .FirstOrDefaultAsync(c => c.Id == updateChapitreNumeroDto.ChapitreId);
-
+            var chapitreToUpdate = await apiDbContext.chapitres.FirstOrDefaultAsync(c => c.Id == updateChapitreNumeroDto.ChapitreId);
             if (chapitreToUpdate == null)
             {
                 return Result<Chapitre>.Failure("chapitre notfound");
             }
-
-            var moduleId = chapitreToUpdate.ModuleId;
-
-            // Fetch all chapitres in the same module
-            var chapitresInModule = await apiDbContext.chapitres
-                .Where(c => c.ModuleId == moduleId)
-                .ToListAsync();
-
-            // Adjust ChapitreNum values for other chapitres in the same module
-            var conflictingChapitres = chapitresInModule
-                .Where(c => c.ChapitreNum >= updateChapitreNumeroDto.ChapitreNumero && c.Id != updateChapitreNumeroDto.ChapitreId)
-                .ToList();
-
-            // Increment ChapitreNum for conflicting chapitres
-            foreach (var chapitre in conflictingChapitres)
-            {
-                chapitre.ChapitreNum++;
-            }
-
-            // Update the ChapitreNum for the targeted chapitre
             chapitreToUpdate.ChapitreNum = updateChapitreNumeroDto.ChapitreNumero;
-
             await apiDbContext.SaveChangesAsync();
             return Result<Chapitre>.Success(chapitreToUpdate);
         }
-
         public async Task<Result<Paragraphe>> ApprouverParagraphe(int id)
         {
             Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
@@ -835,7 +827,6 @@ namespace api.Repository
             }
             return Result<Paragraphe>.Failure("paragraphe notfound");
         }
-
         public async Task<Result<Paragraphe>> RefuserParagraphe(int id)
         {
             Paragraphe? paragraphe = await apiDbContext.paragraphes.FirstOrDefaultAsync(x => x.Id == id);
@@ -919,6 +910,55 @@ namespace api.Repository
                 return Result<Schema>.Success(schema);
             }
             return Result<Schema>.Failure("Schema notfound");
+        }
+
+        public async Task<Result<Paragraphe>> UpdateParagrapheNumero(UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            // Fetch the targeted chapitre
+            var chapitreToUpdate = await apiDbContext.paragraphes.FirstOrDefaultAsync(c => c.Id == updateChapitreNumeroDto.ChapitreId);
+            if (chapitreToUpdate == null)
+            {
+                return Result<Paragraphe>.Failure("chapitre notfound");
+            }
+            chapitreToUpdate.ObjetNumber = updateChapitreNumeroDto.ChapitreNumero;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Paragraphe>.Success(chapitreToUpdate);
+        }
+
+        public async Task<Result<Video>> UpdateVideoNumero(UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            var chapitreToUpdate = await apiDbContext.videos.FirstOrDefaultAsync(c => c.Id == updateChapitreNumeroDto.ChapitreId);
+            if (chapitreToUpdate == null)
+            {
+                return Result<Video>.Failure("chapitre notfound");
+            }
+            chapitreToUpdate.ObjetNumber = updateChapitreNumeroDto.ChapitreNumero;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Video>.Success(chapitreToUpdate);
+        }
+
+        public async Task<Result<Schema>> UpdateSchemaNumero(UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            var chapitreToUpdate = await apiDbContext.schemas.FirstOrDefaultAsync(c => c.Id == updateChapitreNumeroDto.ChapitreId);
+            if (chapitreToUpdate == null)
+            {
+                return Result<Schema>.Failure("chapitre notfound");
+            }
+            chapitreToUpdate.ObjetNumber = updateChapitreNumeroDto.ChapitreNumero;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Schema>.Success(chapitreToUpdate);
+        }
+
+        public async Task<Result<Synthese>> UpdateSyntheseNumero(UpdateChapitreNumeroDto updateChapitreNumeroDto)
+        {
+            var chapitreToUpdate = await apiDbContext.syntheses.FirstOrDefaultAsync(c => c.Id == updateChapitreNumeroDto.ChapitreId);
+            if (chapitreToUpdate == null)
+            {
+                return Result<Synthese>.Failure("chapitre notfound");
+            }
+            chapitreToUpdate.ObjetNumber = updateChapitreNumeroDto.ChapitreNumero;
+            await apiDbContext.SaveChangesAsync();
+            return Result<Synthese>.Success(chapitreToUpdate);
         }
     }
 }

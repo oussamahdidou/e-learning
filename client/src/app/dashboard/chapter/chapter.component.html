@@ -27,8 +27,8 @@
         @if (studentCourse) {
         @for (item of studentCourse.paragraphes; track $index) {
         <div class=" col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
-          <h5> Paragraphe{{ $index +1}}</h5>
-          <p>{{item.nom}}</p>
+          <h5> Paragraphe {{ item.objetNumber}}</h5>
+          <h6>{{item.nom}}</h6>
           <div class="d-flex  align-items-center gap-1">
             <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
             @if (authservice.$IsAdmin|async) {
@@ -45,18 +45,18 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel> Cours Profeseur </ng-template>
-      @if (authservice.$IsAdmin|async) {
+
       <input type="file" name="" #teachercourseparagraphe id="" class="d-none"
         (change)="SelectTeacherParagraphe($event)">
       <button mat-raised-button color="primary" (click)="teachercourseparagraphe.click()">Ajouter
-        Paragraphe</button>}
+        Paragraphe</button>
       <h4>Cours Professeur</h4>
       <div class="row justify-content-center align-items-center gap-4 pt-5">
         @if (teacherCourse) {
         @for (item of teacherCourse.paragraphes; track $index) {
         <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
-          <h5> Paragraphe{{ $index +1}}</h5>
-          <p>{{item.nom}}</p>
+          <h5> Paragraphe {{ item.objetNumber}}</h5>
+          <h6>{{item.nom}}</h6>
           <div class="d-flex  align-items-center gap-1">
             <button class="btn  btn-secondary" routerLink="/dashboard/paragraphe/{{item.id}}">explore</button>
             @if (authservice.$IsAdmin|async) {
@@ -72,7 +72,7 @@
     <mat-step>
       <ng-template matStepLabel> CoursVideo </ng-template>
       <h4>
-        CoursVideo @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Video.click()">
+        CoursVideo <button mat-raised-button color="primary" (click)="Video.click()">
           Add Video (Upload)
         </button>
         <input type="file" #Video (change)="AddVideo($event)" accept="video/*" style="display: none" />
@@ -84,7 +84,7 @@
           </button>
         </div>
 
-        }
+
       </h4>
 
       <section class="video px-5 mt-3 mx-auto ">
@@ -94,8 +94,8 @@
 
           @for (item of chapitre.videos; track $index) {
           <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
-            <h5> Video{{ $index +1}}</h5>
-            <p>{{item.nom}}</p>
+            <h5> Video {{ item.objetNumber}}</h5>
+            <h6>{{item.nom}}</h6>
             <div class="d-flex  align-items-center gap-1">
               <button class="btn  btn-secondary" routerLink="/dashboard/video/{{item.id}}">explore</button>
               @if (authservice.$IsAdmin|async) {
@@ -112,18 +112,18 @@
     <mat-step>
       <ng-template matStepLabel> Schema </ng-template>
       <h4>
-        Schema @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Schema.click()">
-          Modifier Schema
+        Schema <button mat-raised-button color="primary" (click)="Schema.click()">
+          Ajouter Schema
         </button>
-        }
+
       </h4>
       <input type="file" #Schema (change)="AddSchema($event)" style="display: none" />
 
       <div class="pdf-container  mx-auto">
         @for (item of chapitre.schemas; track $index) {
         <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
-          <h5> Schema{{ $index +1}}</h5>
-          <p>{{item.nom}}</p>
+          <h5> Schema {{ item.objetNumber}}</h5>
+          <h6>{{item.nom}}</h6>
           <div class="d-flex  align-items-center gap-1">
             <button class="btn  btn-secondary" routerLink="/dashboard/schema/{{item.id}}">explore</button>
             @if (authservice.$IsAdmin|async) {
@@ -140,17 +140,17 @@
     <mat-step>
       <ng-template matStepLabel> Synthese </ng-template>
       <h4>
-        Synthese @if (authservice.$IsAdmin|async) {<button mat-raised-button color="primary" (click)="Synthese.click()">
-          Modifier Synthese
+        Synthese <button mat-raised-button color="primary" (click)="Synthese.click()">
+          Ajouter Synthese
         </button>
-        }
+
       </h4>
       <input type="file" #Synthese (change)="AddSynthese($event)" style="display: none" />
       <div class="pdf-container  mx-auto">
         @for (item of chapitre.syntheses; track $index) {
         <div class="col-12 py-3 px-4 rounded" style="box-shadow: 4px 8px 20px rgba(0, 0 , 0 ,0.4);">
-          <h5> Synthese{{ $index +1}}</h5>
-          <p>{{item.nom}}</p>
+          <h5> Synthese {{ item.objetNumber}}</h5>
+          <h6>{{item.nom}}</h6>
           <div class="d-flex  align-items-center gap-1">
             <button class="btn  btn-secondary" routerLink="/dashboard/synthese/{{item.id}}">explore</button>
             @if (authservice.$IsAdmin|async) {

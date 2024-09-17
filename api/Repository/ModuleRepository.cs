@@ -70,31 +70,55 @@ namespace api.Repository
             try
             {
                 Module? module = await apiDbContext.modules
-                    .Include(x => x.Chapitres)
-                        .ThenInclude(y => y.Quiz)
-                        .ThenInclude(y => y.Questions)
-                        .ThenInclude(y => y.Options)
-                    .Include(x => x.Chapitres)
-                        .ThenInclude(w => w.Cours)
-                        .ThenInclude(e => e.Paragraphes)
-                    .Include(z => z.Chapitres)
-                        .ThenInclude(w => w.Controle)
-                    .Include(z => z.Chapitres)
-                        .ThenInclude(w => w.Syntheses)
-                    .Include(z => z.Chapitres)
-                        .ThenInclude(w => w.Schemas)
-                    .Include(z => z.Chapitres)
-                        .ThenInclude(w => w.Videos)
-                    .Where(x => x.Id == id)
-                    .Select(x => new Module
-                    {
-                        Id = x.Id,
-                        Nom = x.Nom,
-                        Chapitres = x.Chapitres
-                            .Where(c => c.Statue == ObjectStatus.Approuver)
-                            .ToList()
-                    })
-                    .FirstOrDefaultAsync();
+                .Include(x => x.Chapitres)
+                    .ThenInclude(y => y.Quiz)
+                    .ThenInclude(y => y.Questions)
+                    .ThenInclude(y => y.Options)
+                .Include(x => x.Chapitres)
+                    .ThenInclude(w => w.Cours)
+                    .ThenInclude(e => e.Paragraphes
+                        .Where(p => p.Status == ObjectStatus.Approuver))  // Filter Paragraphes
+                .Include(z => z.Chapitres)
+                    .ThenInclude(w => w.Controle)
+
+                .Include(z => z.Chapitres)
+                    .ThenInclude(w => w.Syntheses
+                        .Where(s => s.Status == ObjectStatus.Approuver))  // Filter Syntheses
+                .Include(z => z.Chapitres)
+                    .ThenInclude(w => w.Schemas
+                        .Where(s => s.Status == ObjectStatus.Approuver))  // Filter Schemas
+                .Include(z => z.Chapitres)
+                    .ThenInclude(w => w.Videos
+                        .Where(v => v.Status == ObjectStatus.Approuver))  // Filter Videos
+                .Where(x => x.Id == id)
+                .Select(x => new Module
+                {
+                    Id = x.Id,
+                    Nom = x.Nom,
+                    Chapitres = x.Chapitres
+                        .Where(c => c.Statue == ObjectStatus.Approuver)   // Filter Chapitres
+                        .Select(c => new Chapitre
+                        {
+                            Id = c.Id,
+                            ChapitreNum = c.ChapitreNum,
+                            Nom = c.Nom,
+                            Statue = c.Statue,
+                            Cours = c.Cours
+                                .Select(co => new Cours
+                                {
+                                    Id = co.Id,
+                                    Titre = co.Titre,
+                                    Paragraphes = co.Paragraphes.OrderBy(x => x.ObjetNumber).ToList(),  // Already filtered
+                                    Type = co.Type,
+                                }).ToList(),
+                            Videos = c.Videos.OrderBy(x => x.ObjetNumber).ToList(),  // Already filtered
+                            Syntheses = c.Syntheses.OrderBy(x => x.ObjetNumber).ToList(),  // Already filtered
+                            Schemas = c.Schemas.OrderBy(x => x.ObjetNumber).ToList(),
+                            Quiz = c.Quiz,  // Already filtered
+                            Controle = c.Controle != null && c.Controle.Status == ObjectStatus.Approuver ? c.Controle : null
+                        }).ToList()
+                })
+                .FirstOrDefaultAsync();
 
                 if (module == null)
                 {

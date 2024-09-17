@@ -10,6 +10,47 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './video.component.css',
 })
 export class VideoComponent implements OnInit {
+  modifierNumero() {
+    Swal.fire({
+      title: 'Edit video Numero',
+      input: 'number',
+      inputLabel: 'video Numero',
+      inputValue: this.video.objetNumber,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      preConfirm: (newName) => {
+        if (!newName) {
+          Swal.showValidationMessage('Please enter a valid Numero');
+        }
+        return newName;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Saving...',
+          text: 'Please wait while the numero is being updated.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice
+          .updateVideoNumero(this.videoId, result.value)
+          .subscribe(
+            (response) => {
+              this.video.objetNumber = response.objetNumber;
+              Swal.fire('Saved!', 'video numero has been updated.', 'success');
+            },
+            (error) => {
+              Swal.fire('Error', `${error.error}`, 'error');
+            }
+          );
+      }
+    });
+  }
   refuser() {
     Swal.fire({
       title: 'Are you sure?',

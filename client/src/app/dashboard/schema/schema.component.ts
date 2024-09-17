@@ -10,6 +10,47 @@ import Swal from 'sweetalert2';
   styleUrl: './schema.component.css',
 })
 export class SchemaComponent implements OnInit {
+  modifierNumero() {
+    Swal.fire({
+      title: 'Edit schema Numero',
+      input: 'number',
+      inputLabel: 'schema Numero',
+      inputValue: this.schema.objetNumber,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      preConfirm: (newName) => {
+        if (!newName) {
+          Swal.showValidationMessage('Please enter a valid Numero');
+        }
+        return newName;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Saving...',
+          text: 'Please wait while the numero is being updated.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice
+          .updateSchemaNumero(this.schemaId, result.value)
+          .subscribe(
+            (response) => {
+              this.schema.objetNumber = response.objetNumber;
+              Swal.fire('Saved!', 'schema numero has been updated.', 'success');
+            },
+            (error) => {
+              Swal.fire('Error', `${error.error}`, 'error');
+            }
+          );
+      }
+    });
+  }
   refuser() {
     Swal.fire({
       title: 'Are you sure?',

@@ -2,9 +2,12 @@
     <div class="container mx-auto pt-5">
         @if (synthese) {
         <h4>
-            Synthese ({{synthese.nom}})@if (authservice.$IsAdmin|async) {
+            Synthese {{synthese.objetNumber}} ({{synthese.nom}})@if (authservice.$IsAdmin|async) {
             <button mat-raised-button color="primary" (click)="ModifierNom()">
                 Modifier Nom
+            </button>
+            <button mat-button color="primary" (click)="modifierNumero()">
+                Modifier Chapitre Numero
             </button>
             @if (synthese.status==='Pending') {
             <button mat-flat-button color="primary" (click)="approuver()">

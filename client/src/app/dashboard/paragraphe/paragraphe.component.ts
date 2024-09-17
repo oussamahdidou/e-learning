@@ -10,6 +10,53 @@ import Swal from 'sweetalert2';
   styleUrl: './paragraphe.component.css',
 })
 export class ParagrapheComponent {
+  modifierNumero() {
+    Swal.fire({
+      title: 'Edit Paragraphe Numero',
+      input: 'number',
+      inputLabel: 'Paragraphe Numero',
+      inputValue: this.paragraphe.objetNumber,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      preConfirm: (newName) => {
+        if (!newName) {
+          Swal.showValidationMessage('Please enter a valid Numero');
+        }
+        return newName;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Saving...',
+          text: 'Please wait while the numero is being updated.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice
+          .updateParagrapheNumero(this.paragrapheid, result.value)
+          .subscribe(
+            (response) => {
+              this.paragraphe.objetNumber = response.objetNumber;
+              Swal.fire(
+                'Saved!',
+                'Paragraphe numero has been updated.',
+                'success'
+              );
+            },
+            (error) => {
+              console.log(error);
+
+              Swal.fire('Error', `${error.error}`, 'error');
+            }
+          );
+      }
+    });
+  }
   refuser() {
     Swal.fire({
       title: 'Are you sure?',

@@ -5,8 +5,10 @@
 
         <div class="w-100">
             @if (authservice.$IsAdmin|async) {
-            <h4> CoursVideo ({{video.nom}})
-
+            <h4> CoursVideo {{video.objetNumber}} ({{video.nom}})
+                <button mat-button color="primary" (click)="modifierNumero()">
+                    Modifier Chapitre Numero
+                </button>
                 <button mat-raised-button color="primary" (click)="ModifierNom()">
                     Modifier Nom
                 </button>

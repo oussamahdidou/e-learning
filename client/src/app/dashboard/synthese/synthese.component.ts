@@ -10,6 +10,51 @@ import { DashboardService } from '../../services/dashboard.service';
   styleUrl: './synthese.component.css',
 })
 export class SyntheseComponent implements OnInit {
+  modifierNumero() {
+    Swal.fire({
+      title: 'Edit synthese Numero',
+      input: 'number',
+      inputLabel: 'synthese Numero',
+      inputValue: this.synthese.objetNumber,
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      cancelButtonText: 'Cancel',
+      preConfirm: (newName) => {
+        if (!newName) {
+          Swal.showValidationMessage('Please enter a valid Numero');
+        }
+        return newName;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Show loading modal
+        Swal.fire({
+          title: 'Saving...',
+          text: 'Please wait while the numero is being updated.',
+          allowOutsideClick: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
+
+        this.dashboardservice
+          .updateSyntheseNumero(this.syntheseId, result.value)
+          .subscribe(
+            (response) => {
+              this.synthese.objetNumber = response.objetNumber;
+              Swal.fire(
+                'Saved!',
+                'synthese numero has been updated.',
+                'success'
+              );
+            },
+            (error) => {
+              Swal.fire('Error', `${error.error}`, 'error');
+            }
+          );
+      }
+    });
+  }
   refuser() {
     Swal.fire({
       title: 'Are you sure?',

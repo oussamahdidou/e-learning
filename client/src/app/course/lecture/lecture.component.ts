@@ -33,8 +33,13 @@ export class LectureComponent {
         const id = +idParam;
         this.courseService.getVdUrlById(id).subscribe(
           (url: string) => {
-            if (url.includes('youtube')) {
-              this.vdUrl = url.split('v=').pop();
+            if (url.includes('youtube.com') || url.includes('youtu.be')) {
+              if (url.includes('youtube.com')) {
+                this.vdUrl = url.split('v=').pop();
+              } else if (url.includes('youtu.be')) {
+                this.vdUrl = url.split('/').pop();
+              }
+
               const youtubeUrl = 'https://www.youtube.com/embed/' + this.vdUrl;
               this.safeUrl =
                 this.sanitizer.bypassSecurityTrustResourceUrl(youtubeUrl);

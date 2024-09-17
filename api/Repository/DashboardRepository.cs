@@ -101,20 +101,23 @@ namespace api.Repository
             // Step 2: Load related entities in separate queries
             chapitre.Videos = await apiDbContext.videos
                 .Where(v => v.ChapitreId == id)
+                .OrderBy(x => x.ObjetNumber)
                 .ToListAsync();
 
             chapitre.Syntheses = await apiDbContext.syntheses
                 .Where(s => s.ChapitreId == id)
+                .OrderBy(x => x.ObjetNumber)
                 .ToListAsync();
 
             chapitre.Schemas = await apiDbContext.schemas
                 .Where(s => s.ChapitreId == id)
+                .OrderBy(x => x.ObjetNumber)
                 .ToListAsync();
 
             // Load Cours and related Paragraphes separately
             chapitre.Cours = await apiDbContext.cours
                 .Where(c => c.ChapitreId == id)
-                .Include(c => c.Paragraphes) // Load Paragraphes with Cours
+                .Include(c => c.Paragraphes.OrderBy(x => x.ObjetNumber)) // Load Paragraphes with Cours
                 .ToListAsync();
 
             // Load Quiz and related Questions and Options separately

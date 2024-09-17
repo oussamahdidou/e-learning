@@ -817,4 +817,64 @@ api/Dashboard/GetObjectspourApprouver`,
       }
     );
   }
+  updateParagrapheNumero(
+    chapitreId: number,
+    chapitreNumero: number
+  ): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateParagrapheNumero`,
+      {
+        chapitreId: chapitreId,
+        chapitreNumero: chapitreNumero,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateVideoNumero(
+    chapitreId: number,
+    chapitreNumero: number
+  ): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateVideoNumero`,
+      {
+        chapitreId: chapitreId,
+        chapitreNumero: chapitreNumero,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateSchemaNumero(
+    chapitreId: number,
+    chapitreNumero: number
+  ): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateSchemaNumero`,
+      {
+        chapitreId: chapitreId,
+        chapitreNumero: chapitreNumero,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
+  updateSyntheseNumero(
+    chapitreId: number,
+    chapitreNumero: number
+  ): Observable<any> {
+    return this.http.put(
+      `${environment.apiUrl}/api/Chapitre/UpdateSyntheseNumero`,
+      {
+        chapitreId: chapitreId,
+        chapitreNumero: chapitreNumero,
+      },
+      {
+        headers: this.authservice.headers,
+      }
+    );
+  }
 }
