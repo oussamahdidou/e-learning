@@ -8,6 +8,7 @@
     </label>
   </div>
   <nav class="d-flex py-5 flex-column">
+    @if (authservice.$IsAdmin|async) {
     <span class="mx-auto nav-items w-100 py-3 ps-3 " routerLink="/dashboard">
       <svg version="1.0" xmlns="http://www.w3.org/2000/svg" width="40px" height="40px"
         viewBox="0 0 512.000000 512.000000" preserveAspectRatio="xMidYMid meet">
@@ -62,7 +63,7 @@ l-168 3 0 110 0 109 -630 0 -630 0 0 -110z" />
 
       <b> Dashboard</b>
     </span>
-    @if (authservice.$IsAdmin|async) {
+
     <span routerLink="/dashboard/teacherstable" class="mx-auto nav-items w-100 py-3 ps-3">
       <svg fill="Currentcolor" height="40px" width="40px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg"
         xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 511.999 511.999" xml:space="preserve">

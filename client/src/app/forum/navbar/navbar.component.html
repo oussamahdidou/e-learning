@@ -12,12 +12,16 @@
         <li><a class="dropdown-item" href="/dashboard/profile/{{teacherId}}">Profile</a></li>
         }
         @if ((authservice.$IsAdmin | async) || (authservice.$IsTeacher | async)) {
+        @if ((authservice.$IsAdmin|async )) {
         <li><a class="dropdown-item" href="/dashboard">Dashboard</a></li>
         }
+        @else if((authservice.$IsTeacher|async)) {
+        <li><a class="dropdown-item" href="/dashboard/institutionstable">Institutions</a></li>
+        } }
         <li><a class="dropdown-item" href="/forum/posts">Forum</a></li>
         <li><a class="dropdown-item" href="/forum/user">Mes Postes</a></li>
 
-        <li><a class="dropdown-item" href="/auth/reset-password">Change Password</a></li>
+        <li><a class="dropdown-item" href="/auth/forgot-password">Change Password</a></li>
         @if (authservice.$IsStudent | async) {
         <li><a class="dropdown-item" href="/profile/mylearning">My Learning</a></li>
         }

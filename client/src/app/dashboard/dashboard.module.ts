@@ -135,7 +135,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        canActivate: [GranteddashboardService],
+        canActivate: [AdminGuardService],
         component: DashboardtableComponent,
       },
       {
