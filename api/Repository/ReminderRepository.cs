@@ -16,7 +16,7 @@ namespace api.Repository
         private readonly IMailer _mailer;
         private readonly UserManager<AppUser> _userManager;
 
-        public ReminderRepository(apiDbContext context , IMailer mailer , UserManager<AppUser> userManager)
+        public ReminderRepository(apiDbContext context, IMailer mailer, UserManager<AppUser> userManager)
         {
             _context = context;
             _mailer = mailer;
@@ -26,8 +26,10 @@ namespace api.Repository
         {
             List<ResultControle> ResultControles = await _context.resultControles.ToListAsync();
 
-            foreach(var ResultControle in ResultControles){
-                if(ResultControle.Reponse == ""){
+            foreach (var ResultControle in ResultControles)
+            {
+                if (ResultControle.Reponse == "")
+                {
                     Student? student = await _context.students.FirstOrDefaultAsync(s => s.Id == ResultControle.StudentId);
                     Controle? controle = await _context.controles.FirstOrDefaultAsync(c => c.Id == ResultControle.ControleId);
                     try
